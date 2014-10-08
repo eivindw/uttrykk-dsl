@@ -1,6 +1,6 @@
 package ske.fastsetting.skatt.uttrykk;
 
-import java.util.stream.Collectors;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class SumUttrykk implements Uttrykk<Integer, Integer> {
@@ -12,6 +12,10 @@ public class SumUttrykk implements Uttrykk<Integer, Integer> {
 
    @Override
    public String beskriv(Integer... argumenter) {
-      return eval(argumenter) + " = sum(" + Stream.of(argumenter).map(Object::toString).collect(Collectors.joining(",")) + ")";
+      if (argumenter.length == 0) {
+         return "sum(arg1, arg2, arg3...)";
+      } else {
+         return eval(argumenter) + " = sum(" + Arrays.toString(argumenter) + ")";
+      }
    }
 }

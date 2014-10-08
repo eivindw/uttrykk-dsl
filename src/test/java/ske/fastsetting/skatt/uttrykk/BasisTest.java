@@ -18,5 +18,7 @@ public class BasisTest {
    @Test
    public void beskrivUttrykk() {
       System.out.println(new SumUttrykk().beskriv(2, 3));
+
+      System.out.println(new SumUttrykk().beskriv());
    }
 }
