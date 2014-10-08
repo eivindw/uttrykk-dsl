@@ -1,14 +1,14 @@
 package ske.fastsetting.skatt.uttrykk;
 
-public class FeilUttrykk<T> implements Uttrykk<T> {
+public class FeilOldUttrykk<T> implements OldUttrykk<T> {
     private String feilmelding;
 
-    public FeilUttrykk(String feilmelding) {
+    public FeilOldUttrykk(String feilmelding) {
         this.feilmelding = feilmelding;
     }
 
-    public static <T> FeilUttrykk<T> feil(String feilmelding) {
-        return new FeilUttrykk<>(feilmelding);
+    public static <T> FeilOldUttrykk<T> feil(String feilmelding) {
+        return new FeilOldUttrykk<>(feilmelding);
     }
 
     @Override

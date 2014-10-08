@@ -4,13 +4,13 @@ import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 
 import java.util.Collection;
 
-public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttrykk<T>> extends RegelUttrykk<U> implements Uttrykk<T> {
+public abstract class SumOldUttrykk<T extends KalkulerbarVerdi<T>, U extends OldUttrykk<T>> extends RegelUttrykk<U> implements OldUttrykk<T> {
 
     private final Collection<U> uttrykk;
 
     private T evaluertVerdi = null;
 
-    protected SumUttrykk(Collection<U> uttrykk) {
+    protected SumOldUttrykk(Collection<U> uttrykk) {
         this.uttrykk = uttrykk;
     }
 
@@ -18,7 +18,7 @@ public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttryk
     public final T evaluer() {
         if (evaluertVerdi == null) {
             evaluertVerdi = uttrykk.stream()
-                .map(Uttrykk::evaluer)
+                .map(OldUttrykk::evaluer)
                 .reduce(nullVerdi(), this::pluss);
         }
         return evaluertVerdi;

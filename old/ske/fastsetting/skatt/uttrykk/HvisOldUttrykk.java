@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static ske.fastsetting.skatt.uttrykk.FeilUttrykk.feil;
+import static ske.fastsetting.skatt.uttrykk.FeilOldUttrykk.feil;
 
-public abstract class HvisUttrykk<T, B extends HvisUttrykk<T, B>> extends RegelUttrykk<B> implements Uttrykk<T> {
-    private Uttrykk<T> ellersBruk = feil("Hvis-uttrykk mangler en verdi for ellersBruk");
+public abstract class HvisOldUttrykk<T, B extends HvisOldUttrykk<T, B>> extends RegelUttrykk<B> implements OldUttrykk<T> {
+    private OldUttrykk<T> ellersBruk = feil("Hvis-uttrykk mangler en verdi for ellersBruk");
     protected List<BrukUttrykk<T, B>> brukHvis = new ArrayList<>();
 
     @SuppressWarnings("unchecked")
@@ -38,7 +38,7 @@ public abstract class HvisUttrykk<T, B extends HvisUttrykk<T, B>> extends RegelU
 
         underbeskriver.skriv("fordi");
 
-        Optional<BolskUttrykk> bolskUttrykk = brukHvis.stream().map(bh -> bh.bolskUttrykk).filter(Uttrykk::evaluer).findFirst();
+        Optional<BolskOldUttrykk> bolskUttrykk = brukHvis.stream().map(bh -> bh.bolskUttrykk).filter(OldUttrykk::evaluer).findFirst();
         if (bolskUttrykk.isPresent()) {
             bolskUttrykk.get().beskrivEvaluering(underbeskriver);
         } else {
@@ -65,29 +65,29 @@ public abstract class HvisUttrykk<T, B extends HvisUttrykk<T, B>> extends RegelU
         ellersBruk.beskrivGenerisk(beskriver.rykkInn());
     }
 
-    public B ellersBruk(Uttrykk<T> uttrykk) {
+    public B ellersBruk(OldUttrykk<T> uttrykk) {
         this.ellersBruk = uttrykk;
         return self;
     }
 
-    public BrukUttrykk<T, B> ellersHvis(BolskUttrykk bolskUttrykk) {
+    public BrukUttrykk<T, B> ellersHvis(BolskOldUttrykk bolskUttrykk) {
         return new BrukUttrykk<>(bolskUttrykk, self);
     }
 
-    public static class BrukUttrykk<T, B extends HvisUttrykk<T, B>>  {
+    public static class BrukUttrykk<T, B extends HvisOldUttrykk<T, B>>  {
 
-        private final BolskUttrykk bolskUttrykk;
+        private final BolskOldUttrykk bolskUttrykk;
         private final B hvisUttrykk;
-        private Uttrykk<T> brukDa;
+        private OldUttrykk<T> brukDa;
 
-        public BrukUttrykk(BolskUttrykk bolskUttrykk, B hvisUttrykk) {
+        public BrukUttrykk(BolskOldUttrykk bolskUttrykk, B hvisUttrykk) {
 
             this.bolskUttrykk = bolskUttrykk;
             this.hvisUttrykk = hvisUttrykk;
             this.hvisUttrykk.brukHvis.add(this);
         }
 
-        public B brukDa(Uttrykk<T> brukDa) {
+        public B brukDa(OldUttrykk<T> brukDa) {
             this.brukDa = brukDa;
             return hvisUttrykk;
         }

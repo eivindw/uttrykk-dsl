@@ -1,30 +1,27 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.uttrykk.Uttrykk;
-import ske.fastsetting.skatt.uttrykk.RegelUtil;
-import ske.fastsetting.skatt.uttrykk.RegelUttrykk;
-import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
+import ske.fastsetting.skatt.uttrykk.*;
 
 import java.util.stream.Stream;
 
-public class MinsteAvUttrykk extends RegelUttrykk<MinsteAvUttrykk> implements BelopUttrykk {
-    private final BelopUttrykk[] uttrykk;
+public class MinsteAvOldUttrykk extends RegelUttrykk<MinsteAvOldUttrykk> implements BelopOldUttrykk {
+    private final BelopOldUttrykk[] uttrykk;
     private Belop evaluertBelop = null;
 
-    private MinsteAvUttrykk(BelopUttrykk[] uttrykk) {
+    private MinsteAvOldUttrykk(BelopOldUttrykk[] uttrykk) {
         this.uttrykk = uttrykk;
     }
 
-    public static MinsteAvUttrykk minsteAv(BelopUttrykk... uttrykk) {
-        return new MinsteAvUttrykk(uttrykk);
+    public static MinsteAvOldUttrykk minsteAv(BelopOldUttrykk... uttrykk) {
+        return new MinsteAvOldUttrykk(uttrykk);
     }
 
     @Override
     public Belop evaluer() {
         if (evaluertBelop == null) {
             evaluertBelop = Stream.of(uttrykk)
-                .map(Uttrykk::evaluer)
+                .map(OldUttrykk::evaluer)
                 .min(Belop::sammenliknMed).get();
         }
         return evaluertBelop;
@@ -33,7 +30,7 @@ public class MinsteAvUttrykk extends RegelUttrykk<MinsteAvUttrykk> implements Be
     @Override
     public void beskrivEvaluering(UttrykkBeskriver beskriver) {
         beskriver.skriv(evaluer() + ", fordi minst av" + RegelUtil.formater(navn) + ":");
-        for (BelopUttrykk bu : uttrykk) {
+        for (BelopOldUttrykk bu : uttrykk) {
             bu.beskrivEvaluering(beskriver.rykkInn());
         }
 

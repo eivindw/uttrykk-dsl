@@ -1,21 +1,21 @@
 package ske.fastsetting.skatt.uttrykk;
 
-public interface BolskUttrykk extends Uttrykk<Boolean> {
-    default BolskUttrykk og(BolskUttrykk uttrykk) {
-        return new OgUttrykk(this, uttrykk);
+public interface BolskOldUttrykk extends OldUttrykk<Boolean> {
+    default BolskOldUttrykk og(BolskOldUttrykk uttrykk) {
+        return new OgOldUttrykk(this, uttrykk);
     }
 
-    default BolskUttrykk eller(BolskUttrykk uttrykk) {
-        return new EllerUttrykk(this, uttrykk);
+    default BolskOldUttrykk eller(BolskOldUttrykk uttrykk) {
+        return new EllerOldUttrykk(this, uttrykk);
     }
 
-    static class OgUttrykk extends RegelUttrykk<OgUttrykk> implements BolskUttrykk {
+    static class OgOldUttrykk extends RegelUttrykk<OgOldUttrykk> implements BolskOldUttrykk {
 
-        private final BolskUttrykk forsteUttrykk;
-        private final BolskUttrykk andreUttrykk;
+        private final BolskOldUttrykk forsteUttrykk;
+        private final BolskOldUttrykk andreUttrykk;
 
 
-        public OgUttrykk(BolskUttrykk forsteUttrykk, BolskUttrykk andreUttrykk) {
+        public OgOldUttrykk(BolskOldUttrykk forsteUttrykk, BolskOldUttrykk andreUttrykk) {
 
             this.forsteUttrykk = forsteUttrykk;
             this.andreUttrykk = andreUttrykk;
@@ -42,11 +42,11 @@ public interface BolskUttrykk extends Uttrykk<Boolean> {
         }
     }
 
-    static class EllerUttrykk extends RegelUttrykk<EllerUttrykk> implements BolskUttrykk {
-        private final BolskUttrykk forsteUttrykk;
-        private final BolskUttrykk andreUttrykk;
+    static class EllerOldUttrykk extends RegelUttrykk<EllerOldUttrykk> implements BolskOldUttrykk {
+        private final BolskOldUttrykk forsteUttrykk;
+        private final BolskOldUttrykk andreUttrykk;
 
-        public EllerUttrykk(BolskUttrykk forsteUttrykk, BolskUttrykk andreUttrykk) {
+        public EllerOldUttrykk(BolskOldUttrykk forsteUttrykk, BolskOldUttrykk andreUttrykk) {
             this.forsteUttrykk = forsteUttrykk;
             this.andreUttrykk = andreUttrykk;
         }

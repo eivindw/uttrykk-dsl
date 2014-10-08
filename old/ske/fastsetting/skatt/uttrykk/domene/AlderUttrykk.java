@@ -1,7 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.domene;
 
 import ske.fastsetting.skatt.domene.Person;
-import ske.fastsetting.skatt.uttrykk.BolskUttrykk;
+import ske.fastsetting.skatt.uttrykk.BolskOldUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
 
 public class AlderUttrykk {
@@ -15,16 +15,16 @@ public class AlderUttrykk {
         return new AlderUttrykk(person.getAlder());
     }
 
-    public BolskUttrykk erMellom(int fraAlder, int tilAlder) {
-        return new AlderMellomUttrykk(alder,fraAlder,tilAlder);
+    public BolskOldUttrykk erMellom(int fraAlder, int tilAlder) {
+        return new AlderMellomOldUttrykk(alder,fraAlder,tilAlder);
     }
 
-    private static class AlderMellomUttrykk implements BolskUttrykk {
+    private static class AlderMellomOldUttrykk implements BolskOldUttrykk {
         private final int alder;
         private final int fraAlder;
         private final int tilAlder;
 
-        public AlderMellomUttrykk(int alder, int fraAlder, int tilAlder) {
+        public AlderMellomOldUttrykk(int alder, int fraAlder, int tilAlder) {
             this.alder = alder;
             this.fraAlder = fraAlder;
             this.tilAlder = tilAlder;

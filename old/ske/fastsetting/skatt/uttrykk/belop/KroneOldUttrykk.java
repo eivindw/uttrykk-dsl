@@ -7,20 +7,20 @@ import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
 
 import java.math.BigInteger;
 
-public class KroneUttrykk extends RegelUttrykk<KroneUttrykk> implements BelopUttrykk {
+public class KroneOldUttrykk extends RegelUttrykk<KroneOldUttrykk> implements BelopOldUttrykk {
 
     private final Belop kroner;
 
-    public KroneUttrykk(Belop kroner) {
+    public KroneOldUttrykk(Belop kroner) {
         this.kroner = kroner;
     }
 
-    public static KroneUttrykk kr(int belop) {
-        return new KroneUttrykk(new Belop(belop));
+    public static KroneOldUttrykk kr(int belop) {
+        return new KroneOldUttrykk(new Belop(belop));
     }
 
-    public static KroneUttrykk kr(BigInteger belop) {
-        return new KroneUttrykk(new Belop(belop.intValue()));
+    public static KroneOldUttrykk kr(BigInteger belop) {
+        return new KroneOldUttrykk(new Belop(belop.intValue()));
     }
 
     @Override

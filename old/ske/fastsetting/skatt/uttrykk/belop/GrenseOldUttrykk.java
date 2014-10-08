@@ -5,28 +5,28 @@ import ske.fastsetting.skatt.uttrykk.RegelUtil;
 import ske.fastsetting.skatt.uttrykk.RegelUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
 
-public class GrenseUttrykk extends RegelUttrykk<GrenseUttrykk> implements BelopUttrykk {
+public class GrenseOldUttrykk extends RegelUttrykk<GrenseOldUttrykk> implements BelopOldUttrykk {
 
-    private final BelopUttrykk uttrykk;
-    private BelopUttrykk minimum;
-    private BelopUttrykk maksimum;
+    private final BelopOldUttrykk uttrykk;
+    private BelopOldUttrykk minimum;
+    private BelopOldUttrykk maksimum;
 
     private Belop evaluertBelop = null;
 
-    private GrenseUttrykk(BelopUttrykk uttrykk) {
+    private GrenseOldUttrykk(BelopOldUttrykk uttrykk) {
         this.uttrykk = uttrykk;
     }
 
-    public static GrenseUttrykk begrens(BelopUttrykk uttrykk) {
-        return new GrenseUttrykk(uttrykk);
+    public static GrenseOldUttrykk begrens(BelopOldUttrykk uttrykk) {
+        return new GrenseOldUttrykk(uttrykk);
     }
 
-    public GrenseUttrykk nedad(BelopUttrykk minimum) {
+    public GrenseOldUttrykk nedad(BelopOldUttrykk minimum) {
         this.minimum = minimum;
         return this;
     }
 
-    public GrenseUttrykk oppad(BelopUttrykk maksimum) {
+    public GrenseOldUttrykk oppad(BelopOldUttrykk maksimum) {
         this.maksimum = maksimum;
         return this;
     }

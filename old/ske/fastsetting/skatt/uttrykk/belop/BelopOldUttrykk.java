@@ -4,51 +4,51 @@ package ske.fastsetting.skatt.uttrykk.belop;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.domene.Tall;
-import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
+import ske.fastsetting.skatt.uttrykk.CompareableOldUttrykk;
 import ske.fastsetting.skatt.uttrykk.RegelUtil;
 import ske.fastsetting.skatt.uttrykk.RegelUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
-import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
+import ske.fastsetting.skatt.uttrykk.tall.TallOldUttrykk;
 
 import java.util.List;
 
-public interface BelopUttrykk extends CompareableUttrykk<Belop> {
+public interface BelopOldUttrykk extends CompareableOldUttrykk<Belop> {
 
-    BelopUttrykk medNavn(String navn);
+    BelopOldUttrykk medNavn(String navn);
 
-    BelopUttrykk medRegel(Regel... regel);
+    BelopOldUttrykk medRegel(Regel... regel);
 
     String getNavn();
 
     List<Regel> getRegler();
 
-    default BelopUttrykk multiplisertMed(TallUttrykk verdi) {
-        return new BelopMultiplikasjonsUttrykk(this, verdi);
+    default BelopOldUttrykk multiplisertMed(TallOldUttrykk verdi) {
+        return new BelopMultiplikasjonsOldUttrykk(this, verdi);
     }
 
-    default BelopUttrykk dividertMed(TallUttrykk verdi) {
-        return new BelopDivisjonsUttrykk(this, verdi);
-    }
-
-
-    default BelopUttrykk minus(BelopUttrykk uttrykk) {
-        return new BelopDiffUttrykk(this, uttrykk);
-    }
-
-    default BelopUttrykk pluss(BelopUttrykk uttrykk) {
-        return BelopSumUttrykk.sum(this, uttrykk);
+    default BelopOldUttrykk dividertMed(TallOldUttrykk verdi) {
+        return new BelopDivisjonsOldUttrykk(this, verdi);
     }
 
 
-    default TallUttrykk dividertMed(BelopUttrykk divident) {
-        return new BelopDividertMedBelopUttrykk(this, divident);
+    default BelopOldUttrykk minus(BelopOldUttrykk uttrykk) {
+        return new BelopDiffOldUttrykk(this, uttrykk);
     }
 
-    static class BelopDividertMedBelopUttrykk extends RegelUttrykk<BelopDividertMedBelopUttrykk> implements TallUttrykk {
-        private final BelopUttrykk divisior;
-        private final BelopUttrykk divident;
+    default BelopOldUttrykk pluss(BelopOldUttrykk uttrykk) {
+        return BelopSumOldUttrykk.sum(this, uttrykk);
+    }
 
-        public BelopDividertMedBelopUttrykk(BelopUttrykk belopUttrykk, BelopUttrykk divident) {
+
+    default TallOldUttrykk dividertMed(BelopOldUttrykk divident) {
+        return new BelopDividertMedBelopOldUttrykk(this, divident);
+    }
+
+    static class BelopDividertMedBelopOldUttrykk extends RegelUttrykk<BelopDividertMedBelopOldUttrykk> implements TallOldUttrykk {
+        private final BelopOldUttrykk divisior;
+        private final BelopOldUttrykk divident;
+
+        public BelopDividertMedBelopOldUttrykk(BelopOldUttrykk belopUttrykk, BelopOldUttrykk divident) {
             this.divisior = belopUttrykk;
             this.divident = divident;
         }

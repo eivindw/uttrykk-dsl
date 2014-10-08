@@ -5,16 +5,16 @@ import ske.fastsetting.skatt.uttrykk.RegelUtil;
 import ske.fastsetting.skatt.uttrykk.RegelUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
 
-public class ProsentUttrykk extends RegelUttrykk<ProsentUttrykk> implements TallUttrykk {
+public class ProsentOldUttrykk extends RegelUttrykk<ProsentOldUttrykk> implements TallOldUttrykk {
 
     private final Tall verdi;
 
-    public ProsentUttrykk(Tall prosent) {
+    public ProsentOldUttrykk(Tall prosent) {
         this.verdi = prosent;
     }
 
-    public static ProsentUttrykk prosent(double prosent) {
-        return new ProsentUttrykk(Tall.prosent(prosent));
+    public static ProsentOldUttrykk prosent(double prosent) {
+        return new ProsentOldUttrykk(Tall.prosent(prosent));
     }
 
     public Tall evaluer() {

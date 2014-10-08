@@ -2,7 +2,7 @@ package ske.fastsetting.skatt.uttrykk.domene;
 
 import ske.fastsetting.skatt.domene.Kommune;
 import ske.fastsetting.skatt.domene.Person;
-import ske.fastsetting.skatt.uttrykk.BolskUttrykk;
+import ske.fastsetting.skatt.uttrykk.BolskOldUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
 
 import java.util.EnumSet;
@@ -23,9 +23,9 @@ public class KommuneUttrykk {
         return new KommuneUttrykk(skattyter.getKommune());
     }
 
-    public BolskUttrykk erEnAv(EnumSet<Kommune> kommuner) {
+    public BolskOldUttrykk erEnAv(EnumSet<Kommune> kommuner) {
 
-        return new BolskUttrykk() {
+        return new BolskOldUttrykk() {
             @Override
             public Boolean evaluer() {
                 return kommuner.contains(kommune);
