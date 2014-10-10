@@ -38,7 +38,10 @@ public class UttrykkTest {
                 kr(2).navn("bonus")
             ).navn("inntekt"),
             kr(4).navn("renter"),
-            mult(lonn, prosent(50))
+            mult(
+                lonn,
+                prosent(50).navn("superprosent")
+            ).navn("superskatt")
         ).navn("skatt");
 
         assertEquals(17, sum.eval().intValue());
