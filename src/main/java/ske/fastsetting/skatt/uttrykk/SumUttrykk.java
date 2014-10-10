@@ -1,21 +1,48 @@
 package ske.fastsetting.skatt.uttrykk;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
+import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 
-public class SumUttrykk implements Uttrykk<Integer, Integer> {
+import java.util.Collection;
 
-   @Override
-   public Integer eval(Integer... argumenter) {
-      return Stream.of(argumenter).reduce(0, (x, y) -> x + y);
-   }
+public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttrykk<T>> extends RegelUttrykk<U> implements Uttrykk<T> {
 
-   @Override
-   public String beskriv(Integer... argumenter) {
-      if (argumenter.length == 0) {
-         return "sum(arg1, arg2, arg3...)";
-      } else {
-         return eval(argumenter) + " = sum(" + Arrays.toString(argumenter) + ")";
-      }
-   }
+    private final Collection<U> uttrykk;
+
+    private T evaluertVerdi = null;
+
+    protected SumUttrykk(Collection<U> uttrykk) {
+        this.uttrykk = uttrykk;
+    }
+
+    @Override
+    public final T evaluer() {
+        if (evaluertVerdi == null) {
+            evaluertVerdi = uttrykk.stream()
+                .map(Uttrykk::evaluer)
+                .reduce(nullVerdi(), this::pluss);
+        }
+        return evaluertVerdi;
+    }
+
+    @Override
+    public final void beskrivEvaluering(UttrykkBeskriver beskriver) {
+        final String tekst = evaluer() + RegelUtil.formater(navn);
+        UttrykkBeskriver nyBeskriver = beskriver.overskrift(tekst);
+
+        nyBeskriver.skriv("summen av:");
+
+        uttrykk.forEach(u -> u.beskrivEvaluering(nyBeskriver));
+    }
+
+    @Override
+    public void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver) {
+        beskriver.skriv("summen av:");
+        uttrykk.forEach(u -> u.beskrivGenerisk(beskriver));
+    }
+
+    protected abstract T nullVerdi();
+
+    private T pluss(T ledd1, T ledd2) {
+        return ledd1.pluss(ledd2);
+    }
 }

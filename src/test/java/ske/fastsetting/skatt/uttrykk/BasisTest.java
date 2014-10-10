@@ -1,24 +1,36 @@
 package ske.fastsetting.skatt.uttrykk;
 
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
+import ske.fastsetting.skatt.domene.Tall;
+import ske.fastsetting.skatt.uttrykk.belop.BelopSumUttrykk;
+import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
+import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
+import ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk;
+import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ListUttrykkBeskriver;
 
 public class BasisTest {
 
    @Test
-   public void evaluerUttrykk() {
-      Uttrykk<Integer, Integer> summering = new SumUttrykk();
+   public void prosentUttrykk() {
+      final ProsentUttrykk satsTrygdeavgift =
+         new ProsentUttrykk(Tall.prosent(8.2)).medNavn("Sats trygdeavgift");
 
-      int svar = summering.eval(1, 2, 3);
+      final BelopUttrykk sumLonn = BelopSumUttrykk.sum(
+         KroneUttrykk.kr(60_000).medNavn("Lønn"),
+         KroneUttrykk.kr(40_000).medNavn("Bonus")
+      ).medNavn("Sum lønn");
 
-      assertEquals(6, svar);
-   }
+      final BelopUttrykk trygdeavgift = sumLonn.multiplisertMed(satsTrygdeavgift);
 
-   @Test
-   public void beskrivUttrykk() {
-      System.out.println(new SumUttrykk().beskriv(2, 3));
+      System.out.println(trygdeavgift.evaluer());
 
-      System.out.println(new SumUttrykk().beskriv());
+      final ListUttrykkBeskriver beskriver = new ListUttrykkBeskriver();
+      trygdeavgift.beskrivGenerisk(beskriver);
+
+      System.out.println(beskriver.liste());
+
+      // 8 200 (trygdeavgift) = 100 000 (sum lønn) * 8.2 % (sats trygdeavgift)
+
+      //Uttrykk<Integer> trygdeavgift =
    }
 }
