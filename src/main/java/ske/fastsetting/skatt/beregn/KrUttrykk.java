@@ -1,6 +1,6 @@
 package ske.fastsetting.skatt.beregn;
 
-public class KrUttrykk implements Uttrykk<Integer> {
+public class KrUttrykk extends AbstractUttrykk<Integer> {
 
     private final Integer tall;
 
@@ -15,7 +15,7 @@ public class KrUttrykk implements Uttrykk<Integer> {
 
     @Override
     public String beskriv() {
-        return "kr(" + tall + ")";
+        return navn() + "#kr(" + tall + ")";
     }
 
     public static KrUttrykk kr(Integer tall) {

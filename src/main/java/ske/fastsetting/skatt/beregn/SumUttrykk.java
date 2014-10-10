@@ -3,7 +3,7 @@ package ske.fastsetting.skatt.beregn;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SumUttrykk implements Uttrykk<Integer> {
+public class SumUttrykk extends AbstractUttrykk<Integer> {
     private final Uttrykk<Integer>[] uttrykk;
 
     @SafeVarargs
@@ -22,7 +22,7 @@ public class SumUttrykk implements Uttrykk<Integer> {
     public String beskriv() {
         return Stream.of(uttrykk)
             .map(Uttrykk::beskriv)
-            .collect(Collectors.joining(", ", "kr(" + eval() + ") = sum(", ")"));
+            .collect(Collectors.joining(", ", navn() + "#kr(" + eval() + ") = sum(", ")"));
     }
 
     @SafeVarargs
