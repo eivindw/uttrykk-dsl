@@ -6,6 +6,8 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.beregn.KrUttrykk.kr;
+import static ske.fastsetting.skatt.beregn.MultiplikasjonsUttrykk.mult;
+import static ske.fastsetting.skatt.beregn.ProsentUttrykk.prosent;
 import static ske.fastsetting.skatt.beregn.SumUttrykk.sum;
 
 public class UttrykkTest {
@@ -20,8 +22,15 @@ public class UttrykkTest {
     }
 
     @Test
+    public void prosentUttrykk() {
+        Uttrykk<Integer> ti = mult(kr(100), prosent(10));
+
+        System.out.println(ti.eval());
+    }
+
+    @Test
     public void sumUttrykk() {
-        Uttrykk<Integer> lonn = kr(1).navn("lønn");
+        Uttrykk<Integer> lonn = kr(6).navn("lønn");
         Uttrykk<Integer> sum = sum(
             kr(2).navn("utbytte"),
             sum(
@@ -29,10 +38,10 @@ public class UttrykkTest {
                 kr(2).navn("bonus")
             ).navn("inntekt"),
             kr(4).navn("renter"),
-            lonn
+            mult(lonn, prosent(50))
         ).navn("skatt");
 
-        assertEquals(10, sum.eval().intValue());
+        assertEquals(17, sum.eval().intValue());
 
         beskriv(sum);
     }
