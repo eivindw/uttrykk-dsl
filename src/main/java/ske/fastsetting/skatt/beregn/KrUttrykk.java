@@ -13,11 +13,6 @@ public class KrUttrykk extends AbstractUttrykk<Integer> {
         return tall;
     }
 
-    @Override
-    public String beskriv() {
-        return navn() + "#kr(" + tall + ")";
-    }
-
     public static KrUttrykk kr(Integer tall) {
         return new KrUttrykk(tall);
     }

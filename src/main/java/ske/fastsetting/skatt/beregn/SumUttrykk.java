@@ -19,10 +19,10 @@ public class SumUttrykk extends AbstractUttrykk<Integer> {
     }
 
     @Override
-    public String beskriv() {
+    public String beskrivUttrykk(UttrykkContext ctx) {
         return Stream.of(uttrykk)
-            .map(Uttrykk::beskriv)
-            .collect(Collectors.joining(", ", navn() + "#kr(" + eval() + ") = sum(", ")"));
+            .map(u -> "<" + u.beskriv(ctx) + ">")
+            .collect(Collectors.joining(",", "sum(", ")"));
     }
 
     @SafeVarargs

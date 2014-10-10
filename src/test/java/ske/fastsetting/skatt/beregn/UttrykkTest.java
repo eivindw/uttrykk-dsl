@@ -2,6 +2,8 @@ package ske.fastsetting.skatt.beregn;
 
 import org.junit.Test;
 
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.beregn.KrUttrykk.kr;
 import static ske.fastsetting.skatt.beregn.SumUttrykk.sum;
@@ -14,35 +16,34 @@ public class UttrykkTest {
 
         assertEquals(1, en.eval().intValue());
 
-        System.out.println(en.beskriv());
+        beskriv(en);
     }
 
     @Test
     public void sumUttrykk() {
+        Uttrykk<Integer> lonn = kr(1).navn("lønn");
         Uttrykk<Integer> sum = sum(
             kr(2).navn("utbytte"),
             sum(
-                kr(1).navn("lønn"),
+                lonn,
                 kr(2).navn("bonus")
             ).navn("inntekt"),
-            kr(4).navn("renter")
+            kr(4).navn("renter"),
+            lonn
         ).navn("skatt");
 
-        assertEquals(9, sum.eval().intValue());
+        assertEquals(10, sum.eval().intValue());
 
-        System.out.println(sum.beskriv());
+        beskriv(sum);
+    }
 
-        /*
-            kr(9) = sum(kr(2), kr(3) = sum(kr(1), kr(2)), kr(4))
+    private void beskriv(Uttrykk<?> uttrykk) {
+        UttrykkContext ctx = new UttrykkContext();
+        String id = uttrykk.beskriv(ctx);
+        Map<String, Map> map = ctx.uttrykk();
 
-            map(
-                "id", utbytte
-                "id", lønn
-                "id", bonus
-                "id", inntekt -> id#lønn, id#bonus
-                "id", renter
-                "id", skatt -> id#utbytte, id#inntekt, id#renter
-            )
-         */
+        System.out.println("Topp: " + id);
+        System.out.println("Verdi: " + map.get(id).get("verdi"));
+        System.out.println("Uttrykk: " + map);
     }
 }
