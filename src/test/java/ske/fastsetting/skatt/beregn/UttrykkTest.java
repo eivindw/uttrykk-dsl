@@ -28,6 +28,17 @@ public class UttrykkTest {
     }
 
     @Test
+    public void boolskUttrykk() {
+        Uttrykk<Integer> svar = new HvisUttrykk(
+            new BoolskUttrykk(true),
+            kr(10),
+            kr(20)
+        );
+
+        System.out.println(beregneOgBeskrive(svar).uttrykk());
+    }
+
+    @Test
     public void sumUttrykk() {
         Uttrykk<Integer> lonn = kr(6).navn("lønn");
         Uttrykk<Integer> sum = sum(

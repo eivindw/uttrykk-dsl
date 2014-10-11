@@ -1,7 +1,5 @@
 package ske.fastsetting.skatt.beregn;
 
-import java.util.UUID;
-
 public abstract class AbstractUttrykk<T> implements Uttrykk<T> {
 
     private String id;

@@ -1,0 +1,27 @@
+package ske.fastsetting.skatt.beregn;
+
+public class HvisUttrykk<T> extends AbstractUttrykk<T> {
+
+    private final BoolskUttrykk boolskUttrykk;
+    private final Uttrykk<T> santUttrykk;
+    private final Uttrykk<T> usantUttrykk;
+
+    public HvisUttrykk(BoolskUttrykk boolskUttrykk, Uttrykk<T> santUttrykk, Uttrykk<T> usantUttrykk) {
+        this.boolskUttrykk = boolskUttrykk;
+        this.santUttrykk = santUttrykk;
+        this.usantUttrykk = usantUttrykk;
+    }
+
+    @Override
+    public T eval(UttrykkContext ctx) {
+        return ctx.eval(boolskUttrykk) ? ctx.eval(santUttrykk) : ctx.eval(usantUttrykk);
+    }
+
+    @Override
+    public String beskriv(UttrykkContext ctx) {
+        return
+            "hvis " + ctx.beskriv(boolskUttrykk) +
+            " så " + ctx.beskriv(santUttrykk) +
+            " ellers " + ctx.beskriv(usantUttrykk);
+    }
+}
