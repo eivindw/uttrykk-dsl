@@ -2,13 +2,13 @@ package ske.fastsetting.skatt.beregn;
 
 import org.junit.Test;
 
-import java.util.Map;
-
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.beregn.KrUttrykk.kr;
 import static ske.fastsetting.skatt.beregn.MultiplikasjonsUttrykk.mult;
 import static ske.fastsetting.skatt.beregn.ProsentUttrykk.prosent;
 import static ske.fastsetting.skatt.beregn.SumUttrykk.sum;
+import static ske.fastsetting.skatt.beregn.UttrykkContextImpl.beregne;
+import static ske.fastsetting.skatt.beregn.UttrykkContextImpl.beregneOgBeskrive;
 
 public class UttrykkTest {
 
@@ -16,7 +16,7 @@ public class UttrykkTest {
     public void tallUttrykk() {
         Uttrykk<Integer> en = kr(1);
 
-        assertEquals(Integer.valueOf(1), en.eval());
+        assertEquals(Integer.valueOf(1), en.eval(null));
     }
 
     @Test
@@ -24,7 +24,7 @@ public class UttrykkTest {
         Uttrykk<Integer> ti = mult(kr(100), prosent(10));
         Uttrykk<Integer> tjue = sum(ti, ti);
 
-        assertEquals(Integer.valueOf(20), tjue.eval());
+        assertEquals(Integer.valueOf(20), beregne(tjue).verdi());
     }
 
     @Test
@@ -43,7 +43,7 @@ public class UttrykkTest {
             ).navn("superskatt")
         ).navn("skatt");
 
-        UttrykkContext<Integer> ctx = sum.evalCtx();
+        UttrykkResultat<Integer> ctx = beregneOgBeskrive(sum);
 
         assertEquals(Integer.valueOf(17), ctx.verdi());
 
@@ -76,12 +76,9 @@ public class UttrykkTest {
          */
     }
 
-    private void beskriv(UttrykkContext<?> ctx) {
-        String id = ctx.start();
-        Map<String, Map> map = ctx.uttrykk();
-
-        System.out.println("Topp: " + id);
-        System.out.println("Verdi: " + map.get(id).get("verdi"));
-        System.out.println("Uttrykk: " + map);
+    private void beskriv(UttrykkResultat<?> ctx) {
+        System.out.println("Topp: " + ctx.start());
+        System.out.println("Verdi: " + ctx.verdi());
+        System.out.println("Uttrykk: " + ctx.uttrykk());
     }
 }

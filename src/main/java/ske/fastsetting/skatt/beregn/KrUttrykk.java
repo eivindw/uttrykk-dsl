@@ -9,8 +9,13 @@ public class KrUttrykk extends AbstractUttrykk<Integer> {
     }
 
     @Override
-    public Integer eval() {
+    public Integer eval(UttrykkContext ctx) {
         return tall;
+    }
+
+    @Override
+    public String beskriv(UttrykkContext ctx) {
+        return tall + " kr";
     }
 
     public static KrUttrykk kr(Integer tall) {

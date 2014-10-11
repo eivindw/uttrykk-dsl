@@ -11,14 +11,13 @@ public class MultiplikasjonsUttrykk extends AbstractUttrykk<Integer> {
     }
 
     @Override
-    public Integer eval() {
-        System.out.println("Eval: " + uttrykk1.eval() + " * " + uttrykk2.eval());
-        return (int)(uttrykk1.eval() * uttrykk2.eval());
+    public Integer eval(UttrykkContext ctx) {
+        return (int)((int)ctx.eval(uttrykk1) * (double)ctx.eval(uttrykk2));
     }
 
     @Override
-    public String beskrivUttrykk(UttrykkContext ctx) {
-        return "<" + uttrykk1.beskriv(ctx) + "> * <" + uttrykk2.beskriv(ctx) + ">";
+    public String beskriv(UttrykkContext ctx) {
+        return ctx.beskriv(uttrykk1) + " * " + ctx.beskriv(uttrykk2);
     }
 
     public static MultiplikasjonsUttrykk mult(Uttrykk<Integer> uttrykk1, Uttrykk<Double> uttrykk2) {

@@ -12,16 +12,16 @@ public class SumUttrykk extends AbstractUttrykk<Integer> {
     }
 
     @Override
-    public Integer eval() {
+    public Integer eval(UttrykkContext ctx) {
         return Stream.of(uttrykk)
-            .mapToInt(Uttrykk::eval)
+            .mapToInt(u -> (int) ctx.eval(u))
             .sum();
     }
 
     @Override
-    public String beskrivUttrykk(UttrykkContext ctx) {
+    public String beskriv(UttrykkContext ctx) {
         return Stream.of(uttrykk)
-            .map(u -> "<" + u.beskriv(ctx) + ">")
+            .map(ctx::beskriv)
             .collect(Collectors.joining(",", "sum(", ")"));
     }
 

@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public abstract class AbstractUttrykk<T> implements Uttrykk<T> {
 
-    private final String id = UUID.randomUUID().toString();
+    private String id;
     private String navn = "";
 
     public Uttrykk<T> navn(String navn) {
@@ -18,7 +18,10 @@ public abstract class AbstractUttrykk<T> implements Uttrykk<T> {
     }
 
     @Override
-    public String id() {
+    public String id(UttrykkContext ctx) {
+        if (id == null) {
+            id = navn() + "#" + ctx.nyId();
+        }
         return id;
     }
 }

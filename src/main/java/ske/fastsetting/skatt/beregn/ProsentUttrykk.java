@@ -9,12 +9,12 @@ public class ProsentUttrykk extends AbstractUttrykk<Double> {
     }
 
     @Override
-    public Double eval() {
+    public Double eval(UttrykkContext ctx) {
         return (double) prosent / 100;
     }
 
     @Override
-    public String beskrivUttrykk(UttrykkContext ctx) {
+    public String beskriv(UttrykkContext ctx) {
         return prosent + "%";
     }
 
