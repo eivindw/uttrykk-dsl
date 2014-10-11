@@ -12,6 +12,7 @@ public class MultiplikasjonsUttrykk extends AbstractUttrykk<Integer> {
 
     @Override
     public Integer eval() {
+        System.out.println("Eval: " + uttrykk1.eval() + " * " + uttrykk2.eval());
         return (int)(uttrykk1.eval() * uttrykk2.eval());
     }
 

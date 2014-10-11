@@ -11,6 +11,12 @@ public interface Uttrykk<T> {
 
     String id();
 
+    default UttrykkContext<T> evalCtx() {
+        UttrykkContext<T> ctx = new UttrykkContext<>(id());
+        beskriv(ctx);
+        return ctx;
+    }
+
     default String beskrivUttrykk(UttrykkContext ctx) {
         return null;
     }

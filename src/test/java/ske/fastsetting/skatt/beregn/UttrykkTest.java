@@ -16,16 +16,15 @@ public class UttrykkTest {
     public void tallUttrykk() {
         Uttrykk<Integer> en = kr(1);
 
-        assertEquals(1, en.eval().intValue());
-
-        beskriv(en);
+        assertEquals(Integer.valueOf(1), en.eval());
     }
 
     @Test
     public void prosentUttrykk() {
         Uttrykk<Integer> ti = mult(kr(100), prosent(10));
+        Uttrykk<Integer> tjue = sum(ti, ti);
 
-        System.out.println(ti.eval());
+        assertEquals(Integer.valueOf(20), tjue.eval());
     }
 
     @Test
@@ -44,14 +43,41 @@ public class UttrykkTest {
             ).navn("superskatt")
         ).navn("skatt");
 
-        assertEquals(17, sum.eval().intValue());
+        UttrykkContext<Integer> ctx = sum.evalCtx();
 
-        beskriv(sum);
+        assertEquals(Integer.valueOf(17), ctx.verdi());
+
+        beskriv(ctx);
+
+        /*
+
+        {
+          start: id0,
+          uttrykk: {
+            id0: {
+              navn: "skatt",
+              verdi: 17,
+              beskrivelse: "sum(<id1, id2, id3, id4>)"
+            },
+            id1: {
+              navn: "utbytte",
+              verdi: 2,
+              beskrivelse: "2 kr"
+            },
+            id2: {
+              navn: "inntekt",
+              verdi: 8,
+              beskrivelse: "sum(<id5, id6>)"
+            },
+            ...
+          }
+        }
+
+         */
     }
 
-    private void beskriv(Uttrykk<?> uttrykk) {
-        UttrykkContext ctx = new UttrykkContext();
-        String id = uttrykk.beskriv(ctx);
+    private void beskriv(UttrykkContext<?> ctx) {
+        String id = ctx.start();
         Map<String, Map> map = ctx.uttrykk();
 
         System.out.println("Topp: " + id);
