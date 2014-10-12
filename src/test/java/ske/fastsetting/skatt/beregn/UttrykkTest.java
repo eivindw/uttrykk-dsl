@@ -3,6 +3,7 @@ package ske.fastsetting.skatt.beregn;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static ske.fastsetting.skatt.beregn.HvisUttrykk.hvis;
 import static ske.fastsetting.skatt.beregn.KrUttrykk.kr;
 import static ske.fastsetting.skatt.beregn.MultiplikasjonsUttrykk.mult;
 import static ske.fastsetting.skatt.beregn.ProsentUttrykk.prosent;
@@ -29,13 +30,11 @@ public class UttrykkTest {
 
     @Test
     public void boolskUttrykk() {
-        Uttrykk<Integer> svar = new HvisUttrykk(
-            new BoolskUttrykk(true),
-            kr(10),
-            kr(20)
-        );
+        Uttrykk<?> svar = hvis(new BoolskUttrykk(true))
+            .saa(kr(10))
+            .ellers(kr(20));
 
-        System.out.println(beregneOgBeskrive(svar).uttrykk());
+        assertEquals(10, beregne(svar).verdi());
     }
 
     @Test
@@ -57,8 +56,6 @@ public class UttrykkTest {
         UttrykkResultat<Integer> ctx = beregneOgBeskrive(sum);
 
         assertEquals(Integer.valueOf(17), ctx.verdi());
-
-        beskriv(ctx);
 
         /*
 
@@ -85,11 +82,5 @@ public class UttrykkTest {
         }
 
          */
-    }
-
-    private void beskriv(UttrykkResultat<?> ctx) {
-        System.out.println("Topp: " + ctx.start());
-        System.out.println("Verdi: " + ctx.verdi());
-        System.out.println("Uttrykk: " + ctx.uttrykk());
     }
 }

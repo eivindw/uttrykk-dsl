@@ -24,4 +24,37 @@ public class HvisUttrykk<T> extends AbstractUttrykk<T> {
             " så " + ctx.beskriv(santUttrykk) +
             " ellers " + ctx.beskriv(usantUttrykk);
     }
+
+    public static HvisUttrykkBuilder hvis(BoolskUttrykk boolskUttrykk) {
+        return new HvisUttrykkBuilderImpl(boolskUttrykk);
+    }
+
+    public interface EllersUttrykkBuilder {
+        HvisUttrykk ellers(Uttrykk uttrykk);
+    }
+
+    public interface HvisUttrykkBuilder {
+        EllersUttrykkBuilder saa(Uttrykk uttrykk);
+    }
+
+    private static class HvisUttrykkBuilderImpl implements HvisUttrykkBuilder, EllersUttrykkBuilder {
+
+        private final BoolskUttrykk boolskUttrykk;
+        private Uttrykk<?> santUttrykk;
+
+        public HvisUttrykkBuilderImpl(BoolskUttrykk boolskUttrykk) {
+            this.boolskUttrykk = boolskUttrykk;
+        }
+
+        @Override
+        public EllersUttrykkBuilder saa(Uttrykk uttrykk) {
+            santUttrykk = uttrykk;
+            return this;
+        }
+
+        @Override
+        public HvisUttrykk ellers(Uttrykk uttrykk) {
+            return new HvisUttrykk<>(boolskUttrykk, santUttrykk, uttrykk);
+        }
+    }
 }
