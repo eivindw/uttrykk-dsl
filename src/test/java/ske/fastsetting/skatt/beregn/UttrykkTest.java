@@ -2,6 +2,10 @@ package ske.fastsetting.skatt.beregn;
 
 import org.junit.Test;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.beregn.HvisUttrykk.hvis;
 import static ske.fastsetting.skatt.beregn.KrUttrykk.kr;
@@ -10,6 +14,7 @@ import static ske.fastsetting.skatt.beregn.ProsentUttrykk.prosent;
 import static ske.fastsetting.skatt.beregn.SumUttrykk.sum;
 import static ske.fastsetting.skatt.beregn.UttrykkContextImpl.beregne;
 import static ske.fastsetting.skatt.beregn.UttrykkContextImpl.beregneOgBeskrive;
+import static ske.fastsetting.skatt.beregn.UttrykkContextImpl.beskrive;
 
 public class UttrykkTest {
 
@@ -22,10 +27,29 @@ public class UttrykkTest {
 
     @Test
     public void prosentUttrykk() {
-        Uttrykk<Integer> ti = mult(kr(100), prosent(10));
-        Uttrykk<Integer> tjue = sum(ti, ti);
+        Uttrykk<Integer> ti = mult(kr(100).navn("grlag"), prosent(10).navn("sats"));
+        Uttrykk<Integer> tjue = sum(ti, ti).navn("svar");
 
         assertEquals(Integer.valueOf(20), beregne(tjue).verdi());
+
+        print(beregneOgBeskrive(tjue));
+    }
+
+    private void print(UttrykkResultat<?> resultat) {
+        print(resultat.start(), resultat);
+    }
+
+    private void print(String id, UttrykkResultat<?> resultat) {
+        Map map = resultat.uttrykk().get(id);
+        String uttrykk = (String) map.get("uttrykk");
+        Set<String> subUttrykkIder = finnIder(uttrykk);
+        System.out.println(map.get("navn") + " = " + map.get("verdi") + " (" + uttrykk + ")");
+    }
+
+    private Set<String> finnIder(String uttrykk) {
+        Pattern idPattern = Pattern.compile("<[^>]*>");
+        //Pattern.compile("<[^>]*>").matcher(uttrykk)
+        return null;
     }
 
     @Test
@@ -35,6 +59,8 @@ public class UttrykkTest {
             .ellers(kr(20));
 
         assertEquals(10, beregne(svar).verdi());
+
+        System.out.println(beskrive(svar));
     }
 
     @Test
