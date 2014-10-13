@@ -19,6 +19,7 @@ public abstract class AbstractUttrykk<T> implements Uttrykk<T> {
     public String id(UttrykkContext ctx) {
         if (id == null) {
             id = ctx.nyId();
+            System.out.println(getClass() + " satt id: " + id);
         }
         return id;
     }
