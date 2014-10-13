@@ -3,7 +3,9 @@ package ske.fastsetting.skatt.beregn;
 import org.junit.Test;
 import ske.fastsetting.skatt.beregn.util.IdUtil;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.beregn.HvisUttrykk.hvis;
@@ -11,8 +13,7 @@ import static ske.fastsetting.skatt.beregn.KrUttrykk.kr;
 import static ske.fastsetting.skatt.beregn.MultiplikasjonsUttrykk.mult;
 import static ske.fastsetting.skatt.beregn.ProsentUttrykk.prosent;
 import static ske.fastsetting.skatt.beregn.SumUttrykk.sum;
-import static ske.fastsetting.skatt.beregn.UttrykkContextImpl.beregne;
-import static ske.fastsetting.skatt.beregn.UttrykkContextImpl.beregneOgBeskrive;
+import static ske.fastsetting.skatt.beregn.UttrykkContextImpl.*;
 
 public class UttrykkTest {
 
@@ -25,23 +26,16 @@ public class UttrykkTest {
 
     @Test
     public void prosentUttrykk() {
-        Uttrykk<Integer> ti = mult(kr(100).navn("grlag"), prosent(10).navn("sats")).navn("skatt");
-        Uttrykk<Integer> tjue = sum(ti, ti).navn("svar");
+        Uttrykk<Integer> ti = mult(kr(100), prosent(10));
+        Uttrykk<Integer> tjue = sum(ti, ti);
 
         assertEquals(Integer.valueOf(20), beregne(tjue).verdi());
 
+        print(beregne(tjue));
+        System.out.println("\n###");
+        print(beskrive(tjue));
+        System.out.println("\n###");
         print(beregneOgBeskrive(tjue));
-    }
-
-    private void print(UttrykkResultat<?> resultat) {
-        print(resultat.start(), resultat);
-    }
-
-    private void print(String id, UttrykkResultat<?> resultat) {
-        Map map = resultat.uttrykk().get(id);
-        String uttrykk = (String) map.get("uttrykk");
-        System.out.println(id + " = " + map.get("verdi") + " (" + uttrykk + ")");
-        IdUtil.parseIder(uttrykk).forEach(subId -> print(subId, resultat));
     }
 
     @Test
@@ -73,30 +67,38 @@ public class UttrykkTest {
 
         assertEquals(Integer.valueOf(17), ctx.verdi());
 
-        /*
+        print(beregneOgBeskrive(sum));
+    }
 
-        {
-          start: id0,
-          uttrykk: {
-            id0: {
-              navn: "skatt",
-              verdi: 17,
-              beskrivelse: "sum(<id1, id2, id3, id4>)"
-            },
-            id1: {
-              navn: "utbytte",
-              verdi: 2,
-              beskrivelse: "2 kr"
-            },
-            id2: {
-              navn: "inntekt",
-              verdi: 8,
-              beskrivelse: "sum(<id5, id6>)"
-            },
-            ...
-          }
+    private void print(UttrykkResultat<?> resultat) {
+        print(resultat.start(), resultat, new HashSet<>());
+    }
+
+    private void print(String id, UttrykkResultat<?> resultat, Set<String> behandledeIder) {
+        Map map = resultat.uttrykk().get(id);
+        Set<String> subIder = null;
+        StringBuilder output = new StringBuilder(IdUtil.idLink(id));
+
+        if (map.containsKey(UttrykkResultat.KEY_NAVN)) {
+            output.append(", navn=").append(map.get(UttrykkResultat.KEY_NAVN));
         }
 
-         */
+        if (map.containsKey(UttrykkResultat.KEY_VERDI)) {
+            output.append(", verdi=").append(map.get(UttrykkResultat.KEY_VERDI));
+        }
+
+        if (map.containsKey(UttrykkResultat.KEY_UTTRYKK)) {
+            String uttrykk = (String) map.get(UttrykkResultat.KEY_UTTRYKK);
+            output.append(", uttrykk=").append(uttrykk);
+            subIder = IdUtil.parseIder(uttrykk);
+            subIder.removeAll(behandledeIder);
+        }
+
+        System.out.println(output.toString());
+
+        if(subIder != null) {
+            behandledeIder.addAll(subIder);
+            subIder.forEach(subId -> print(subId, resultat, behandledeIder));
+        }
     }
 }

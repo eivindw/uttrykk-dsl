@@ -18,7 +18,7 @@ public abstract class AbstractUttrykk<T> implements Uttrykk<T> {
     @Override
     public String id(UttrykkContext ctx) {
         if (id == null) {
-            id = navn() + "#" + ctx.nyId();
+            id = ctx.nyId();
         }
         return id;
     }

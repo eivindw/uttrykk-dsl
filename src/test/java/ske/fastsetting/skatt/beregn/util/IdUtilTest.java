@@ -21,4 +21,10 @@ public class IdUtilTest {
         assertTrue(ider.contains("id1"));
         assertTrue(ider.contains("id2"));
     }
+
+    @Test
+    public void parseNullEllerTomStringGirEmptySet() {
+        assertTrue(IdUtil.parseIder(null).isEmpty());
+        assertTrue(IdUtil.parseIder("").isEmpty());
+    }
 }

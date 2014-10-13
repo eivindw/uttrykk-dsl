@@ -7,10 +7,6 @@ import java.util.Map;
 
 public class UttrykkContextImpl<T> implements UttrykkResultat<T>, UttrykkContext {
 
-    private static final String KEY_NAVN = "navn";
-    private static final String KEY_VERDI = "verdi";
-    private static final String KEY_UTTRYKK = "uttrykk";
-
     private final Map<String, Map> uttrykksmap = new HashMap<>();
     private final String start;
 
@@ -68,8 +64,8 @@ public class UttrykkContextImpl<T> implements UttrykkResultat<T>, UttrykkContext
     }
 
     @Override
-    public int nyId() {
-        return nesteId++;
+    public String nyId() {
+        return String.valueOf(nesteId++);
     }
 
     @Override
@@ -83,7 +79,10 @@ public class UttrykkContextImpl<T> implements UttrykkResultat<T>, UttrykkContext
 
     private Map map(Uttrykk uttrykk) {
         return new HashMap<String, Object>() {{
-            put(KEY_NAVN, uttrykk.navn());
+            final String navn = uttrykk.navn();
+            if (navn != null && !navn.equals("")) {
+                put(KEY_NAVN, navn);
+            }
         }};
     }
 }

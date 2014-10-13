@@ -5,5 +5,5 @@ public interface UttrykkContext {
 
     <X> X eval(Uttrykk<X> uttrykk);
 
-    int nyId();
+    String nyId();
 }
