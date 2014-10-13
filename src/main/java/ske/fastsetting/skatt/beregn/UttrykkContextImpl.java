@@ -1,5 +1,7 @@
 package ske.fastsetting.skatt.beregn;
 
+import ske.fastsetting.skatt.beregn.util.IdUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,7 +59,7 @@ public class UttrykkContextImpl<T> implements UttrykkResultat<T>, UttrykkContext
     public String beskriv(Uttrykk uttrykk) {
         initUttrykk(uttrykk).computeIfAbsent(KEY_UTTRYKK, k -> uttrykk.beskriv(this));
 
-        return "<" + uttrykk.id(this) + ">";
+        return IdUtil.idLink(uttrykk.id(this));
     }
 
     @Override
