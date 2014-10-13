@@ -3,8 +3,8 @@ package ske.fastsetting.skatt.uttrykk;
 import org.junit.Test;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk;
-import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ListUttrykkBeskriver;
 
+import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopSumUttrykk.sum;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
@@ -22,15 +22,6 @@ public class BasisTest {
 
       final BelopUttrykk trygdeavgift = sumLonn.multiplisertMed(satsTrygdeavgift);
 
-      System.out.println(trygdeavgift.evaluer());
-
-      final ListUttrykkBeskriver beskriver = new ListUttrykkBeskriver();
-      trygdeavgift.beskrivGenerisk(beskriver);
-
-      System.out.println(beskriver.liste());
-
-      // 8 200 (trygdeavgift) = 100 000 (sum lønn) * 8.2 % (sats trygdeavgift)
-
-      //Uttrykk<Integer> trygdeavgift =
+      assertEquals(8_200, trygdeavgift.evaluer().toInteger().intValue());
    }
 }

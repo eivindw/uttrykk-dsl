@@ -27,12 +27,12 @@ public class UttrykkContextImpl<T> implements UttrykkResultat<T>, UttrykkContext
     private UttrykkContextImpl(Uttrykk<T> uttrykk, boolean eval, boolean beskriv) {
         this.start = uttrykk.id(this);
 
-        if (eval) {
-            eval(uttrykk);
-        }
-
         if (beskriv) {
             beskriv(uttrykk);
+        }
+
+        if (eval) {
+            eval(uttrykk);
         }
     }
 

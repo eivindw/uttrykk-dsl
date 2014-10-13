@@ -45,8 +45,6 @@ public class UttrykkTest {
             .ellers(kr(20));
 
         assertEquals(10, beregne(svar).verdi());
-
-        print(beregneOgBeskrive(svar)); // TODO - bug med id
     }
 
     @Test
