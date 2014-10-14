@@ -1,11 +1,12 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
 
+import ske.fastsetting.skatt.beregn.UttrykkResultat;
 import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
 
 import java.util.*;
 
-public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver {
+public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map> {
 
     private final InnholdConfluenceSide gjeldendeSide;
     private final Map<String, ConfluenceSide> innholdsfortegnelse;
@@ -32,12 +33,11 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver {
         return gjeldendeSide;
     }
 
-    @Override
     public UttrykkBeskriver overskrift(String overskrift) {
         skrivLink(overskrift);
 
         if (innholdsfortegnelse.containsKey(overskrift)) {
-            return new NullUttrykksBeskriver();
+            return null;
         } else {
             InnholdConfluenceSide nySide = new InnholdConfluenceSide(overskrift);
             gjeldendeSide.undersider.add(nySide);
@@ -47,22 +47,18 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver {
         }
     }
 
-    @Override
     public void skriv(String linje) {
         gjeldendeSide.innhold.append(new String(new char[innrykk]).replace("\0", "&nbsp; ") + linje).append("\r\n");
     }
 
-    @Override
     public UttrykkBeskriver rykkInn() {
         return new ConfluenceUttrykkBeskriver(gjeldendeSide, innholdsfortegnelse, innrykk + 3);
     }
 
-    @Override
     public void tags(String... strings) {
         gjeldendeSide.tags.addAll(Arrays.asList(strings));
     }
 
-    @Override
     public void regler(Regel... regler) {
 
         for(Regel regel : regler) {
@@ -81,6 +77,11 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver {
 
     private void skrivLink(String link) {
         gjeldendeSide.innhold.append(new String(new char[innrykk]).replace("\0", "&nbsp; ") + "[" + link + "]").append("\r\n");
+    }
+
+    @Override
+    public Map beskriv(UttrykkResultat<?> resultat) {
+        return null;
     }
 
     public interface ConfluenceSide {

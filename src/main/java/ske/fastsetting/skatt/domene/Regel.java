@@ -4,12 +4,17 @@ import java.net.URI;
 
 public class Regel {
 
-
     private enum RegelType {
-
-        Skattevedtak("Stortingets skattevedtak", "Stortingets skattevedtak for inntektsåret 2014", "forskrift/2013-12-05-1499"),
-        Skatteloven("Skatteloven", "Lov om skatt av formue og inntekt (skatteloven)","lov/1999-03-26-14" );
-
+        Skattevedtak(
+            "Stortingets skattevedtak",
+            "Stortingets skattevedtak for inntektsåret 2014",
+            "forskrift/2013-12-05-1499"
+        ),
+        Skatteloven(
+            "Skatteloven",
+            "Lov om skatt av formue og inntekt (skatteloven)",
+            "lov/1999-03-26-14"
+        );
 
         private final String tittel;
         private final String lovdataRef;
@@ -34,16 +39,16 @@ public class Regel {
         }
     }
 
-
     private final RegelType regel;
     private final String paragraf;
     private final String[] underpunkt;
 
     public static Regel skattevedtak(String paragraf) {
-        return new Regel(RegelType.Skattevedtak,paragraf);
+        return new Regel(RegelType.Skattevedtak, paragraf);
     }
-    public static Regel skatteloven(String paragraf, String ... underpunkt) {
-        return new Regel(RegelType.Skatteloven,paragraf,underpunkt);
+
+    public static Regel skatteloven(String paragraf, String... underpunkt) {
+        return new Regel(RegelType.Skatteloven, paragraf, underpunkt);
     }
 
     public static Regel[] regler(Regel... regel) {
@@ -65,14 +70,14 @@ public class Regel {
     }
 
     public String getKortnavnOgParagraf() {
-        return regel.getKortnavn()+ " §"+paragraf;
+        return regel.getKortnavn() + " §" + paragraf;
     }
 
     public String getTittelOgParagraf() {
-        return regel.getTittel()+ " §"+paragraf;
+        return regel.getTittel() + " §" + paragraf;
     }
 
     public URI getLovdataUri() {
-        return URI.create("http://lovdata.no/"+regel.getLovdataRef()+"/§"+paragraf);
+        return URI.create("http://lovdata.no/" + regel.getLovdataRef() + "/§" + paragraf);
     }
 }

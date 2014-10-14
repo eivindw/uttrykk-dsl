@@ -1,46 +1,53 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
 
-import ske.fastsetting.skatt.domene.Regel;
+import ske.fastsetting.skatt.beregn.UttrykkResultat;
+import ske.fastsetting.skatt.beregn.util.IdUtil;
 import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
 
-public class ConsoleUttrykkBeskriver implements UttrykkBeskriver {
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-    private int indentation;
+public class ConsoleUttrykkBeskriver implements UttrykkBeskriver<String> {
 
-    public ConsoleUttrykkBeskriver() {
-    }
-
-    private ConsoleUttrykkBeskriver(int indentation) {
-        this.indentation = indentation;
-    }
-
-    @Override
-    public void skriv(String line) {
-        System.out.println(getInnrykk() +line);
+    public static void print(UttrykkResultat resultat) {
+        System.out.println(new ConsoleUttrykkBeskriver().beskriv(resultat));
     }
 
     @Override
-    public UttrykkBeskriver rykkInn() {
-        return new ConsoleUttrykkBeskriver(indentation+2);
+    public String beskriv(UttrykkResultat<?> resultat) {
+        StringBuilder out = new StringBuilder();
+        print(resultat, out);
+        return out.toString();
     }
 
-    @Override
-    public void tags(String... tags) {
-        System.out.println(getInnrykk()+tags);
+    private void print(UttrykkResultat<?> resultat, StringBuilder out) {
+        print(resultat.start(), resultat, new HashSet<>(), out);
     }
 
-    @Override
-    public void regler(Regel... regler) {
-        System.out.println(getInnrykk()+regler);
-    }
+    private void print(String id, UttrykkResultat<?> resultat, Set<String> behandledeIder, StringBuilder out) {
+        Map map = resultat.uttrykk().get(id);
+        Set<String> subIder = null;
+        out.append(IdUtil.idLink(id));
 
-    @Override
-    public UttrykkBeskriver overskrift(String line) {
-        System.out.println(getInnrykk() + "***" + line + "***");
-        return this;
-    }
+        if (map.containsKey(UttrykkResultat.KEY_NAVN)) {
+            out.append(", navn=").append(map.get(UttrykkResultat.KEY_NAVN));
+        }
 
-    private String getInnrykk() {
-        return new String(new char[indentation]).replace("\0", " ");
+        if (map.containsKey(UttrykkResultat.KEY_VERDI)) {
+            out.append(", verdi=").append(map.get(UttrykkResultat.KEY_VERDI));
+        }
+
+        if (map.containsKey(UttrykkResultat.KEY_UTTRYKK)) {
+            String uttrykk = (String) map.get(UttrykkResultat.KEY_UTTRYKK);
+            out.append(", uttrykk=").append(uttrykk);
+            subIder = IdUtil.parseIder(uttrykk);
+            subIder.removeAll(behandledeIder);
+        }
+
+        if(subIder != null) {
+            behandledeIder.addAll(subIder);
+            subIder.forEach(subId -> print(subId, resultat, behandledeIder, out.append("\n")));
+        }
     }
 }

@@ -58,7 +58,7 @@ public abstract class RegelUttrykk<B, C> extends AbstractUttrykk<C> {
 
         return regler;
     }
-
+/*
     public final void beskrivGenerisk(UttrykkBeskriver beskriver) {
         if (navn != null && !navn.isEmpty()) {
             beskriver = beskriver.overskrift(navn);
@@ -74,6 +74,6 @@ public abstract class RegelUttrykk<B, C> extends AbstractUttrykk<C> {
 
         //beskrivGeneriskMedRegel(beskriver);
     }
-
+*/
     //protected abstract void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver);
 }

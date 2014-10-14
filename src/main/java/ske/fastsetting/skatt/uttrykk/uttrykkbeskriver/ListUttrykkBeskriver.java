@@ -1,12 +1,13 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
 
+import ske.fastsetting.skatt.beregn.UttrykkResultat;
 import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListUttrykkBeskriver implements UttrykkBeskriver {
+public class ListUttrykkBeskriver implements UttrykkBeskriver<List> {
 
     private final List<Entry> verdier;
     private ListUttrykkBeskriver indentingWriter;
@@ -19,14 +20,11 @@ public class ListUttrykkBeskriver implements UttrykkBeskriver {
         this(new ArrayList<>());
     }
 
-
-    @Override
     public void skriv(String line) {
         verdier.add(new TekstEntry(line));
         indentingWriter = null;
     }
 
-    @Override
     public UttrykkBeskriver rykkInn() {
         //if (indentingWriter == null) {
             List<Entry> barn = new ArrayList<>();
@@ -37,17 +35,6 @@ public class ListUttrykkBeskriver implements UttrykkBeskriver {
         return indentingWriter;
     }
 
-    @Override
-    public void tags(String... strings) {
-
-    }
-
-    @Override
-    public void regler(Regel... regler) {
-
-    }
-
-    @Override
     public UttrykkBeskriver overskrift(String tekst) {
         //if (indentingWriter == null) {
             List<Entry> barn = new ArrayList<>();
@@ -60,6 +47,11 @@ public class ListUttrykkBeskriver implements UttrykkBeskriver {
 
     public List<Entry> liste() {
         return verdier;
+    }
+
+    @Override
+    public List beskriv(UttrykkResultat<?> resultat) {
+        return null;
     }
 
     public interface Entry {
@@ -109,5 +101,4 @@ public class ListUttrykkBeskriver implements UttrykkBeskriver {
         }
 
     }
-
 }

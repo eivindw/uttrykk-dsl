@@ -4,13 +4,12 @@ import ske.fastsetting.skatt.beregn.util.IdUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class UttrykkContextImpl<T> implements UttrykkResultat<T>, UttrykkContext {
 
     private final Map<String, Map> uttrykksmap = new HashMap<>();
     private final String start;
-
-    private int nesteId = 1;
 
     public static <X> UttrykkResultat<X> beregne(Uttrykk<X> uttrykk) {
         return new UttrykkContextImpl<>(uttrykk, true, false);
@@ -27,12 +26,12 @@ public class UttrykkContextImpl<T> implements UttrykkResultat<T>, UttrykkContext
     private UttrykkContextImpl(Uttrykk<T> uttrykk, boolean eval, boolean beskriv) {
         this.start = uttrykk.id(this);
 
-        if (beskriv) {
-            beskriv(uttrykk);
-        }
-
         if (eval) {
             eval(uttrykk);
+        }
+
+        if (beskriv) {
+            beskriv(uttrykk);
         }
     }
 
@@ -65,7 +64,16 @@ public class UttrykkContextImpl<T> implements UttrykkResultat<T>, UttrykkContext
 
     @Override
     public String nyId() {
-        return String.valueOf(nesteId++);
+        String id = lagTilfeldigId();
+        while (uttrykksmap.containsKey(id)) {
+            id = lagTilfeldigId();
+        }
+        return id;
+    }
+
+    private String lagTilfeldigId() {
+        // TODO - denne er ikke garantert unik - for korthet - kom opp med noe bedre :)
+        return Integer.toHexString(UUID.randomUUID().hashCode());
     }
 
     @Override

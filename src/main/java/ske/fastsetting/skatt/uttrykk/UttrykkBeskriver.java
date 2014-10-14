@@ -1,14 +1,9 @@
 package ske.fastsetting.skatt.uttrykk;
 
-import ske.fastsetting.skatt.domene.Regel;
+import ske.fastsetting.skatt.beregn.UttrykkResultat;
 
-public interface UttrykkBeskriver {
-    UttrykkBeskriver overskrift(String overskrift);
-    void skriv(String line);
-    UttrykkBeskriver rykkInn();
-
-    void tags(String... tags);
-    void regler(Regel... regler);
+public interface UttrykkBeskriver<T> {
+    T beskriv(UttrykkResultat<?> resultat);
 }
 
 /*

@@ -17,7 +17,7 @@ public class ProsentUttrykk extends AbstractUttrykk<Tall> {
 
     @Override
     public String beskriv(UttrykkContext ctx) {
-        return prosent + "%";
+        return prosent.toString();
     }
 
     public static ProsentUttrykk prosent(double prosent) {
