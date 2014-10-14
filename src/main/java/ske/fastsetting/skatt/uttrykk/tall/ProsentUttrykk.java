@@ -1,6 +1,6 @@
 package ske.fastsetting.skatt.uttrykk.tall;
 
-import ske.fastsetting.skatt.beregn.UttrykkContext;
+import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.RegelUttrykk;
 

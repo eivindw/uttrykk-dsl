@@ -1,7 +1,5 @@
 package ske.fastsetting.skatt.uttrykk;
 
-import ske.fastsetting.skatt.beregn.UttrykkResultat;
-
 public interface UttrykkBeskriver<T> {
     T beskriv(UttrykkResultat<?> resultat);
 }

@@ -1,4 +1,4 @@
-package ske.fastsetting.skatt.beregn;
+package ske.fastsetting.skatt.uttrykk;
 
 public interface Uttrykk<T> {
 

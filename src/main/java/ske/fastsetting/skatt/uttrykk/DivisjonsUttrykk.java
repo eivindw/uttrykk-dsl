@@ -1,7 +1,5 @@
 package ske.fastsetting.skatt.uttrykk;
 
-import ske.fastsetting.skatt.beregn.Uttrykk;
-import ske.fastsetting.skatt.beregn.UttrykkContext;
 import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 

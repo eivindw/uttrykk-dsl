@@ -1,4 +1,4 @@
-package ske.fastsetting.skatt.beregn.util;
+package ske.fastsetting.skatt.uttrykk.util;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

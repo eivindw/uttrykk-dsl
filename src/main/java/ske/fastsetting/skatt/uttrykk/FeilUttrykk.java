@@ -1,8 +1,5 @@
 package ske.fastsetting.skatt.uttrykk;
 
-import ske.fastsetting.skatt.beregn.AbstractUttrykk;
-import ske.fastsetting.skatt.beregn.UttrykkContext;
-
 public class FeilUttrykk<T> extends AbstractUttrykk<T> {
     private String feilmelding;
 

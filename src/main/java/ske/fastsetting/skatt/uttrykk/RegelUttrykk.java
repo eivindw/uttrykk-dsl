@@ -1,6 +1,5 @@
 package ske.fastsetting.skatt.uttrykk;
 
-import ske.fastsetting.skatt.beregn.AbstractUttrykk;
 import ske.fastsetting.skatt.domene.Regel;
 
 import java.util.ArrayList;

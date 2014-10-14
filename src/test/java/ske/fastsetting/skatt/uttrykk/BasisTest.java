@@ -1,8 +1,6 @@
 package ske.fastsetting.skatt.uttrykk;
 
 import org.junit.Test;
-import ske.fastsetting.skatt.beregn.UttrykkContextImpl;
-import ske.fastsetting.skatt.beregn.UttrykkResultat;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk;

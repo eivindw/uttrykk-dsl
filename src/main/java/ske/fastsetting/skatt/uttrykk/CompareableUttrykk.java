@@ -1,9 +1,5 @@
 package ske.fastsetting.skatt.uttrykk;
 
-import ske.fastsetting.skatt.beregn.AbstractUttrykk;
-import ske.fastsetting.skatt.beregn.Uttrykk;
-import ske.fastsetting.skatt.beregn.UttrykkContext;
-
 public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> {
 
     default BolskUttrykk erStorreEnn(CompareableUttrykk<T> belop) {

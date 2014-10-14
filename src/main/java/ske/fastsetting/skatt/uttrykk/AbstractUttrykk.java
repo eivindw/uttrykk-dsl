@@ -1,4 +1,4 @@
-package ske.fastsetting.skatt.beregn;
+package ske.fastsetting.skatt.uttrykk;
 
 public abstract class AbstractUttrykk<T> implements Uttrykk<T> {
 

@@ -1,8 +1,5 @@
 package ske.fastsetting.skatt.uttrykk;
 
-import ske.fastsetting.skatt.beregn.Uttrykk;
-import ske.fastsetting.skatt.beregn.UttrykkContext;
-
 public interface BolskUttrykk extends Uttrykk<Boolean> {
     default BolskUttrykk og(BolskUttrykk uttrykk) {
         return new OgUttrykk(this, uttrykk);

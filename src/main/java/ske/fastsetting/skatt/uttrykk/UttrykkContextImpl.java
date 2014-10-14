@@ -1,6 +1,6 @@
-package ske.fastsetting.skatt.beregn;
+package ske.fastsetting.skatt.uttrykk;
 
-import ske.fastsetting.skatt.beregn.util.IdUtil;
+import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,8 +1,5 @@
 package ske.fastsetting.skatt.uttrykk;
 
-import ske.fastsetting.skatt.beregn.Uttrykk;
-import ske.fastsetting.skatt.beregn.UttrykkContext;
-
 import java.util.ArrayList;
 import java.util.List;
 

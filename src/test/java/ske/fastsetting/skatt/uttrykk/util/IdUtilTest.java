@@ -1,4 +1,4 @@
-package ske.fastsetting.skatt.beregn.util;
+package ske.fastsetting.skatt.uttrykk.util;
 
 import org.junit.Test;
 
