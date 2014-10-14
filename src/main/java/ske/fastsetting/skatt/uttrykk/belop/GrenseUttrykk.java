@@ -1,17 +1,14 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
+import ske.fastsetting.skatt.beregn.UttrykkContext;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.RegelUttrykk;
-import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
-import ske.fastsetting.skatt.uttrykk.RegelUtil;
 
-public class GrenseUttrykk extends RegelUttrykk<GrenseUttrykk> implements BelopUttrykk {
+public class GrenseUttrykk extends RegelUttrykk<GrenseUttrykk, Belop> implements BelopUttrykk {
 
     private final BelopUttrykk uttrykk;
     private BelopUttrykk minimum;
     private BelopUttrykk maksimum;
-
-    private Belop evaluertBelop = null;
 
     private GrenseUttrykk(BelopUttrykk uttrykk) {
         this.uttrykk = uttrykk;
@@ -32,56 +29,37 @@ public class GrenseUttrykk extends RegelUttrykk<GrenseUttrykk> implements BelopU
     }
 
     @Override
-    public Belop evaluer() {
-        if (null == evaluertBelop) {
-            Belop e = uttrykk.evaluer();
-            if (null != minimum) {
-                Belop min = minimum.evaluer();
-                if (e.erMindreEnn(min)) {
-                    e = min;
-                }
+    public Belop eval(UttrykkContext ctx) {
+        Belop e = ctx.eval(uttrykk);
+        if (null != minimum) {
+            Belop min = ctx.eval(minimum);
+            if (e.erMindreEnn(min)) {
+                e = min;
             }
-            if (null != maksimum) {
-                Belop max = maksimum.evaluer();
-                if (e.erStorreEnn(max) ) {
-                    e = max;
-                }
-            }
-            evaluertBelop = e;
         }
-        return evaluertBelop;
+        if (null != maksimum) {
+            Belop max = ctx.eval(maksimum);
+            if (e.erStorreEnn(max) ) {
+                e = max;
+            }
+        }
+        return e;
     }
 
     @Override
-    public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-        beskriver.skriv(evaluer() + " " + RegelUtil.formater(navn) + " fordi");
-        uttrykk.beskrivEvaluering(beskriver.rykkInn());
+    public String beskriv(UttrykkContext ctx) {
+        StringBuilder stringBuilder = new StringBuilder(ctx.beskriv(uttrykk));
         if (null == minimum && null == maksimum) {
-            beskriver.skriv("Advarsel: Uttrykket mangler øvre og/eller nedre grense");
+            stringBuilder.append(" Advarsel: Uttrykket mangler øvre og/eller nedre grense ");
         }
         if (null != minimum) {
-            beskriver.skriv("begrenset nedad til");
-            minimum.beskrivEvaluering(beskriver.rykkInn());
+            stringBuilder.append(" begrenset nedad til ");
+            ctx.beskriv(minimum);
         }
         if (null != maksimum) {
-            beskriver.skriv("begrenset oppad til");
-            maksimum.beskrivEvaluering(beskriver.rykkInn());
+            stringBuilder.append(" begrenset oppad til ");
+            ctx.beskriv(maksimum);
         }
-    }
-
-    @Override
-    public void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver) {
-        uttrykk.beskrivGenerisk(beskriver);
-        if (null == minimum && null == maksimum) {
-            beskriver.skriv("Advarsel: Uttrykket mangler øvre og/eller nedre grense");
-        }
-        if (null != minimum) {
-            beskriver.skriv("begrenset nedad til");
-            minimum.beskrivGenerisk(beskriver.rykkInn());
-        }
-        if (null != maksimum) {
-            beskriver.skriv("begrenset oppad til");
-            maksimum.beskrivGenerisk(beskriver.rykkInn());
-        }
+        return stringBuilder.toString();
     }
 }

@@ -1,8 +1,10 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import ske.fastsetting.skatt.beregn.Uttrykk;
+import ske.fastsetting.skatt.beregn.UttrykkContext;
 import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 
-public abstract class DiffUttrykk<V extends KalkulerbarVerdi<V>,T extends Uttrykk<V>,B> extends CachingRegelUttrykk<V,B>  {
+public abstract class DiffUttrykk<V extends KalkulerbarVerdi<V>,T extends Uttrykk<V>,B> extends RegelUttrykk<B,V>  {
     private final T ledd1;
     private final T ledd2;
 
@@ -12,26 +14,12 @@ public abstract class DiffUttrykk<V extends KalkulerbarVerdi<V>,T extends Uttryk
     }
 
     @Override
-    protected final V lagVerdi() {
-        return ledd1.evaluer().minus(ledd2.evaluer());
+    public V eval(UttrykkContext ctx) {
+        return ctx.eval(ledd1).minus(ctx.eval(ledd2));
     }
 
-
-    public final void beskrivEvaluering(UttrykkBeskriver beskriver) {
-        UttrykkBeskriver nyBeskriver =  beskriver.overskrift(evaluer() + RegelUtil.formater(navn));
-        nyBeskriver.skriv("differansen mellom");
-        ledd1.beskrivEvaluering(nyBeskriver);
-        nyBeskriver.skriv("og");
-        ledd2.beskrivEvaluering(nyBeskriver);
+    @Override
+    public String beskriv(UttrykkContext ctx) {
+        return "differansen mellom " + ctx.beskriv(ledd1) + " og " + ctx.beskriv(ledd2);
     }
-
-    protected final void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver) {
-        beskriver.skriv("differansen mellom");
-        ledd1.beskrivGenerisk(beskriver.rykkInn());
-        beskriver.skriv("og");
-        ledd2.beskrivGenerisk(beskriver.rykkInn());
-
-    }
-
-
 }

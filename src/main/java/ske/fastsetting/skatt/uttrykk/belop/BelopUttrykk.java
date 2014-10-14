@@ -1,13 +1,11 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
-
+import ske.fastsetting.skatt.beregn.UttrykkContext;
+import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.domene.Tall;
-import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
-import ske.fastsetting.skatt.uttrykk.RegelUtil;
 import ske.fastsetting.skatt.uttrykk.RegelUttrykk;
-import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
 import java.util.List;
@@ -44,7 +42,7 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
         return new BelopDividertMedBelopUttrykk(this, divident);
     }
 
-    static class BelopDividertMedBelopUttrykk extends RegelUttrykk<BelopDividertMedBelopUttrykk> implements TallUttrykk {
+    static class BelopDividertMedBelopUttrykk extends RegelUttrykk<BelopDividertMedBelopUttrykk, Tall> implements TallUttrykk {
         private final BelopUttrykk divisior;
         private final BelopUttrykk divident;
 
@@ -54,25 +52,13 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
         }
 
         @Override
-        public Tall evaluer() {
-//            return new Tall(Tall.TallUttrykkType.PROSENT,divisior.evaluer().dividertMed(divident.evaluer()));
-            return Tall.ukjent(divisior.evaluer().dividertMed(divident.evaluer())
-            );
+        public Tall eval(UttrykkContext ctx) {
+            return Tall.ukjent(ctx.eval(divisior).dividertMed(ctx.eval(divident)));
         }
 
         @Override
-        public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-            UttrykkBeskriver nyBeskriver = beskriver.overskrift(evaluer() + RegelUtil.formater(navn));
-            divisior.beskrivEvaluering(nyBeskriver);
-            nyBeskriver.skriv("dividert med");
-            divident.beskrivEvaluering(nyBeskriver);
-        }
-
-        @Override
-        protected void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver) {
-            divisior.beskrivGenerisk(beskriver.rykkInn());
-            beskriver.skriv("dividert med");
-            divident.beskrivGenerisk(beskriver.rykkInn());
+        public String beskriv(UttrykkContext ctx) {
+            return ctx.beskriv(divisior) + " dividert med " + ctx.beskriv(divident);
         }
     }
 

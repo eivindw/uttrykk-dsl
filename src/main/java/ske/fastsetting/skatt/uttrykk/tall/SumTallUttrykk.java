@@ -20,10 +20,4 @@ public class SumTallUttrykk extends SumUttrykk<Tall, TallUttrykk> implements Tal
     public static SumTallUttrykk sum(Collection<TallUttrykk> uttrykk) {
         return new SumTallUttrykk(uttrykk);
     }
-
-    @Override
-    protected Tall nullVerdi() {
-        return Tall.ZERO;
-    }
-
 }

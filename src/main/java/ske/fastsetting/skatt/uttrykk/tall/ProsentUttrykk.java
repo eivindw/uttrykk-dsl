@@ -1,11 +1,10 @@
 package ske.fastsetting.skatt.uttrykk.tall;
 
+import ske.fastsetting.skatt.beregn.UttrykkContext;
 import ske.fastsetting.skatt.domene.Tall;
-import ske.fastsetting.skatt.uttrykk.RegelUtil;
 import ske.fastsetting.skatt.uttrykk.RegelUttrykk;
-import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
 
-public class ProsentUttrykk extends RegelUttrykk<ProsentUttrykk> implements TallUttrykk {
+public class ProsentUttrykk extends RegelUttrykk<ProsentUttrykk, Tall> implements TallUttrykk {
 
     private final Tall verdi;
 
@@ -17,17 +16,13 @@ public class ProsentUttrykk extends RegelUttrykk<ProsentUttrykk> implements Tall
         return new ProsentUttrykk(Tall.prosent(prosent));
     }
 
-    public Tall evaluer() {
+    @Override
+    public Tall eval(UttrykkContext ctx) {
         return verdi;
     }
 
-
-    public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-       beskriver.skriv(verdi + RegelUtil.formater(navn));
-    }
-
     @Override
-    protected void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver) {
-        beskriver.skriv(verdi + RegelUtil.formater(navn));
+    public String beskriv(UttrykkContext ctx) {
+        return verdi.toString();
     }
 }

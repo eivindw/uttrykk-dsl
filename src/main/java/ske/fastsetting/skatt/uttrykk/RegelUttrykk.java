@@ -1,5 +1,6 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import ske.fastsetting.skatt.beregn.AbstractUttrykk;
 import ske.fastsetting.skatt.domene.Regel;
 
 import java.util.ArrayList;
@@ -8,8 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-
-public abstract class RegelUttrykk<B>  {
+public abstract class RegelUttrykk<B, C> extends AbstractUttrykk<C> {
 
     protected String navn;
     private Set<String> tags;
@@ -24,7 +24,7 @@ public abstract class RegelUttrykk<B>  {
     }
 
     public B tag(String tag) {
-        if(tags==null) {
+        if (tags == null) {
             tags = new HashSet<>();
         }
 
@@ -34,24 +34,25 @@ public abstract class RegelUttrykk<B>  {
     }
 
     public B medRegel(Regel... regel) {
-        if(regler==null) {
+        if (regler == null) {
             regler = new ArrayList<>();
         }
 
         Stream.of(regel).forEach(regler::add);
 
         return self;
-
     }
 
     public String getNavn() {
         return navn;
     }
 
-    public Set<String> getTags() { return tags; }
+    public Set<String> getTags() {
+        return tags;
+    }
 
     public List<Regel> getRegler() {
-        if(regler==null) {
+        if (regler == null) {
             regler = new ArrayList<>();
         }
 
@@ -59,23 +60,20 @@ public abstract class RegelUttrykk<B>  {
     }
 
     public final void beskrivGenerisk(UttrykkBeskriver beskriver) {
-        if(navn!=null && !navn.isEmpty()) {
+        if (navn != null && !navn.isEmpty()) {
             beskriver = beskriver.overskrift(navn);
         }
 
-        if(tags!=null) {
+        if (tags != null) {
             beskriver.tags(tags.toArray(new String[tags.size()]));
         }
 
-        if(regler!=null) {
+        if (regler != null) {
             beskriver.regler(regler.toArray(new Regel[regler.size()]));
         }
 
-        beskrivGeneriskMedRegel(beskriver);
+        //beskrivGeneriskMedRegel(beskriver);
     }
 
-    protected abstract void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver);
-
-
+    //protected abstract void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver);
 }
-

@@ -1,6 +1,8 @@
 package ske.fastsetting.skatt.uttrykk;
 
 import org.junit.Test;
+import ske.fastsetting.skatt.beregn.UttrykkContextImpl;
+import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk;
 
@@ -22,6 +24,6 @@ public class BasisTest {
 
       final BelopUttrykk trygdeavgift = sumLonn.multiplisertMed(satsTrygdeavgift);
 
-      assertEquals(8_200, trygdeavgift.evaluer().toInteger().intValue());
+      assertEquals(new Belop(8_200), UttrykkContextImpl.beregne(trygdeavgift).verdi());
    }
 }

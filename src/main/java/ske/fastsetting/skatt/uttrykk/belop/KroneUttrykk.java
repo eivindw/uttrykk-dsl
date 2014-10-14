@@ -1,13 +1,12 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
+import ske.fastsetting.skatt.beregn.UttrykkContext;
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
-import ske.fastsetting.skatt.uttrykk.RegelUtil;
 import ske.fastsetting.skatt.uttrykk.RegelUttrykk;
 
 import java.math.BigInteger;
 
-public class KroneUttrykk extends RegelUttrykk<KroneUttrykk> implements BelopUttrykk {
+public class KroneUttrykk extends RegelUttrykk<KroneUttrykk, Belop> implements BelopUttrykk {
 
     private final Belop kroner;
 
@@ -24,18 +23,12 @@ public class KroneUttrykk extends RegelUttrykk<KroneUttrykk> implements BelopUtt
     }
 
     @Override
-    public Belop evaluer() {
+    public Belop eval(UttrykkContext ctx) {
         return kroner;
     }
 
     @Override
-    public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-        beskriver.skriv(kroner.toString() + RegelUtil.formater(navn));
+    public String beskriv(UttrykkContext ctx) {
+        return kroner.toString();
     }
-
-    @Override
-    public void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver) {
-        beskriver.skriv(kroner.toString());
-    }
-
 }

@@ -20,10 +20,4 @@ public class BelopSumUttrykk extends SumUttrykk<Belop, BelopUttrykk> implements 
     public static BelopSumUttrykk sum(Collection<BelopUttrykk> uttrykk) {
         return new BelopSumUttrykk(uttrykk);
     }
-
-    @Override
-    protected Belop nullVerdi() {
-        return Belop.NULL;
-    }
-
 }

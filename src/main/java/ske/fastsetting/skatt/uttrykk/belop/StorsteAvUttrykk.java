@@ -1,16 +1,14 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
+import ske.fastsetting.skatt.beregn.UttrykkContext;
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.uttrykk.Uttrykk;
-import ske.fastsetting.skatt.uttrykk.RegelUtil;
 import ske.fastsetting.skatt.uttrykk.RegelUttrykk;
-import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
 
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class StorsteAvUttrykk extends RegelUttrykk<MinsteAvUttrykk> implements BelopUttrykk {
+public class StorsteAvUttrykk extends RegelUttrykk<MinsteAvUttrykk, Belop> implements BelopUttrykk {
     private final BelopUttrykk[] uttrykk;
-    private Belop evaluertBelop = null;
 
     private StorsteAvUttrykk(BelopUttrykk[] uttrykk) {
         this.uttrykk = uttrykk;
@@ -21,31 +19,16 @@ public class StorsteAvUttrykk extends RegelUttrykk<MinsteAvUttrykk> implements B
     }
 
     @Override
-    public Belop evaluer() {
-        if (evaluertBelop == null) {
-            evaluertBelop = Stream.of(uttrykk)
-                    .map(Uttrykk::evaluer)
-                    .max(Belop::sammenliknMed).get();
-        }
-        return evaluertBelop;
+    public Belop eval(UttrykkContext ctx) {
+        return Stream.of(uttrykk)
+            .map(ctx::eval)
+            .max(Belop::sammenliknMed).get();
     }
 
     @Override
-    public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-        final UttrykkBeskriver nyBeskriver = beskriver.overskrift(evaluer() + RegelUtil.formater(navn));
-
-        nyBeskriver.skriv("størst av:");
-
-        for (BelopUttrykk bu : uttrykk) {
-            bu.beskrivEvaluering(nyBeskriver);
-        }
-
-    }
-
-    @Override
-    public void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver) {
-        beskriver.skriv("største av");
-
-        Stream.of(uttrykk).forEach(bu -> bu.beskrivGenerisk(beskriver.rykkInn()));
+    public String beskriv(UttrykkContext ctx) {
+        return Stream.of(uttrykk)
+            .map(ctx::beskriv)
+            .collect(Collectors.joining(",", "største av(", ")"));
     }
 }

@@ -1,68 +1,43 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import ske.fastsetting.skatt.beregn.Uttrykk;
+import ske.fastsetting.skatt.beregn.UttrykkContext;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static ske.fastsetting.skatt.uttrykk.FeilUttrykk.feil;
 
-public abstract class HvisUttrykk<T, B extends HvisUttrykk<T, B>> extends RegelUttrykk<B> implements Uttrykk<T> {
+public abstract class HvisUttrykk<T, B extends HvisUttrykk<T, B>> extends RegelUttrykk<B, T> implements Uttrykk<T> {
     private Uttrykk<T> ellersBruk = feil("Hvis-uttrykk mangler en verdi for ellersBruk");
     protected List<BrukUttrykk<T, B>> brukHvis = new ArrayList<>();
 
     @SuppressWarnings("unchecked")
     private B self = (B) this;
 
-    private T evaluertVerdi = null;
-
-    public T evaluer() {
-        if (evaluertVerdi == null) {
-            evaluertVerdi = faktiskEvaluering();
-        }
-        return evaluertVerdi;
-    }
-
-    private T faktiskEvaluering() {
+    @Override
+    public T eval(UttrykkContext ctx) {
         for (BrukUttrykk<T, B> brukUttrykk : brukHvis) {
-            if (brukUttrykk.bolskUttrykk.evaluer()) {
-                return brukUttrykk.brukDa.evaluer();
+            if (ctx.eval(brukUttrykk.bolskUttrykk)) {
+                return ctx.eval(brukUttrykk.brukDa);
             }
         }
-        return ellersBruk.evaluer();
+        return ctx.eval(ellersBruk);
     }
 
     @Override
-    public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-        UttrykkBeskriver underbeskriver = beskriver.overskrift(evaluer() + RegelUtil.formater(navn));
-
-        underbeskriver.skriv("fordi");
-
-        Optional<BolskUttrykk> bolskUttrykk = brukHvis.stream().map(bh -> bh.bolskUttrykk).filter(Uttrykk::evaluer).findFirst();
-        if (bolskUttrykk.isPresent()) {
-            bolskUttrykk.get().beskrivEvaluering(underbeskriver);
-        } else {
-            brukHvis.forEach(bh -> bh.bolskUttrykk.beskrivEvaluering(underbeskriver));
-        }
-
-        underbeskriver.skriv("så brukes");
-        brukHvis.stream()
-                .filter(bh -> bh.bolskUttrykk.evaluer())
-                .map(bh -> bh.brukDa).findFirst().orElse(ellersBruk)
-                .beskrivEvaluering(underbeskriver);
-    }
-
-    @Override
-    public void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver) {
+    public String beskriv(UttrykkContext ctx) {
+        StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < brukHvis.size(); i++) {
-            beskriver.skriv(i == 0 ? "hvis" : "ellers hvis");
-            brukHvis.get(i).bolskUttrykk.beskrivGenerisk(beskriver.rykkInn());
-            beskriver.skriv("bruk da");
-            brukHvis.get(i).brukDa.beskrivGenerisk(beskriver.rykkInn());
+            stringBuilder.append(i == 0 ? "hvis " : " ellers hvis ");
+            stringBuilder.append(ctx.beskriv(brukHvis.get(i).bolskUttrykk));
+            stringBuilder.append(" bruk da ");
+            stringBuilder.append(ctx.beskriv(brukHvis.get(i).brukDa));
         }
 
-        beskriver.skriv("ellers bruk");
-        ellersBruk.beskrivGenerisk(beskriver.rykkInn());
+        stringBuilder.append(" ellers bruk ");
+        stringBuilder.append(ctx.beskriv(ellersBruk));
+        return stringBuilder.toString();
     }
 
     public B ellersBruk(Uttrykk<T> uttrykk) {
@@ -91,6 +66,5 @@ public abstract class HvisUttrykk<T, B extends HvisUttrykk<T, B>> extends RegelU
             this.brukDa = brukDa;
             return hvisUttrykk;
         }
-
     }
 }

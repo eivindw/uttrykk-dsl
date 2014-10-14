@@ -1,10 +1,13 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import ske.fastsetting.skatt.beregn.Uttrykk;
+import ske.fastsetting.skatt.beregn.UttrykkContext;
 import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
-public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttrykk<T>> extends RegelUttrykk<U> implements Uttrykk<T> {
+public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttrykk<T>> extends RegelUttrykk<U, T> implements Uttrykk<T> {
 
     private final Collection<U> uttrykk;
 
@@ -15,34 +18,20 @@ public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttryk
     }
 
     @Override
-    public final T evaluer() {
+    public T eval(UttrykkContext ctx) {
         if (evaluertVerdi == null) {
             evaluertVerdi = uttrykk.stream()
-                .map(Uttrykk::evaluer)
-                .reduce(nullVerdi(), this::pluss);
+                .map(ctx::eval)
+                .reduce((verdi1, verdi2) -> verdi1.pluss(verdi2))
+                .get();
         }
         return evaluertVerdi;
     }
 
     @Override
-    public final void beskrivEvaluering(UttrykkBeskriver beskriver) {
-        final String tekst = evaluer() + RegelUtil.formater(navn);
-        UttrykkBeskriver nyBeskriver = beskriver.overskrift(tekst);
-
-        nyBeskriver.skriv("summen av:");
-
-        uttrykk.forEach(u -> u.beskrivEvaluering(nyBeskriver));
-    }
-
-    @Override
-    public void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver) {
-        beskriver.skriv("summen av:");
-        uttrykk.forEach(u -> u.beskrivGenerisk(beskriver));
-    }
-
-    protected abstract T nullVerdi();
-
-    private T pluss(T ledd1, T ledd2) {
-        return ledd1.pluss(ledd2);
+    public String beskriv(UttrykkContext ctx) {
+        return uttrykk.stream()
+            .map(ctx::beskriv)
+            .collect(Collectors.joining(",", "sum(", ")"));
     }
 }

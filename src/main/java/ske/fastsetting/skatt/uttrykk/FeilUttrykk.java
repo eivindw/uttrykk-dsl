@@ -1,6 +1,9 @@
 package ske.fastsetting.skatt.uttrykk;
 
-public class FeilUttrykk<T> implements Uttrykk<T> {
+import ske.fastsetting.skatt.beregn.AbstractUttrykk;
+import ske.fastsetting.skatt.beregn.UttrykkContext;
+
+public class FeilUttrykk<T> extends AbstractUttrykk<T> {
     private String feilmelding;
 
     public FeilUttrykk(String feilmelding) {
@@ -12,17 +15,12 @@ public class FeilUttrykk<T> implements Uttrykk<T> {
     }
 
     @Override
-    public T evaluer() {
+    public T eval(UttrykkContext ctx) {
         throw new IllegalStateException(feilmelding);
     }
 
     @Override
-    public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-        beskriver.skriv(feilmelding);
-    }
-
-    @Override
-    public void beskrivGenerisk(UttrykkBeskriver beskriver) {
-        beskriver.skriv(feilmelding);
+    public String beskriv(UttrykkContext ctx) {
+        return feilmelding;
     }
 }

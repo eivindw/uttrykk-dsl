@@ -1,9 +1,11 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import ske.fastsetting.skatt.beregn.Uttrykk;
+import ske.fastsetting.skatt.beregn.UttrykkContext;
 import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
-public abstract class MultiplikasjonsUttrykk<V extends KalkulerbarVerdi<V>, T extends Uttrykk<V>, B>  extends CachingRegelUttrykk<V,B>  {
+public abstract class MultiplikasjonsUttrykk<V extends KalkulerbarVerdi<V>, T extends Uttrykk<V>, B>  extends RegelUttrykk<B, V>  {
     protected final T faktor1;
     protected final TallUttrykk faktor2;
 
@@ -13,21 +15,12 @@ public abstract class MultiplikasjonsUttrykk<V extends KalkulerbarVerdi<V>, T ex
     }
 
     @Override
-    protected final V lagVerdi() {
-        return faktor1.evaluer().multiplisertMed(faktor2.evaluer().toBigDecimal());
+    public V eval(UttrykkContext ctx) {
+        return ctx.eval(faktor1).multiplisertMed(ctx.eval(faktor2).toBigDecimal());
     }
 
-    public final void beskrivEvaluering(UttrykkBeskriver beskriver) {
-        UttrykkBeskriver nyBeskriver = beskriver.overskrift(evaluer() + RegelUtil.formater(navn));
-        faktor1.beskrivEvaluering(nyBeskriver);
-        nyBeskriver.skriv("multiplisert med");
-        faktor2.beskrivEvaluering(nyBeskriver);
-    }
-
-    public final void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver) {
-        beskriver.skriv("produktet av");
-        faktor1.beskrivGenerisk(beskriver.rykkInn());
-        beskriver.skriv("og");
-        faktor2.beskrivGenerisk(beskriver.rykkInn());
+    @Override
+    public String beskriv(UttrykkContext ctx) {
+        return ctx.beskriv(faktor1) + " * " + ctx.beskriv(faktor2);
     }
 }

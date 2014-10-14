@@ -1,5 +1,8 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import ske.fastsetting.skatt.beregn.Uttrykk;
+import ske.fastsetting.skatt.beregn.UttrykkContext;
+
 public interface BolskUttrykk extends Uttrykk<Boolean> {
     default BolskUttrykk og(BolskUttrykk uttrykk) {
         return new OgUttrykk(this, uttrykk);
@@ -9,40 +12,28 @@ public interface BolskUttrykk extends Uttrykk<Boolean> {
         return new EllerUttrykk(this, uttrykk);
     }
 
-    static class OgUttrykk extends RegelUttrykk<OgUttrykk> implements BolskUttrykk {
+    static class OgUttrykk extends RegelUttrykk<OgUttrykk, Boolean> implements BolskUttrykk {
 
         private final BolskUttrykk forsteUttrykk;
         private final BolskUttrykk andreUttrykk;
 
-
         public OgUttrykk(BolskUttrykk forsteUttrykk, BolskUttrykk andreUttrykk) {
-
             this.forsteUttrykk = forsteUttrykk;
             this.andreUttrykk = andreUttrykk;
         }
 
-
         @Override
-        public Boolean evaluer() {
-            return forsteUttrykk.evaluer() && andreUttrykk.evaluer();
+        public Boolean eval(UttrykkContext ctx) {
+            return ctx.eval(forsteUttrykk) && ctx.eval(andreUttrykk);
         }
 
         @Override
-        public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-            forsteUttrykk.beskrivEvaluering(beskriver);
-            beskriver.skriv("og");
-            andreUttrykk.beskrivEvaluering(beskriver);
-        }
-
-        @Override
-        public void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver) {
-            forsteUttrykk.beskrivGenerisk(beskriver);
-            beskriver.skriv("og");
-            andreUttrykk.beskrivGenerisk(beskriver);
+        public String beskriv(UttrykkContext ctx) {
+            return ctx.beskriv(forsteUttrykk) + " og " + ctx.beskriv(andreUttrykk);
         }
     }
 
-    static class EllerUttrykk extends RegelUttrykk<EllerUttrykk> implements BolskUttrykk {
+    static class EllerUttrykk extends RegelUttrykk<EllerUttrykk, Boolean> implements BolskUttrykk {
         private final BolskUttrykk forsteUttrykk;
         private final BolskUttrykk andreUttrykk;
 
@@ -52,28 +43,13 @@ public interface BolskUttrykk extends Uttrykk<Boolean> {
         }
 
         @Override
-        public Boolean evaluer() {
-            return forsteUttrykk.evaluer() || andreUttrykk.evaluer();
+        public Boolean eval(UttrykkContext ctx) {
+            return ctx.eval(forsteUttrykk) || ctx.eval(andreUttrykk);
         }
 
         @Override
-        public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-            if (forsteUttrykk.evaluer()) {
-                forsteUttrykk.beskrivEvaluering(beskriver);
-            } else if (andreUttrykk.evaluer()) {
-                andreUttrykk.beskrivEvaluering(beskriver);
-            } else {
-                forsteUttrykk.beskrivEvaluering(beskriver);
-                beskriver.skriv("og");
-                andreUttrykk.beskrivEvaluering(beskriver);
-            }
-        }
-
-        @Override
-        public void beskrivGeneriskMedRegel(UttrykkBeskriver beskriver) {
-            forsteUttrykk.beskrivGenerisk(beskriver);
-            beskriver.skriv("eller");
-            andreUttrykk.beskrivGenerisk(beskriver);
+        public String beskriv(UttrykkContext ctx) {
+            return ctx.beskriv(forsteUttrykk) + " eller " + ctx.beskriv(andreUttrykk);
         }
     }
 }

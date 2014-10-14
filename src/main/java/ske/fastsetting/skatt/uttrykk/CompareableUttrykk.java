@@ -1,5 +1,9 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import ske.fastsetting.skatt.beregn.AbstractUttrykk;
+import ske.fastsetting.skatt.beregn.Uttrykk;
+import ske.fastsetting.skatt.beregn.UttrykkContext;
+
 public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> {
 
     default BolskUttrykk erStorreEnn(CompareableUttrykk<T> belop) {
@@ -25,7 +29,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
     default BolskUttrykk erMindreEnn(CompareableUttrykk<T> belop) {
         return new ErMindreEnn(this, belop);
     }
-    static class ErStorreEnn<T extends Comparable<T>> implements BolskUttrykk {
+    static class ErStorreEnn<T extends Comparable<T>> extends AbstractUttrykk<Boolean> implements BolskUttrykk {
         private final CompareableUttrykk<T> belopUttrykk;
         private final CompareableUttrykk<T> sammenliknMed;
 
@@ -35,26 +39,17 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
 
         @Override
-        public Boolean evaluer() {
-            return belopUttrykk.evaluer().compareTo(sammenliknMed.evaluer())>0;
+        public Boolean eval(UttrykkContext ctx) {
+            return ctx.eval(belopUttrykk).compareTo(ctx.eval(sammenliknMed)) > 0;
         }
 
         @Override
-        public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-            belopUttrykk.beskrivEvaluering(beskriver);
-            beskriver.skriv(evaluer() ? "er større enn" : "ikke er større enn");
-            sammenliknMed.beskrivEvaluering(beskriver);
-        }
-
-        @Override
-        public void beskrivGenerisk(UttrykkBeskriver beskriver) {
-            belopUttrykk.beskrivGenerisk(beskriver);
-            beskriver.skriv("er større enn");
-            sammenliknMed.beskrivGenerisk(beskriver);
+        public String beskriv(UttrykkContext ctx) {
+            return ctx.beskriv(belopUttrykk) + " er større enn " + ctx.beskriv(sammenliknMed);
         }
     }
 
-    static class ErLik<T extends Comparable<T>> implements BolskUttrykk {
+    static class ErLik<T extends Comparable<T>> extends AbstractUttrykk<Boolean> implements BolskUttrykk {
         private final CompareableUttrykk<T> belopUttrykk1;
         private final CompareableUttrykk<T> belopUttrykk2;
 
@@ -64,29 +59,17 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
 
         @Override
-        public Boolean evaluer() {
-            return belopUttrykk1.evaluer().compareTo(belopUttrykk2.evaluer())==0;
+        public Boolean eval(UttrykkContext ctx) {
+            return ctx.eval(belopUttrykk1).compareTo(ctx.eval(belopUttrykk2)) == 0;
         }
 
         @Override
-        public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-            belopUttrykk1.beskrivEvaluering(beskriver);
-            beskriver.skriv(evaluer() ? "er lik" : "ikke er lik");
-            belopUttrykk2.beskrivEvaluering(beskriver);
-
+        public String beskriv(UttrykkContext ctx) {
+            return ctx.beskriv(belopUttrykk1) + " er lik " + ctx.beskriv(belopUttrykk2);
         }
-
-        @Override
-        public void beskrivGenerisk(UttrykkBeskriver beskriver) {
-            belopUttrykk1.beskrivGenerisk(beskriver);
-            beskriver.skriv("er lik");
-            belopUttrykk2.beskrivGenerisk(beskriver);
-
-        }
-
     }
 
-    static class IkkeErLik<T extends Comparable<T>> implements BolskUttrykk {
+    static class IkkeErLik<T extends Comparable<T>> extends AbstractUttrykk<Boolean> implements BolskUttrykk {
         private final CompareableUttrykk<T> belopUttrykk1;
         private final CompareableUttrykk<T> belopUttrykk2;
 
@@ -96,28 +79,17 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
 
         @Override
-        public Boolean evaluer() {
-            return belopUttrykk1.evaluer().compareTo(belopUttrykk2.evaluer())!=0;
+        public Boolean eval(UttrykkContext ctx) {
+            return ctx.eval(belopUttrykk1).compareTo(ctx.eval(belopUttrykk2)) != 0;
         }
 
         @Override
-        public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-            belopUttrykk1.beskrivEvaluering(beskriver);
-            beskriver.skriv(evaluer() ? "ikke er lik" : "er lik");
-            belopUttrykk2.beskrivEvaluering(beskriver);
-
-        }
-        @Override
-
-        public void beskrivGenerisk(UttrykkBeskriver beskriver) {
-            belopUttrykk1.beskrivGenerisk(beskriver);
-            beskriver.skriv("ikke er lik");
-            belopUttrykk2.beskrivGenerisk(beskriver);
-
+        public String beskriv(UttrykkContext ctx) {
+            return ctx.beskriv(belopUttrykk1) + " ikke er lik " + ctx.beskriv(belopUttrykk2);
         }
     }
 
-    static class ErMellom<T extends Comparable<T>> implements BolskUttrykk {
+    static class ErMellom<T extends Comparable<T>> extends AbstractUttrykk<Boolean> implements BolskUttrykk {
         private final CompareableUttrykk<T> belopUttrykk;
         private final CompareableUttrykk<T> fraBelopUttrykk;
         private final CompareableUttrykk<T> tilBelopUttrykk;
@@ -129,37 +101,22 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
 
         @Override
-        public Boolean evaluer() {
-            T belop = belopUttrykk.evaluer();
-            T fra = fraBelopUttrykk.evaluer();
-            T til = tilBelopUttrykk.evaluer();
+        public Boolean eval(UttrykkContext ctx) {
+            T belop = ctx.eval(belopUttrykk);
+            T fra = ctx.eval(fraBelopUttrykk);
+            T til = ctx.eval(tilBelopUttrykk);
 
             return belop.compareTo(fra)>0 && belop.compareTo(til)<0;
         }
 
         @Override
-        public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-            belopUttrykk.beskrivEvaluering(beskriver);
-            beskriver.skriv(evaluer() ? "er mellom" : "er ikke mellom");
-            fraBelopUttrykk.beskrivEvaluering(beskriver);
-            beskriver.skriv("og");
-            tilBelopUttrykk.beskrivEvaluering(beskriver);
-
+        public String beskriv(UttrykkContext ctx) {
+            return String.format("%s er mellom %s og %s",
+                ctx.beskriv(belopUttrykk), ctx.beskriv(fraBelopUttrykk), ctx.beskriv(tilBelopUttrykk));
         }
-
-        @Override
-        public void beskrivGenerisk(UttrykkBeskriver beskriver) {
-            belopUttrykk.beskrivGenerisk(beskriver);
-            beskriver.skriv("er mellom");
-            fraBelopUttrykk.beskrivGenerisk(beskriver);
-            beskriver.skriv("og");
-            tilBelopUttrykk.beskrivGenerisk(beskriver);
-
-        }
-
     }
 
-    static class ErMindreEnnEllerLik<T extends Comparable<T>> implements BolskUttrykk {
+    static class ErMindreEnnEllerLik<T extends Comparable<T>> extends AbstractUttrykk<Boolean> implements BolskUttrykk {
         private final CompareableUttrykk<T> belopUttrykk;
         private final CompareableUttrykk<T> sammenliknMed;
 
@@ -169,27 +126,17 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
 
         @Override
-        public Boolean evaluer() {
-            return belopUttrykk.evaluer().compareTo(sammenliknMed.evaluer())<=0;
+        public Boolean eval(UttrykkContext ctx) {
+            return ctx.eval(belopUttrykk).compareTo(ctx.eval(sammenliknMed)) <= 0;
         }
 
         @Override
-        public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-            belopUttrykk.beskrivEvaluering(beskriver);
-            beskriver.skriv(evaluer() ? "er mindre enn eller lik" : "er større enn");
-            sammenliknMed.beskrivEvaluering(beskriver);
+        public String beskriv(UttrykkContext ctx) {
+            return ctx.beskriv(belopUttrykk) + " er mindre enn eller lik " + ctx.beskriv(sammenliknMed);
         }
-
-        @Override
-        public void beskrivGenerisk(UttrykkBeskriver beskriver) {
-            belopUttrykk.beskrivGenerisk(beskriver);
-            beskriver.skriv("er mindre enn eller lik");
-            sammenliknMed.beskrivGenerisk(beskriver);
-        }
-
     }
 
-    static class ErMindreEnn<T extends Comparable<T>> implements BolskUttrykk {
+    static class ErMindreEnn<T extends Comparable<T>> extends AbstractUttrykk<Boolean> implements BolskUttrykk {
         private final CompareableUttrykk<T> belopUttrykk;
         private final CompareableUttrykk<T> sammenliknMed;
 
@@ -199,23 +146,13 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
 
         @Override
-        public Boolean evaluer() {
-            return belopUttrykk.evaluer().compareTo(sammenliknMed.evaluer())<0;
+        public Boolean eval(UttrykkContext ctx) {
+            return ctx.eval(belopUttrykk).compareTo(ctx.eval(sammenliknMed)) < 0;
         }
 
         @Override
-        public void beskrivEvaluering(UttrykkBeskriver beskriver) {
-            belopUttrykk.beskrivEvaluering(beskriver);
-            beskriver.skriv(evaluer() ? "er mindre enn eller lik" : "er større enn");
-            sammenliknMed.beskrivEvaluering(beskriver);
+        public String beskriv(UttrykkContext ctx) {
+            return ctx.beskriv(belopUttrykk) + " er mindre enn eller lik " + ctx.beskriv(sammenliknMed);
         }
-
-        @Override
-        public void beskrivGenerisk(UttrykkBeskriver beskriver) {
-            belopUttrykk.beskrivGenerisk(beskriver);
-            beskriver.skriv("er mindre enn eller lik");
-            sammenliknMed.beskrivGenerisk(beskriver);
-        }
-
     }
 }
