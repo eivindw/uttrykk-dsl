@@ -2,6 +2,7 @@ package ske.fastsetting.skatt.beregn;
 
 import org.junit.Test;
 import ske.fastsetting.skatt.beregn.util.IdUtil;
+import ske.fastsetting.skatt.domene.Belop;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -19,17 +20,17 @@ public class UttrykkTest {
 
     @Test
     public void tallUttrykk() {
-        Uttrykk<Integer> en = kr(1);
+        Uttrykk<Belop> en = kr(1);
 
-        assertEquals(Integer.valueOf(1), en.eval(null));
+        assertEquals(new Belop(1), en.eval(null));
     }
 
     @Test
     public void prosentUttrykk() {
-        Uttrykk<Integer> ti = mult(kr(100), prosent(10));
-        Uttrykk<Integer> tjue = sum(ti, ti);
+        MultiplikasjonsUttrykk ti = mult(kr(100), prosent(10));
+        SumUttrykk tjue = sum(ti, ti);
 
-        assertEquals(Integer.valueOf(20), beregne(tjue).verdi());
+        assertEquals(new Belop(20), beregne(tjue).verdi());
 
         print(beregne(tjue));
         System.out.println("\n###");
@@ -40,17 +41,17 @@ public class UttrykkTest {
 
     @Test
     public void boolskUttrykk() {
-        Uttrykk<?> svar = hvis(new BoolskUttrykk(true))
+        Uttrykk svar = hvis(new BoolskUttrykk(true))
             .saa(kr(10))
             .ellers(kr(20));
 
-        assertEquals(10, beregne(svar).verdi());
+        assertEquals(new Belop(10), beregne(svar).verdi());
     }
 
     @Test
     public void sumUttrykk() {
-        Uttrykk<Integer> lonn = kr(6).navn("lønn");
-        Uttrykk<Integer> sum = sum(
+        Uttrykk<Belop> lonn = kr(6).navn("lønn");
+        Uttrykk sum = sum(
             kr(2).navn("utbytte"),
             sum(
                 lonn,
@@ -63,9 +64,9 @@ public class UttrykkTest {
             ).navn("superskatt")
         ).navn("skatt");
 
-        UttrykkResultat<Integer> ctx = beregneOgBeskrive(sum);
+        UttrykkResultat ctx = beregneOgBeskrive(sum);
 
-        assertEquals(Integer.valueOf(17), ctx.verdi());
+        assertEquals(new Belop(17), ctx.verdi());
 
         print(beregneOgBeskrive(sum));
     }

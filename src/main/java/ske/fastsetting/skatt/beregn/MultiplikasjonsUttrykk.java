@@ -1,18 +1,22 @@
 package ske.fastsetting.skatt.beregn;
 
-public class MultiplikasjonsUttrykk extends AbstractUttrykk<Integer> {
+import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
+import ske.fastsetting.skatt.domene.Tall;
 
-    private final Uttrykk<Integer> uttrykk1;
-    private final Uttrykk<Double> uttrykk2;
+public class MultiplikasjonsUttrykk<T extends KalkulerbarVerdi<T>> extends AbstractUttrykk<T> {
 
-    public MultiplikasjonsUttrykk(Uttrykk<Integer> uttrykk1, Uttrykk<Double> uttrykk2) {
+    private final Uttrykk<T> uttrykk1;
+    private final Uttrykk<Tall> uttrykk2;
+
+    public MultiplikasjonsUttrykk(Uttrykk<T> uttrykk1, Uttrykk<Tall> uttrykk2) {
         this.uttrykk1 = uttrykk1;
         this.uttrykk2 = uttrykk2;
     }
 
     @Override
-    public Integer eval(UttrykkContext ctx) {
-        return (int)((int)ctx.eval(uttrykk1) * (double)ctx.eval(uttrykk2));
+    public T eval(UttrykkContext ctx) {
+        return uttrykk1.eval(ctx).multiplisertMed(uttrykk2.eval(ctx).toBigDecimal());
+        //return (int)((int)ctx.eval(uttrykk1) * (double)ctx.eval(uttrykk2));
     }
 
     @Override
@@ -20,7 +24,9 @@ public class MultiplikasjonsUttrykk extends AbstractUttrykk<Integer> {
         return ctx.beskriv(uttrykk1) + " * " + ctx.beskriv(uttrykk2);
     }
 
-    public static MultiplikasjonsUttrykk mult(Uttrykk<Integer> uttrykk1, Uttrykk<Double> uttrykk2) {
-        return new MultiplikasjonsUttrykk(uttrykk1, uttrykk2);
+    public static <T extends KalkulerbarVerdi<T>> MultiplikasjonsUttrykk mult(
+        Uttrykk<T> uttrykk1, Uttrykk<Tall> uttrykk2
+    ) {
+        return new MultiplikasjonsUttrykk<>(uttrykk1, uttrykk2);
     }
 }

@@ -1,15 +1,17 @@
 package ske.fastsetting.skatt.beregn;
 
-public class KrUttrykk extends AbstractUttrykk<Integer> {
+import ske.fastsetting.skatt.domene.Belop;
 
-    private final Integer tall;
+public class KrUttrykk extends AbstractUttrykk<Belop> {
 
-    public KrUttrykk(Integer tall) {
+    private final Belop tall;
+
+    public KrUttrykk(Belop tall) {
         this.tall = tall;
     }
 
     @Override
-    public Integer eval(UttrykkContext ctx) {
+    public Belop eval(UttrykkContext ctx) {
         return tall;
     }
 
@@ -18,7 +20,7 @@ public class KrUttrykk extends AbstractUttrykk<Integer> {
         return tall + " kr";
     }
 
-    public static KrUttrykk kr(Integer tall) {
-        return new KrUttrykk(tall);
+    public static KrUttrykk kr(int tall) {
+        return new KrUttrykk(new Belop(tall));
     }
 }

@@ -1,21 +1,24 @@
 package ske.fastsetting.skatt.beregn;
 
+import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
+
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SumUttrykk extends AbstractUttrykk<Integer> {
-    private final Uttrykk<Integer>[] uttrykk;
+public class SumUttrykk<T extends KalkulerbarVerdi<T>> extends AbstractUttrykk<T> {
+    private final Uttrykk<T>[] uttrykk;
 
     @SafeVarargs
-    public SumUttrykk(Uttrykk<Integer>... uttrykk) {
+    public SumUttrykk(Uttrykk<T>... uttrykk) {
         this.uttrykk = uttrykk;
     }
 
     @Override
-    public Integer eval(UttrykkContext ctx) {
+    public T eval(UttrykkContext ctx) {
         return Stream.of(uttrykk)
-            .mapToInt(u -> (int) ctx.eval(u))
-            .sum();
+            .map(ctx::eval)
+            .reduce((verdi1, verdi2) -> verdi1.pluss(verdi2))
+            .get();
     }
 
     @Override
@@ -26,7 +29,7 @@ public class SumUttrykk extends AbstractUttrykk<Integer> {
     }
 
     @SafeVarargs
-    public static SumUttrykk sum(Uttrykk<Integer>... uttrykk) {
-        return new SumUttrykk(uttrykk);
+    public static <T extends KalkulerbarVerdi<T>> SumUttrykk sum(Uttrykk<T>... uttrykk) {
+        return new SumUttrykk<>(uttrykk);
     }
 }

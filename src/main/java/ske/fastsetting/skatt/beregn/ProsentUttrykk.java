@@ -1,16 +1,18 @@
 package ske.fastsetting.skatt.beregn;
 
-public class ProsentUttrykk extends AbstractUttrykk<Double> {
+import ske.fastsetting.skatt.domene.Tall;
 
-    private final int prosent;
+public class ProsentUttrykk extends AbstractUttrykk<Tall> {
 
-    public ProsentUttrykk(int prosent) {
+    private final Tall prosent;
+
+    public ProsentUttrykk(Tall prosent) {
         this.prosent = prosent;
     }
 
     @Override
-    public Double eval(UttrykkContext ctx) {
-        return (double) prosent / 100;
+    public Tall eval(UttrykkContext ctx) {
+        return prosent;
     }
 
     @Override
@@ -18,7 +20,7 @@ public class ProsentUttrykk extends AbstractUttrykk<Double> {
         return prosent + "%";
     }
 
-    public static ProsentUttrykk prosent(int prosent) {
-        return new ProsentUttrykk(prosent);
+    public static ProsentUttrykk prosent(double prosent) {
+        return new ProsentUttrykk(Tall.prosent(prosent));
     }
 }

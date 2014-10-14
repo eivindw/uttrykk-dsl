@@ -4,27 +4,25 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
-
-public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop>  {
+public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
     public static final Belop NULL = new Belop(0);
     private final Integer belop;
-
 
     public Belop(int belop) {
         this.belop = belop;
     }
 
     public String toString() {
-        return "kr "+belop;
+        return "kr " + belop;
     }
 
     public Belop pluss(Belop ledd) {
-        return new Belop(ledd !=null? this.belop+ ledd.belop : this.belop);
+        return new Belop(ledd != null ? this.belop + ledd.belop : this.belop);
     }
 
     public Belop minus(Belop ledd) {
-        return new Belop(this.belop- ledd.belop);
+        return new Belop(this.belop - ledd.belop);
     }
 
     public int sammenliknMed(Belop verdi) {
@@ -37,7 +35,7 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop>  {
 
     public Belop dividertMed(BigDecimal ledd) {
         MathContext kontekst = new MathContext(6, RoundingMode.HALF_UP);
-        return new Belop(BigDecimal.valueOf(belop).divide(ledd,kontekst).intValue());
+        return new Belop(BigDecimal.valueOf(belop).divide(ledd, kontekst).intValue());
     }
 
     public Integer toInteger() {
@@ -46,7 +44,7 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop>  {
 
     public BigDecimal dividertMed(Belop divident) {
         MathContext kontekst = new MathContext(6, RoundingMode.HALF_UP);
-        return BigDecimal.valueOf(this.belop).divide(BigDecimal.valueOf(divident.belop),kontekst);
+        return BigDecimal.valueOf(this.belop).divide(BigDecimal.valueOf(divident.belop), kontekst);
     }
 
     @Override
@@ -55,13 +53,26 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop>  {
     }
 
     public boolean erMindreEnn(Belop v) {
-        // TODO Hiv exception dersom v er null
         return this.compareTo(v) < 0;
     }
 
     public boolean erStorreEnn(Belop v) {
-        // TODO Hiv exception dersom v er null
         return this.compareTo(v) > 0;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Belop belop1 = (Belop) o;
+
+        return belop.equals(belop1.belop);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return belop.hashCode();
+    }
 }

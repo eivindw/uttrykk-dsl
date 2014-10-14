@@ -12,19 +12,19 @@ public class UttrykkContextImpl<T> implements UttrykkResultat<T>, UttrykkContext
 
     private int nesteId = 1;
 
-    public static <T> UttrykkResultat<T> beregne(Uttrykk<T> uttrykk) {
+    public static UttrykkResultat beregne(Uttrykk<?> uttrykk) {
         return new UttrykkContextImpl<>(uttrykk, true, false);
     }
 
-    public static <T> UttrykkResultat<T> beskrive(Uttrykk<T> uttrykk) {
+    public static UttrykkResultat beskrive(Uttrykk<?> uttrykk) {
         return new UttrykkContextImpl<>(uttrykk, false, true);
     }
 
-    public static <T> UttrykkResultat<T> beregneOgBeskrive(Uttrykk<T> uttrykk) {
+    public static UttrykkResultat beregneOgBeskrive(Uttrykk<?> uttrykk) {
         return new UttrykkContextImpl<>(uttrykk, true, true);
     }
 
-    private UttrykkContextImpl(Uttrykk<T> uttrykk, boolean eval, boolean beskriv) {
+    private UttrykkContextImpl(Uttrykk<?> uttrykk, boolean eval, boolean beskriv) {
         this.start = uttrykk.id(this);
 
         if (beskriv) {
