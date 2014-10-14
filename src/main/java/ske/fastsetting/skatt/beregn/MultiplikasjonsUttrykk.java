@@ -16,7 +16,6 @@ public class MultiplikasjonsUttrykk<T extends KalkulerbarVerdi<T>> extends Abstr
     @Override
     public T eval(UttrykkContext ctx) {
         return uttrykk1.eval(ctx).multiplisertMed(uttrykk2.eval(ctx).toBigDecimal());
-        //return (int)((int)ctx.eval(uttrykk1) * (double)ctx.eval(uttrykk2));
     }
 
     @Override
