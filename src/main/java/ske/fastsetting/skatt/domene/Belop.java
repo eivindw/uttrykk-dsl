@@ -1,50 +1,53 @@
 package ske.fastsetting.skatt.domene;
 
+import org.javamoney.moneta.Money;
+
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 
 public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
     public static final Belop NULL = new Belop(0);
-    private final Integer belop;
+
+    private final Money belop;
 
     public Belop(int belop) {
+        this(Money.of(belop, "NOK"));
+    }
+
+    public Belop(Money belop) {
         this.belop = belop;
     }
 
     public String toString() {
-        return "kr " + belop;
+        return "kr " + belop.getNumberStripped().toPlainString();
     }
 
     public Belop pluss(Belop ledd) {
-        return new Belop(ledd != null ? this.belop + ledd.belop : this.belop);
+        return ledd != null ? new Belop(this.belop.add(ledd.belop)) : this;
     }
 
     public Belop minus(Belop ledd) {
-        return new Belop(this.belop - ledd.belop);
+        return new Belop(this.belop.subtract(ledd.belop));
     }
 
     public int sammenliknMed(Belop verdi) {
-        return belop.compareTo(verdi.belop);
+        return compareTo(verdi);
     }
 
     public Belop multiplisertMed(BigDecimal ledd) {
-        return new Belop(ledd.multiply(BigDecimal.valueOf(belop)).intValue());
+        return new Belop(belop.multiply(ledd));
     }
 
     public Belop dividertMed(BigDecimal ledd) {
-        MathContext kontekst = new MathContext(6, RoundingMode.HALF_UP);
-        return new Belop(BigDecimal.valueOf(belop).divide(ledd, kontekst).intValue());
+        return new Belop(belop.divide(ledd));
     }
 
     public Integer toInteger() {
-        return this.belop;
+        return this.belop.getNumber().intValueExact();
     }
 
     public BigDecimal dividertMed(Belop divident) {
-        MathContext kontekst = new MathContext(6, RoundingMode.HALF_UP);
-        return BigDecimal.valueOf(this.belop).divide(BigDecimal.valueOf(divident.belop), kontekst);
+        return belop.divide(divident.belop.getNumber()).getNumberStripped();
     }
 
     @Override
@@ -68,7 +71,6 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
         Belop belop1 = (Belop) o;
 
         return belop.equals(belop1.belop);
-
     }
 
     @Override

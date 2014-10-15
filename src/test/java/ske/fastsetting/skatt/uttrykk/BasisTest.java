@@ -22,7 +22,7 @@ public class BasisTest {
                 kr(40_000).navn("Bonus")
         ).navn("Sum lønn");
 
-        final BelopUttrykk trygdeavgift = sumLonn.multiplisertMed(satsTrygdeavgift);
+        final BelopUttrykk<?> trygdeavgift = sumLonn.multiplisertMed(satsTrygdeavgift);
 
         final UttrykkResultat<Belop> resultat = UttrykkContextImpl.beregneOgBeskrive(trygdeavgift);
 
