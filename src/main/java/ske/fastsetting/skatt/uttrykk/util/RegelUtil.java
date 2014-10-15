@@ -1,4 +1,4 @@
-package ske.fastsetting.skatt.uttrykk;
+package ske.fastsetting.skatt.uttrykk.util;
 
 public final class RegelUtil {
     private RegelUtil() {}

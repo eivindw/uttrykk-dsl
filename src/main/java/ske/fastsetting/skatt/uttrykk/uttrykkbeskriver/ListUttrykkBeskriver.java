@@ -1,7 +1,6 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
 
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
-import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,12 +2,12 @@ package ske.fastsetting.skatt.uttrykk.belop;
 
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.uttrykk.RegelUttrykk;
+import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MinsteAvUttrykk extends RegelUttrykk<MinsteAvUttrykk, Belop> implements BelopUttrykk {
+public class MinsteAvUttrykk extends AbstractUttrykk<Belop, MinsteAvUttrykk> implements BelopUttrykk {
     private final BelopUttrykk[] uttrykk;
 
     private MinsteAvUttrykk(BelopUttrykk[] uttrykk) {

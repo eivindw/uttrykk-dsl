@@ -9,7 +9,7 @@ public interface BolskUttrykk extends Uttrykk<Boolean> {
         return new EllerUttrykk(this, uttrykk);
     }
 
-    static class OgUttrykk extends RegelUttrykk<OgUttrykk, Boolean> implements BolskUttrykk {
+    static class OgUttrykk extends AbstractUttrykk<Boolean, OgUttrykk> implements BolskUttrykk {
 
         private final BolskUttrykk forsteUttrykk;
         private final BolskUttrykk andreUttrykk;
@@ -30,7 +30,7 @@ public interface BolskUttrykk extends Uttrykk<Boolean> {
         }
     }
 
-    static class EllerUttrykk extends RegelUttrykk<EllerUttrykk, Boolean> implements BolskUttrykk {
+    static class EllerUttrykk extends AbstractUttrykk<Boolean, EllerUttrykk> implements BolskUttrykk {
         private final BolskUttrykk forsteUttrykk;
         private final BolskUttrykk andreUttrykk;
 

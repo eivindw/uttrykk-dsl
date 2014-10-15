@@ -5,7 +5,7 @@ import java.util.List;
 
 import static ske.fastsetting.skatt.uttrykk.FeilUttrykk.feil;
 
-public abstract class HvisUttrykk<T, B extends HvisUttrykk<T, B>> extends RegelUttrykk<B, T> implements Uttrykk<T> {
+public abstract class HvisUttrykk<T, B extends HvisUttrykk<T, B>> extends AbstractUttrykk<T, B> implements Uttrykk<T> {
     private Uttrykk<T> ellersBruk = feil("Hvis-uttrykk mangler en verdi for ellersBruk");
     protected List<BrukUttrykk<T, B>> brukHvis = new ArrayList<>();
 

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class UttrykkContextImpl<T> implements UttrykkResultat<T>, UttrykkContext {
+public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext {
 
     private final Map<String, Map> uttrykksmap = new HashMap<>();
     private final String start;
@@ -23,7 +23,7 @@ public class UttrykkContextImpl<T> implements UttrykkResultat<T>, UttrykkContext
         return new UttrykkContextImpl<>(uttrykk, true, true);
     }
 
-    private UttrykkContextImpl(Uttrykk<T> uttrykk, boolean eval, boolean beskriv) {
+    private UttrykkContextImpl(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
         this.start = uttrykk.id(this);
 
         if (eval) {
@@ -41,8 +41,8 @@ public class UttrykkContextImpl<T> implements UttrykkResultat<T>, UttrykkContext
     }
 
     @Override
-    public T verdi() {
-        return (T) uttrykksmap.get(start).get(KEY_VERDI);
+    public V verdi() {
+        return (V) uttrykksmap.get(start).get(KEY_VERDI);
     }
 
     @Override

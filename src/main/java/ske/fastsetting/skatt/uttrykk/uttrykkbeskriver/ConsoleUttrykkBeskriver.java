@@ -2,7 +2,6 @@ package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
 
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 import ske.fastsetting.skatt.uttrykk.util.IdUtil;
-import ske.fastsetting.skatt.uttrykk.UttrykkBeskriver;
 
 import java.util.HashSet;
 import java.util.Map;

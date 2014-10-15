@@ -2,7 +2,7 @@ package ske.fastsetting.skatt.uttrykk;
 
 import java.util.Map;
 
-public interface UttrykkResultat<T> {
+public interface UttrykkResultat<V> {
 
     final String KEY_NAVN = "navn";
     final String KEY_VERDI = "verdi";
@@ -10,7 +10,7 @@ public interface UttrykkResultat<T> {
 
     Map<String, Map> uttrykk();
 
-    T verdi();
+    V verdi();
 
     String start();
 }

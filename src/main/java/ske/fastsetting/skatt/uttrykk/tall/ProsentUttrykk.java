@@ -1,10 +1,10 @@
 package ske.fastsetting.skatt.uttrykk.tall;
 
-import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.domene.Tall;
-import ske.fastsetting.skatt.uttrykk.RegelUttrykk;
+import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
+import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class ProsentUttrykk extends RegelUttrykk<ProsentUttrykk, Tall> implements TallUttrykk {
+public class ProsentUttrykk extends AbstractUttrykk<Tall, ProsentUttrykk> implements TallUttrykk {
 
     private final Tall verdi;
 

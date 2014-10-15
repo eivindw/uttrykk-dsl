@@ -15,12 +15,12 @@ public class BasisTest {
 
     @Test
     public void prosentUttrykk() {
-        final ProsentUttrykk satsTrygdeavgift = prosent(8.2).medNavn("Sats trygdeavgift");
+        final ProsentUttrykk satsTrygdeavgift = prosent(8.2).navn("Sats trygdeavgift");
 
         final BelopUttrykk sumLonn = sum(
-                kr(60_000).medNavn("Lønn"),
-                kr(40_000).medNavn("Bonus")
-        ).medNavn("Sum lønn");
+                kr(60_000).navn("Lønn"),
+                kr(40_000).navn("Bonus")
+        ).navn("Sum lønn");
 
         final BelopUttrykk trygdeavgift = sumLonn.multiplisertMed(satsTrygdeavgift);
 

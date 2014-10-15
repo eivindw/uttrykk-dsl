@@ -3,7 +3,7 @@ package ske.fastsetting.skatt.uttrykk;
 import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
-public abstract class DivisjonsUttrykk<V extends KalkulerbarVerdi<V>, T extends Uttrykk<V>, B> extends RegelUttrykk<B, V>  {
+public abstract class DivisjonsUttrykk<V extends KalkulerbarVerdi<V>, T extends Uttrykk<V>, B> extends AbstractUttrykk<V, B>  {
     protected final T divident;
     protected final TallUttrykk divisor;
 

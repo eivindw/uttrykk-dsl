@@ -2,11 +2,11 @@ package ske.fastsetting.skatt.uttrykk.belop;
 
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.uttrykk.RegelUttrykk;
+import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 
 import java.math.BigInteger;
 
-public class KroneUttrykk extends RegelUttrykk<KroneUttrykk, Belop> implements BelopUttrykk {
+public class KroneUttrykk extends AbstractUttrykk<Belop, KroneUttrykk> implements BelopUttrykk {
 
     private final Belop kroner;
 

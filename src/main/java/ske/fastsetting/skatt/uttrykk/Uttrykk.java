@@ -1,12 +1,21 @@
 package ske.fastsetting.skatt.uttrykk;
 
-public interface Uttrykk<T> {
+import ske.fastsetting.skatt.domene.Regel;
 
-    T eval(UttrykkContext ctx);
+import java.util.List;
+import java.util.Set;
+
+public interface Uttrykk<V> {
+
+    V eval(UttrykkContext ctx);
 
     String beskriv(UttrykkContext ctx);
 
     String navn();
+
+    Set<String> tags();
+
+    List<Regel> regler();
 
     String id(UttrykkContext ctx);
 }

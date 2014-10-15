@@ -1,24 +1,13 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
-import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.domene.Tall;
+import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
-import ske.fastsetting.skatt.uttrykk.RegelUttrykk;
+import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
-import java.util.List;
-
 public interface BelopUttrykk extends CompareableUttrykk<Belop> {
-
-    BelopUttrykk medNavn(String navn);
-
-    BelopUttrykk medRegel(Regel... regel);
-
-    String getNavn();
-
-    List<Regel> getRegler();
 
     default BelopUttrykk multiplisertMed(TallUttrykk verdi) {
         return new BelopMultiplikasjonsUttrykk(this, verdi);
@@ -42,7 +31,7 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
         return new BelopDividertMedBelopUttrykk(this, divident);
     }
 
-    static class BelopDividertMedBelopUttrykk extends RegelUttrykk<BelopDividertMedBelopUttrykk, Tall> implements TallUttrykk {
+    static class BelopDividertMedBelopUttrykk extends AbstractUttrykk<Tall, BelopDividertMedBelopUttrykk> implements TallUttrykk {
         private final BelopUttrykk divisior;
         private final BelopUttrykk divident;
 

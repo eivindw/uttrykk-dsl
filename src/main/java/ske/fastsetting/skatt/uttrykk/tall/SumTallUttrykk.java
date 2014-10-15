@@ -12,7 +12,6 @@ public class SumTallUttrykk extends SumUttrykk<Tall, TallUttrykk> implements Tal
         super(uttrykk);
     }
 
-    @SafeVarargs
     public static SumTallUttrykk sum(TallUttrykk... uttrykk) {
         return new SumTallUttrykk(Stream.of(uttrykk).collect(Collectors.toList()));
     }

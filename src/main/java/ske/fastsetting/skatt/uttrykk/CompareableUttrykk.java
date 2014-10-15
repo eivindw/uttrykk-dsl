@@ -25,7 +25,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
     default BolskUttrykk erMindreEnn(CompareableUttrykk<T> belop) {
         return new ErMindreEnn(this, belop);
     }
-    static class ErStorreEnn<T extends Comparable<T>> extends AbstractUttrykk<Boolean> implements BolskUttrykk {
+    static class ErStorreEnn<T extends Comparable<T>> extends AbstractUttrykk<Boolean, ErStorreEnn> implements BolskUttrykk {
         private final CompareableUttrykk<T> belopUttrykk;
         private final CompareableUttrykk<T> sammenliknMed;
 
@@ -45,7 +45,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
     }
 
-    static class ErLik<T extends Comparable<T>> extends AbstractUttrykk<Boolean> implements BolskUttrykk {
+    static class ErLik<T extends Comparable<T>> extends AbstractUttrykk<Boolean, ErLik> implements BolskUttrykk {
         private final CompareableUttrykk<T> belopUttrykk1;
         private final CompareableUttrykk<T> belopUttrykk2;
 
@@ -65,7 +65,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
     }
 
-    static class IkkeErLik<T extends Comparable<T>> extends AbstractUttrykk<Boolean> implements BolskUttrykk {
+    static class IkkeErLik<T extends Comparable<T>> extends AbstractUttrykk<Boolean, IkkeErLik> implements BolskUttrykk {
         private final CompareableUttrykk<T> belopUttrykk1;
         private final CompareableUttrykk<T> belopUttrykk2;
 
@@ -85,7 +85,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
     }
 
-    static class ErMellom<T extends Comparable<T>> extends AbstractUttrykk<Boolean> implements BolskUttrykk {
+    static class ErMellom<T extends Comparable<T>> extends AbstractUttrykk<Boolean, ErMellom> implements BolskUttrykk {
         private final CompareableUttrykk<T> belopUttrykk;
         private final CompareableUttrykk<T> fraBelopUttrykk;
         private final CompareableUttrykk<T> tilBelopUttrykk;
@@ -112,7 +112,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
     }
 
-    static class ErMindreEnnEllerLik<T extends Comparable<T>> extends AbstractUttrykk<Boolean> implements BolskUttrykk {
+    static class ErMindreEnnEllerLik<T extends Comparable<T>> extends AbstractUttrykk<Boolean, ErMindreEnnEllerLik> implements BolskUttrykk {
         private final CompareableUttrykk<T> belopUttrykk;
         private final CompareableUttrykk<T> sammenliknMed;
 
@@ -132,7 +132,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
     }
 
-    static class ErMindreEnn<T extends Comparable<T>> extends AbstractUttrykk<Boolean> implements BolskUttrykk {
+    static class ErMindreEnn<T extends Comparable<T>> extends AbstractUttrykk<Boolean, ErMindreEnn> implements BolskUttrykk {
         private final CompareableUttrykk<T> belopUttrykk;
         private final CompareableUttrykk<T> sammenliknMed;
 
