@@ -4,7 +4,7 @@ import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class ProsentUttrykk extends AbstractUttrykk<Tall, ProsentUttrykk> implements TallUttrykk {
+public class ProsentUttrykk extends AbstractUttrykk<Tall, ProsentUttrykk> implements TallUttrykk<ProsentUttrykk> {
 
     private final Tall verdi;
 

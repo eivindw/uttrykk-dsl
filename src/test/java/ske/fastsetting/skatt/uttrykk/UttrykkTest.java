@@ -2,6 +2,7 @@ package ske.fastsetting.skatt.uttrykk;
 
 import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
+import ske.fastsetting.skatt.uttrykk.belop.BelopSumUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
 import static org.junit.Assert.assertEquals;
@@ -15,15 +16,15 @@ public class UttrykkTest {
 
     @Test
     public void tallUttrykk() {
-        Uttrykk<Belop> en = kr(1);
+        Uttrykk<Belop, ?> en = kr(1);
 
         assertEquals(new Belop(1), en.eval(null));
     }
 
     @Test
     public void prosentUttrykk() {
-        final BelopUttrykk ti = kr(100).multiplisertMed(prosent(10));
-        SumUttrykk tjue = sum(ti, ti);
+        final BelopUttrykk<?> ti = kr(100).multiplisertMed(prosent(10));
+        final BelopSumUttrykk tjue = sum(ti, ti);
 
         assertEquals(new Belop(20), beregne(tjue).verdi());
 
@@ -37,7 +38,7 @@ public class UttrykkTest {
     @Test
     public void sumUttrykk() {
         final BelopUttrykk lonn = kr(6);
-        Uttrykk sum = sum(
+        final BelopSumUttrykk sum = sum(
             kr(2),
             sum(
                 lonn,

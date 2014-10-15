@@ -7,8 +7,8 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MinsteAvUttrykk extends AbstractUttrykk<Belop, MinsteAvUttrykk> implements BelopUttrykk {
-    private final BelopUttrykk[] uttrykk;
+public class MinsteAvUttrykk extends AbstractUttrykk<Belop, MinsteAvUttrykk> implements BelopUttrykk<MinsteAvUttrykk> {
+    private final BelopUttrykk<?>[] uttrykk;
 
     private MinsteAvUttrykk(BelopUttrykk[] uttrykk) {
         this.uttrykk = uttrykk;

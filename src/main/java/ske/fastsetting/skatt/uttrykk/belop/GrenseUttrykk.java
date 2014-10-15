@@ -4,11 +4,11 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 
-public class GrenseUttrykk extends AbstractUttrykk<Belop, GrenseUttrykk> implements BelopUttrykk {
+public class GrenseUttrykk extends AbstractUttrykk<Belop, GrenseUttrykk> implements BelopUttrykk<GrenseUttrykk> {
 
-    private final BelopUttrykk uttrykk;
-    private BelopUttrykk minimum;
-    private BelopUttrykk maksimum;
+    private final BelopUttrykk<?> uttrykk;
+    private BelopUttrykk<?> minimum;
+    private BelopUttrykk<?> maksimum;
 
     private GrenseUttrykk(BelopUttrykk uttrykk) {
         this.uttrykk = uttrykk;

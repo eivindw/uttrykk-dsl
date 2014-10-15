@@ -11,19 +11,19 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
     private final Map<String, Map> uttrykksmap = new HashMap<>();
     private final String start;
 
-    public static <X> UttrykkResultat<X> beregne(Uttrykk<X> uttrykk) {
+    public static <X> UttrykkResultat<X> beregne(Uttrykk<X, ?> uttrykk) {
         return new UttrykkContextImpl<>(uttrykk, true, false);
     }
 
-    public static <X> UttrykkResultat<X> beskrive(Uttrykk<X> uttrykk) {
+    public static <X> UttrykkResultat<X> beskrive(Uttrykk<X, ?> uttrykk) {
         return new UttrykkContextImpl<>(uttrykk, false, true);
     }
 
-    public static <X> UttrykkResultat<X> beregneOgBeskrive(Uttrykk<X> uttrykk) {
+    public static <X> UttrykkResultat<X> beregneOgBeskrive(Uttrykk<X, ?> uttrykk) {
         return new UttrykkContextImpl<>(uttrykk, true, true);
     }
 
-    private UttrykkContextImpl(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
+    private UttrykkContextImpl(Uttrykk<V, ?> uttrykk, boolean eval, boolean beskriv) {
         this.start = uttrykk.id(this);
 
         if (eval) {
@@ -58,7 +58,7 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
     }
 
     @Override
-    public <X> X eval(Uttrykk<X> uttrykk) {
+    public <X> X eval(Uttrykk<X, ?> uttrykk) {
         return (X) initUttrykk(uttrykk).computeIfAbsent(KEY_VERDI, k -> uttrykk.eval(this));
     }
 

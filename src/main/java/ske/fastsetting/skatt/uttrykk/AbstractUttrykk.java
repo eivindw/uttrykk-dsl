@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public abstract class AbstractUttrykk<V, B> implements Uttrykk<V> {
+public abstract class AbstractUttrykk<V, B> implements Uttrykk<V, B> {
 
     private String id;
     private String navn = "";
@@ -18,11 +18,13 @@ public abstract class AbstractUttrykk<V, B> implements Uttrykk<V> {
     @SuppressWarnings("unchecked")
     private B self = (B) this;
 
+    @Override
     public B navn(String navn) {
         this.navn = navn;
         return self;
     }
 
+    @Override
     public B tag(String tag) {
         if (tags == null) {
             tags = new HashSet<>();
@@ -33,6 +35,7 @@ public abstract class AbstractUttrykk<V, B> implements Uttrykk<V> {
         return self;
     }
 
+    @Override
     public B regler(Regel... regel) {
         if (regler == null) {
             regler = new ArrayList<>();

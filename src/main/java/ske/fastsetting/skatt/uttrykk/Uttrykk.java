@@ -5,7 +5,7 @@ import ske.fastsetting.skatt.domene.Regel;
 import java.util.List;
 import java.util.Set;
 
-public interface Uttrykk<V> {
+public interface Uttrykk<V, B> {
 
     V eval(UttrykkContext ctx);
 
@@ -13,9 +13,15 @@ public interface Uttrykk<V> {
 
     String navn();
 
+    B navn(String navn);
+
     Set<String> tags();
 
+    B tag(String tag);
+
     List<Regel> regler();
+
+    B regler(Regel... regel);
 
     String id(UttrykkContext ctx);
 }

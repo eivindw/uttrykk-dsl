@@ -7,7 +7,7 @@ import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
-public interface BelopUttrykk extends CompareableUttrykk<Belop> {
+public interface BelopUttrykk<B> extends CompareableUttrykk<Belop, B> {
 
     default BelopUttrykk multiplisertMed(TallUttrykk verdi) {
         return new BelopMultiplikasjonsUttrykk(this, verdi);
@@ -17,7 +17,6 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
         return new BelopDivisjonsUttrykk(this, verdi);
     }
 
-
     default BelopUttrykk minus(BelopUttrykk uttrykk) {
         return new BelopDiffUttrykk(this, uttrykk);
     }
@@ -26,14 +25,13 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
         return BelopSumUttrykk.sum(this, uttrykk);
     }
 
-
     default TallUttrykk dividertMed(BelopUttrykk divident) {
         return new BelopDividertMedBelopUttrykk(this, divident);
     }
 
-    static class BelopDividertMedBelopUttrykk extends AbstractUttrykk<Tall, BelopDividertMedBelopUttrykk> implements TallUttrykk {
-        private final BelopUttrykk divisior;
-        private final BelopUttrykk divident;
+    static class BelopDividertMedBelopUttrykk extends AbstractUttrykk<Tall, BelopDividertMedBelopUttrykk> implements TallUttrykk<BelopDividertMedBelopUttrykk> {
+        private final BelopUttrykk<?> divisior;
+        private final BelopUttrykk<?> divident;
 
         public BelopDividertMedBelopUttrykk(BelopUttrykk belopUttrykk, BelopUttrykk divident) {
             this.divisior = belopUttrykk;
