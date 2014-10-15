@@ -15,6 +15,11 @@ public class SumTallUttrykk
         super(uttrykk);
     }
 
+    @Override
+    protected Tall nullVerdi() {
+        return Tall.ZERO;
+    }
+
     public static SumTallUttrykk sum(TallUttrykk<?>... uttrykk) {
         return new SumTallUttrykk(Stream.of(uttrykk).collect(Collectors.toList()));
     }

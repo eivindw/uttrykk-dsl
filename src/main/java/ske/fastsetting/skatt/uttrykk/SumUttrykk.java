@@ -11,22 +11,19 @@ public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttryk
 
     private final Collection<U> uttrykk;
 
-    private T evaluertVerdi = null;
-
     protected SumUttrykk(Collection<U> uttrykk) {
         this.uttrykk = uttrykk;
     }
 
     @Override
     public T eval(UttrykkContext ctx) {
-        if (evaluertVerdi == null) {
-            evaluertVerdi = uttrykk.stream()
-                .map(ctx::eval)
-                .reduce((verdi1, verdi2) -> verdi1.pluss(verdi2))
-                .get();
-        }
-        return evaluertVerdi;
+        return uttrykk.stream()
+            .map(ctx::eval)
+            .reduce((verdi1, verdi2) -> verdi1.pluss(verdi2))
+            .orElse(nullVerdi());
     }
+
+    protected abstract T nullVerdi();
 
     @Override
     public String beskriv(UttrykkContext ctx) {

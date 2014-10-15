@@ -16,6 +16,11 @@ public class BelopSumUttrykk
         super(uttrykk);
     }
 
+    @Override
+    protected Belop nullVerdi() {
+        return Belop.NULL;
+    }
+
     public static BelopSumUttrykk sum(BelopUttrykk<?>... uttrykk) {
         return new BelopSumUttrykk(Stream.of(uttrykk).collect(Collectors.toList()));
     }

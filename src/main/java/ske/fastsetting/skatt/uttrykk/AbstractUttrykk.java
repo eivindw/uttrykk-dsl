@@ -12,8 +12,8 @@ public abstract class AbstractUttrykk<V, B extends Uttrykk> implements Uttrykk<V
 
     private String id;
     private String navn = "";
-    private Set<String> tags;
-    private List<Regel> regler;
+    private Set<String> tags = new HashSet<>();
+    private List<Regel> regler = new ArrayList<>();
 
     @SuppressWarnings("unchecked")
     private B self = (B) this;
@@ -26,10 +26,6 @@ public abstract class AbstractUttrykk<V, B extends Uttrykk> implements Uttrykk<V
 
     @Override
     public B tag(String tag) {
-        if (tags == null) {
-            tags = new HashSet<>();
-        }
-
         tags.add(tag);
 
         return self;
@@ -37,10 +33,6 @@ public abstract class AbstractUttrykk<V, B extends Uttrykk> implements Uttrykk<V
 
     @Override
     public B regler(Regel... regel) {
-        if (regler == null) {
-            regler = new ArrayList<>();
-        }
-
         Stream.of(regel).forEach(regler::add);
 
         return self;
