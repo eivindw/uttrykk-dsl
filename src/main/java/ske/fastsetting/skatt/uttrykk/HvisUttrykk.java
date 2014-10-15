@@ -48,7 +48,7 @@ public abstract class HvisUttrykk<T, B extends HvisUttrykk<T, B>> extends Abstra
 
     public static class BrukUttrykk<T, B extends HvisUttrykk<T, B>>  {
 
-        private final BolskUttrykk bolskUttrykk;
+        private final BolskUttrykk<?> bolskUttrykk;
         private final B hvisUttrykk;
         private Uttrykk<T> brukDa;
 

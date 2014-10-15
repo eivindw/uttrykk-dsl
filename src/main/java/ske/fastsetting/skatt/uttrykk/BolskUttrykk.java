@@ -1,18 +1,18 @@
 package ske.fastsetting.skatt.uttrykk;
 
-public interface BolskUttrykk extends Uttrykk<Boolean> {
-    default BolskUttrykk og(BolskUttrykk uttrykk) {
+public abstract class BolskUttrykk<B> extends AbstractUttrykk<Boolean, B> {
+    public BolskUttrykk og(BolskUttrykk uttrykk) {
         return new OgUttrykk(this, uttrykk);
     }
 
-    default BolskUttrykk eller(BolskUttrykk uttrykk) {
+    public BolskUttrykk eller(BolskUttrykk uttrykk) {
         return new EllerUttrykk(this, uttrykk);
     }
 
-    static class OgUttrykk extends AbstractUttrykk<Boolean, OgUttrykk> implements BolskUttrykk {
+    static class OgUttrykk extends BolskUttrykk<OgUttrykk> {
 
-        private final BolskUttrykk forsteUttrykk;
-        private final BolskUttrykk andreUttrykk;
+        private final BolskUttrykk<?> forsteUttrykk;
+        private final BolskUttrykk<?> andreUttrykk;
 
         public OgUttrykk(BolskUttrykk forsteUttrykk, BolskUttrykk andreUttrykk) {
             this.forsteUttrykk = forsteUttrykk;
@@ -30,9 +30,9 @@ public interface BolskUttrykk extends Uttrykk<Boolean> {
         }
     }
 
-    static class EllerUttrykk extends AbstractUttrykk<Boolean, EllerUttrykk> implements BolskUttrykk {
-        private final BolskUttrykk forsteUttrykk;
-        private final BolskUttrykk andreUttrykk;
+    static class EllerUttrykk extends BolskUttrykk<EllerUttrykk> {
+        private final BolskUttrykk<?> forsteUttrykk;
+        private final BolskUttrykk<?> andreUttrykk;
 
         public EllerUttrykk(BolskUttrykk forsteUttrykk, BolskUttrykk andreUttrykk) {
             this.forsteUttrykk = forsteUttrykk;
