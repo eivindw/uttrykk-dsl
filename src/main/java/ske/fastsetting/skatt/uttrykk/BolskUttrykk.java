@@ -1,6 +1,6 @@
 package ske.fastsetting.skatt.uttrykk;
 
-public abstract class BolskUttrykk<B> extends AbstractUttrykk<Boolean, B> {
+public abstract class BolskUttrykk<B extends BolskUttrykk> extends AbstractUttrykk<Boolean, B> {
     public BolskUttrykk og(BolskUttrykk uttrykk) {
         return new OgUttrykk(this, uttrykk);
     }

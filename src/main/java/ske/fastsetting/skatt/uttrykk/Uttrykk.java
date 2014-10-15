@@ -5,7 +5,7 @@ import ske.fastsetting.skatt.domene.Regel;
 import java.util.List;
 import java.util.Set;
 
-public interface Uttrykk<V, B> {
+public interface Uttrykk<V, B extends Uttrykk> {
 
     V eval(UttrykkContext ctx);
 

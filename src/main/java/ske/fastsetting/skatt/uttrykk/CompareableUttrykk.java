@@ -1,6 +1,6 @@
 package ske.fastsetting.skatt.uttrykk;
 
-public interface CompareableUttrykk<T extends Comparable<T>, B> extends Uttrykk<T, B> {
+public interface CompareableUttrykk<T extends Comparable<T>, B extends Uttrykk> extends Uttrykk<T, B> {
 
     default BolskUttrykk erStorreEnn(CompareableUttrykk<T, ?> belop) {
         return new ErStorreEnn(this,belop);

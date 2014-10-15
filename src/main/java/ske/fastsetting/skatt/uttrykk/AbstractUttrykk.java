@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public abstract class AbstractUttrykk<V, B> implements Uttrykk<V, B> {
+public abstract class AbstractUttrykk<V, B extends Uttrykk> implements Uttrykk<V, B> {
 
     private String id;
     private String navn = "";
