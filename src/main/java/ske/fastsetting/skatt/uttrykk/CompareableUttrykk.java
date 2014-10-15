@@ -2,29 +2,30 @@ package ske.fastsetting.skatt.uttrykk;
 
 public interface CompareableUttrykk<T extends Comparable<T>, B extends Uttrykk> extends Uttrykk<T, B> {
 
-    default BolskUttrykk erStorreEnn(CompareableUttrykk<T, ?> belop) {
-        return new ErStorreEnn(this,belop);
+    default BolskUttrykk<?> erStorreEnn(CompareableUttrykk<T, ?> belop) {
+        return new ErStorreEnn(this, belop);
     }
 
-    default BolskUttrykk er(CompareableUttrykk<T, ?> belop) {
-        return new ErLik(this,belop);
+    default BolskUttrykk<?> er(CompareableUttrykk<T, ?> belop) {
+        return new ErLik(this, belop);
     }
 
-    default BolskUttrykk ikkeEr(CompareableUttrykk<T, ?> belop) {
-        return new IkkeErLik(this,belop);
+    default BolskUttrykk<?> ikkeEr(CompareableUttrykk<T, ?> belop) {
+        return new IkkeErLik(this, belop);
     }
 
-    default BolskUttrykk erMellom(CompareableUttrykk<T, ?> fra, CompareableUttrykk<T, ?> til) {
-        return new ErMellom(this,fra,til);
+    default BolskUttrykk<?> erMellom(CompareableUttrykk<T, ?> fra, CompareableUttrykk<T, ?> til) {
+        return new ErMellom(this, fra, til);
     }
 
-    default BolskUttrykk erMindreEnnEllerLik(CompareableUttrykk<T, ?> belop) {
+    default BolskUttrykk<?> erMindreEnnEllerLik(CompareableUttrykk<T, ?> belop) {
         return new ErMindreEnnEllerLik(this, belop);
     }
 
-    default BolskUttrykk erMindreEnn(CompareableUttrykk<T, ?> belop) {
+    default BolskUttrykk<?> erMindreEnn(CompareableUttrykk<T, ?> belop) {
         return new ErMindreEnn(this, belop);
     }
+
     static class ErStorreEnn<T extends Comparable<T>> extends BolskUttrykk<ErStorreEnn> {
         private final CompareableUttrykk<T, ?> belopUttrykk;
         private final CompareableUttrykk<T, ?> sammenliknMed;
@@ -102,7 +103,7 @@ public interface CompareableUttrykk<T extends Comparable<T>, B extends Uttrykk> 
             T fra = ctx.eval(fraBelopUttrykk);
             T til = ctx.eval(tilBelopUttrykk);
 
-            return belop.compareTo(fra)>0 && belop.compareTo(til)<0;
+            return belop.compareTo(fra) > 0 && belop.compareTo(til) < 0;
         }
 
         @Override
