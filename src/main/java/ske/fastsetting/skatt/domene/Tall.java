@@ -5,7 +5,8 @@ import java.math.BigInteger;
 
 public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
 
-    public static final Tall ZERO = new Tall(TallUttrykkType.ZERO,BigDecimal.ZERO);
+    public static final Tall ZERO = new Tall(TallUttrykkType.ZERO, BigDecimal.ZERO);
+
     private final BigDecimal verdi;
     private final TallUttrykkType type;
 
@@ -18,7 +19,6 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
         return verdi;
     }
 
-
     public BigInteger toBigInteger() {
         return verdi.toBigInteger();
     }
@@ -26,29 +26,27 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
     public enum TallUttrykkType {
         ZERO,
         UKJENT,
-        PROSENT;
-
-
+        PROSENT
     }
+
     public Tall() {
         this(TallUttrykkType.ZERO, BigDecimal.ZERO);
     }
+
     public static Tall prosent(double prosent) {
         return new Tall(TallUttrykkType.PROSENT, BigDecimal.valueOf(prosent).divide(BigDecimal.valueOf(100)));
     }
 
-
     public static Tall ukjent(BigDecimal verdi) {
         return new Tall(TallUttrykkType.UKJENT, verdi);
     }
-
 
     public Tall(TallUttrykkType type, BigDecimal verdi) {
         this.type = type;
         this.verdi = verdi;
     }
 
-    public Tall pluss (Tall ledd) {
+    public Tall pluss(Tall ledd) {
         TallUttrykkType nyType = finnType(ledd);
 
         return new Tall(nyType, verdi.add(ledd.verdi));
@@ -61,23 +59,18 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
     }
 
     public Tall multiplisertMed(BigDecimal faktor) {
-        return new Tall(type,verdi.multiply(faktor));
+        return new Tall(type, verdi.multiply(faktor));
     }
 
 
     public Tall dividertMed(BigDecimal divisor) {
-        return new Tall(type,verdi.divide(divisor));
+        return new Tall(type, verdi.divide(divisor));
     }
 
 
     private TallUttrykkType finnType(Tall ledd) {
-//        if((type!= TallUttrykkType.ZERO || ledd.type!= TallUttrykkType.ZERO) && type!=ledd.type) {
-//            throw new IllegalArgumentException("Prøver å gjøre operasjon på tall av forskjellig type");
-//        }
-
-        return type!= TallUttrykkType.ZERO ? type : ledd.type;
+        return type != TallUttrykkType.ZERO ? type : ledd.type;
     }
-
 
     @Override
     public String toString() {
