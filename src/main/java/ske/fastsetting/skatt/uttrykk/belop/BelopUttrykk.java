@@ -10,23 +10,23 @@ import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
 public interface BelopUttrykk<B extends BelopUttrykk> extends CompareableUttrykk<Belop, B> {
 
-    default BelopUttrykk multiplisertMed(TallUttrykk verdi) {
+    default BelopUttrykk<?> multiplisertMed(TallUttrykk verdi) {
         return new BelopMultiplikasjonsUttrykk(this, verdi);
     }
 
-    default BelopUttrykk dividertMed(TallUttrykk verdi) {
+    default BelopUttrykk<?> dividertMed(TallUttrykk verdi) {
         return new BelopDivisjonsUttrykk(this, verdi);
     }
 
-    default BelopUttrykk minus(BelopUttrykk uttrykk) {
+    default BelopUttrykk<?> minus(BelopUttrykk uttrykk) {
         return new BelopDiffUttrykk(this, uttrykk);
     }
 
-    default BelopUttrykk pluss(BelopUttrykk uttrykk) {
+    default BelopUttrykk<?> pluss(BelopUttrykk uttrykk) {
         return BelopSumUttrykk.sum(this, uttrykk);
     }
 
-    default TallUttrykk dividertMed(BelopUttrykk divident) {
+    default TallUttrykk<?> dividertMed(BelopUttrykk divident) {
         return new BelopDividertMedBelopUttrykk(this, divident);
     }
 
