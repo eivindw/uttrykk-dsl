@@ -86,11 +86,12 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
     }
 
     private Map map(Uttrykk uttrykk) {
-        return new HashMap<String, Object>() {{
-            final String navn = uttrykk.navn();
-            if (navn != null && !navn.equals("")) {
-                put(KEY_NAVN, navn);
-            }
-        }};
+        Map<String, Object> map = new HashMap<>();
+
+        map.computeIfAbsent(KEY_NAVN, k -> uttrykk.navn());
+        map.computeIfAbsent(KEY_REGLER, k -> uttrykk.regler());
+        map.computeIfAbsent(KEY_TAGS, k -> uttrykk.tags());
+
+        return map;
     }
 }

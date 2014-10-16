@@ -37,7 +37,7 @@ public interface BelopUttrykk<B extends BelopUttrykk> extends CompareableUttrykk
     B regler(Regel... regel);
 
     @Override
-    B tag(String tag);
+    B tags(String... tags);
 
     static class BelopDividertMedBelopUttrykk extends AbstractUttrykk<Tall, BelopDividertMedBelopUttrykk> implements TallUttrykk<BelopDividertMedBelopUttrykk> {
         private final BelopUttrykk<?> divisior;
