@@ -41,8 +41,13 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
     }
 
     @Override
+    public Map uttrykk(String id) {
+        return uttrykksmap.get(id);
+    }
+
+    @Override
     public V verdi() {
-        return (V) uttrykksmap.get(start).get(KEY_VERDI);
+        return (V) uttrykk(start).get(KEY_VERDI);
     }
 
     @Override

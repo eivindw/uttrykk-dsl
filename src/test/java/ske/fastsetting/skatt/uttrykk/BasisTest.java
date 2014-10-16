@@ -2,6 +2,7 @@ package ske.fastsetting.skatt.uttrykk;
 
 import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
+import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver;
@@ -23,11 +24,11 @@ public class BasisTest {
     }
 
     public static UttrykkResultat<Belop> lagEnkeltUttrykkResultat() {
-        final ProsentUttrykk satsTrygdeavgift = prosent(8.2).navn("Sats trygdeavgift");
+        final ProsentUttrykk satsTrygdeavgift = prosent(8.2).navn("Sats trygdeavgift").tags("sats");
 
         final BelopUttrykk sumLonn = sum(
-                kr(60_000).navn("Lønn"),
-                kr(40_000).navn("Bonus")
+            kr(60_000).navn("Lønn").regler(Regel.skatteloven("5-1")),
+            kr(40_000).navn("Bonus")
         ).navn("Sum lønn");
 
         final BelopUttrykk<?> trygdeavgift = sumLonn.multiplisertMed(satsTrygdeavgift);

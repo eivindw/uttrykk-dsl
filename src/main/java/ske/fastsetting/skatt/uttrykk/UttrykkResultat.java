@@ -12,6 +12,8 @@ public interface UttrykkResultat<V> {
 
     Map<String, Map> uttrykk();
 
+    Map uttrykk(String id);
+
     V verdi();
 
     String start();

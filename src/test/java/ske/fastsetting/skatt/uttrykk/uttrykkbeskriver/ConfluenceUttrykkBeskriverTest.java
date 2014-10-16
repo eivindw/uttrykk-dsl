@@ -3,17 +3,23 @@ package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
 import org.junit.Test;
 import ske.fastsetting.skatt.uttrykk.BasisTest;
 
+import java.util.Map;
+
 import static org.junit.Assert.assertNotNull;
 
 public class ConfluenceUttrykkBeskriverTest {
 
     @Test
     public void testBeskriv() throws Exception {
-        final ConfluenceUttrykkBeskriver.ConfluenceSide confluenceSide =
-            new ConfluenceUttrykkBeskriver("Hovedside").beskriv(BasisTest.lagEnkeltUttrykkResultat());
+        final ConfluenceUttrykkBeskriver beskriver = new ConfluenceUttrykkBeskriver("Hovedside");
+        final Map<String, ConfluenceUttrykkBeskriver.ConfluenceSide> sider =
+            beskriver.beskriv(BasisTest.lagEnkeltUttrykkResultat());
 
-        System.out.println(confluenceSide);
+        assertNotNull("Sider er null", sider);
 
-        assertNotNull("Side er null", confluenceSide);
+        sider.forEach((tittel, side) -> {
+            System.out.println("### " + tittel + " ###");
+            System.out.println(side);
+        });
     }
 }
