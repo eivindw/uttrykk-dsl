@@ -53,6 +53,10 @@ public class Regel {
         return new Regel(RegelType.Skatteloven, paragraf, underpunkt);
     }
 
+    public static Regel[] regler(Regel... regel) {
+        return regel;
+    }
+
     public Regel(RegelType regel, String paragraf, String... underpunkt) {
         this.regel = regel;
         this.paragraf = paragraf;
