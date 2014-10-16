@@ -61,7 +61,7 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map> {
     public void regler(Regel... regler) {
 
         for(Regel regel : regler) {
-            String overskrift = regel.getKortnavnOgParagraf();
+            String overskrift = regel.kortnavnOgParagraf();
             if(!innholdsfortegnelse.containsKey(overskrift)) {
                 ConfluenceSide nySide = new HjemmelConfluenceSide(regel);
                 gjeldendeSide.undersider.add(nySide);
@@ -101,11 +101,11 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map> {
         public String getInnhold() {
             StringBuilder sb = new StringBuilder();
             sb.append("{details:label=hjemmel}\r\n");
-            sb.append("lov: "+ regel.getTittel() + "\r\n");
-            sb.append("paragraf: $"+regel.getParagraf() +"\r\n");
+            sb.append("lov: "+ regel.tittel() + "\r\n");
+            sb.append("paragraf: $"+regel.paragraf() +"\r\n");
             sb.append("{details}\r\n");
 
-            sb.append("\r\n[Lovdata|"+regel.getLovdataUri() +"]\r\n\r\n");
+            sb.append("\r\n[Lovdata|"+regel.uri() +"]\r\n\r\n");
 
             sb.append(lagReferanser());
 
@@ -120,7 +120,7 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map> {
 
         @Override
         public String getTittel() {
-            return regel.getKortnavnOgParagraf();
+            return regel.kortnavnOgParagraf();
         }
 
         private String lagReferanser() {
@@ -179,7 +179,7 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map> {
 
             if(regler!=null && regler.size()>0) {
                 sb.append("\r\nh4. Hjemler \r\n");
-                regler.stream().forEach(r->sb.append("* ["+r.getKortnavnOgParagraf()+"]\r\n"));
+                regler.stream().forEach(r->sb.append("* ["+r.kortnavnOgParagraf()+"]\r\n"));
             }
 
             sb.append("\r\n\r\nh4. Referanser \r\n");

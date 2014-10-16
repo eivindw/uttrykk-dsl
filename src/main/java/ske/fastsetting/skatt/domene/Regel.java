@@ -51,33 +51,25 @@ public class Regel {
         return new Regel(RegelType.Skatteloven, paragraf, underpunkt);
     }
 
-    public static Regel[] regler(Regel... regel) {
-        return regel;
-    }
-
     public Regel(RegelType regel, String paragraf, String... underpunkt) {
         this.regel = regel;
         this.paragraf = paragraf;
         this.underpunkt = underpunkt;
     }
 
-    public String getTittel() {
+    public String tittel() {
         return regel.getTittel();
     }
 
-    public String getParagraf() {
+    public String paragraf() {
         return paragraf;
     }
 
-    public String getKortnavnOgParagraf() {
+    public String kortnavnOgParagraf() {
         return regel.getKortnavn() + " §" + paragraf;
     }
 
-    public String getTittelOgParagraf() {
-        return regel.getTittel() + " §" + paragraf;
-    }
-
-    public URI getLovdataUri() {
+    public URI uri() {
         return URI.create("http://lovdata.no/" + regel.getLovdataRef() + "/§" + paragraf);
     }
 }
