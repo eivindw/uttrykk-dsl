@@ -3,19 +3,17 @@ package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
 import org.junit.Test;
 import ske.fastsetting.skatt.uttrykk.BasisTest;
 
-import java.util.Map;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 public class ConfluenceUttrykkBeskriverTest {
 
     @Test
     public void testBeskriv() throws Exception {
-        final Map confluenceSider =
-            new ConfluenceUttrykkBeskriver().beskriv(BasisTest.lagEnkeltUttrykkResultat());
+        final ConfluenceUttrykkBeskriver.ConfluenceSide confluenceSide =
+            new ConfluenceUttrykkBeskriver("Hovedside").beskriv(BasisTest.lagEnkeltUttrykkResultat());
 
-        System.out.println(confluenceSider);
+        System.out.println(confluenceSide);
 
-        assertNotNull("Sidemap er null", confluenceSider);
+        assertNotNull("Side er null", confluenceSide);
     }
 }

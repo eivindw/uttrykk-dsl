@@ -5,22 +5,26 @@ import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 
 import java.util.*;
 
-public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map> {
+public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<ConfluenceUttrykkBeskriver.ConfluenceSide> {
 
     private final InnholdConfluenceSide gjeldendeSide;
     private final Map<String, ConfluenceSide> innholdsfortegnelse;
     private final int innrykk;
 
-    public ConfluenceUttrykkBeskriver() {
-        gjeldendeSide = new InnholdConfluenceSide("yoz");
+    public ConfluenceUttrykkBeskriver(String tittel) {
+        gjeldendeSide = new InnholdConfluenceSide(tittel);
         innholdsfortegnelse = new HashMap<>();
-        innholdsfortegnelse.put("yoz", gjeldendeSide);
+        innholdsfortegnelse.put(tittel, gjeldendeSide);
         innrykk = 0;
     }
 
     @Override
-    public Map beskriv(UttrykkResultat<?> resultat) {
-        return innholdsfortegnelse;
+    public ConfluenceUttrykkBeskriver.ConfluenceSide beskriv(UttrykkResultat<?> resultat) {
+        final String startId = resultat.start();
+        final Map<String, Map> uttrykk = resultat.uttrykk();
+        final Map startUttrykk = uttrykk.get(startId);
+
+        return gjeldendeSide;
     }
 
     private ConfluenceUttrykkBeskriver(InnholdConfluenceSide gjeldendeSide, Map<String, ConfluenceSide> innholdsfortegnelse) {
