@@ -2,11 +2,11 @@ package ske.fastsetting.skatt.uttrykk;
 
 import ske.fastsetting.skatt.domene.Regel;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
+
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
 
 public abstract class AbstractUttrykk<V, B extends Uttrykk> implements Uttrykk<V, B> {
 
@@ -53,12 +53,12 @@ public abstract class AbstractUttrykk<V, B extends Uttrykk> implements Uttrykk<V
 
     @Override
     public Set<String> tags() {
-        return tags;
+        return tags != null ? tags : emptySet();
     }
 
     @Override
     public List<Regel> regler() {
-        return regler;
+        return regler != null ? regler : emptyList();
     }
 
     @Override

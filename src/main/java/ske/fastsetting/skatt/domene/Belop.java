@@ -43,7 +43,7 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     }
 
     public Integer toInteger() {
-        return this.belop.getNumber().intValueExact();
+        return this.belop.getNumber().intValue();
     }
 
     public BigDecimal dividertMed(Belop divident) {
