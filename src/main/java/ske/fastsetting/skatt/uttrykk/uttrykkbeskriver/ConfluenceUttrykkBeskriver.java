@@ -1,7 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
 
-import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 import ske.fastsetting.skatt.domene.Regel;
+import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 
 import java.util.*;
 
@@ -11,11 +11,16 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map> {
     private final Map<String, ConfluenceSide> innholdsfortegnelse;
     private final int innrykk;
 
-    public ConfluenceUttrykkBeskriver(String tittel) {
-        gjeldendeSide = new InnholdConfluenceSide(tittel);
+    public ConfluenceUttrykkBeskriver() {
+        gjeldendeSide = new InnholdConfluenceSide("yoz");
         innholdsfortegnelse = new HashMap<>();
-        innholdsfortegnelse.put(tittel, gjeldendeSide);
+        innholdsfortegnelse.put("yoz", gjeldendeSide);
         innrykk = 0;
+    }
+
+    @Override
+    public Map beskriv(UttrykkResultat<?> resultat) {
+        return innholdsfortegnelse;
     }
 
     private ConfluenceUttrykkBeskriver(InnholdConfluenceSide gjeldendeSide, Map<String, ConfluenceSide> innholdsfortegnelse) {
@@ -47,7 +52,10 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map> {
     }
 
     public void skriv(String linje) {
-        gjeldendeSide.innhold.append(new String(new char[innrykk]).replace("\0", "&nbsp; ") + linje).append("\r\n");
+        gjeldendeSide.innhold
+            .append(new String(new char[innrykk]).replace("\0", "&nbsp; "))
+            .append(linje)
+            .append("\r\n");
     }
 
     public UttrykkBeskriver rykkInn() {
@@ -59,10 +67,9 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map> {
     }
 
     public void regler(Regel... regler) {
-
-        for(Regel regel : regler) {
+        for (Regel regel : regler) {
             String overskrift = regel.kortnavnOgParagraf();
-            if(!innholdsfortegnelse.containsKey(overskrift)) {
+            if (!innholdsfortegnelse.containsKey(overskrift)) {
                 ConfluenceSide nySide = new HjemmelConfluenceSide(regel);
                 gjeldendeSide.undersider.add(nySide);
                 innholdsfortegnelse.put(overskrift, nySide);
@@ -71,21 +78,20 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map> {
         }
 
         gjeldendeSide.regler.addAll(Arrays.asList(regler));
-
     }
 
     private void skrivLink(String link) {
-        gjeldendeSide.innhold.append(new String(new char[innrykk]).replace("\0", "&nbsp; ") + "[" + link + "]").append("\r\n");
-    }
-
-    @Override
-    public Map beskriv(UttrykkResultat<?> resultat) {
-        return null;
+        gjeldendeSide.innhold
+            .append(new String(new char[innrykk]).replace("\0", "&nbsp; "))
+            .append("[").append(link).append("]")
+            .append("\r\n");
     }
 
     public interface ConfluenceSide {
         public String getInnhold();
+
         public List<ConfluenceSide> getUndersider();
+
         public String getTittel();
     }
 
@@ -99,17 +105,12 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map> {
 
         @Override
         public String getInnhold() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("{details:label=hjemmel}\r\n");
-            sb.append("lov: "+ regel.tittel() + "\r\n");
-            sb.append("paragraf: $"+regel.paragraf() +"\r\n");
-            sb.append("{details}\r\n");
-
-            sb.append("\r\n[Lovdata|"+regel.uri() +"]\r\n\r\n");
-
-            sb.append(lagReferanser());
-
-            return sb.toString();
+            return "{details:label=hjemmel}\r\n" +
+                "lov: " + regel.tittel() + "\r\n" +
+                "paragraf: $" + regel.paragraf() + "\r\n" +
+                "{details}\r\n" +
+                "\r\n[Lovdata|" + regel.uri() + "]\r\n\r\n" +
+                lagReferanser();
         }
 
 
@@ -124,15 +125,9 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map> {
         }
 
         private String lagReferanser() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("\r\nh4. Referanser \r\n");
-            sb.append("{incoming-links:mode=list}Ingen referanser{incoming-links} \r\n");
-
-            return sb.toString();
-
+            return "\r\nh4. Referanser \r\n" +
+                "{incoming-links:mode=list}Ingen referanser{incoming-links} \r\n";
         }
-
-
     }
 
     public static class InnholdConfluenceSide implements ConfluenceSide {
@@ -163,23 +158,23 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map> {
 
         private String innholdMedOverskrift() {
             return "h3. " + tittel
-                    + "\r\n"
-                    + innhold.toString()
-                    + lagReferanser();
+                + "\r\n"
+                + innhold.toString()
+                + lagReferanser();
         }
 
         private String satsInnhold() {
             return "{details:label=sats}\r\n" +
-                    "sats: "+innhold.toString() +
-                    "{details}" + lagReferanser();
+                "sats: " + innhold.toString() +
+                "{details}" + lagReferanser();
         }
 
         private String lagReferanser() {
             StringBuilder sb = new StringBuilder();
 
-            if(regler!=null && regler.size()>0) {
+            if (regler != null && regler.size() > 0) {
                 sb.append("\r\nh4. Hjemler \r\n");
-                regler.stream().forEach(r->sb.append("* ["+r.kortnavnOgParagraf()+"]\r\n"));
+                regler.stream().forEach(r -> sb.append("* [").append(r.kortnavnOgParagraf()).append("]\r\n"));
             }
 
             sb.append("\r\n\r\nh4. Referanser \r\n");

@@ -15,6 +15,14 @@ public class BasisTest {
 
     @Test
     public void prosentUttrykk() {
+        final UttrykkResultat<Belop> resultat = lagEnkeltUttrykkResultat();
+
+        assertEquals(new Belop(8_200), resultat.verdi());
+
+        ConsoleUttrykkBeskriver.print(resultat);
+    }
+
+    public static UttrykkResultat<Belop> lagEnkeltUttrykkResultat() {
         final ProsentUttrykk satsTrygdeavgift = prosent(8.2).navn("Sats trygdeavgift");
 
         final BelopUttrykk sumLonn = sum(
@@ -24,10 +32,6 @@ public class BasisTest {
 
         final BelopUttrykk<?> trygdeavgift = sumLonn.multiplisertMed(satsTrygdeavgift);
 
-        final UttrykkResultat<Belop> resultat = UttrykkContextImpl.beregneOgBeskrive(trygdeavgift);
-
-        assertEquals(new Belop(8_200), resultat.verdi());
-
-        ConsoleUttrykkBeskriver.print(resultat);
+        return UttrykkContextImpl.beregneOgBeskrive(trygdeavgift);
     }
 }
