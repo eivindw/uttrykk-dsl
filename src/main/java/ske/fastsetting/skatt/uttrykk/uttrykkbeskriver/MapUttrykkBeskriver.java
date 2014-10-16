@@ -9,10 +9,12 @@ public class MapUttrykkBeskriver implements UttrykkBeskriver<Map<String, ?>> {
 
     @Override
     public Map<String, ?> beskriv(UttrykkResultat<?> resultat) {
-        return new HashMap<String, Object>() {{
-            put("startId", resultat.start());
-            put("verdi", resultat.verdi());
-            put("uttrykk", resultat.uttrykk());
-        }};
+        final HashMap<String, Object> map = new HashMap<>();
+
+        map.computeIfAbsent("startId", k -> resultat.start());
+        map.computeIfAbsent("verdi", k -> resultat.verdi());
+        map.computeIfAbsent("uttrykk", k -> resultat.uttrykk());
+
+        return map;
     }
 }
