@@ -6,6 +6,7 @@ import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, ConfluenceUttrykkBeskriver.ConfluenceSide>> {
 
     private final Map<String, ConfluenceSide> innholdsfortegnelse = new HashMap<>();
@@ -26,35 +27,40 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
     private String leggTilUttrykk(String id, UttrykkResultat<?> resultat) {
         final Map uttrykk = resultat.uttrykk(id);
 
-        final String tittel = (String) uttrykk.getOrDefault(UttrykkResultat.KEY_NAVN, id + " - mangler tittel");
+        final String navn = (String) uttrykk.get(UttrykkResultat.KEY_NAVN);
+        final List<Regel> regler =
+            (List<Regel>) uttrykk.getOrDefault(UttrykkResultat.KEY_REGLER, Collections.emptyList());
+        final Set<String> tags = (Set<String>) uttrykk.getOrDefault(UttrykkResultat.KEY_TAGS, Collections.emptySet());
 
-        innholdsfortegnelse.computeIfAbsent(tittel, t -> {
-            final List<Regel> regler =
-                (List<Regel>) uttrykk.getOrDefault(UttrykkResultat.KEY_REGLER, Collections.emptyList());
-            String uttrykkString = (String) uttrykk.getOrDefault(UttrykkResultat.KEY_UTTRYKK, "");
-            final Map<String, String> idTittel = new HashMap<>();
-            IdUtil.parseIder(uttrykkString)
-                .forEach(subId -> idTittel.put(subId, leggTilUttrykk(subId, resultat)));
-            for (Map.Entry<String, String> entry : idTittel.entrySet()) {
-                uttrykkString = uttrykkString.replaceAll(
-                    "<" + entry.getKey() + ">",
-                    "[" + entry.getValue() + "]"
+        String tmpUttrykkString = (String) uttrykk.getOrDefault(UttrykkResultat.KEY_UTTRYKK, "");
+
+        for (String subId : IdUtil.parseIder(tmpUttrykkString)) {
+            tmpUttrykkString = tmpUttrykkString.replaceAll("<" + subId + ">", leggTilUttrykk(subId, resultat));
+        }
+
+        final String uttrykkString = tmpUttrykkString;
+
+        if(navn != null) {
+            innholdsfortegnelse.computeIfAbsent(navn, tittel -> {
+                final InnholdConfluenceSide side = new InnholdConfluenceSide(
+                    tittel,
+                    uttrykkString,
+                    tags,
+                    regler
                 );
-            }
-            final InnholdConfluenceSide side = new InnholdConfluenceSide(
-                t,
-                uttrykkString,
-                (Set<String>) uttrykk.getOrDefault(UttrykkResultat.KEY_TAGS, Collections.emptySet()),
-                regler
-            );
-            regler(regler, side);
-            return side;
-        });
 
-        return tittel;
+                leggReglerPaaSide(regler, side);
+
+                return side;
+            });
+
+            return "[" + navn + "]";
+        } else {
+            return uttrykkString;
+        }
     }
 
-    private void regler(List<Regel> regler, InnholdConfluenceSide side) {
+    private void leggReglerPaaSide(List<Regel> regler, InnholdConfluenceSide side) {
         for (Regel regel : regler) {
             String overskrift = regel.kortnavnOgParagraf();
             if (!innholdsfortegnelse.containsKey(overskrift)) {

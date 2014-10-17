@@ -20,6 +20,6 @@ public abstract class DiffUttrykk<V extends KalkulerbarVerdi<V>, T extends Uttry
 
     @Override
     public String beskriv(UttrykkContext ctx) {
-        return "differansen mellom " + ctx.beskriv(ledd1) + " og " + ctx.beskriv(ledd2);
+        return ctx.beskriv(ledd1) + " - " + ctx.beskriv(ledd2);
     }
 }

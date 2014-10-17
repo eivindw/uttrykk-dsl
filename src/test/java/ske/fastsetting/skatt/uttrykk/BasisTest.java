@@ -28,10 +28,11 @@ public class BasisTest {
 
         final BelopUttrykk sumLonn = sum(
             kr(60_000).navn("Lønn").regler(Regel.skatteloven("5-1")),
-            kr(40_000).navn("Bonus")
+            kr(40_000).navn("Bonus"),
+            kr(20_000).minus(kr(15_000)).minus(kr(5_000))
         ).navn("Sum lønn");
 
-        final BelopUttrykk<?> trygdeavgift = sumLonn.multiplisertMed(satsTrygdeavgift);
+        final BelopUttrykk<?> trygdeavgift = sumLonn.multiplisertMed(satsTrygdeavgift).navn("Trygdeavgift");
 
         return UttrykkContextImpl.beregneOgBeskrive(trygdeavgift);
     }
