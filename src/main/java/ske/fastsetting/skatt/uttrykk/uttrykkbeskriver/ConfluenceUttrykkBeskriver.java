@@ -34,13 +34,15 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
 
         String tmpUttrykkString = (String) uttrykk.getOrDefault(UttrykkResultat.KEY_UTTRYKK, "");
 
-        for (String subId : IdUtil.parseIder(tmpUttrykkString)) {
+        final Set<String> subIder = IdUtil.parseIder(tmpUttrykkString);
+
+        for (String subId : subIder) {
             tmpUttrykkString = tmpUttrykkString.replaceAll("<" + subId + ">", leggTilUttrykk(subId, resultat));
         }
 
         final String uttrykkString = tmpUttrykkString;
 
-        if(navn != null) {
+        if (navn != null) {
             innholdsfortegnelse.computeIfAbsent(navn, tittel -> {
                 final InnholdConfluenceSide side = new InnholdConfluenceSide(
                     tittel,
@@ -55,6 +57,8 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
             });
 
             return "[" + navn + "]";
+        } else if (!subIder.isEmpty()) {
+            return "(" + uttrykkString + ")";
         } else {
             return uttrykkString;
         }
