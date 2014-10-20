@@ -3,11 +3,11 @@ package ske.fastsetting.skatt.uttrykk.tall;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.MultiplikasjonsUttrykk;
 
-public class TallMultiplikasjonsUttrykk
-    extends MultiplikasjonsUttrykk<Tall, TallUttrykk<?>, TallMultiplikasjonsUttrykk>
-    implements TallUttrykk<TallMultiplikasjonsUttrykk>
+public class TallMultiplikasjonsUttrykk<C>
+    extends MultiplikasjonsUttrykk<Tall, TallUttrykk<?,C>, TallMultiplikasjonsUttrykk<C>,C>
+    implements TallUttrykk<TallMultiplikasjonsUttrykk<C>,C>
 {
-    public TallMultiplikasjonsUttrykk(TallUttrykk faktor1, TallUttrykk faktor2) {
+    public TallMultiplikasjonsUttrykk(TallUttrykk<?,C> faktor1, TallUttrykk<?,C> faktor2) {
         super(faktor1, faktor2);
     }
 }

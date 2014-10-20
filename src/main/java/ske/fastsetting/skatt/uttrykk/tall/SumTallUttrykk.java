@@ -7,11 +7,11 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SumTallUttrykk
-    extends SumUttrykk<Tall, TallUttrykk<?>, SumTallUttrykk>
-    implements TallUttrykk<SumTallUttrykk>
+public class SumTallUttrykk<C>
+    extends SumUttrykk<Tall, TallUttrykk<?,C>, SumTallUttrykk<C>, C>
+    implements TallUttrykk<SumTallUttrykk<C>,C>
 {
-    private SumTallUttrykk(Collection<TallUttrykk<?>> uttrykk) {
+    private SumTallUttrykk(Collection<TallUttrykk<?,C>> uttrykk) {
         super(uttrykk);
     }
 
@@ -20,11 +20,11 @@ public class SumTallUttrykk
         return Tall.ZERO;
     }
 
-    public static SumTallUttrykk sum(TallUttrykk<?>... uttrykk) {
-        return new SumTallUttrykk(Stream.of(uttrykk).collect(Collectors.toList()));
+    public static <C> SumTallUttrykk sum(TallUttrykk<?,C>... uttrykk) {
+        return new SumTallUttrykk<C>(Stream.of(uttrykk).collect(Collectors.toList()));
     }
 
-    public static SumTallUttrykk sum(Collection<TallUttrykk<?>> uttrykk) {
+    public static <C> SumTallUttrykk sum(Collection<TallUttrykk<?,C>> uttrykk) {
         return new SumTallUttrykk(uttrykk);
     }
 }

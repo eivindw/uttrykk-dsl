@@ -4,10 +4,10 @@ import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.BolskUttrykk;
 import ske.fastsetting.skatt.uttrykk.HvisUttrykk;
 
-public class TallHvisUttrykk extends HvisUttrykk<Tall, TallHvisUttrykk> implements TallUttrykk<TallHvisUttrykk> {
+public class TallHvisUttrykk<C> extends HvisUttrykk<Tall, TallHvisUttrykk<C>, C> implements TallUttrykk<TallHvisUttrykk<C>,C> {
 
-    public static BrukUttrykk<Tall,TallHvisUttrykk> hvis(BolskUttrykk bolskUttrykk) {
-        return new BrukUttrykk<>(bolskUttrykk, new TallHvisUttrykk());
+    public static <C> BrukUttrykk<Tall,TallHvisUttrykk<C>,C> hvis(BolskUttrykk<?,C> bolskUttrykk) {
+        return new BrukUttrykk<>(bolskUttrykk, new TallHvisUttrykk<C>());
     }
 
 }

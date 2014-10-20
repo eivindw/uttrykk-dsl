@@ -4,32 +4,32 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 
-public class GrenseUttrykk extends AbstractUttrykk<Belop, GrenseUttrykk> implements BelopUttrykk<GrenseUttrykk> {
+public class GrenseUttrykk<C> extends AbstractUttrykk<Belop, GrenseUttrykk<C>, C> implements BelopUttrykk<GrenseUttrykk<C>,C> {
 
-    private final BelopUttrykk<?> uttrykk;
-    private BelopUttrykk<?> minimum;
-    private BelopUttrykk<?> maksimum;
+    private final BelopUttrykk<?,C> uttrykk;
+    private BelopUttrykk<?,C> minimum;
+    private BelopUttrykk<?,C> maksimum;
 
-    private GrenseUttrykk(BelopUttrykk uttrykk) {
+    private GrenseUttrykk(BelopUttrykk<?,C> uttrykk) {
         this.uttrykk = uttrykk;
     }
 
-    public static GrenseUttrykk begrens(BelopUttrykk uttrykk) {
-        return new GrenseUttrykk(uttrykk);
+    public static <C> GrenseUttrykk<C> begrens(BelopUttrykk<?,C> uttrykk) {
+        return new GrenseUttrykk<C>(uttrykk);
     }
 
-    public GrenseUttrykk nedad(BelopUttrykk minimum) {
+    public GrenseUttrykk nedad(BelopUttrykk<?,C> minimum) {
         this.minimum = minimum;
         return this;
     }
 
-    public GrenseUttrykk oppad(BelopUttrykk maksimum) {
+    public GrenseUttrykk oppad(BelopUttrykk<?,C> maksimum) {
         this.maksimum = maksimum;
         return this;
     }
 
     @Override
-    public Belop eval(UttrykkContext ctx) {
+    public Belop eval(UttrykkContext<C> ctx) {
         Belop e = ctx.eval(uttrykk);
         if (null != minimum) {
             Belop min = ctx.eval(minimum);
@@ -47,7 +47,7 @@ public class GrenseUttrykk extends AbstractUttrykk<Belop, GrenseUttrykk> impleme
     }
 
     @Override
-    public String beskriv(UttrykkContext ctx) {
+    public String beskriv(UttrykkContext<C> ctx) {
         StringBuilder stringBuilder = new StringBuilder(ctx.beskriv(uttrykk));
         if (null == minimum && null == maksimum) {
             stringBuilder.append(" Advarsel: Uttrykket mangler øvre og/eller nedre grense ");

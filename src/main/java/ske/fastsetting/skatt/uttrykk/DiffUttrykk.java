@@ -2,8 +2,8 @@ package ske.fastsetting.skatt.uttrykk;
 
 import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 
-public abstract class DiffUttrykk<V extends KalkulerbarVerdi<V>, T extends Uttrykk<V, ?>, B extends DiffUttrykk>
-    extends AbstractUttrykk<V, B>
+public abstract class DiffUttrykk<V extends KalkulerbarVerdi<V>, T extends Uttrykk<V, ?, C>, B extends DiffUttrykk<V,T,B,C>, C>
+    extends AbstractUttrykk<V, B, C>
 {
     private final T ledd1;
     private final T ledd2;
@@ -14,12 +14,12 @@ public abstract class DiffUttrykk<V extends KalkulerbarVerdi<V>, T extends Uttry
     }
 
     @Override
-    public V eval(UttrykkContext ctx) {
+    public V eval(UttrykkContext<C> ctx) {
         return ctx.eval(ledd1).minus(ctx.eval(ledd2));
     }
 
     @Override
-    public String beskriv(UttrykkContext ctx) {
+    public String beskriv(UttrykkContext<C> ctx) {
         return "differansen mellom " + ctx.beskriv(ledd1) + " og " + ctx.beskriv(ledd2);
     }
 }

@@ -5,8 +5,8 @@ import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttrykk<T, ?>, B extends SumUttrykk>
-    extends AbstractUttrykk<T, B>
+public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttrykk<T, ?, C>, B extends SumUttrykk<T,U,B,C>, C>
+    extends AbstractUttrykk<T, B, C>
 {
 
     private final Collection<U> uttrykk;
@@ -16,7 +16,7 @@ public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttryk
     }
 
     @Override
-    public T eval(UttrykkContext ctx) {
+    public T eval(UttrykkContext<C> ctx) {
         return uttrykk.stream()
             .map(ctx::eval)
             .reduce((verdi1, verdi2) -> verdi1.pluss(verdi2))
@@ -26,7 +26,7 @@ public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttryk
     protected abstract T nullVerdi();
 
     @Override
-    public String beskriv(UttrykkContext ctx) {
+    public String beskriv(UttrykkContext<C> ctx) {
         return uttrykk.stream()
             .map(ctx::beskriv)
             .collect(Collectors.joining(",", "sum(", ")"));

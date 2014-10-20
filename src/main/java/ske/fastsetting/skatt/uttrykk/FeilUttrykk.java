@@ -1,13 +1,13 @@
 package ske.fastsetting.skatt.uttrykk;
 
-public class FeilUttrykk<T> extends AbstractUttrykk<T, FeilUttrykk> {
+public class FeilUttrykk<T,C> extends AbstractUttrykk<T, FeilUttrykk<T,C>, C> {
     private String feilmelding;
 
     public FeilUttrykk(String feilmelding) {
         this.feilmelding = feilmelding;
     }
 
-    public static <T> FeilUttrykk<T> feil(String feilmelding) {
+    public static <T,C> FeilUttrykk<T,C> feil(String feilmelding) {
         return new FeilUttrykk<>(feilmelding);
     }
 

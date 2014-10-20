@@ -6,25 +6,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext {
+public class UttrykkContextImpl<V,C> implements UttrykkResultat<V>, UttrykkContext<C> {
 
     private final Map<String, Map> uttrykksmap = new HashMap<>();
     private final String start;
+    private final C input;
 
-    public static <X> UttrykkResultat<X> beregne(Uttrykk<X, ?> uttrykk) {
-        return new UttrykkContextImpl<>(uttrykk, true, false);
+    public static <X,C> UttrykkResultat<X> beregne(Uttrykk<X, ?,C> uttrykk, C verdi) {
+        return new UttrykkContextImpl<>(uttrykk, verdi, true, false);
     }
 
-    public static <X> UttrykkResultat<X> beskrive(Uttrykk<X, ?> uttrykk) {
-        return new UttrykkContextImpl<>(uttrykk, false, true);
+    public static <X,C> UttrykkResultat<X> beskrive(Uttrykk<X, ?, C> uttrykk, C verdi) {
+        return new UttrykkContextImpl<>(uttrykk, verdi, false, true);
     }
 
-    public static <X> UttrykkResultat<X> beregneOgBeskrive(Uttrykk<X, ?> uttrykk) {
-        return new UttrykkContextImpl<>(uttrykk, true, true);
+    public static <X, C> UttrykkResultat<X> beregneOgBeskrive(Uttrykk<X, ?,C> uttrykk, C verdi) {
+        return new UttrykkContextImpl<>(uttrykk, verdi, true, true);
     }
 
-    private UttrykkContextImpl(Uttrykk<V, ?> uttrykk, boolean eval, boolean beskriv) {
+    private UttrykkContextImpl(Uttrykk<V, ?, C> uttrykk, C input, boolean eval, boolean beskriv) {
         this.start = uttrykk.id(this);
+        this.input = input;
 
         if (eval) {
             eval(uttrykk);
@@ -51,14 +53,14 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
     }
 
     @Override
-    public String beskriv(Uttrykk uttrykk) {
+    public String beskriv(Uttrykk<?,?,C> uttrykk) {
         initUttrykk(uttrykk).computeIfAbsent(KEY_UTTRYKK, k -> uttrykk.beskriv(this));
 
         return IdUtil.idLink(uttrykk.id(this));
     }
 
     @Override
-    public <X> X eval(Uttrykk<X, ?> uttrykk) {
+    public <X> X eval(Uttrykk<X, ?,C> uttrykk) {
         return (X) initUttrykk(uttrykk).computeIfAbsent(KEY_VERDI, k -> uttrykk.eval(this));
     }
 
@@ -71,6 +73,11 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
         return id;
     }
 
+    @Override
+    public C input() {
+        return input;
+    }
+
     private String lagTilfeldigId() {
         // TODO - denne er ikke garantert unik - for korthet - kom opp med noe bedre :)
         return Integer.toHexString(UUID.randomUUID().hashCode());
@@ -81,7 +88,7 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
         return uttrykksmap.toString();
     }
 
-    private Map initUttrykk(Uttrykk uttrykk) {
+    private Map initUttrykk(Uttrykk<?,?,C> uttrykk) {
         return uttrykksmap.computeIfAbsent(uttrykk.id(this), k -> map(uttrykk));
     }
 

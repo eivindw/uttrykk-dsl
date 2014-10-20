@@ -7,19 +7,19 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MinsteAvUttrykk extends AbstractUttrykk<Belop, MinsteAvUttrykk> implements BelopUttrykk<MinsteAvUttrykk> {
-    private final BelopUttrykk<?>[] uttrykk;
+public class MinsteAvUttrykk<C> extends AbstractUttrykk<Belop, MinsteAvUttrykk<C>, C> implements BelopUttrykk<MinsteAvUttrykk<C>,C> {
+    private final BelopUttrykk<?,C>[] uttrykk;
 
-    private MinsteAvUttrykk(BelopUttrykk[] uttrykk) {
+    private MinsteAvUttrykk(BelopUttrykk<?,C>[] uttrykk) {
         this.uttrykk = uttrykk;
     }
 
-    public static MinsteAvUttrykk minsteAv(BelopUttrykk... uttrykk) {
-        return new MinsteAvUttrykk(uttrykk);
+    public static <C> MinsteAvUttrykk minsteAv(BelopUttrykk<?,C>... uttrykk) {
+        return new MinsteAvUttrykk<C>(uttrykk);
     }
 
     @Override
-    public Belop eval(UttrykkContext ctx) {
+    public Belop eval(UttrykkContext<C> ctx) {
         return Stream.of(uttrykk)
             .map(ctx::eval)
             .min(Belop::sammenliknMed).get();
