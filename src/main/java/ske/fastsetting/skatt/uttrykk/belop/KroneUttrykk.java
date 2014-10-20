@@ -6,7 +6,7 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 
 import java.math.BigInteger;
 
-public class KroneUttrykk<C> extends AbstractUttrykk<Belop, KroneUttrykk<C>, C> implements BelopUttrykk<KroneUttrykk<C>,C> {
+public class KroneUttrykk<C> extends AbstractUttrykk<Belop, KroneUttrykk<C>, C> implements BelopUttrykk<C> {
 
     private final Belop kroner;
 

@@ -4,26 +4,26 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 
-public class GrenseUttrykk<C> extends AbstractUttrykk<Belop, GrenseUttrykk<C>, C> implements BelopUttrykk<GrenseUttrykk<C>,C> {
+public class GrenseUttrykk<C> extends AbstractUttrykk<Belop, GrenseUttrykk<C>, C> implements BelopUttrykk<C> {
 
-    private final BelopUttrykk<?,C> uttrykk;
-    private BelopUttrykk<?,C> minimum;
-    private BelopUttrykk<?,C> maksimum;
+    private final BelopUttrykk<C> uttrykk;
+    private BelopUttrykk<C> minimum;
+    private BelopUttrykk<C> maksimum;
 
-    private GrenseUttrykk(BelopUttrykk<?,C> uttrykk) {
+    private GrenseUttrykk(BelopUttrykk<C> uttrykk) {
         this.uttrykk = uttrykk;
     }
 
-    public static <C> GrenseUttrykk<C> begrens(BelopUttrykk<?,C> uttrykk) {
+    public static <C> GrenseUttrykk<C> begrens(BelopUttrykk<C> uttrykk) {
         return new GrenseUttrykk<C>(uttrykk);
     }
 
-    public GrenseUttrykk nedad(BelopUttrykk<?,C> minimum) {
+    public GrenseUttrykk nedad(BelopUttrykk<C> minimum) {
         this.minimum = minimum;
         return this;
     }
 
-    public GrenseUttrykk oppad(BelopUttrykk<?,C> maksimum) {
+    public GrenseUttrykk oppad(BelopUttrykk<C> maksimum) {
         this.maksimum = maksimum;
         return this;
     }

@@ -3,13 +3,13 @@ package ske.fastsetting.skatt.uttrykk;
 import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
-public abstract class MultiplikasjonsUttrykk<V extends KalkulerbarVerdi<V>, T extends Uttrykk<V, ?, C>, B extends MultiplikasjonsUttrykk<V,T,B,C>, C>
+public abstract class MultiplikasjonsUttrykk<V extends KalkulerbarVerdi<V>, T extends Uttrykk<V, C>, B extends MultiplikasjonsUttrykk<V,T,B,C>, C>
     extends AbstractUttrykk<V, B, C>
 {
     protected final T faktor1;
-    protected final TallUttrykk<?,C> faktor2;
+    protected final TallUttrykk<C> faktor2;
 
-    protected MultiplikasjonsUttrykk(T faktor1, TallUttrykk<?,C> faktor2) {
+    protected MultiplikasjonsUttrykk(T faktor1, TallUttrykk<C> faktor2) {
         this.faktor1 = faktor1;
         this.faktor2 = faktor2;
     }

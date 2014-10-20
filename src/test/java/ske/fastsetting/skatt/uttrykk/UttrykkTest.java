@@ -19,7 +19,7 @@ public class UttrykkTest {
 
     @Test
     public void tallUttrykk() {
-        Uttrykk<Belop, ?,Skattegrunnlag> en = kr(1);
+        Uttrykk<Belop, Skattegrunnlag> en = kr(1);
 
         assertEquals(new Belop(1), en.eval(null));
     }
@@ -27,8 +27,8 @@ public class UttrykkTest {
     @Test
     public void prosentUttrykk() {
 
-        final BelopUttrykk<?,Skattegrunnlag> ti = kr(100).multiplisertMed(prosent(10)).navn("asdad");
-        final BelopUttrykk<?,Skattegrunnlag> tjue = sum(ti, ti,post("2.1.1")).navn("asdasd");
+        final BelopUttrykk<Skattegrunnlag> ti = kr(100).multiplisertMed(prosent(10)).navn("asdad");
+        final BelopUttrykk<Skattegrunnlag> tjue = sum(ti, ti,post("2.1.1")).navn("asdasd");
 
         Skattegrunnlag sg = new Skattegrunnlag();
 
@@ -43,8 +43,8 @@ public class UttrykkTest {
 
     @Test
     public void sumUttrykk() {
-        final BelopUttrykk<?,Skattegrunnlag> lonn = kr(6);
-        final BelopUttrykk<?, Skattegrunnlag> sum = sum(
+        final BelopUttrykk<Skattegrunnlag> lonn = kr(6);
+        final BelopUttrykk<Skattegrunnlag> sum = sum(
             kr(2),
             sum(
                 lonn,
@@ -71,7 +71,7 @@ public class UttrykkTest {
     }
 
 
-    public static class PostUttrykk extends AbstractUttrykk<Belop,PostUttrykk,Skattegrunnlag> implements BelopUttrykk<PostUttrykk,Skattegrunnlag> {
+    public static class PostUttrykk extends AbstractUttrykk<Belop,PostUttrykk,Skattegrunnlag> implements BelopUttrykk<Skattegrunnlag> {
 
        private String postnummer;
 
@@ -95,8 +95,5 @@ public class UttrykkTest {
         }
     }
 
-    public static interface SGBelopUttrykk<B extends Uttrykk<Belop,B,Skattegrunnlag>> extends Uttrykk<Belop,B,Skattegrunnlag> {
-
-    }
 
 }

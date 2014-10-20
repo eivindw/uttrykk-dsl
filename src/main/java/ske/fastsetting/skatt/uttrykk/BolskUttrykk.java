@@ -1,20 +1,20 @@
 package ske.fastsetting.skatt.uttrykk;
 
-public abstract class BolskUttrykk<B extends BolskUttrykk<B,C>, C> extends AbstractUttrykk<Boolean, B, C> {
-    public BolskUttrykk og(BolskUttrykk<?,C> uttrykk) {
+public abstract class BolskUttrykk<C> extends AbstractUttrykk<Boolean, BolskUttrykk<C>, C> {
+    public BolskUttrykk og(BolskUttrykk<C> uttrykk) {
         return new OgUttrykk<C>(this, uttrykk);
     }
 
-    public BolskUttrykk eller(BolskUttrykk<?,C> uttrykk) {
+    public BolskUttrykk eller(BolskUttrykk<C> uttrykk) {
         return new EllerUttrykk<C>(this, uttrykk);
     }
 
-    static class OgUttrykk<C> extends BolskUttrykk<OgUttrykk<C>, C> {
+    static class OgUttrykk<C> extends BolskUttrykk<C> {
 
-        private final BolskUttrykk<?,C> forsteUttrykk;
-        private final BolskUttrykk<?,C> andreUttrykk;
+        private final BolskUttrykk<C> forsteUttrykk;
+        private final BolskUttrykk<C> andreUttrykk;
 
-        public OgUttrykk(BolskUttrykk<?,C> forsteUttrykk, BolskUttrykk<?,C> andreUttrykk) {
+        public OgUttrykk(BolskUttrykk<C> forsteUttrykk, BolskUttrykk<C> andreUttrykk) {
             this.forsteUttrykk = forsteUttrykk;
             this.andreUttrykk = andreUttrykk;
         }
@@ -30,11 +30,11 @@ public abstract class BolskUttrykk<B extends BolskUttrykk<B,C>, C> extends Abstr
         }
     }
 
-    static class EllerUttrykk<C> extends BolskUttrykk<EllerUttrykk<C>,C> {
-        private final BolskUttrykk<?,C> forsteUttrykk;
-        private final BolskUttrykk<?,C> andreUttrykk;
+    static class EllerUttrykk<C> extends BolskUttrykk<C> {
+        private final BolskUttrykk<C> forsteUttrykk;
+        private final BolskUttrykk<C> andreUttrykk;
 
-        public EllerUttrykk(BolskUttrykk<?,C> forsteUttrykk, BolskUttrykk<?,C> andreUttrykk) {
+        public EllerUttrykk(BolskUttrykk<C> forsteUttrykk, BolskUttrykk<C> andreUttrykk) {
             this.forsteUttrykk = forsteUttrykk;
             this.andreUttrykk = andreUttrykk;
         }

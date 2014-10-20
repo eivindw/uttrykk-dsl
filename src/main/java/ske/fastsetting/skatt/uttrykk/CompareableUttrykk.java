@@ -1,36 +1,36 @@
 package ske.fastsetting.skatt.uttrykk;
 
-public interface CompareableUttrykk<T extends Comparable<T>, B extends CompareableUttrykk<T,B,C>, C> extends Uttrykk<T, B,C> {
+public interface CompareableUttrykk<T extends Comparable<T>, C> extends Uttrykk<T,C> {
 
-    default BolskUttrykk<?,C> erStorreEnn(CompareableUttrykk<T, ?,C> belop) {
-        return new ErStorreEnn<T,C>(this, belop);
+    default BolskUttrykk<C> erStorreEnn(CompareableUttrykk<T, C> belop) {
+        return new ErStorreEnn<>(this, belop);
     }
 
-    default BolskUttrykk<?,C> er(CompareableUttrykk<T, ?,C> belop) {
-        return new ErLik<T,C>(this, belop);
+    default BolskUttrykk<C> er(CompareableUttrykk<T, C> belop) {
+        return new ErLik<>(this, belop);
     }
 
-    default BolskUttrykk<?,C> ikkeEr(CompareableUttrykk<T, ?,C> belop) {
-        return new IkkeErLik<T,C>(this, belop);
+    default BolskUttrykk<C> ikkeEr(CompareableUttrykk<T,C> belop) {
+        return new IkkeErLik<>(this, belop);
     }
 
-    default BolskUttrykk<?,C> erMellom(CompareableUttrykk<T, ?,C> fra, CompareableUttrykk<T, ?,C> til) {
-        return new ErMellom<T,C>(this, fra, til);
+    default BolskUttrykk<C> erMellom(CompareableUttrykk<T,C> fra, CompareableUttrykk<T,C> til) {
+        return new ErMellom<>(this, fra, til);
     }
 
-    default BolskUttrykk<?,C> erMindreEnnEllerLik(CompareableUttrykk<T, ?,?> belop) {
-        return new ErMindreEnnEllerLik(this, belop);
+    default BolskUttrykk<C> erMindreEnnEllerLik(CompareableUttrykk<T, C> belop) {
+        return new ErMindreEnnEllerLik<>(this, belop);
     }
 
-    default BolskUttrykk<?,?> erMindreEnn(CompareableUttrykk<T, ?,?> belop) {
-        return new ErMindreEnn(this, belop);
+    default BolskUttrykk<C> erMindreEnn(CompareableUttrykk<T, C> belop) {
+        return new ErMindreEnn<>(this, belop);
     }
 
-    static class ErStorreEnn<T extends Comparable<T>,C> extends BolskUttrykk<ErStorreEnn<T,C>,C> {
-        private final CompareableUttrykk<T, ?,C> belopUttrykk;
-        private final CompareableUttrykk<T, ?, C> sammenliknMed;
+    static class ErStorreEnn<T extends Comparable<T>,C> extends BolskUttrykk<C> {
+        private final CompareableUttrykk<T, C> belopUttrykk;
+        private final CompareableUttrykk<T, C> sammenliknMed;
 
-        public ErStorreEnn(CompareableUttrykk<T, ?, C> belopUttrykk, CompareableUttrykk<T, ?, C> sammenliknMed) {
+        public ErStorreEnn(CompareableUttrykk<T, C> belopUttrykk, CompareableUttrykk<T, C> sammenliknMed) {
             this.belopUttrykk = belopUttrykk;
             this.sammenliknMed = sammenliknMed;
         }
@@ -41,16 +41,16 @@ public interface CompareableUttrykk<T extends Comparable<T>, B extends Compareab
         }
 
         @Override
-        public String beskriv(UttrykkContext ctx) {
+        public String beskriv(UttrykkContext<C> ctx) {
             return ctx.beskriv(belopUttrykk) + " er større enn " + ctx.beskriv(sammenliknMed);
         }
     }
 
-    static class ErLik<T extends Comparable<T>,C> extends BolskUttrykk<ErLik<T,C>,C> {
-        private final CompareableUttrykk<T, ?, C> belopUttrykk1;
-        private final CompareableUttrykk<T, ?, C> belopUttrykk2;
+    static class ErLik<T extends Comparable<T>,C> extends BolskUttrykk<C> {
+        private final CompareableUttrykk<T, C> belopUttrykk1;
+        private final CompareableUttrykk<T, C> belopUttrykk2;
 
-        public ErLik(CompareableUttrykk<T, ?, C> belopUttrykk1, CompareableUttrykk<T, ?, C> belopUttrykk2) {
+        public ErLik(CompareableUttrykk<T, C> belopUttrykk1, CompareableUttrykk<T, C> belopUttrykk2) {
             this.belopUttrykk1 = belopUttrykk1;
             this.belopUttrykk2 = belopUttrykk2;
         }
@@ -66,11 +66,11 @@ public interface CompareableUttrykk<T extends Comparable<T>, B extends Compareab
         }
     }
 
-    static class IkkeErLik<T extends Comparable<T>, C> extends BolskUttrykk<IkkeErLik<T,C>, C> {
-        private final CompareableUttrykk<T, ?, C> belopUttrykk1;
-        private final CompareableUttrykk<T, ?, C> belopUttrykk2;
+    static class IkkeErLik<T extends Comparable<T>, C> extends BolskUttrykk<C> {
+        private final CompareableUttrykk<T, C> belopUttrykk1;
+        private final CompareableUttrykk<T, C> belopUttrykk2;
 
-        public IkkeErLik(CompareableUttrykk<T, ?, C> belopUttrykk1, CompareableUttrykk<T, ?,C> belopUttrykk2) {
+        public IkkeErLik(CompareableUttrykk<T, C> belopUttrykk1, CompareableUttrykk<T, C> belopUttrykk2) {
             this.belopUttrykk1 = belopUttrykk1;
             this.belopUttrykk2 = belopUttrykk2;
         }
@@ -86,12 +86,12 @@ public interface CompareableUttrykk<T extends Comparable<T>, B extends Compareab
         }
     }
 
-    static class ErMellom<T extends Comparable<T>, C> extends BolskUttrykk<ErMellom<T,C>,C> {
-        private final CompareableUttrykk<T, ?, C> belopUttrykk;
-        private final CompareableUttrykk<T, ?, C> fraBelopUttrykk;
-        private final CompareableUttrykk<T, ?, C> tilBelopUttrykk;
+    static class ErMellom<T extends Comparable<T>, C> extends BolskUttrykk<C> {
+        private final CompareableUttrykk<T, C> belopUttrykk;
+        private final CompareableUttrykk<T, C> fraBelopUttrykk;
+        private final CompareableUttrykk<T, C> tilBelopUttrykk;
 
-        public ErMellom(CompareableUttrykk<T, ?, C> belopUttrykk, CompareableUttrykk<T, ?, C> fra, CompareableUttrykk<T, ?, C> til) {
+        public ErMellom(CompareableUttrykk<T, C> belopUttrykk, CompareableUttrykk<T, C> fra, CompareableUttrykk<T, C> til) {
             this.belopUttrykk = belopUttrykk;
             fraBelopUttrykk = fra;
             tilBelopUttrykk = til;
@@ -115,11 +115,11 @@ public interface CompareableUttrykk<T extends Comparable<T>, B extends Compareab
 
     }
 
-    static class ErMindreEnnEllerLik<T extends Comparable<T>, C> extends BolskUttrykk<ErMindreEnnEllerLik<T,C>, C> {
-        private final CompareableUttrykk<T, ?, C> belopUttrykk;
-        private final CompareableUttrykk<T, ?, C> sammenliknMed;
+    static class ErMindreEnnEllerLik<T extends Comparable<T>, C> extends BolskUttrykk<C> {
+        private final CompareableUttrykk<T, C> belopUttrykk;
+        private final CompareableUttrykk<T, C> sammenliknMed;
 
-        public ErMindreEnnEllerLik(CompareableUttrykk<T, ?, C> belopUttrykk, CompareableUttrykk<T, ?, C> sammenliknMed) {
+        public ErMindreEnnEllerLik(CompareableUttrykk<T, C> belopUttrykk, CompareableUttrykk<T, C> sammenliknMed) {
             this.belopUttrykk = belopUttrykk;
             this.sammenliknMed = sammenliknMed;
         }
@@ -135,11 +135,11 @@ public interface CompareableUttrykk<T extends Comparable<T>, B extends Compareab
         }
     }
 
-    static class ErMindreEnn<T extends Comparable<T>, C> extends BolskUttrykk<ErMindreEnn<T,C>, C> {
-        private final CompareableUttrykk<T, ?, C> belopUttrykk;
-        private final CompareableUttrykk<T, ?, C> sammenliknMed;
+    static class ErMindreEnn<T extends Comparable<T>, C> extends BolskUttrykk<C> {
+        private final CompareableUttrykk<T, C> belopUttrykk;
+        private final CompareableUttrykk<T, C> sammenliknMed;
 
-        public ErMindreEnn(CompareableUttrykk<T, ?, C> belopUttrykk, CompareableUttrykk<T, ?, C> sammenliknMed) {
+        public ErMindreEnn(CompareableUttrykk<T, C> belopUttrykk, CompareableUttrykk<T, C> sammenliknMed) {
             this.belopUttrykk = belopUttrykk;
             this.sammenliknMed = sammenliknMed;
         }

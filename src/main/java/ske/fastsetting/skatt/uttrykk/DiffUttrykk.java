@@ -2,7 +2,7 @@ package ske.fastsetting.skatt.uttrykk;
 
 import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 
-public abstract class DiffUttrykk<V extends KalkulerbarVerdi<V>, T extends Uttrykk<V, ?, C>, B extends DiffUttrykk<V,T,B,C>, C>
+public abstract class DiffUttrykk<V extends KalkulerbarVerdi<V>, T extends Uttrykk<V, C>, B extends DiffUttrykk<V,T,B,C>, C>
     extends AbstractUttrykk<V, B, C>
 {
     private final T ledd1;
