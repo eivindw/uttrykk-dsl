@@ -6,21 +6,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class UttrykkContextImpl<V,C> implements UttrykkResultat<V>, UttrykkContext<C> {
+public class UttrykkContextImpl<V, C> implements UttrykkResultat<V>, UttrykkContext<C> {
 
     private final Map<String, Map> uttrykksmap = new HashMap<>();
     private final String start;
     private final C input;
 
-    public static <X,C> UttrykkResultat<X> beregne(Uttrykk<X, ?,C> uttrykk, C verdi) {
+    public static <X, C> UttrykkResultat<X> beregne(Uttrykk<X, ?, C> uttrykk, C verdi) {
         return new UttrykkContextImpl<>(uttrykk, verdi, true, false);
     }
 
-    public static <X,C> UttrykkResultat<X> beskrive(Uttrykk<X, ?, C> uttrykk, C verdi) {
+    public static <X, C> UttrykkResultat<X> beskrive(Uttrykk<X, ?, C> uttrykk, C verdi) {
         return new UttrykkContextImpl<>(uttrykk, verdi, false, true);
     }
 
-    public static <X, C> UttrykkResultat<X> beregneOgBeskrive(Uttrykk<X, ?,C> uttrykk, C verdi) {
+    public static <X, C> UttrykkResultat<X> beregneOgBeskrive(Uttrykk<X, ?, C> uttrykk, C verdi) {
         return new UttrykkContextImpl<>(uttrykk, verdi, true, true);
     }
 
@@ -58,14 +58,14 @@ public class UttrykkContextImpl<V,C> implements UttrykkResultat<V>, UttrykkConte
     }
 
     @Override
-    public String beskriv(Uttrykk<?,?,C> uttrykk) {
+    public String beskriv(Uttrykk<?, ?, C> uttrykk) {
         initUttrykk(uttrykk).computeIfAbsent(KEY_UTTRYKK, k -> uttrykk.beskriv(this));
 
         return IdUtil.idLink(uttrykk.id(this));
     }
 
     @Override
-    public <X> X eval(Uttrykk<X, ?,C> uttrykk) {
+    public <X> X eval(Uttrykk<X, ?, C> uttrykk) {
         return (X) initUttrykk(uttrykk).computeIfAbsent(KEY_VERDI, k -> uttrykk.eval(this));
     }
 
@@ -93,7 +93,7 @@ public class UttrykkContextImpl<V,C> implements UttrykkResultat<V>, UttrykkConte
         return uttrykksmap.toString();
     }
 
-    private Map initUttrykk(Uttrykk<?,?,C> uttrykk) {
+    private Map initUttrykk(Uttrykk<?, ?, C> uttrykk) {
         return uttrykksmap.computeIfAbsent(uttrykk.id(this), k -> map(uttrykk));
     }
 

@@ -21,7 +21,7 @@ public class SumTallUttrykk<C>
     }
 
     public static <C> SumTallUttrykk sum(TallUttrykk<?,C>... uttrykk) {
-        return new SumTallUttrykk<C>(Stream.of(uttrykk).collect(Collectors.toList()));
+        return new SumTallUttrykk<>(Stream.of(uttrykk).collect(Collectors.toList()));
     }
 
     public static <C> SumTallUttrykk sum(Collection<TallUttrykk<?,C>> uttrykk) {

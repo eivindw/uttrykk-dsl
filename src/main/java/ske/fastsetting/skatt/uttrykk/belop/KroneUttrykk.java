@@ -15,11 +15,11 @@ public class KroneUttrykk<C> extends AbstractUttrykk<Belop, KroneUttrykk<C>, C> 
     }
 
     public static <C> KroneUttrykk<C> kr(int belop) {
-        return new KroneUttrykk<C>(new Belop(belop));
+        return new KroneUttrykk<>(new Belop(belop));
     }
 
     public static <C> KroneUttrykk<C> kr(BigInteger belop) {
-        return new KroneUttrykk<C>(new Belop(belop.intValue()));
+        return new KroneUttrykk<>(new Belop(belop.intValue()));
     }
 
     @Override
