@@ -4,12 +4,11 @@ import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
-import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
 
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.UttrykkContextImpl.*;
 import static ske.fastsetting.skatt.uttrykk.UttrykkTest.PostUttrykk.post;
-import static ske.fastsetting.skatt.uttrykk.UttrykkTest.SkattegrunnlagHelper.kr;
+import static ske.fastsetting.skatt.uttrykk.SkattegrunnlagHelper.kr;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopSumUttrykk.sum;
 import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
 import static ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver.print;
@@ -70,13 +69,6 @@ public class UttrykkTest {
         }
 
     }
-
-    public static class SkattegrunnlagHelper {
-        public static KroneUttrykk<Skattegrunnlag> kr(int belop) {
-            return KroneUttrykk.kr(belop);
-        }
-    }
-
 
 
     public static class PostUttrykk extends AbstractUttrykk<Belop,PostUttrykk,Skattegrunnlag> implements BelopUttrykk<PostUttrykk,Skattegrunnlag> {
