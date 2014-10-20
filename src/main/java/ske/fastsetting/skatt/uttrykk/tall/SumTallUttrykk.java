@@ -20,6 +20,7 @@ public class SumTallUttrykk<C>
         return Tall.ZERO;
     }
 
+    @SafeVarargs
     public static <C> SumTallUttrykk<C> sum(TallUttrykk<C>... uttrykk) {
         return new SumTallUttrykk<C>(Stream.of(uttrykk).collect(Collectors.toList()));
     }

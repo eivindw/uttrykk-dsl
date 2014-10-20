@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class UttrykkContextImpl<V,C> implements UttrykkResultat<V>, UttrykkContext<C> {
+public class UttrykkContextImpl<V, C> implements UttrykkResultat<V>, UttrykkContext<C> {
 
     private final Map<String, Map> uttrykksmap = new HashMap<>();
     private final String start;
