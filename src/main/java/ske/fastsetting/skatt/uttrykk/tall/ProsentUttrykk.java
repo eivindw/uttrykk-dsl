@@ -13,7 +13,7 @@ public class ProsentUttrykk<C> extends AbstractUttrykk<Tall, ProsentUttrykk<C>, 
     }
 
     public static <C> ProsentUttrykk<C> prosent(double prosent) {
-        return new ProsentUttrykk<C>(Tall.prosent(prosent));
+        return new ProsentUttrykk<>(Tall.prosent(prosent));
     }
 
     @Override

@@ -1,11 +1,11 @@
 package ske.fastsetting.skatt.uttrykk;
 
 public abstract class BolskUttrykk<C> extends AbstractUttrykk<Boolean, BolskUttrykk<C>, C> {
-    public BolskUttrykk og(BolskUttrykk<C> uttrykk) {
+    public BolskUttrykk<C> og(BolskUttrykk<C> uttrykk) {
         return new OgUttrykk<C>(this, uttrykk);
     }
 
-    public BolskUttrykk eller(BolskUttrykk<C> uttrykk) {
+    public BolskUttrykk<C> eller(BolskUttrykk<C> uttrykk) {
         return new EllerUttrykk<C>(this, uttrykk);
     }
 

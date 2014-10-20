@@ -22,7 +22,7 @@ public class SumTallUttrykk<C>
 
     @SafeVarargs
     public static <C> SumTallUttrykk<C> sum(TallUttrykk<C>... uttrykk) {
-        return new SumTallUttrykk<C>(Stream.of(uttrykk).collect(Collectors.toList()));
+        return new SumTallUttrykk<>(Stream.of(uttrykk).collect(Collectors.toList()));
     }
 
     public static <C> SumTallUttrykk<C> sum(Collection<TallUttrykk<C>> uttrykk) {

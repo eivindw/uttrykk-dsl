@@ -13,8 +13,6 @@ import static ske.fastsetting.skatt.uttrykk.belop.BelopSumUttrykk.sum;
 import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
 import static ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver.print;
 
-//import static ske.fastsetting.skatt.uttrykk.UttrykkTest.ProsentStringUttrykk.prosent;
-
 public class UttrykkTest {
 
     @Test
@@ -26,19 +24,18 @@ public class UttrykkTest {
 
     @Test
     public void prosentUttrykk() {
-
         final BelopUttrykk<Skattegrunnlag> ti = kr(100).multiplisertMed(prosent(10)).navn("asdad");
-        final BelopUttrykk<Skattegrunnlag> tjue = sum(ti, ti,post("2.1.1")).navn("asdasd");
+        final BelopUttrykk<Skattegrunnlag> tjue = sum(ti, ti, post("2.1.1")).navn("asdasd");
 
         Skattegrunnlag sg = new Skattegrunnlag();
 
-        assertEquals(new Belop(65), beregne(tjue,sg).verdi());
+        assertEquals(new Belop(65), beregne(tjue, sg).verdi());
 
-        print(beregne(tjue,sg));
+        print(beregne(tjue, sg));
         System.out.println("\n###");
-        print(beskrive(tjue,sg));
+        print(beskrive(tjue, sg));
         System.out.println("\n###");
-        print(beregneOgBeskrive(tjue,sg));
+        print(beregneOgBeskrive(tjue, sg));
     }
 
     @Test
@@ -50,32 +47,30 @@ public class UttrykkTest {
                 lonn,
                 kr(2).navn("Test"),
                 post("4.3.3").navn("dasdad")
-            ).regler(Regel.skatteloven("323","2323")),
+            ).regler(Regel.skatteloven("323", "2323")),
             kr(4),
             lonn.multiplisertMed(prosent(50))
         ).navn("Hallo");
 
         Skattegrunnlag sg = new Skattegrunnlag();
-        UttrykkResultat ctx = beregneOgBeskrive(sum,sg);
+        UttrykkResultat ctx = beregneOgBeskrive(sum, sg);
 
         assertEquals(new Belop(62), ctx.verdi());
 
         print(ctx);
     }
 
+    public static class PostUttrykk extends AbstractUttrykk<Belop, PostUttrykk, Skattegrunnlag> implements BelopUttrykk<Skattegrunnlag> {
 
-    public static class PostUttrykk extends AbstractUttrykk<Belop,PostUttrykk,Skattegrunnlag> implements BelopUttrykk<Skattegrunnlag> {
+        private String postnummer;
 
-       private String postnummer;
+        public PostUttrykk(String postnr) {
+            this.postnummer = postnr;
+        }
 
-
-       public PostUttrykk(String postnr) {
-           this.postnummer =postnr;
-       }
-
-       public static PostUttrykk post(String postnummer) {
-           return new PostUttrykk(postnummer);
-       }
+        public static PostUttrykk post(String postnummer) {
+            return new PostUttrykk(postnummer);
+        }
 
         @Override
         public Belop eval(UttrykkContext<Skattegrunnlag> ctx) {
@@ -84,9 +79,7 @@ public class UttrykkTest {
 
         @Override
         public String beskriv(UttrykkContext<Skattegrunnlag> ctx) {
-            return "Post "+postnummer;
+            return "Post " + postnummer;
         }
     }
-
-
 }

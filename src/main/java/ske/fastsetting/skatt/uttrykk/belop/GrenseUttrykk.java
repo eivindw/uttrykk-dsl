@@ -15,15 +15,15 @@ public class GrenseUttrykk<C> extends AbstractUttrykk<Belop, GrenseUttrykk<C>, C
     }
 
     public static <C> GrenseUttrykk<C> begrens(BelopUttrykk<C> uttrykk) {
-        return new GrenseUttrykk<C>(uttrykk);
+        return new GrenseUttrykk<>(uttrykk);
     }
 
-    public GrenseUttrykk nedad(BelopUttrykk<C> minimum) {
+    public GrenseUttrykk<C> nedad(BelopUttrykk<C> minimum) {
         this.minimum = minimum;
         return this;
     }
 
-    public GrenseUttrykk oppad(BelopUttrykk<C> maksimum) {
+    public GrenseUttrykk<C> oppad(BelopUttrykk<C> maksimum) {
         this.maksimum = maksimum;
         return this;
     }

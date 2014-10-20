@@ -101,8 +101,8 @@ public class UttrykkContextImpl<V, C> implements UttrykkResultat<V>, UttrykkCont
         Map<String, Object> map = new HashMap<>();
 
         map.computeIfAbsent(KEY_NAVN, k -> uttrykk.navn());
-//        map.computeIfAbsent(KEY_REGLER, k -> uttrykk.regler());
-//        map.computeIfAbsent(KEY_TAGS, k -> uttrykk.tags());
+        map.computeIfAbsent(KEY_REGLER, k -> uttrykk.regler());
+        map.computeIfAbsent(KEY_TAGS, k -> uttrykk.tags());
 
         return map;
     }

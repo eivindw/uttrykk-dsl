@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public abstract class AbstractUttrykk<V, B extends Uttrykk<V,C>, C> implements Uttrykk<V, C> {
+public abstract class AbstractUttrykk<V, B extends AbstractUttrykk<V, B, C>, C> implements Uttrykk<V, C> {
 
     private String id;
     private String navn;
@@ -16,15 +16,10 @@ public abstract class AbstractUttrykk<V, B extends Uttrykk<V,C>, C> implements U
     private List<Regel> regler;
 
     @SuppressWarnings("unchecked")
-    private B self = (B) this;
+    protected B self = (B) this;
 
     public B navn(String navn) {
         this.navn = navn;
-        return self;
-    }
-
-    public B tag(String tag) {
-        tags.add(tag);
         return self;
     }
 

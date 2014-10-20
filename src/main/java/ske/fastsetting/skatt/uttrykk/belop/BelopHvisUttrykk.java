@@ -6,6 +6,6 @@ import ske.fastsetting.skatt.uttrykk.HvisUttrykk;
 
 public class BelopHvisUttrykk<C> extends HvisUttrykk<Belop, BelopHvisUttrykk<C>,C> implements BelopUttrykk<C> {
     public static <C> BrukUttrykk<Belop,BelopHvisUttrykk<C>, C> hvis(BolskUttrykk<C> uttrykk) {
-        return new BrukUttrykk<>(uttrykk, new BelopHvisUttrykk<C>());
+        return new BrukUttrykk<>(uttrykk, new BelopHvisUttrykk<>());
     }
 }

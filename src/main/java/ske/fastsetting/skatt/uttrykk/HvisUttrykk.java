@@ -5,16 +5,13 @@ import java.util.List;
 
 import static ske.fastsetting.skatt.uttrykk.FeilUttrykk.feil;
 
-public abstract class HvisUttrykk<T, B extends HvisUttrykk<T, B,C>, C> extends AbstractUttrykk<T, B, C> {
+public abstract class HvisUttrykk<T, B extends HvisUttrykk<T, B, C>, C> extends AbstractUttrykk<T, B, C> {
     private Uttrykk<T, C> ellersBruk = feil("Hvis-uttrykk mangler en verdi for ellersBruk");
     protected List<BrukUttrykk<T, B, C>> brukHvis = new ArrayList<>();
 
-    @SuppressWarnings("unchecked")
-    private B self = (B) this;
-
     @Override
     public T eval(UttrykkContext<C> ctx) {
-        for (BrukUttrykk<T, B,C> brukUttrykk : brukHvis) {
+        for (BrukUttrykk<T, B, C> brukUttrykk : brukHvis) {
             if (ctx.eval(brukUttrykk.bolskUttrykk)) {
                 return ctx.eval(brukUttrykk.brukDa);
             }
@@ -46,7 +43,7 @@ public abstract class HvisUttrykk<T, B extends HvisUttrykk<T, B,C>, C> extends A
         return new BrukUttrykk<>(bolskUttrykk, self);
     }
 
-    public static class BrukUttrykk<T, B extends HvisUttrykk<T, B, C>,C>  {
+    public static class BrukUttrykk<T, B extends HvisUttrykk<T, B, C>, C> {
 
         private final BolskUttrykk<C> bolskUttrykk;
         private final B hvisUttrykk;
