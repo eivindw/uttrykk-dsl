@@ -11,9 +11,9 @@ import java.util.stream.Stream;
 public abstract class AbstractUttrykk<V, B extends Uttrykk<V,B,C>, C> implements Uttrykk<V, B, C> {
 
     private String id;
-    private String navn = "";
-    private Set<String> tags = new HashSet<>();
-    private List<Regel> regler = new ArrayList<>();
+    private String navn;
+    private Set<String> tags;
+    private List<Regel> regler;
 
     @SuppressWarnings("unchecked")
     private B self = (B) this;
@@ -25,11 +25,25 @@ public abstract class AbstractUttrykk<V, B extends Uttrykk<V,B,C>, C> implements
 
     public B tag(String tag) {
         tags.add(tag);
+        return self;
+    }
+
+    @Override
+    public B tags(String... tags) {
+        if (this.tags == null) {
+            this.tags = new HashSet<>();
+        }
+
+        Stream.of(tags).forEach(this.tags::add);
 
         return self;
     }
 
     public B regler(Regel... regel) {
+        if (regler == null) {
+            regler = new ArrayList<>();
+        }
+
         Stream.of(regel).forEach(regler::add);
 
         return self;

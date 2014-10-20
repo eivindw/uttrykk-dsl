@@ -36,6 +36,9 @@ public interface BelopUttrykk<B extends BelopUttrykk<B,C>, C> extends Compareabl
 
     B tag(String tag);
 
+    @Override
+    B tags(String... tags);
+
     static class BelopDividertMedBelopUttrykk<C> extends AbstractUttrykk<Tall, BelopDividertMedBelopUttrykk<C>,C> implements TallUttrykk<BelopDividertMedBelopUttrykk<C>, C> {
         private final BelopUttrykk<?,C> divisior;
         private final BelopUttrykk<?,C> divident;

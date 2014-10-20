@@ -4,6 +4,8 @@ import java.net.URI;
 
 public class Regel {
 
+    private static final String PARAGRAF_TEGN = "§";
+
     private enum RegelType {
         Skattevedtak(
             "Stortingets skattevedtak",
@@ -61,23 +63,19 @@ public class Regel {
         this.underpunkt = underpunkt;
     }
 
-    public String getTittel() {
+    public String tittel() {
         return regel.getTittel();
     }
 
-    public String getParagraf() {
+    public String paragraf() {
         return paragraf;
     }
 
-    public String getKortnavnOgParagraf() {
-        return regel.getKortnavn() + " §" + paragraf;
+    public String kortnavnOgParagraf() {
+        return regel.getKortnavn() + " " + PARAGRAF_TEGN + paragraf;
     }
 
-    public String getTittelOgParagraf() {
-        return regel.getTittel() + " §" + paragraf;
-    }
-
-    public URI getLovdataUri() {
-        return URI.create("http://lovdata.no/" + regel.getLovdataRef() + "/§" + paragraf);
+    public URI uri() {
+        return URI.create("http://lovdata.no/" + regel.getLovdataRef() + "/" + PARAGRAF_TEGN + paragraf);
     }
 }

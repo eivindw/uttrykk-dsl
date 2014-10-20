@@ -18,7 +18,7 @@ public interface Uttrykk<V, B extends Uttrykk<V,B,C>, C>  {
 
     Set<String> tags();
 
-    B tag(String tag);
+    B tags(String... tags);
 
     List<Regel> regler();
 
