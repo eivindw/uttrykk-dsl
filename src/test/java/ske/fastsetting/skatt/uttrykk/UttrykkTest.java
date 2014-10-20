@@ -63,13 +63,6 @@ public class UttrykkTest {
         print(ctx);
     }
 
-    public static class Skattegrunnlag {
-        public Belop getPostBelop(String postnummer) {
-            return new Belop(45);
-        }
-
-    }
-
 
     public static class PostUttrykk extends AbstractUttrykk<Belop,PostUttrykk,Skattegrunnlag> implements BelopUttrykk<Skattegrunnlag> {
 

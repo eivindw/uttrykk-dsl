@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public abstract class AbstractUttrykk<V, B extends Uttrykk<V,C>, C> implements Uttrykk<V, C>, UttrykkMetadata<V,B,C> {
+public abstract class AbstractUttrykk<V, B extends Uttrykk<V,C>, C> implements Uttrykk<V, C> {
 
     private String id;
     private String navn;
@@ -28,7 +28,6 @@ public abstract class AbstractUttrykk<V, B extends Uttrykk<V,C>, C> implements U
         return self;
     }
 
-    @Override
     public B tags(String... tags) {
         if (this.tags == null) {
             this.tags = new HashSet<>();
