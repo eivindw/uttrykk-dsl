@@ -15,7 +15,7 @@ public class MinsteAvUttrykk<C> extends AbstractUttrykk<Belop, MinsteAvUttrykk<C
     }
 
     public static <C> MinsteAvUttrykk minsteAv(BelopUttrykk<C>... uttrykk) {
-        return new MinsteAvUttrykk<C>(uttrykk);
+        return new MinsteAvUttrykk<>(uttrykk);
     }
 
     @Override

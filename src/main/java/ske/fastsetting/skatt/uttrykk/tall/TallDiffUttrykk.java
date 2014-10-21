@@ -13,6 +13,6 @@ public class TallDiffUttrykk<C>
     }
 
     public static <C> TallDiffUttrykk<C> diff(TallUttrykk<C> ledd1, TallUttrykk<C> ledd2) {
-        return new TallDiffUttrykk<C>(ledd1,ledd2);
+        return new TallDiffUttrykk<>(ledd1,ledd2);
     }
 }

@@ -5,7 +5,7 @@ import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttrykk<T, C>, B extends SumUttrykk<T,U,B,C>, C>
+public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttrykk<T, C>, B extends SumUttrykk<T, U, B, C>, C>
     extends AbstractUttrykk<T, B, C>
 {
 
