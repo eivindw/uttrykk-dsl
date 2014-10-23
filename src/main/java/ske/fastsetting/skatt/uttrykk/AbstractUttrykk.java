@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public abstract class AbstractUttrykk<V, B extends AbstractUttrykk<V, B, C>, C> implements Uttrykk<V, C> {
+public abstract class AbstractUttrykk<V, B extends AbstractUttrykk<V, B>> implements Uttrykk<V> {
 
     private String id;
     private String navn;
@@ -56,7 +56,7 @@ public abstract class AbstractUttrykk<V, B extends AbstractUttrykk<V, B, C>, C> 
     }
 
     @Override
-    public String id(UttrykkContext<C> ctx) {
+    public String id(UttrykkContext ctx) {
         if (id == null) {
             id = ctx.nyId();
         }

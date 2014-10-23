@@ -1,11 +1,11 @@
 package ske.fastsetting.skatt.uttrykk;
 
-public interface UttrykkContext<C> {
-    String beskriv(Uttrykk<?,C> uttrykk);
+public interface UttrykkContext {
+    String beskriv(Uttrykk<?> uttrykk);
 
-    <X> X eval(Uttrykk<X, C> uttrykk);
+    <X> X eval(Uttrykk<X> uttrykk);
 
     String nyId();
 
-    C input();
+    <T> T input(Class<T> clazz);
 }

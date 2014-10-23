@@ -7,44 +7,44 @@ import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
-public interface BelopUttrykk<C> extends CompareableUttrykk<Belop, C> {
+public interface BelopUttrykk extends CompareableUttrykk<Belop> {
 
-    default BelopMultiplikasjonsUttrykk<C> multiplisertMed(TallUttrykk<C> verdi) {
-        return new BelopMultiplikasjonsUttrykk<>(this, verdi);
+    default BelopMultiplikasjonsUttrykk multiplisertMed(TallUttrykk verdi) {
+        return new BelopMultiplikasjonsUttrykk(this, verdi);
     }
 
-    default BelopDivisjonsUttrykk<C> dividertMed(TallUttrykk<C> verdi) {
-        return new BelopDivisjonsUttrykk<>(this, verdi);
+    default BelopDivisjonsUttrykk dividertMed(TallUttrykk verdi) {
+        return new BelopDivisjonsUttrykk(this, verdi);
     }
 
-    default BelopDiffUttrykk<C> minus(BelopUttrykk<C> uttrykk) {
-        return new BelopDiffUttrykk<>(this, uttrykk);
+    default BelopDiffUttrykk minus(BelopUttrykk uttrykk) {
+        return new BelopDiffUttrykk(this, uttrykk);
     }
 
-    default BelopSumUttrykk<C> pluss(BelopUttrykk<C> uttrykk) {
+    default BelopSumUttrykk pluss(BelopUttrykk uttrykk) {
         return BelopSumUttrykk.sum(this, uttrykk);
     }
 
-    default BelopDividertMedBelopUttrykk<C> dividertMed(BelopUttrykk<C> divident) {
-        return new BelopDividertMedBelopUttrykk<>(this, divident);
+    default BelopDividertMedBelopUttrykk dividertMed(BelopUttrykk divident) {
+        return new BelopDividertMedBelopUttrykk(this, divident);
     }
 
-    static class BelopDividertMedBelopUttrykk<C> extends AbstractUttrykk<Tall, BelopDividertMedBelopUttrykk<C>,C> implements TallUttrykk<C> {
-        private final BelopUttrykk<C> divisior;
-        private final BelopUttrykk<C> divident;
+    static class BelopDividertMedBelopUttrykk extends AbstractUttrykk<Tall, BelopDividertMedBelopUttrykk> implements TallUttrykk {
+        private final BelopUttrykk divisior;
+        private final BelopUttrykk divident;
 
-        public BelopDividertMedBelopUttrykk(BelopUttrykk<C> belopUttrykk, BelopUttrykk<C> divident) {
+        public BelopDividertMedBelopUttrykk(BelopUttrykk belopUttrykk, BelopUttrykk divident) {
             this.divisior = belopUttrykk;
             this.divident = divident;
         }
 
         @Override
-        public Tall eval(UttrykkContext<C> ctx) {
+        public Tall eval(UttrykkContext ctx) {
             return Tall.ukjent(ctx.eval(divisior).dividertMed(ctx.eval(divident)));
         }
 
         @Override
-        public String beskriv(UttrykkContext<C> ctx) {
+        public String beskriv(UttrykkContext ctx) {
             return ctx.beskriv(divisior) + " dividert med " + ctx.beskriv(divident);
         }
     }

@@ -17,15 +17,15 @@ public class UttrykkTest {
 
     @Test
     public void tallUttrykk() {
-        Uttrykk<Belop, Skattegrunnlag> en = kr(1);
+        Uttrykk<Belop> en = kr(1);
 
         assertEquals(new Belop(1), en.eval(null));
     }
 
     @Test
     public void prosentUttrykk() {
-        final BelopUttrykk<Skattegrunnlag> ti = kr(100).multiplisertMed(prosent(10)).navn("asdad");
-        final BelopUttrykk<Skattegrunnlag> tjue = sum(ti, ti, post("2.1.1")).navn("asdasd");
+        final BelopUttrykk ti = kr(100).multiplisertMed(prosent(10)).navn("asdad");
+        final BelopUttrykk tjue = sum(ti, ti, post("2.1.1")).navn("asdasd");
 
         Skattegrunnlag sg = new Skattegrunnlag();
 
@@ -40,8 +40,8 @@ public class UttrykkTest {
 
     @Test
     public void sumUttrykk() {
-        final BelopUttrykk<Skattegrunnlag> lonn = kr(6);
-        final BelopUttrykk<Skattegrunnlag> sum = sum(
+        final BelopUttrykk lonn = kr(6);
+        final BelopUttrykk sum = sum(
             kr(2),
             sum(
                 lonn,
@@ -60,7 +60,7 @@ public class UttrykkTest {
         print(ctx);
     }
 
-    public static class PostUttrykk extends AbstractUttrykk<Belop, PostUttrykk, Skattegrunnlag> implements BelopUttrykk<Skattegrunnlag> {
+    public static class PostUttrykk extends AbstractUttrykk<Belop, PostUttrykk> implements BelopUttrykk {
 
         private String postnummer;
 
@@ -73,12 +73,12 @@ public class UttrykkTest {
         }
 
         @Override
-        public Belop eval(UttrykkContext<Skattegrunnlag> ctx) {
-            return ctx.input().getPostBelop(postnummer);
+        public Belop eval(UttrykkContext ctx) {
+            return ctx.input(Skattegrunnlag.class).getPostBelop(postnummer);
         }
 
         @Override
-        public String beskriv(UttrykkContext<Skattegrunnlag> ctx) {
+        public String beskriv(UttrykkContext ctx) {
             return "Post " + postnummer;
         }
     }

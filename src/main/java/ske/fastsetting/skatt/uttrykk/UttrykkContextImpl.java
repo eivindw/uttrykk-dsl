@@ -5,28 +5,34 @@ import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Stream;
 
-public class UttrykkContextImpl<V, C> implements UttrykkResultat<V>, UttrykkContext<C> {
+@SuppressWarnings("unchecked")
+public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext {
 
-    private final Map<String, Map> uttrykksmap = new HashMap<>();
     private final String start;
-    private final C input;
+    private final Map<String, Map> uttrykksmap = new HashMap<>();
+    private final Map<Class, Object> input = new HashMap<>();
 
-    public static <X,C> UttrykkResultat<X> beregne(Uttrykk<X, C> uttrykk, C verdi) {
-        return new UttrykkContextImpl<>(uttrykk, verdi, true, false);
+    public static <X> UttrykkResultat<X> beregne(Uttrykk<X> uttrykk, Object... input) {
+        return new UttrykkContextImpl<>(uttrykk, true, false, input);
     }
 
-    public static <X,C> UttrykkResultat<X> beskrive(Uttrykk<X, C> uttrykk, C verdi) {
-        return new UttrykkContextImpl<>(uttrykk, verdi, false, true);
+    public static <X> UttrykkResultat<X> beskrive(Uttrykk<X> uttrykk, Object... input) {
+        return new UttrykkContextImpl<>(uttrykk, false, true, input);
     }
 
-    public static <X, C> UttrykkResultat<X> beregneOgBeskrive(Uttrykk<X, C> uttrykk, C verdi) {
-        return new UttrykkContextImpl<>(uttrykk, verdi, true, true);
+    public static <X> UttrykkResultat<X> beregneOgBeskrive(Uttrykk<X> uttrykk, Object... input) {
+        return new UttrykkContextImpl<>(uttrykk, true, true, input);
     }
 
-    private UttrykkContextImpl(Uttrykk<V, C> uttrykk, C input, boolean eval, boolean beskriv) {
+    private UttrykkContextImpl(Uttrykk<V> uttrykk, boolean eval, boolean beskriv, Object... input) {
         this.start = uttrykk.id(this);
-        this.input = input;
+
+        Stream.of(input).forEach(verdi -> {
+            this.input.put(verdi.getClass(), verdi);
+            Stream.of(verdi.getClass().getInterfaces()).forEach(i -> this.input.put(i, verdi));
+        });
 
         if (eval) {
             eval(uttrykk);
@@ -58,14 +64,14 @@ public class UttrykkContextImpl<V, C> implements UttrykkResultat<V>, UttrykkCont
     }
 
     @Override
-    public String beskriv(Uttrykk<?,C> uttrykk) {
+    public String beskriv(Uttrykk<?> uttrykk) {
         initUttrykk(uttrykk).computeIfAbsent(KEY_UTTRYKK, k -> uttrykk.beskriv(this));
 
         return IdUtil.idLink(uttrykk.id(this));
     }
 
     @Override
-    public <X> X eval(Uttrykk<X,C> uttrykk) {
+    public <X> X eval(Uttrykk<X> uttrykk) {
         return (X) initUttrykk(uttrykk).computeIfAbsent(KEY_VERDI, k -> uttrykk.eval(this));
     }
 
@@ -79,8 +85,12 @@ public class UttrykkContextImpl<V, C> implements UttrykkResultat<V>, UttrykkCont
     }
 
     @Override
-    public C input() {
-        return input;
+    public <T> T input(Class<T> clazz) {
+        if (input.containsKey(clazz)) {
+            return (T) input.get(clazz);
+        } else {
+            throw new RuntimeException("Context mangler input av type: " + clazz.getSimpleName());
+        }
     }
 
     private String lagTilfeldigId() {
@@ -93,7 +103,7 @@ public class UttrykkContextImpl<V, C> implements UttrykkResultat<V>, UttrykkCont
         return uttrykksmap.toString();
     }
 
-    private Map initUttrykk(Uttrykk<?,C> uttrykk) {
+    private Map initUttrykk(Uttrykk<?> uttrykk) {
         return uttrykksmap.computeIfAbsent(uttrykk.id(this), k -> map(uttrykk));
     }
 

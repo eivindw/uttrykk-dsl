@@ -1,104 +1,104 @@
 package ske.fastsetting.skatt.uttrykk;
 
-public interface CompareableUttrykk<T extends Comparable<T>, C> extends Uttrykk<T,C> {
+public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> {
 
-    default BolskUttrykk<C> erStorreEnn(CompareableUttrykk<T, C> belop) {
+    default BolskUttrykk erStorreEnn(CompareableUttrykk<T> belop) {
         return new ErStorreEnn<>(this, belop);
     }
 
-    default BolskUttrykk<C> er(CompareableUttrykk<T, C> belop) {
+    default BolskUttrykk er(CompareableUttrykk<T> belop) {
         return new ErLik<>(this, belop);
     }
 
-    default BolskUttrykk<C> ikkeEr(CompareableUttrykk<T,C> belop) {
+    default BolskUttrykk ikkeEr(CompareableUttrykk<T> belop) {
         return new IkkeErLik<>(this, belop);
     }
 
-    default BolskUttrykk<C> erMellom(CompareableUttrykk<T,C> fra, CompareableUttrykk<T,C> til) {
+    default BolskUttrykk erMellom(CompareableUttrykk<T> fra, CompareableUttrykk<T> til) {
         return new ErMellom<>(this, fra, til);
     }
 
-    default BolskUttrykk<C> erMindreEnnEllerLik(CompareableUttrykk<T, C> belop) {
+    default BolskUttrykk erMindreEnnEllerLik(CompareableUttrykk<T> belop) {
         return new ErMindreEnnEllerLik<>(this, belop);
     }
 
-    default BolskUttrykk<C> erMindreEnn(CompareableUttrykk<T, C> belop) {
+    default BolskUttrykk erMindreEnn(CompareableUttrykk<T> belop) {
         return new ErMindreEnn<>(this, belop);
     }
 
-    static class ErStorreEnn<T extends Comparable<T>,C> extends BolskUttrykk<C> {
-        private final CompareableUttrykk<T, C> belopUttrykk;
-        private final CompareableUttrykk<T, C> sammenliknMed;
+    static class ErStorreEnn<T extends Comparable<T>> extends BolskUttrykk {
+        private final CompareableUttrykk<T> belopUttrykk;
+        private final CompareableUttrykk<T> sammenliknMed;
 
-        public ErStorreEnn(CompareableUttrykk<T, C> belopUttrykk, CompareableUttrykk<T, C> sammenliknMed) {
+        public ErStorreEnn(CompareableUttrykk<T> belopUttrykk, CompareableUttrykk<T> sammenliknMed) {
             this.belopUttrykk = belopUttrykk;
             this.sammenliknMed = sammenliknMed;
         }
 
         @Override
-        public Boolean eval(UttrykkContext<C> ctx) {
+        public Boolean eval(UttrykkContext ctx) {
             return ctx.eval(belopUttrykk).compareTo(ctx.eval(sammenliknMed)) > 0;
         }
 
         @Override
-        public String beskriv(UttrykkContext<C> ctx) {
+        public String beskriv(UttrykkContext ctx) {
             return ctx.beskriv(belopUttrykk) + " er større enn " + ctx.beskriv(sammenliknMed);
         }
     }
 
-    static class ErLik<T extends Comparable<T>,C> extends BolskUttrykk<C> {
-        private final CompareableUttrykk<T, C> belopUttrykk1;
-        private final CompareableUttrykk<T, C> belopUttrykk2;
+    static class ErLik<T extends Comparable<T>> extends BolskUttrykk {
+        private final CompareableUttrykk<T> belopUttrykk1;
+        private final CompareableUttrykk<T> belopUttrykk2;
 
-        public ErLik(CompareableUttrykk<T, C> belopUttrykk1, CompareableUttrykk<T, C> belopUttrykk2) {
+        public ErLik(CompareableUttrykk<T> belopUttrykk1, CompareableUttrykk<T> belopUttrykk2) {
             this.belopUttrykk1 = belopUttrykk1;
             this.belopUttrykk2 = belopUttrykk2;
         }
 
         @Override
-        public Boolean eval(UttrykkContext<C> ctx) {
+        public Boolean eval(UttrykkContext ctx) {
             return ctx.eval(belopUttrykk1).compareTo(ctx.eval(belopUttrykk2)) == 0;
         }
 
         @Override
-        public String beskriv(UttrykkContext<C> ctx) {
+        public String beskriv(UttrykkContext ctx) {
             return ctx.beskriv(belopUttrykk1) + " er lik " + ctx.beskriv(belopUttrykk2);
         }
     }
 
-    static class IkkeErLik<T extends Comparable<T>, C> extends BolskUttrykk<C> {
-        private final CompareableUttrykk<T, C> belopUttrykk1;
-        private final CompareableUttrykk<T, C> belopUttrykk2;
+    static class IkkeErLik<T extends Comparable<T>> extends BolskUttrykk {
+        private final CompareableUttrykk<T> belopUttrykk1;
+        private final CompareableUttrykk<T> belopUttrykk2;
 
-        public IkkeErLik(CompareableUttrykk<T, C> belopUttrykk1, CompareableUttrykk<T, C> belopUttrykk2) {
+        public IkkeErLik(CompareableUttrykk<T> belopUttrykk1, CompareableUttrykk<T> belopUttrykk2) {
             this.belopUttrykk1 = belopUttrykk1;
             this.belopUttrykk2 = belopUttrykk2;
         }
 
         @Override
-        public Boolean eval(UttrykkContext<C> ctx) {
+        public Boolean eval(UttrykkContext ctx) {
             return ctx.eval(belopUttrykk1).compareTo(ctx.eval(belopUttrykk2)) != 0;
         }
 
         @Override
-        public String beskriv(UttrykkContext<C> ctx) {
+        public String beskriv(UttrykkContext ctx) {
             return ctx.beskriv(belopUttrykk1) + " ikke er lik " + ctx.beskriv(belopUttrykk2);
         }
     }
 
-    static class ErMellom<T extends Comparable<T>, C> extends BolskUttrykk<C> {
-        private final CompareableUttrykk<T, C> belopUttrykk;
-        private final CompareableUttrykk<T, C> fraBelopUttrykk;
-        private final CompareableUttrykk<T, C> tilBelopUttrykk;
+    static class ErMellom<T extends Comparable<T>> extends BolskUttrykk {
+        private final CompareableUttrykk<T> belopUttrykk;
+        private final CompareableUttrykk<T> fraBelopUttrykk;
+        private final CompareableUttrykk<T> tilBelopUttrykk;
 
-        public ErMellom(CompareableUttrykk<T, C> belopUttrykk, CompareableUttrykk<T, C> fra, CompareableUttrykk<T, C> til) {
+        public ErMellom(CompareableUttrykk<T> belopUttrykk, CompareableUttrykk<T> fra, CompareableUttrykk<T> til) {
             this.belopUttrykk = belopUttrykk;
             fraBelopUttrykk = fra;
             tilBelopUttrykk = til;
         }
 
         @Override
-        public Boolean eval(UttrykkContext<C> ctx) {
+        public Boolean eval(UttrykkContext ctx) {
             T belop = ctx.eval(belopUttrykk);
             T fra = ctx.eval(fraBelopUttrykk);
             T til = ctx.eval(tilBelopUttrykk);
@@ -107,50 +107,48 @@ public interface CompareableUttrykk<T extends Comparable<T>, C> extends Uttrykk<
         }
 
         @Override
-        public String beskriv(UttrykkContext<C> ctx) {
+        public String beskriv(UttrykkContext ctx) {
             return String.format("%s er mellom %s og %s",
                 ctx.beskriv(belopUttrykk), ctx.beskriv(fraBelopUttrykk), ctx.beskriv(tilBelopUttrykk));
         }
-
-
     }
 
-    static class ErMindreEnnEllerLik<T extends Comparable<T>, C> extends BolskUttrykk<C> {
-        private final CompareableUttrykk<T, C> belopUttrykk;
-        private final CompareableUttrykk<T, C> sammenliknMed;
+    static class ErMindreEnnEllerLik<T extends Comparable<T>> extends BolskUttrykk {
+        private final CompareableUttrykk<T> belopUttrykk;
+        private final CompareableUttrykk<T> sammenliknMed;
 
-        public ErMindreEnnEllerLik(CompareableUttrykk<T, C> belopUttrykk, CompareableUttrykk<T, C> sammenliknMed) {
+        public ErMindreEnnEllerLik(CompareableUttrykk<T> belopUttrykk, CompareableUttrykk<T> sammenliknMed) {
             this.belopUttrykk = belopUttrykk;
             this.sammenliknMed = sammenliknMed;
         }
 
         @Override
-        public Boolean eval(UttrykkContext<C> ctx) {
+        public Boolean eval(UttrykkContext ctx) {
             return ctx.eval(belopUttrykk).compareTo(ctx.eval(sammenliknMed)) <= 0;
         }
 
         @Override
-        public String beskriv(UttrykkContext<C> ctx) {
+        public String beskriv(UttrykkContext ctx) {
             return ctx.beskriv(belopUttrykk) + " er mindre enn eller lik " + ctx.beskriv(sammenliknMed);
         }
     }
 
-    static class ErMindreEnn<T extends Comparable<T>, C> extends BolskUttrykk<C> {
-        private final CompareableUttrykk<T, C> belopUttrykk;
-        private final CompareableUttrykk<T, C> sammenliknMed;
+    static class ErMindreEnn<T extends Comparable<T>> extends BolskUttrykk {
+        private final CompareableUttrykk<T> belopUttrykk;
+        private final CompareableUttrykk<T> sammenliknMed;
 
-        public ErMindreEnn(CompareableUttrykk<T, C> belopUttrykk, CompareableUttrykk<T, C> sammenliknMed) {
+        public ErMindreEnn(CompareableUttrykk<T> belopUttrykk, CompareableUttrykk<T> sammenliknMed) {
             this.belopUttrykk = belopUttrykk;
             this.sammenliknMed = sammenliknMed;
         }
 
         @Override
-        public Boolean eval(UttrykkContext<C> ctx) {
+        public Boolean eval(UttrykkContext ctx) {
             return ctx.eval(belopUttrykk).compareTo(ctx.eval(sammenliknMed)) < 0;
         }
 
         @Override
-        public String beskriv(UttrykkContext<C> ctx) {
+        public String beskriv(UttrykkContext ctx) {
             return ctx.beskriv(belopUttrykk) + " er mindre enn eller lik " + ctx.beskriv(sammenliknMed);
         }
     }

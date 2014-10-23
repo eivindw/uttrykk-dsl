@@ -4,32 +4,32 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 
-public class GrenseUttrykk<C> extends AbstractUttrykk<Belop, GrenseUttrykk<C>, C> implements BelopUttrykk<C> {
+public class GrenseUttrykk extends AbstractUttrykk<Belop, GrenseUttrykk> implements BelopUttrykk {
 
-    private final BelopUttrykk<C> uttrykk;
-    private BelopUttrykk<C> minimum;
-    private BelopUttrykk<C> maksimum;
+    private final BelopUttrykk uttrykk;
+    private BelopUttrykk minimum;
+    private BelopUttrykk maksimum;
 
-    private GrenseUttrykk(BelopUttrykk<C> uttrykk) {
+    private GrenseUttrykk(BelopUttrykk uttrykk) {
         this.uttrykk = uttrykk;
     }
 
-    public static <C> GrenseUttrykk<C> begrens(BelopUttrykk<C> uttrykk) {
-        return new GrenseUttrykk<>(uttrykk);
+    public static GrenseUttrykk begrens(BelopUttrykk uttrykk) {
+        return new GrenseUttrykk(uttrykk);
     }
 
-    public GrenseUttrykk<C> nedad(BelopUttrykk<C> minimum) {
+    public GrenseUttrykk nedad(BelopUttrykk minimum) {
         this.minimum = minimum;
         return this;
     }
 
-    public GrenseUttrykk<C> oppad(BelopUttrykk<C> maksimum) {
+    public GrenseUttrykk oppad(BelopUttrykk maksimum) {
         this.maksimum = maksimum;
         return this;
     }
 
     @Override
-    public Belop eval(UttrykkContext<C> ctx) {
+    public Belop eval(UttrykkContext ctx) {
         Belop e = ctx.eval(uttrykk);
         if (null != minimum) {
             Belop min = ctx.eval(minimum);
@@ -47,7 +47,7 @@ public class GrenseUttrykk<C> extends AbstractUttrykk<Belop, GrenseUttrykk<C>, C
     }
 
     @Override
-    public String beskriv(UttrykkContext<C> ctx) {
+    public String beskriv(UttrykkContext ctx) {
         StringBuilder stringBuilder = new StringBuilder(ctx.beskriv(uttrykk));
         if (null == minimum && null == maksimum) {
             stringBuilder.append(" Advarsel: Uttrykket mangler øvre og/eller nedre grense ");

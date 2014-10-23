@@ -5,12 +5,12 @@ import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk;
 
 public class SkattegrunnlagHelper {
-    public static KroneUttrykk<Skattegrunnlag> kr(int belop) {
+    public static KroneUttrykk kr(int belop) {
         return KroneUttrykk.kr(belop);
     }
 
-    public static ProsentUttrykk<Skattegrunnlag> prosent(double prosent) {
-        return new ProsentUttrykk<>(Tall.prosent(prosent));
+    public static ProsentUttrykk prosent(double prosent) {
+        return new ProsentUttrykk(Tall.prosent(prosent));
     }
 
 }

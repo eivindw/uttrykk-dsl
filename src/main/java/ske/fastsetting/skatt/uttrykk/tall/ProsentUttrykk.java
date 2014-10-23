@@ -4,7 +4,7 @@ import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class ProsentUttrykk<C> extends AbstractUttrykk<Tall, ProsentUttrykk<C>, C> implements TallUttrykk<C> {
+public class ProsentUttrykk extends AbstractUttrykk<Tall, ProsentUttrykk> implements TallUttrykk {
 
     private final Tall verdi;
 
@@ -12,17 +12,17 @@ public class ProsentUttrykk<C> extends AbstractUttrykk<Tall, ProsentUttrykk<C>, 
         this.verdi = prosent;
     }
 
-    public static <C> ProsentUttrykk<C> prosent(double prosent) {
-        return new ProsentUttrykk<>(Tall.prosent(prosent));
+    public static ProsentUttrykk prosent(double prosent) {
+        return new ProsentUttrykk(Tall.prosent(prosent));
     }
 
     @Override
-    public Tall eval(UttrykkContext<C> ctx) {
+    public Tall eval(UttrykkContext ctx) {
         return verdi;
     }
 
     @Override
-    public String beskriv(UttrykkContext<C> ctx) {
+    public String beskriv(UttrykkContext ctx) {
         return verdi.toString();
     }
 

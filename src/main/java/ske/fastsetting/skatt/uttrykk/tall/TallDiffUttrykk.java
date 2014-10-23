@@ -3,16 +3,16 @@ package ske.fastsetting.skatt.uttrykk.tall;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.DiffUttrykk;
 
-public class TallDiffUttrykk<C>
-    extends DiffUttrykk<Tall, TallUttrykk<C>, TallDiffUttrykk<C>, C>
-    implements TallUttrykk<C>
+public class TallDiffUttrykk
+    extends DiffUttrykk<Tall, TallUttrykk, TallDiffUttrykk>
+    implements TallUttrykk
 {
 
-    public TallDiffUttrykk(TallUttrykk<C> ledd1, TallUttrykk<C> ledd2) {
-        super(ledd1,ledd2);
+    public TallDiffUttrykk(TallUttrykk ledd1, TallUttrykk ledd2) {
+        super(ledd1, ledd2);
     }
 
-    public static <C> TallDiffUttrykk<C> diff(TallUttrykk<C> ledd1, TallUttrykk<C> ledd2) {
-        return new TallDiffUttrykk<>(ledd1,ledd2);
+    public static TallDiffUttrykk diff(TallUttrykk ledd1, TallUttrykk ledd2) {
+        return new TallDiffUttrykk(ledd1, ledd2);
     }
 }

@@ -7,12 +7,12 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BelopSumUttrykk<C>
-    extends SumUttrykk<Belop, BelopUttrykk<C>, BelopSumUttrykk<C>,C>
-    implements BelopUttrykk<C>
+public class BelopSumUttrykk
+    extends SumUttrykk<Belop, BelopUttrykk, BelopSumUttrykk>
+    implements BelopUttrykk
 {
 
-    private BelopSumUttrykk(Collection<BelopUttrykk<C>> uttrykk) {
+    private BelopSumUttrykk(Collection<BelopUttrykk> uttrykk) {
         super(uttrykk);
     }
 
@@ -22,11 +22,11 @@ public class BelopSumUttrykk<C>
     }
 
     @SafeVarargs
-    public static <C> BelopSumUttrykk<C> sum(BelopUttrykk<C>... uttrykk) {
-        return new BelopSumUttrykk<>(Stream.of(uttrykk).collect(Collectors.toList()));
+    public static BelopSumUttrykk sum(BelopUttrykk... uttrykk) {
+        return new BelopSumUttrykk(Stream.of(uttrykk).collect(Collectors.toList()));
     }
 
-    public static <C> BelopSumUttrykk<C> sum(Collection<BelopUttrykk<C>> uttrykk) {
-        return new BelopSumUttrykk<>(uttrykk);
+    public static BelopSumUttrykk sum(Collection<BelopUttrykk> uttrykk) {
+        return new BelopSumUttrykk(uttrykk);
     }
 }

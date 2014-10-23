@@ -7,26 +7,26 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class StorsteAvUttrykk<C> extends AbstractUttrykk<Belop, StorsteAvUttrykk<C>, C> implements BelopUttrykk<C> {
-    private final BelopUttrykk<C>[] uttrykk;
+public class StorsteAvUttrykk extends AbstractUttrykk<Belop, StorsteAvUttrykk> implements BelopUttrykk {
+    private final BelopUttrykk[] uttrykk;
 
-    private StorsteAvUttrykk(BelopUttrykk<C>[] uttrykk) {
+    private StorsteAvUttrykk(BelopUttrykk[] uttrykk) {
         this.uttrykk = uttrykk;
     }
 
-    public static <C> StorsteAvUttrykk<C> storsteAv(BelopUttrykk<C>... uttrykk) {
-        return new StorsteAvUttrykk<>(uttrykk);
+    public static StorsteAvUttrykk storsteAv(BelopUttrykk... uttrykk) {
+        return new StorsteAvUttrykk(uttrykk);
     }
 
     @Override
-    public Belop eval(UttrykkContext<C> ctx) {
+    public Belop eval(UttrykkContext ctx) {
         return Stream.of(uttrykk)
             .map(ctx::eval)
             .max(Belop::sammenliknMed).get();
     }
 
     @Override
-    public String beskriv(UttrykkContext<C> ctx) {
+    public String beskriv(UttrykkContext ctx) {
         return Stream.of(uttrykk)
             .map(ctx::beskriv)
             .collect(Collectors.joining(",", "største av(", ")"));
