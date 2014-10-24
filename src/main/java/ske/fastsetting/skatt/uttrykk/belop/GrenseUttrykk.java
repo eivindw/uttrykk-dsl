@@ -54,11 +54,11 @@ public class GrenseUttrykk extends AbstractUttrykk<Belop, GrenseUttrykk> impleme
         }
         if (null != minimum) {
             stringBuilder.append(" begrenset nedad til ");
-            ctx.beskriv(minimum);
+            stringBuilder.append(ctx.beskriv(minimum));
         }
         if (null != maksimum) {
             stringBuilder.append(" begrenset oppad til ");
-            ctx.beskriv(maksimum);
+            stringBuilder.append(ctx.beskriv(maksimum));
         }
         return stringBuilder.toString();
     }
