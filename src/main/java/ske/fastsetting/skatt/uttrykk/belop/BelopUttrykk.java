@@ -45,7 +45,7 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
 
         @Override
         public String beskriv(UttrykkContext ctx) {
-            return ctx.beskriv(divisior) + " dividert med " + ctx.beskriv(divident);
+            return ctx.beskriv(divisior) + " / " + ctx.beskriv(divident);
         }
     }
 

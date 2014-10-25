@@ -4,7 +4,8 @@ import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
 public abstract class DivisjonsUttrykk<V extends KalkulerbarVerdi<V>, T extends Uttrykk<V>, B extends DivisjonsUttrykk<V, T, B>>
-    extends AbstractUttrykk<V, B> {
+    extends AbstractUttrykk<V, B>
+{
     protected final T divident;
     protected final TallUttrykk divisor;
 
@@ -20,6 +21,6 @@ public abstract class DivisjonsUttrykk<V extends KalkulerbarVerdi<V>, T extends 
 
     @Override
     public String beskriv(UttrykkContext ctx) {
-        return ctx.beskriv(divident) + " dividert med " + ctx.beskriv(divisor);
+        return ctx.beskriv(divident) + " / " + ctx.beskriv(divisor);
     }
 }

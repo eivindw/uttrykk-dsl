@@ -19,7 +19,7 @@ public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttryk
     public T eval(UttrykkContext ctx) {
         return uttrykk.stream()
             .map(ctx::eval)
-            .reduce((verdi1, verdi2) -> verdi1.pluss(verdi2))
+            .reduce(KalkulerbarVerdi::pluss)
             .orElse(nullVerdi());
     }
 
@@ -29,6 +29,6 @@ public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttryk
     public String beskriv(UttrykkContext ctx) {
         return uttrykk.stream()
             .map(ctx::beskriv)
-            .collect(Collectors.joining(",", "sum(", ")"));
+            .collect(Collectors.joining(" + "));
     }
 }

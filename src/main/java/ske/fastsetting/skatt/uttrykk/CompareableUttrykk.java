@@ -42,7 +42,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
 
         @Override
         public String beskriv(UttrykkContext ctx) {
-            return ctx.beskriv(belopUttrykk) + " er større enn " + ctx.beskriv(sammenliknMed);
+            return ctx.beskriv(belopUttrykk) + " > " + ctx.beskriv(sammenliknMed);
         }
     }
 
@@ -62,7 +62,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
 
         @Override
         public String beskriv(UttrykkContext ctx) {
-            return ctx.beskriv(belopUttrykk1) + " er lik " + ctx.beskriv(belopUttrykk2);
+            return ctx.beskriv(belopUttrykk1) + " = " + ctx.beskriv(belopUttrykk2);
         }
     }
 
@@ -82,7 +82,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
 
         @Override
         public String beskriv(UttrykkContext ctx) {
-            return ctx.beskriv(belopUttrykk1) + " ikke er lik " + ctx.beskriv(belopUttrykk2);
+            return ctx.beskriv(belopUttrykk1) + " != " + ctx.beskriv(belopUttrykk2);
         }
     }
 
@@ -108,7 +108,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
 
         @Override
         public String beskriv(UttrykkContext ctx) {
-            return String.format("%s er mellom %s og %s",
+            return String.format("%2$s < %1$s < %3$s",
                 ctx.beskriv(belopUttrykk), ctx.beskriv(fraBelopUttrykk), ctx.beskriv(tilBelopUttrykk));
         }
     }
@@ -129,7 +129,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
 
         @Override
         public String beskriv(UttrykkContext ctx) {
-            return ctx.beskriv(belopUttrykk) + " er mindre enn eller lik " + ctx.beskriv(sammenliknMed);
+            return ctx.beskriv(belopUttrykk) + " <= " + ctx.beskriv(sammenliknMed);
         }
     }
 
@@ -149,7 +149,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
 
         @Override
         public String beskriv(UttrykkContext ctx) {
-            return ctx.beskriv(belopUttrykk) + " er mindre enn eller lik " + ctx.beskriv(sammenliknMed);
+            return ctx.beskriv(belopUttrykk) + " < " + ctx.beskriv(sammenliknMed);
         }
     }
 }

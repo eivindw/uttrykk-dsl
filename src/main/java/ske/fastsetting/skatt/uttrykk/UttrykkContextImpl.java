@@ -4,7 +4,6 @@ import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
@@ -77,9 +76,9 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
 
     @Override
     public String nyId() {
-        String id = lagTilfeldigId();
+        String id = IdUtil.lagTilfeldigId();
         while (uttrykksmap.containsKey(id)) {
-            id = lagTilfeldigId();
+            id = IdUtil.lagTilfeldigId();
         }
         return id;
     }
@@ -91,11 +90,6 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
         } else {
             throw new RuntimeException("Context mangler input av type: " + clazz.getSimpleName());
         }
-    }
-
-    private String lagTilfeldigId() {
-        // TODO - denne er ikke garantert unik - for korthet - kom opp med noe bedre :)
-        return Integer.toHexString(UUID.randomUUID().hashCode());
     }
 
     @Override
