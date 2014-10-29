@@ -4,6 +4,7 @@ import org.javamoney.moneta.Money;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 
 public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
@@ -48,7 +49,7 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     }
 
     public Integer toInteger() {
-        return this.belop.getNumber().intValue();
+        return this.belop.getNumberStripped().setScale(0, RoundingMode.HALF_UP).intValue();
     }
 
     public BigDecimal dividertMed(Belop divident) {

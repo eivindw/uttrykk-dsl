@@ -8,6 +8,8 @@ import java.math.BigInteger;
 
 public class KroneUttrykk extends AbstractUttrykk<Belop, KroneUttrykk> implements BelopUttrykk {
 
+    public static final KroneUttrykk KR_0 = kr(0);
+
     private final Belop kroner;
 
     public KroneUttrykk(Belop kroner) {
