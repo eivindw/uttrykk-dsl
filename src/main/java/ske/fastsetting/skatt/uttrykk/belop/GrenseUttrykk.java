@@ -14,6 +14,10 @@ public class GrenseUttrykk extends AbstractUttrykk<Belop, GrenseUttrykk> impleme
         this.uttrykk = uttrykk;
     }
 
+    public static GrenseUttrykk nedre0(BelopUttrykk uttrykk) {
+        return begrens(uttrykk).nedad(KroneUttrykk.KR_0);
+    }
+
     public static GrenseUttrykk begrens(BelopUttrykk uttrykk) {
         return new GrenseUttrykk(uttrykk);
     }
@@ -30,17 +34,17 @@ public class GrenseUttrykk extends AbstractUttrykk<Belop, GrenseUttrykk> impleme
 
     @Override
     public Belop eval(UttrykkContext ctx) {
-        Belop e = ctx.eval(uttrykk);
+        final Belop e = ctx.eval(uttrykk);
         if (null != minimum) {
             Belop min = ctx.eval(minimum);
             if (e.erMindreEnn(min)) {
-                e = min;
+                return min;
             }
         }
         if (null != maksimum) {
             Belop max = ctx.eval(maksimum);
-            if (e.erStorreEnn(max) ) {
-                e = max;
+            if (e.erStorreEnn(max)) {
+                return max;
             }
         }
         return e;
