@@ -14,13 +14,21 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         return new IkkeErLik<>(this, belop);
     }
 
-    default FraTilUttrykk<T> erFra(CompareableUttrykk<T> belop)  { return FraTilUttrykk.fra(this, belop);}
+    default FraTilUttrykk<T> erFra(CompareableUttrykk<T> belop) {
+        return FraTilUttrykk.fra(this, belop);
+    }
 
-    default FraTilUttrykk<T> erFraOgMed(CompareableUttrykk<T> belop)  { return FraTilUttrykk.fraOgMed(this, belop);}
+    default FraTilUttrykk<T> erFraOgMed(CompareableUttrykk<T> belop) {
+        return FraTilUttrykk.fraOgMed(this, belop);
+    }
 
-    default BolskUttrykk erInntil(CompareableUttrykk<T> belop)  { return FraTilUttrykk.til(this, belop);}
+    default BolskUttrykk erInntil(CompareableUttrykk<T> belop) {
+        return FraTilUttrykk.til(this, belop);
+    }
 
-    default BolskUttrykk erTilOgMed(CompareableUttrykk<T> belop)  { return FraTilUttrykk.tilOgMed(this, belop);}
+    default BolskUttrykk erTilOgMed(CompareableUttrykk<T> belop) {
+        return FraTilUttrykk.tilOgMed(this, belop);
+    }
 
     default BolskUttrykk erMellom(CompareableUttrykk<T> fra, CompareableUttrykk<T> til) {
         return new ErMellom<>(this, fra, til);
@@ -176,20 +184,20 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
             this.til = til;
         }
 
-        public static <T extends Comparable<T>> FraTilUttrykk<T> fra(CompareableUttrykk<T> uttrykk, CompareableUttrykk<T> fra)   {
-            return new FraTilUttrykk<>(uttrykk,null,fra,null,null);
+        public static <T extends Comparable<T>> FraTilUttrykk<T> fra(CompareableUttrykk<T> uttrykk, CompareableUttrykk<T> fra) {
+            return new FraTilUttrykk<>(uttrykk, null, fra, null, null);
         }
 
-        public static <T extends Comparable<T>> FraTilUttrykk<T> fraOgMed(CompareableUttrykk<T> uttrykk, CompareableUttrykk<T> fraOgMed)   {
-            return new FraTilUttrykk<>(uttrykk,fraOgMed,null,null,null);
+        public static <T extends Comparable<T>> FraTilUttrykk<T> fraOgMed(CompareableUttrykk<T> uttrykk, CompareableUttrykk<T> fraOgMed) {
+            return new FraTilUttrykk<>(uttrykk, fraOgMed, null, null, null);
         }
 
-        public static <T extends Comparable<T>> BolskUttrykk til(CompareableUttrykk<T> uttrykk, CompareableUttrykk<T> til)   {
-            return new FraTilUttrykk<>(uttrykk,null,null,null,til);
+        public static <T extends Comparable<T>> BolskUttrykk til(CompareableUttrykk<T> uttrykk, CompareableUttrykk<T> til) {
+            return new FraTilUttrykk<>(uttrykk, null, null, null, til);
         }
 
-        public static <T extends Comparable<T>> BolskUttrykk tilOgMed(CompareableUttrykk<T> uttrykk, CompareableUttrykk<T> tilOgMed)   {
-            return new FraTilUttrykk<>(uttrykk, null,null, tilOgMed,null);
+        public static <T extends Comparable<T>> BolskUttrykk tilOgMed(CompareableUttrykk<T> uttrykk, CompareableUttrykk<T> tilOgMed) {
+            return new FraTilUttrykk<>(uttrykk, null, null, tilOgMed, null);
         }
 
         public BolskUttrykk ogTil(CompareableUttrykk<T> til) {
@@ -205,10 +213,10 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         public Boolean eval(UttrykkContext ctx) {
             boolean resultat = true;
 
-            resultat &= fra==null || ctx.eval(uttrykk).compareTo(ctx.eval(fra))>0;
-            resultat &= fraOgMed==null || ctx.eval(uttrykk).compareTo(ctx.eval(fraOgMed))>=0;
-            resultat &= til==null || ctx.eval(uttrykk).compareTo(ctx.eval(til))<0;
-            resultat &= tilOgMed==null || ctx.eval(uttrykk).compareTo(ctx.eval(tilOgMed))<=0;
+            resultat &= fra == null || ctx.eval(uttrykk).compareTo(ctx.eval(fra)) > 0;
+            resultat &= fraOgMed == null || ctx.eval(uttrykk).compareTo(ctx.eval(fraOgMed)) >= 0;
+            resultat &= til == null || ctx.eval(uttrykk).compareTo(ctx.eval(til)) < 0;
+            resultat &= tilOgMed == null || ctx.eval(uttrykk).compareTo(ctx.eval(tilOgMed)) <= 0;
 
             return resultat;
         }
@@ -216,24 +224,22 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         @Override
         public String beskriv(UttrykkContext ctx) {
             StringBuilder sb = new StringBuilder();
-            if(fra!=null) {
+            if (fra != null) {
                 sb.append(ctx.beskriv(fra)).append(" < ");
-            } else if (fraOgMed!=null) {
+            } else if (fraOgMed != null) {
                 sb.append(ctx.beskriv(fraOgMed)).append(" <= ");
             }
 
             sb.append(ctx.beskriv(uttrykk));
 
-            if(til!=null) {
+            if (til != null) {
                 sb.append(" < ").append(ctx.beskriv(til));
-            } else if(tilOgMed!=null) {
+            } else if (tilOgMed != null) {
                 sb.append(" <= ").append(ctx.beskriv(tilOgMed));
             }
 
 
             return sb.toString();
         }
-
-
     }
 }

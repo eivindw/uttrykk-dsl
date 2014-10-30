@@ -1,4 +1,4 @@
-package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
+package ske.fastsetting.skatt.uttrykk;
 
 import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
@@ -11,9 +11,6 @@ import static ske.fastsetting.skatt.uttrykk.belop.BelopHvisUttrykk.hvis;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver.print;
 
-/**
- * Created by jorn ola birkeland on 30.10.14.
- */
 public class FraTilTest {
     @Test
     public void testTil() {
