@@ -19,8 +19,14 @@ public abstract class AbstractUttrykk<V, B extends AbstractUttrykk<V, B>> implem
     protected B self = (B) this;
 
     public B navn(String navn) {
-        this.navn = navn;
-        return self;
+        if(this.navn == null) {
+            this.navn = navn;
+            return self;
+        } else {
+            throw new RuntimeException(
+                String.format("Navn kan bare settes en gang! Gammel: %s ny: %s", this.navn, navn)
+            );
+        }
     }
 
     public B tags(String... tags) {

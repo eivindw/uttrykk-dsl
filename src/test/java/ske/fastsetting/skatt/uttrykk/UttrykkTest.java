@@ -60,6 +60,11 @@ public class UttrykkTest {
         print(ctx);
     }
 
+    @Test(expected = RuntimeException.class)
+    public void feilHvisNavnSettesIgjen() {
+        kr(6).navn("test").navn("test igjen");
+    }
+
     public static class PostUttrykk extends AbstractUttrykk<Belop, PostUttrykk> implements BelopUttrykk {
 
         private String postnummer;
