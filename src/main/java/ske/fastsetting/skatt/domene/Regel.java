@@ -16,6 +16,11 @@ public class Regel {
             "Skatteloven",
             "Lov om skatt av formue og inntekt (skatteloven)",
             "lov/1999-03-26-14"
+        ),
+        Folketrygdloven(
+            "Folketrygdloven",
+            "Lov om folketrygd (folketrygdloven)",
+            "lov/1997-02-28-19"
         );
 
         private final String tittel;
@@ -43,24 +48,26 @@ public class Regel {
 
     private final RegelType regel;
     private final String paragraf;
-    private final String[] underpunkt;
 
     public static Regel skattevedtak(String paragraf) {
         return new Regel(RegelType.Skattevedtak, paragraf);
     }
 
-    public static Regel skatteloven(String paragraf, String... underpunkt) {
-        return new Regel(RegelType.Skatteloven, paragraf, underpunkt);
+    public static Regel folketrygdloven(String paragraf) {
+        return new Regel(RegelType.Folketrygdloven, paragraf);
+    }
+
+    public static Regel skatteloven(String paragraf) {
+        return new Regel(RegelType.Skatteloven, paragraf);
     }
 
     public static Regel[] regler(Regel... regel) {
         return regel;
     }
 
-    public Regel(RegelType regel, String paragraf, String... underpunkt) {
+    private Regel(RegelType regel, String paragraf) {
         this.regel = regel;
         this.paragraf = paragraf;
-        this.underpunkt = underpunkt;
     }
 
     public String tittel() {

@@ -47,7 +47,7 @@ public class UttrykkTest {
                 lonn,
                 kr(2).navn("Test"),
                 post("4.3.3").navn("dasdad")
-            ).regler(Regel.skatteloven("323", "2323")),
+            ).regler(Regel.skatteloven("323")),
             kr(4),
             lonn.multiplisertMed(prosent(50))
         ).navn("Hallo");
