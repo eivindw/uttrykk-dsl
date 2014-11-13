@@ -43,18 +43,14 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
         final String uttrykkString = tmpUttrykkString;
 
         if (navn != null) {
-            innholdsfortegnelse.computeIfAbsent(navn, tittel -> {
-                final InnholdConfluenceSide side = new InnholdConfluenceSide(
+            innholdsfortegnelse.computeIfAbsent(navn, tittel ->
+                new InnholdConfluenceSide(
                     tittel,
                     uttrykkString,
                     tags,
                     regler
-                );
-
-                leggReglerPaaSide(regler, side);
-
-                return side;
-            });
+                )
+            );
 
             return "[" + navn + "]";
         } else if (!subIder.isEmpty()) {
@@ -64,68 +60,15 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
         }
     }
 
-    private void leggReglerPaaSide(List<Regel> regler, InnholdConfluenceSide side) {
-        for (Regel regel : regler) {
-            String overskrift = regel.kortnavnOgParagraf();
-            if (!innholdsfortegnelse.containsKey(overskrift)) {
-                ConfluenceSide nySide = new HjemmelConfluenceSide(regel);
-                side.undersider.add(nySide);
-                innholdsfortegnelse.put(overskrift, nySide);
-            }
-        }
-    }
-
     public interface ConfluenceSide {
         public String getInnhold();
 
-        public List<ConfluenceSide> getUndersider();
-
         public String getTittel();
-    }
-
-    public static class HjemmelConfluenceSide implements ConfluenceSide {
-
-        private final Regel regel;
-
-        public HjemmelConfluenceSide(Regel regel) {
-            this.regel = regel;
-        }
-
-        @Override
-        public String getInnhold() {
-            return "{details:label=hjemmel}\r\n" +
-                "lov: " + regel.tittel() + "\r\n" +
-                "paragraf: $" + regel.paragraf() + "\r\n" +
-                "{details}\r\n" +
-                "\r\n[Lovdata|" + regel.uri() + "]\r\n\r\n" +
-                lagReferanser();
-        }
-
-        @Override
-        public List<ConfluenceSide> getUndersider() {
-            return new ArrayList<>();
-        }
-
-        @Override
-        public String getTittel() {
-            return regel.kortnavnOgParagraf();
-        }
-
-        private String lagReferanser() {
-            return "\r\nh4. Referanser \r\n" +
-                "{incoming-links:mode=list}Ingen referanser{incoming-links} \r\n";
-        }
-
-        @Override
-        public String toString() {
-            return getInnhold();
-        }
     }
 
     public static class InnholdConfluenceSide implements ConfluenceSide {
         private final String tittel;
         private final StringBuilder innhold = new StringBuilder();
-        private final List<ConfluenceSide> undersider = new ArrayList<>();
         private final Set<String> tags = new HashSet<>();
         private final List<Regel> regler = new ArrayList<>();
 
@@ -142,10 +85,6 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
 
         public String getInnhold() {
             return tags.contains("sats") ? satsInnhold() : innholdMedOverskrift();
-        }
-
-        public List<ConfluenceSide> getUndersider() {
-            return undersider;
         }
 
         public String getTittel() {
@@ -170,7 +109,14 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
 
             if (!regler.isEmpty()) {
                 sb.append("\r\nh4. Hjemler \r\n");
-                regler.stream().forEach(r -> sb.append("* [").append(r.kortnavnOgParagraf()).append("]\r\n"));
+
+                regler.stream().forEach(r -> sb
+                    .append("* [")
+                    .append(r.kortnavnOgParagraf())
+                    .append("|SRK:")
+                    .append(r.kortnavnOgParagrafUtenTegn())
+                    .append("]\r\n")
+                );
             }
 
             sb.append("\r\n\r\nh4. Referanser \r\n");

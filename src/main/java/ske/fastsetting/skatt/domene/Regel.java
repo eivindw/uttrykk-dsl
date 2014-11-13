@@ -8,7 +8,7 @@ public class Regel {
 
     private enum RegelType {
         Skattevedtak(
-            "Stortingets skattevedtak",
+            "SSV",
             "Stortingets skattevedtak for inntektsåret 2014",
             "forskrift/2013-12-05-1499"
         ),
@@ -80,6 +80,10 @@ public class Regel {
 
     public String kortnavnOgParagraf() {
         return regel.getKortnavn() + " " + PARAGRAF_TEGN + paragraf;
+    }
+
+    public String kortnavnOgParagrafUtenTegn() {
+        return regel.getKortnavn() + " " + paragraf;
     }
 
     public URI uri() {
