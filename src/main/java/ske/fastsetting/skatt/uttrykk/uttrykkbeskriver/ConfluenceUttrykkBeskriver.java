@@ -115,7 +115,9 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
                     .append(r.kortnavnOgParagraf())
                     .append("|SRK:")
                     .append(r.kortnavnOgParagrafUtenTegn())
-                    .append("]\r\n")
+                    .append("] ([lovdata|")
+                    .append(r.uri())
+                    .append("])\r\n")
                 );
             }
 
