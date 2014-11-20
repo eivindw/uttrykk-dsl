@@ -5,6 +5,8 @@ import org.javamoney.moneta.Money;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
@@ -25,7 +27,14 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     }
 
     public String toString() {
-        return "kr " + belop.getNumberStripped().toPlainString();
+//        String belopFormatert = String.format("%'d", belop.getNumberStripped().toPlainString());
+
+        DecimalFormat decimalFormat = new DecimalFormat();
+        DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
+        formatSymbols.setGroupingSeparator(' ');
+        decimalFormat.setDecimalFormatSymbols(formatSymbols);
+
+        return "kr " + decimalFormat.format(belop.getNumberStripped());
     }
 
     public Belop pluss(Belop ledd) {
