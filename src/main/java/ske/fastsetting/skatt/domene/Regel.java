@@ -1,10 +1,13 @@
 package ske.fastsetting.skatt.domene;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 
 public class Regel {
 
     private static final String PARAGRAF_TEGN = "§";
+    private static final String HTML_PARAGRAF_TEGN = urlEncode(PARAGRAF_TEGN);
 
     private enum RegelType {
         Skattevedtak(
@@ -87,6 +90,14 @@ public class Regel {
     }
 
     public URI uri() {
-        return URI.create("http://lovdata.no/" + regel.getLovdataRef() + "/" + PARAGRAF_TEGN + paragraf);
+        return URI.create("http://lovdata.no/" + regel.getLovdataRef() + "/" + HTML_PARAGRAF_TEGN + paragraf);
+    }
+
+    private static String urlEncode(String str) {
+        try {
+            return URLEncoder.encode(str, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Klarte ikke å url-encode: " + str, e);
+        }
     }
 }
