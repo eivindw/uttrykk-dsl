@@ -64,6 +64,8 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
         public String getInnhold();
 
         public String getTittel();
+
+        public Set<String> getTags();
     }
 
     public static class InnholdConfluenceSide implements ConfluenceSide {
@@ -90,6 +92,8 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
         public String getTittel() {
             return tittel;
         }
+
+        public Set<String> getTags() { return tags; }
 
         private String innholdMedOverskrift() {
             return "h3. " + tittel
