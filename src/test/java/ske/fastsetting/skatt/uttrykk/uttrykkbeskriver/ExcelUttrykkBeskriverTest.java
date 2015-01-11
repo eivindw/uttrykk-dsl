@@ -11,6 +11,7 @@ import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.BasisTest;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
+import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel.ExcelUttrykkBeskriver;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
