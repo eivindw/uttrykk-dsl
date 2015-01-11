@@ -31,17 +31,17 @@ class ExcelArk {
 
         excelVerdi.skrivTilCelle(uttrykkCelle);
 
-        System.out.println("Ark: " + ark.getSheetName() + ", navn: " + navn + ", verdi: " + excelVerdi + " ,hjemmel: " + hjemmel);
+        System.out.println("Ark: " + ark.getSheetName() + ", navn: " + navn + ", verdi: " + excelVerdi + ", hjemmel: " + hjemmel);
     }
 
     public void leggTilFunksjon(String navn, String uttrykk, String hjemmel) {
         Cell uttrykkCelle = opprettUttrykkCelle(navn, hjemmel);
 
-        uttrykkCelle.setCellFormula(uttrykk);
+        ExcelFormel formel = ExcelFormel.parse(uttrykk);
 
-        ExcelUtil.formaterCelleverdiSomKroner(uttrykkCelle);
+        formel.skrivTilCelle(uttrykkCelle);
 
-        System.out.println("Ark: " + ark.getSheetName() + ", navn: " + navn + ", uttrykk: " + uttrykk + " ,hjemmel: " + hjemmel);
+        System.out.println("Ark: " + ark.getSheetName() + ", navn: " + navn + ", formel: " + formel + ", hjemmel: " + hjemmel);
     }
 
     private Cell opprettUttrykkCelle(String navn, String hjemmel) {
