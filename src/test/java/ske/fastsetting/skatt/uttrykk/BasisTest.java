@@ -32,10 +32,14 @@ public class BasisTest {
         final KroneUttrykk lonn = kr(60_000).navn("Lønn").regler(Regel.skatteloven("5-1"));
         final KroneUttrykk bonus = kr(40_000).navn("Bonus");
         final BelopUttrykk sumLonn = sum(
-                lonn,
-                bonus,
-                hvis(lonn.erMindreEnn(kr(90_000))).brukDa(bonus.multiplisertMed(prosent(15))).ellersBruk(kr(0)).navn("Ekstrabonus"),
-            kr(20_000).minus(kr(15_000).navn("Særfradrag").tags("sats")).minus(kr(5_000).navn("Minstefradrag").tags("sats"))
+            lonn,
+            bonus,
+            hvis(lonn.erMindreEnn(kr(90_000)))
+                .brukDa(bonus.multiplisertMed(prosent(15)))
+                .ellersBruk(kr(0)).navn("Ekstrabonus"),
+            kr(20_000)
+                .minus(kr(15_000).navn("Særfradrag").tags("sats"))
+                .minus(kr(5_000).navn("Minstefradrag").tags("sats"))
         ).navn("Sum lønn").regler(Regel.skatteloven("3.2"));
 
         final BelopUttrykk trygdeavgift = sumLonn.multiplisertMed(satsTrygdeavgift).navn("Trygdeavgift").tags("trygd");
