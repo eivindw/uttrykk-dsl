@@ -29,6 +29,6 @@ public class StorsteAvUttrykk extends AbstractUttrykk<Belop, StorsteAvUttrykk> i
     public String beskriv(UttrykkContext ctx) {
         return Stream.of(uttrykk)
             .map(ctx::beskriv)
-            .collect(Collectors.joining(",", "største av(", ")"));
+            .collect(Collectors.joining(",", "største av (", ")"));
     }
 }

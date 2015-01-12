@@ -22,7 +22,7 @@ public class ExcelUtil {
     }
 
     public static String excelNavn(String navn) {
-        return navn.replace(' ', '_');
+        return navn.replace(' ', '_').replace("-","").replace("%","_prosent");
     }
 
     static CellStyle lagOverskriftStil(Workbook workbook) {

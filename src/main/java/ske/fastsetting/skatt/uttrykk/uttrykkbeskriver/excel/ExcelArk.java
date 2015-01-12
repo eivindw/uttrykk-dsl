@@ -27,7 +27,7 @@ class ExcelArk {
     public void leggTilVerdi(String navn, String verdi, String hjemmel) {
         Cell uttrykkCelle = opprettUttrykkCelle(navn, hjemmel);
 
-        ExcelVerdi excelVerdi = ExcelVerdi.parse(verdi);
+        ExcelUttrykk excelVerdi = ExcelVerdi.parse(verdi);
 
         excelVerdi.skrivTilCelle(uttrykkCelle);
 
@@ -79,4 +79,7 @@ class ExcelArk {
     }
 
 
+    public String navn() {
+        return ark.getSheetName();
+    }
 }

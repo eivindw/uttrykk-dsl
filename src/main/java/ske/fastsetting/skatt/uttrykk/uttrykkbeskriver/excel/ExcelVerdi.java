@@ -2,27 +2,43 @@ package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel;
 
 import org.apache.poi.ss.usermodel.Cell;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
-* Created by jorn ola birkeland on 11.01.15.
-*/
-class ExcelVerdi {
+ * Created by jorn ola birkeland on 11.01.15.
+ */
+class ExcelVerdi implements ExcelUttrykk {
+
+    private static final String SKATTYTERS_ALDER_REGEX = "skattyters alder er mellom (.*) og (.*) år";
+    private static final String SKATTYTERS_BOSTEDKOMMUNE_REGEX = "bostedkommune er en av \\((.*)\\)";
 
     private final Type type;
     private final Object value;
     private final String format;
 
     private enum Type {
-        Numeric,
-        Text,
+        Numerisk,
+        Formel,
+        Tekst,
     }
 
-    public static ExcelVerdi parse(String text) {
+    public static ExcelUttrykk parse(String text) {
         if (text.startsWith("kr ")) {
-            return new ExcelVerdi(Type.Numeric, Double.parseDouble(text.replace("kr ", "").replace(" ","")), "kr ###,###,###,##0");
+            return new ExcelVerdi(Type.Numerisk, Double.parseDouble(text.replace("kr ", "").replace(" ", "")), "kr ###,###,###,##0");
         } else if (text.endsWith("%")) {
-            return new ExcelVerdi(Type.Numeric, Double.parseDouble(text.replace("%", "")) / 100, "0.00%");
+            return new ExcelVerdi(Type.Numerisk, Double.parseDouble(text.replace("%", "")) / 100, "0.00%");
+        } else if (text.matches(SKATTYTERS_ALDER_REGEX)) {
+            return new ExcelFormel(text.replaceFirst(SKATTYTERS_ALDER_REGEX,"alder=median(alder,$1,$2)"));
+        } else if (text.matches(SKATTYTERS_BOSTEDKOMMUNE_REGEX)) {
+            Matcher matcher = Pattern.compile(SKATTYTERS_BOSTEDKOMMUNE_REGEX).matcher(text);
+            matcher.find();
+            String kommuneString = "\""+Stream.of(matcher.group(1).split(", ")).collect(Collectors.joining("\"&\""))+"\"";
+            return new ExcelFormel("NOT(ISERROR(FIND(bostedkommune,"+kommuneString+")))");
         } else {
-            return new ExcelVerdi(Type.Text, text, "");
+            return new ExcelVerdi(Type.Tekst, text, "");
         }
 
     }
@@ -33,7 +49,7 @@ class ExcelVerdi {
         this.format = format;
     }
 
-    public String verdi() {
+    public String tilTekst() {
         return value.toString();
     }
 
@@ -41,7 +57,7 @@ class ExcelVerdi {
         ExcelUtil.formaterCelleverdi(celle, format);
 
         switch (type) {
-            case Numeric:
+            case Numerisk:
                 celle.setCellValue((double) value);
                 break;
             default:
@@ -51,6 +67,6 @@ class ExcelVerdi {
     }
 
     public String toString() {
-        return type+" "+value+", "+format;
+        return type + " " + value + ", " + format;
     }
 }

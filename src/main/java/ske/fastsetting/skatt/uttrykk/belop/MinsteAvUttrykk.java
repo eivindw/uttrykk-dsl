@@ -29,6 +29,6 @@ public class MinsteAvUttrykk extends AbstractUttrykk<Belop, MinsteAvUttrykk> imp
     public String beskriv(UttrykkContext ctx) {
         return Stream.of(uttrykk)
             .map(ctx::beskriv)
-            .collect(Collectors.joining(",", "minste av(", ")"));
+            .collect(Collectors.joining(",", "minste av (", ")"));
     }
 }

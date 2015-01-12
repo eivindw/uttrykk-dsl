@@ -27,15 +27,25 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
         workbook = new XSSFWorkbook();
         excelArk = new HashMap<>();
         registrerteUttrykk = new HashSet<>();
+
+        ExcelArk skattyterArk = ExcelArk.nytt(workbook, "skattyter");
+        skattyterArk.leggTilVerdi("alder","45","");
+        skattyterArk.leggTilVerdi("bostedkommune","Lørenskog","");
+
+        excelArk.put(skattyterArk.navn(),skattyterArk);
+
     }
 
     @Override
     public Workbook beskriv(UttrykkResultat<?> resultat) {
 
         this.resultat = resultat;
+
+
+
         new RekursivUttrykkBeskriver(resultat.start()).beskriv();
 
-        ExcelUtil.autotilpassKolonner(workbook, 0, 1, 2);
+        //ExcelUtil.autotilpassKolonner(workbook, 0, 1, 2);
 
         return workbook;
     }
@@ -114,9 +124,9 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
             if (resultatUttrykk==null || resultatUttrykk.length() == 0) {
                 uttrykkString = "";
             } else if (subIder.size() > 0) {
-                uttrykkString = "(" + resultatUttrykk + ")";
+                uttrykkString = "(" + ExcelFormel.parse(resultatUttrykk).tilTekst() + ")";
             } else {
-                uttrykkString = ExcelVerdi.parse(resultatUttrykk).verdi();
+                uttrykkString = ExcelVerdi.parse(resultatUttrykk).tilTekst();
             }
 
             return uttrykkString;
