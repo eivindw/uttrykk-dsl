@@ -26,9 +26,11 @@ public class ExcelFormel {
     public void skrivTilCelle(Cell celle) {
         ExcelUtil.formaterCelleverdiSomKroner(celle);
 
-        System.out.println(formel);
-
-        celle.setCellFormula(formel);
+        try {
+            celle.setCellFormula(formel);
+        } catch (Throwable e) {
+            celle.setCellValue(formel);
+        }
     }
 
     public String toString() {

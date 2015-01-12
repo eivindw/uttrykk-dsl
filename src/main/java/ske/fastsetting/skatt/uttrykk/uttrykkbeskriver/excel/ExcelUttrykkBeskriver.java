@@ -19,8 +19,9 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
     public static final String DEFAULT_ARK = "uklassifisert";
     private final XSSFWorkbook workbook;
-    private final Map<String,ExcelArk> excelArk;
+    private final Map<String, ExcelArk> excelArk;
     private final Set<String> registrerteUttrykk;
+    private UttrykkResultat<?> resultat;
 
     public ExcelUttrykkBeskriver() {
         workbook = new XSSFWorkbook();
@@ -31,61 +32,21 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
     @Override
     public Workbook beskriv(UttrykkResultat<?> resultat) {
 
-        beskriv(resultat.start(), resultat);
+        this.resultat = resultat;
+        new RekursivUttrykkBeskriver(resultat.start()).beskriv();
 
-        ExcelUtil.autotilpassKolonner(workbook,0,1,2);
+        ExcelUtil.autotilpassKolonner(workbook, 0, 1, 2);
 
         return workbook;
     }
 
-    private String beskriv(String id, UttrykkResultat<?> resultat) {
-        Map map = resultat.uttrykk().get(id);
-
-
-        String navn = finnNavn(map);
-        String uttrykk = finnUttrykk(map);
-        String hjemmel = finnHjemler(map);
-
-        Set<String> subIder = IdUtil.parseIder(uttrykk);
-
-        for (String subId : subIder) {
-            uttrykk = uttrykk.replaceAll("<" + subId + ">", beskriv(subId, resultat));
-        }
-
-        String uttrykkString = "";
-        ExcelArk ark = finnExcelArk(map);
-
-        if (navn != null) {
-            if (!registrerteUttrykk.contains(navn)) {
-                if (subIder.size() > 0) {
-                    ark.leggTilFunksjon(navn, uttrykk, hjemmel);
-                } else {
-                    ark.leggTilVerdi(navn, uttrykk, hjemmel);
-                }
-
-                registrerteUttrykk.add(navn);
-            }
-            uttrykkString = ExcelUtil.excelNavn(navn);
-        } else if (uttrykk.length() > 0) {
-            if (subIder.size() > 0) {
-                uttrykkString = "(" + uttrykk + ")";
-            } else {
-                uttrykkString = ExcelVerdi.parse(uttrykk).verdi();
-            }
-        }
-
-        return uttrykkString;
-
-
-    }
-
-    private String finnHjemler(Map map) {
+    private static String finnHjemler(Map map) {
         final List<Regel> hjemler = (List<Regel>) map.getOrDefault(UttrykkResultat.KEY_REGLER, Collections.emptyList());
 
         return hjemler.stream().map(Regel::kortnavnOgParagraf).collect(Collectors.joining(", "));
     }
 
-    private String finnUttrykk(Map map) {
+    private static String finnUttrykk(Map map) {
         String tmpUttrykkString = "";
         if (map.containsKey(UttrykkResultat.KEY_UTTRYKK)) {
             tmpUttrykkString = (String) map.get(UttrykkResultat.KEY_UTTRYKK);
@@ -93,7 +54,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
         return tmpUttrykkString;
     }
 
-    private String finnNavn(Map map) {
+    private static String finnNavn(Map map) {
         String navn = null;
 
         if (map.containsKey(UttrykkResultat.KEY_NAVN)) {
@@ -107,8 +68,76 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
         String arkNavn = tags.size() > 0 ? new ArrayList<>(tags).get(0) : DEFAULT_ARK;
 
-        return excelArk.computeIfAbsent(arkNavn,navn->ExcelArk.nytt(workbook,navn));
+        return excelArk.computeIfAbsent(arkNavn, navn -> ExcelArk.nytt(workbook, navn));
     }
 
+    private class RekursivUttrykkBeskriver {
+
+        private final String navn;
+        private final String uttrykk;
+        private final String hjemmel;
+        private final Set<String> subIder;
+        private final ExcelArk ark;
+
+        public RekursivUttrykkBeskriver(String id) {
+
+            Map map = resultat.uttrykk(id);
+
+            navn = finnNavn(map);
+            uttrykk = finnUttrykk(map);
+            hjemmel = finnHjemler(map);
+            ark = finnExcelArk(map);
+
+            subIder = IdUtil.parseIder(uttrykk);
+        }
+
+        public String beskriv() {
+
+            String resultatUttrykk = uttrykk;
+
+            for (String subId : subIder) {
+                resultatUttrykk = resultatUttrykk.replaceAll("<" + subId + ">", new RekursivUttrykkBeskriver(subId).beskriv());
+            }
+
+            return harNavn() ? beskrivNavngittUttrykk(resultatUttrykk) : beskriveAnonymtUttrykk(resultatUttrykk);
+
+        }
+
+        private boolean harNavn() {
+            return navn != null;
+        }
+
+        private String beskriveAnonymtUttrykk(String resultatUttrykk) {
+
+            String uttrykkString;
+
+            if (resultatUttrykk==null || resultatUttrykk.length() == 0) {
+                uttrykkString = "";
+            } else if (subIder.size() > 0) {
+                uttrykkString = "(" + resultatUttrykk + ")";
+            } else {
+                uttrykkString = ExcelVerdi.parse(resultatUttrykk).verdi();
+            }
+
+            return uttrykkString;
+        }
+
+        private String beskrivNavngittUttrykk(String resultatUttrykk) {
+            if (!registrerteUttrykk.contains(navn)) {
+                registrerNavngittUttrykk(resultatUttrykk);
+            }
+            return ExcelUtil.excelNavn(navn);
+        }
+
+        private void registrerNavngittUttrykk(String resultatUttrykk) {
+            if (subIder.size() > 0) {
+                ark.leggTilFunksjon(navn, resultatUttrykk, hjemmel);
+            } else {
+                ark.leggTilVerdi(navn, resultatUttrykk, hjemmel);
+            }
+
+            registrerteUttrykk.add(navn);
+        }
+    }
 
 }

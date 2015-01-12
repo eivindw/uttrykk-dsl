@@ -65,8 +65,8 @@ class ExcelArk {
 
         CellStyle cs = ExcelUtil.lagOverskriftStil(workbook);
 
-        lagOverskrift(row, 0, "Navn",cs);
-        lagOverskrift(row, 1, "Uttrykk",cs);
+        lagOverskrift(row, 0, "Begrep",cs);
+        lagOverskrift(row, 1, "Definisjon",cs);
         lagOverskrift(row, 2, "Hjemmel",cs );
 
     }
