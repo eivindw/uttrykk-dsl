@@ -42,7 +42,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
         new RekursivUttrykkBeskriver(resultat.start()).beskriv();
 
-        ExcelUtil.autotilpassKolonner(workbook, 0);
+        ExcelUtil.autotilpassKolonner(workbook, 0,1,2);
 
         return workbook;
     }

@@ -16,16 +16,16 @@ public class ExcelFormel implements ExcelUttrykk {
     public static final String SUM_OUTPUT = "sum($1)";
 
     public static final String BEGRENSET_NEDAD_MATCH = "^(.*) begrenset nedad til (.*)$";
-    public static final String BEGRENSET_NEDAD_OUTPUT = "max($1,$2)";
+    public static final String BEGRENSET_NEDAD_OUTPUT = "MAX($1,$2)";
 
     public static final String BEGRENSET_OPPAD_MATCH = "^(.*) begrenset oppad til (.*)$";
-    public static final String BEGRENSET_OPPAD_OUTPUT = "min($1,$2)";
+    public static final String BEGRENSET_OPPAD_OUTPUT = "MIN($1,$2)";
 
-    public static final String MINSTE_AV_MATCH = "^minste av (.*)$";
-    public static final String MINSTE_AV_OUTPUT = "min $1";
+    public static final String MINSTE_AV_MATCH = "^minste av \\((.*)\\)$";
+    public static final String MINSTE_AV_OUTPUT = "MIN($1)";
 
     public static final String STOERSTE_AV_MATCH = "^største av \\((.*)\\)$";
-    public static final String STOERSTE_AV_OUTPUT = "max($1)";
+    public static final String STOERSTE_AV_OUTPUT = "MAX($1)";
 
     public static final String FRA_TILOGMED_MATCH = "^(.*?) < (.*?) <= (.*?)$";
     public static final String FRA_TILOGMED_OUTPUT = "AND(($1<$2),($2<=$3))";
@@ -42,10 +42,7 @@ public class ExcelFormel implements ExcelUttrykk {
     public static ExcelFormel parse(String uttrykkStreng) {
 
         if (uttrykkStreng.startsWith("hvis")) {
-
-            System.out.println("hvis fra: " + uttrykkStreng);
             uttrykkStreng = HvisParser.parse(uttrykkStreng);
-            System.out.println("hvis til: " + uttrykkStreng);
         }
         uttrykkStreng = uttrykkStreng.replaceAll(SUM_MATCH, SUM_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(BEGRENSET_NEDAD_MATCH, BEGRENSET_NEDAD_OUTPUT);
