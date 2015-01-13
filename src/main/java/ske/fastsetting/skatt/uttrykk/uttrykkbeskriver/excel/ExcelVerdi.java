@@ -14,6 +14,10 @@ class ExcelVerdi implements ExcelUttrykk {
 
     private static final String SKATTYTERS_ALDER_REGEX = "skattyters alder er mellom (.*) og (.*) år";
     private static final String SKATTYTERS_BOSTEDKOMMUNE_REGEX = "bostedkommune er en av \\((.*)\\)";
+    private static final String TABELLNUMMER_REGEX = "Tabellnummer: (.*)";
+    private static final String TABELLNUMMER_OUTPUT = "\"$1\"";
+
+
 
     private final Type type;
     private final Object value;
@@ -37,7 +41,15 @@ class ExcelVerdi implements ExcelUttrykk {
             matcher.find();
             String kommuneString = "\""+Stream.of(matcher.group(1).split(", ")).collect(Collectors.joining("\"&\""))+"\"";
             return new ExcelFormel("NOT(ISERROR(FIND(bostedkommune,"+kommuneString+")))");
-        } else {
+
+        } else if(text.matches(TABELLNUMMER_REGEX)) {
+            return new ExcelVerdi(Type.Tekst,text.replaceAll(TABELLNUMMER_REGEX,TABELLNUMMER_OUTPUT),"");
+        } else if(text.matches("Hvis-uttrykk mangler en verdi for ellersBruk")) {
+            return new ExcelVerdi(Type.Tekst,"\""+text+"\"","");
+        } else if(text.startsWith("Post")) {
+            return new ExcelVerdi(Type.Numerisk,0.0,"");
+        }
+        else {
             return new ExcelVerdi(Type.Tekst, text, "");
         }
 

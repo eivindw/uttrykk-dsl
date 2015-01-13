@@ -5,7 +5,7 @@ import org.apache.poi.ss.usermodel.*;
 /**
 * Created by jorn ola birkeland on 11.01.15.
 */
-class ExcelArk {
+public class ExcelArk {
 
     private final Sheet ark;
     private int gjeldendeRadNummer;
@@ -37,7 +37,7 @@ class ExcelArk {
     public void leggTilFunksjon(String navn, String uttrykk, String hjemmel) {
         Cell uttrykkCelle = opprettUttrykkCelle(navn, hjemmel);
 
-        ExcelFormel formel = ExcelFormel.parse(uttrykk);
+        ExcelFormel formel = new ExcelFormel(uttrykk);
 
         formel.skrivTilCelle(uttrykkCelle);
 
@@ -49,7 +49,7 @@ class ExcelArk {
 
         Row row = ark.createRow(rad);
 
-        row.createCell(0).setCellValue(navn);
+        row.createCell(0).setCellValue(navn.substring(0,1).toUpperCase() + navn.substring(1));
         row.createCell(2).setCellValue(hjemmel);
 
         Cell cell = row.createCell(1);

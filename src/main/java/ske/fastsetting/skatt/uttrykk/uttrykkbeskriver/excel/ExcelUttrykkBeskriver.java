@@ -17,23 +17,22 @@ import java.util.stream.Collectors;
 
 public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
-    public static final String DEFAULT_ARK = "uklassifisert";
+    private final String DEFAULT_ARK;
     private final XSSFWorkbook workbook;
     private final Map<String, ExcelArk> excelArk;
     private final Set<String> registrerteUttrykk;
     private UttrykkResultat<?> resultat;
 
     public ExcelUttrykkBeskriver() {
-        workbook = new XSSFWorkbook();
+        this(new XSSFWorkbook(),"uklassifisert");
+
+    }
+
+    public ExcelUttrykkBeskriver(XSSFWorkbook workbook, String navnPaaDefaultArk) {
+        this.DEFAULT_ARK = navnPaaDefaultArk;
+        this.workbook = workbook;
         excelArk = new HashMap<>();
         registrerteUttrykk = new HashSet<>();
-
-        ExcelArk skattyterArk = ExcelArk.nytt(workbook, "skattyter");
-        skattyterArk.leggTilVerdi("alder","45","");
-        skattyterArk.leggTilVerdi("bostedkommune","Lørenskog","");
-
-        excelArk.put(skattyterArk.navn(),skattyterArk);
-
     }
 
     @Override
@@ -41,11 +40,9 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
         this.resultat = resultat;
 
-
-
         new RekursivUttrykkBeskriver(resultat.start()).beskriv();
 
-        //ExcelUtil.autotilpassKolonner(workbook, 0, 1, 2);
+        ExcelUtil.autotilpassKolonner(workbook, 0);
 
         return workbook;
     }
@@ -78,7 +75,11 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
         String arkNavn = tags.size() > 0 ? new ArrayList<>(tags).get(0) : DEFAULT_ARK;
 
-        return excelArk.computeIfAbsent(arkNavn, navn -> ExcelArk.nytt(workbook, navn));
+        return opprettArk(arkNavn);
+    }
+
+    public ExcelArk opprettArk(String arkNavn) {
+        return excelArk.computeIfAbsent(arkNavn, n -> ExcelArk.nytt(workbook, n));
     }
 
     private class RekursivUttrykkBeskriver {
@@ -105,6 +106,10 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
             String resultatUttrykk = uttrykk;
 
+            if(subIder.size()>0) {
+                resultatUttrykk = ExcelFormel.parse(resultatUttrykk).tilTekst();
+            }
+
             for (String subId : subIder) {
                 resultatUttrykk = resultatUttrykk.replaceAll("<" + subId + ">", new RekursivUttrykkBeskriver(subId).beskriv());
             }
@@ -124,7 +129,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
             if (resultatUttrykk==null || resultatUttrykk.length() == 0) {
                 uttrykkString = "";
             } else if (subIder.size() > 0) {
-                uttrykkString = "(" + ExcelFormel.parse(resultatUttrykk).tilTekst() + ")";
+                uttrykkString = "(" + resultatUttrykk + ")";
             } else {
                 uttrykkString = ExcelVerdi.parse(resultatUttrykk).tilTekst();
             }
