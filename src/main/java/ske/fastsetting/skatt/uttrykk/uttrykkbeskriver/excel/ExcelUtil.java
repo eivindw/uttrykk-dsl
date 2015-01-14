@@ -22,7 +22,7 @@ public class ExcelUtil {
     }
 
     public static String lagGyldigCellenavn(String navn) {
-        return navn.replace(' ', '_').replace("-","").replace("%","_prosent");
+        return navn.replace(' ', '_').replace("-","").replace("%","_prosent").replace("(","_").replace(")","_");
     }
 
 
