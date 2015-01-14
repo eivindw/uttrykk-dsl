@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
-    private final String DEFAULT_ARK;
+    private final String standardArkNavn;
     private final XSSFWorkbook workbook;
     private final Map<String, ExcelArk> excelArk;
     private final Set<String> registrerteUttrykk;
@@ -28,8 +28,8 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
     }
 
-    public ExcelUttrykkBeskriver(XSSFWorkbook workbook, String navnPaaDefaultArk) {
-        this.DEFAULT_ARK = navnPaaDefaultArk;
+    public ExcelUttrykkBeskriver(XSSFWorkbook workbook, String standardArkNavn) {
+        this.standardArkNavn = standardArkNavn;
         this.workbook = workbook;
         excelArk = new HashMap<>();
         registrerteUttrykk = new HashSet<>();
@@ -45,6 +45,10 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
         ExcelUtil.autotilpassKolonner(workbook, 0,1,2);
 
         return workbook;
+    }
+
+    public ExcelArk opprettArk(String arkNavn) {
+        return excelArk.computeIfAbsent(arkNavn, n -> ExcelArk.nytt(workbook, n));
     }
 
     private static String finnHjemler(Map map) {
@@ -73,14 +77,11 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
     private ExcelArk finnExcelArk(Map map) {
         final Set<String> tags = (Set<String>) map.getOrDefault(UttrykkResultat.KEY_TAGS, Collections.emptySet());
 
-        String arkNavn = tags.size() > 0 ? new ArrayList<>(tags).get(0) : DEFAULT_ARK;
+        String arkNavn = tags.size() > 0 ? new ArrayList<>(tags).get(0) : standardArkNavn;
 
         return opprettArk(arkNavn);
     }
 
-    public ExcelArk opprettArk(String arkNavn) {
-        return excelArk.computeIfAbsent(arkNavn, n -> ExcelArk.nytt(workbook, n));
-    }
 
     private class RekursivUttrykkBeskriver {
 
@@ -106,7 +107,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
             String resultatUttrykk = uttrykk;
 
-            if(subIder.size()>0) {
+            if(harSubIder()) {
                 resultatUttrykk = ExcelFormel.parse(resultatUttrykk).tilTekst();
             }
 
@@ -114,21 +115,18 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
                 resultatUttrykk = resultatUttrykk.replaceAll("<" + subId + ">", new RekursivUttrykkBeskriver(subId).beskriv());
             }
 
-            return harNavn() ? beskrivNavngittUttrykk(resultatUttrykk) : beskriveAnonymtUttrykk(resultatUttrykk);
+            return harNavn() ? beskrivNavngittUttrykk(resultatUttrykk) : beskrivAnonymtUttrykk(resultatUttrykk);
 
         }
 
-        private boolean harNavn() {
-            return navn != null;
-        }
 
-        private String beskriveAnonymtUttrykk(String resultatUttrykk) {
+        private String beskrivAnonymtUttrykk(String resultatUttrykk) {
 
             String uttrykkString;
 
             if (resultatUttrykk==null || resultatUttrykk.length() == 0) {
                 uttrykkString = "";
-            } else if (subIder.size() > 0) {
+            } else if (harSubIder()) {
                 uttrykkString = "(" + resultatUttrykk + ")";
             } else {
                 uttrykkString = ExcelVerdi.parse(resultatUttrykk).tilTekst();
@@ -141,11 +139,11 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
             if (!registrerteUttrykk.contains(navn)) {
                 registrerNavngittUttrykk(resultatUttrykk);
             }
-            return ExcelUtil.excelNavn(navn);
+            return ExcelUtil.lagGyldigCellenavn(navn);
         }
 
         private void registrerNavngittUttrykk(String resultatUttrykk) {
-            if (subIder.size() > 0) {
+            if (harSubIder()) {
                 ark.leggTilFunksjon(navn, resultatUttrykk, hjemmel);
             } else {
                 ark.leggTilVerdi(navn, resultatUttrykk, hjemmel);
@@ -153,6 +151,15 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
             registrerteUttrykk.add(navn);
         }
+
+        private boolean harSubIder() {
+            return subIder.size() > 0;
+        }
+
+        private boolean harNavn() {
+            return navn != null;
+        }
+
     }
 
 }

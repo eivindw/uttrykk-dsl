@@ -22,10 +22,10 @@ class ExcelVerdi implements ExcelUttrykk {
     private final Type type;
     private final Object value;
 
-    private enum Type {
+    protected enum Type {
         Prosent,
         Belop,
-        Tekst,
+        Tekst
     }
 
     public static ExcelUttrykk parse(String text) {
@@ -33,6 +33,8 @@ class ExcelVerdi implements ExcelUttrykk {
             return new ExcelVerdi(Type.Belop, Long.parseLong(text.replace("kr ", "").replace(" ", "")));
         } else if (text.endsWith("%")) {
             return new ExcelVerdi(Type.Prosent, Double.parseDouble(text.replace("%", "")) / 100);
+        } else if(text.matches("Hvis-uttrykk mangler en verdi for ellersBruk")) {
+            return new ExcelVerdi(Type.Tekst,"\""+text+"\"");
         } else if (text.matches(SKATTYTERS_ALDER_REGEX)) {
             return new ExcelFormel(text.replaceFirst(SKATTYTERS_ALDER_REGEX,"alder=median(alder,$1,$2)"));
         } else if (text.matches(SKATTYTERS_BOSTEDKOMMUNE_REGEX)) {
@@ -43,8 +45,6 @@ class ExcelVerdi implements ExcelUttrykk {
 
         } else if(text.matches(TABELLNUMMER_REGEX)) {
             return new ExcelVerdi(Type.Tekst,text.replaceAll(TABELLNUMMER_REGEX,TABELLNUMMER_OUTPUT));
-        } else if(text.matches("Hvis-uttrykk mangler en verdi for ellersBruk")) {
-            return new ExcelVerdi(Type.Tekst,"\""+text+"\"");
         } else if(text.startsWith("Post")) {
             return new ExcelVerdi(Type.Belop,0L);
         }

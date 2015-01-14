@@ -13,7 +13,7 @@ public class ExcelArk {
     private ExcelArk(Sheet sheet) {
         this.ark = sheet;
 
-        lagOverskriftRad(sheet);
+        ExcelUtil.lagOverskriftRad(sheet, "Begrep", "Definisjon", "Hjemmel");
 
         gjeldendeRadNummer=1;
     }
@@ -30,18 +30,14 @@ public class ExcelArk {
         ExcelUttrykk excelVerdi = ExcelVerdi.parse(verdi);
 
         excelVerdi.skrivTilCelle(uttrykkCelle);
-
-        System.out.println("Ark: " + ark.getSheetName() + ", navn: " + navn + ", verdi: " + excelVerdi + ", hjemmel: " + hjemmel);
     }
 
-    public void leggTilFunksjon(String navn, String uttrykk, String hjemmel) {
+    public void leggTilFunksjon(String navn, String excelFormel, String hjemmel) {
         Cell uttrykkCelle = opprettUttrykkCelle(navn, hjemmel);
 
-        ExcelFormel formel = new ExcelFormel(uttrykk);
+        ExcelFormel formel = new ExcelFormel(excelFormel);
 
         formel.skrivTilCelle(uttrykkCelle);
-
-        System.out.println("Ark: " + ark.getSheetName() + ", navn: " + navn + ", formel: " + formel + ", hjemmel: " + hjemmel);
     }
 
     private Cell opprettUttrykkCelle(String navn, String hjemmel) {
@@ -49,7 +45,7 @@ public class ExcelArk {
 
         Row row = ark.createRow(rad);
 
-        row.createCell(0).setCellValue(navn.substring(0,1).toUpperCase() + navn.substring(1));
+        row.createCell(0).setCellValue(storForbokstav(navn));
         row.createCell(2).setCellValue(hjemmel);
 
         Cell cell = row.createCell(1);
@@ -59,27 +55,13 @@ public class ExcelArk {
         return cell;
     }
 
-    private static void lagOverskriftRad(Sheet sheet) {
-        Row row = sheet.createRow(0);
-        final Workbook workbook = sheet.getWorkbook();
-
-        CellStyle cs = ExcelUtil.lagOverskriftStil(workbook);
-
-        lagOverskrift(row, 0, "Begrep",cs);
-        lagOverskrift(row, 1, "Definisjon",cs);
-        lagOverskrift(row, 2, "Hjemmel",cs );
-
-    }
-
-
-    private static void lagOverskrift(Row rad, int kolonne, String tekst, CellStyle style) {
-        Cell celle = rad.createCell(kolonne);
-        celle.setCellValue(tekst);
-        celle.setCellStyle(style);
-    }
-
 
     public String navn() {
         return ark.getSheetName();
     }
+
+    private static String storForbokstav(String navn) {
+        return navn.substring(0,1).toUpperCase() + navn.substring(1);
+    }
+
 }

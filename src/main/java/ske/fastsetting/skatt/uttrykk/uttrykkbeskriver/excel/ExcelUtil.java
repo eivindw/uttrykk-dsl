@@ -21,27 +21,17 @@ public class ExcelUtil {
         formaterCelleverdi(celle, "kr #,##0");
     }
 
-    public static String excelNavn(String navn) {
+    public static String lagGyldigCellenavn(String navn) {
         return navn.replace(' ', '_').replace("-","").replace("%","_prosent");
     }
 
-    static CellStyle lagOverskriftStil(Workbook workbook) {
-        CellStyle cs = workbook.createCellStyle();
-        Font f = workbook.createFont();
-
-        f.setFontHeightInPoints((short) 12);
-        f.setBoldweight(Font.BOLDWEIGHT_BOLD);
-
-        cs.setFont(f);
-        return cs;
-    }
 
     static void settCellenavn(Sheet sheet, int rad, int kolonne, String navn) {
         CellReference cellReference = new CellReference(sheet.getSheetName(), rad, kolonne, true, true);
         AreaReference areaReference = new AreaReference(cellReference, cellReference);
 
         Name name = sheet.getWorkbook().createName();
-        name.setNameName(excelNavn(navn));
+        name.setNameName(lagGyldigCellenavn(navn));
         name.setRefersToFormula(areaReference.formatAsString());
     }
 
@@ -60,4 +50,34 @@ public class ExcelUtil {
 
 
     }
+
+    static void lagOverskriftRad(Sheet sheet, String... kolonnenavn) {
+        Row row = sheet.createRow(0);
+        final Workbook workbook = sheet.getWorkbook();
+
+        CellStyle cs = lagOverskriftStil(workbook);
+
+        for(int i=0;i<kolonnenavn.length;i++) {
+            lagOverskrift(row, i, kolonnenavn[i],cs);
+        }
+
+    }
+
+    private static void lagOverskrift(Row rad, int kolonne, String tekst, CellStyle style) {
+        Cell celle = rad.createCell(kolonne);
+        celle.setCellValue(tekst);
+        celle.setCellStyle(style);
+    }
+
+    private static CellStyle lagOverskriftStil(Workbook workbook) {
+        CellStyle cs = workbook.createCellStyle();
+        Font f = workbook.createFont();
+
+        f.setFontHeightInPoints((short) 12);
+        f.setBoldweight(Font.BOLDWEIGHT_BOLD);
+
+        cs.setFont(f);
+        return cs;
+    }
+
 }

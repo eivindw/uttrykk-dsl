@@ -41,9 +41,7 @@ public class ExcelFormel implements ExcelUttrykk {
 
     public static ExcelFormel parse(String uttrykkStreng) {
 
-        if (uttrykkStreng.startsWith("hvis")) {
-            uttrykkStreng = HvisParser.parse(uttrykkStreng);
-        }
+        uttrykkStreng = HvisParser.parse(uttrykkStreng);
         uttrykkStreng = uttrykkStreng.replaceAll(SUM_MATCH, SUM_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(BEGRENSET_NEDAD_MATCH, BEGRENSET_NEDAD_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(BEGRENSET_OPPAD_MATCH, BEGRENSET_OPPAD_OUTPUT);
@@ -78,30 +76,18 @@ public class ExcelFormel implements ExcelUttrykk {
 
     public static class HvisParser {
 
-        private static Pattern HVIS_ELLERS_HVIS_PATTERN = Pattern.compile("^hvis (.*?) bruk da (.*?) ellers (hvis .*)$");
-        private static Pattern HVIS_ELLERS_BRUK_PATTERN = Pattern.compile("^hvis (.*?) bruk da (.*?) ellers bruk (.*)$");
-        private static Pattern HVIS_ENKELT_PATTERN = Pattern.compile("^hvis (.*) bruk da (.*)$");
+        private static Pattern HVIS_PATTERN = Pattern.compile("^hvis (.+?) bruk da (.+?)(?: ellers(?: bruk)? (.*))?$");
 
         public static String parse(String uttrykk) {
-            Matcher m = HVIS_ELLERS_HVIS_PATTERN.matcher(uttrykk);
+            Matcher m = HVIS_PATTERN.matcher(uttrykk);
 
-            if (m.find()) {
-                return "if(" + m.group(1) + "," + m.group(2) + "," + parse(m.group(3)) + ")";
-            }
-
-            m = HVIS_ELLERS_BRUK_PATTERN.matcher(uttrykk);
-
-            if (m.find()) {
-                return "if(" + m.group(1) + "," + m.group(2) + "," + m.group(3) + ")";
-            }
-
-            m = HVIS_ENKELT_PATTERN.matcher(uttrykk);
-
-            if (m.find()) {
-                return "if(" + m.group(1) + "," + m.group(2) + ")";
-            }
-
-            return uttrykk;
+            if (m.find())
+                if (m.group(3) == null)
+                    return String.format("if(%s,%s)", m.group(1), m.group(2));
+                else
+                    return String.format("if(%s,%s,%s)", m.group(1), m.group(2), parse(m.group(3)));
+            else
+                return uttrykk;
         }
     }
 
