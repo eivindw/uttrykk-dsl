@@ -30,6 +30,9 @@ public class ExcelFormel implements ExcelUttrykk {
     public static final String FRA_TILOGMED_MATCH = "^(.*?) < (.*?) <= (.*?)$";
     public static final String FRA_TILOGMED_OUTPUT = "AND(($1<$2),($2<=$3))";
 
+    public static final String FRAOGMED_TIL_MATCH = "^(.*?) <= (.*?) < (.*?)$";
+    public static final String FRAOGMED_TIL_OUTPUT = "AND(($1<=$2),($2<$3))";
+
     public static final String OG_MATCH = "^(.*) og (.*)$";
     public static final String OG_OUTPUT = "AND($1,$2)";
 
@@ -48,6 +51,7 @@ public class ExcelFormel implements ExcelUttrykk {
         uttrykkStreng = uttrykkStreng.replaceAll(MINSTE_AV_MATCH, MINSTE_AV_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(STOERSTE_AV_MATCH, STOERSTE_AV_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(FRA_TILOGMED_MATCH, FRA_TILOGMED_OUTPUT);
+        uttrykkStreng = uttrykkStreng.replaceAll(FRAOGMED_TIL_MATCH, FRAOGMED_TIL_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(OG_MATCH, OG_OUTPUT);
 
         return new ExcelFormel(uttrykkStreng);
