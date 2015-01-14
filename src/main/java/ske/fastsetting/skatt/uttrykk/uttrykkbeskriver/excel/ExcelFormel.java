@@ -55,8 +55,6 @@ public class ExcelFormel implements ExcelUttrykk {
 
 
     public void skrivTilCelle(Cell celle) {
-        ExcelUtil.formaterCelleverdiSomKroner(celle);
-
         try {
             celle.setCellFormula(formel);
         } catch (Throwable e) {

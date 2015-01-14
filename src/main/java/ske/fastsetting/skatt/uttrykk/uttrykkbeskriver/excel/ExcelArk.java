@@ -8,19 +8,21 @@ import org.apache.poi.ss.usermodel.*;
 public class ExcelArk {
 
     private final Sheet ark;
+    private ExcelFormateringshint formateringshint;
     private int gjeldendeRadNummer;
 
-    private ExcelArk(Sheet sheet) {
+    private ExcelArk(Sheet sheet, ExcelFormateringshint formateringshint) {
         this.ark = sheet;
+        this.formateringshint = formateringshint;
 
         ExcelUtil.lagOverskriftRad(sheet, "Begrep", "Definisjon", "Hjemmel");
 
         gjeldendeRadNummer=1;
     }
 
-    public static ExcelArk nytt(Workbook workbook, String navn) {
+    public static ExcelArk nytt(Workbook workbook, String navn, ExcelFormateringshint formateringshint) {
 
-        return new ExcelArk(workbook.createSheet(navn));
+        return new ExcelArk(workbook.createSheet(navn),formateringshint);
     }
 
 
@@ -48,11 +50,12 @@ public class ExcelArk {
         row.createCell(0).setCellValue(storForbokstav(navn));
         row.createCell(2).setCellValue(hjemmel);
 
-        Cell cell = row.createCell(1);
+        Cell uttrykkCelle = row.createCell(1);
+        ExcelUtil.formaterCelleverdi(uttrykkCelle, formateringshint.finnFormat(navn));
 
         ExcelUtil.settCellenavn(ark, rad, 1, navn);
 
-        return cell;
+        return uttrykkCelle;
     }
 
 

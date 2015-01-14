@@ -21,6 +21,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
     private final XSSFWorkbook workbook;
     private final Map<String, ExcelArk> excelArk;
     private final Set<String> registrerteUttrykk;
+    private final ExcelFormateringshint formateringshint;
     private UttrykkResultat<?> resultat;
 
     public ExcelUttrykkBeskriver() {
@@ -33,6 +34,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
         this.workbook = workbook;
         excelArk = new HashMap<>();
         registrerteUttrykk = new HashSet<>();
+        formateringshint = new ExcelFormateringshint();
     }
 
     @Override
@@ -48,7 +50,15 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
     }
 
     public ExcelArk opprettArk(String arkNavn) {
-        return excelArk.computeIfAbsent(arkNavn, n -> ExcelArk.nytt(workbook, n));
+        return excelArk.computeIfAbsent(arkNavn, n -> ExcelArk.nytt(workbook, n, formateringshint));
+    }
+
+    public void leggTilFormateringshint(String navnPattern, String excelFormat) {
+        formateringshint.leggTilHint(navnPattern, excelFormat);
+    }
+
+    public void settStandardFormatering(String excelFormat) {
+        formateringshint.settStandardFormatering(excelFormat);
     }
 
     private static String finnHjemler(Map map) {

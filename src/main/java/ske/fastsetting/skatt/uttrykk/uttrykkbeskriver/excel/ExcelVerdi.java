@@ -18,7 +18,6 @@ class ExcelVerdi implements ExcelUttrykk {
     private static final String TABELLNUMMER_OUTPUT = "\"$1\"";
 
 
-
     private final Type type;
     private final Object value;
 
@@ -68,11 +67,11 @@ class ExcelVerdi implements ExcelUttrykk {
 
         switch (type) {
             case Belop:
-                ExcelUtil.formaterCelleverdi(celle, "kr ###,###,###,##0");
+                ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.BELOP_FORMATERING);
                 celle.setCellValue(((Long) value).doubleValue());
                 break;
             case Prosent:
-                ExcelUtil.formaterCelleverdi(celle, "0.00%");
+                ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.PROSENT_FORMATERING);
                 celle.setCellValue((double) value);
                 break;
             default:
