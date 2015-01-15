@@ -15,6 +15,9 @@ public class ExcelFormel implements ExcelUttrykk {
     public static final String SUM_MATCH = "^Summen av (.*)$";
     public static final String SUM_OUTPUT = "sum($1)";
 
+    public static final String BEGRENSET_NEDAD_OPPAD_MATCH = "^(.*) begrenset nedad til (.*) begrenset oppad til (.*)$";
+    public static final String BEGRENSET_NEDAD_OPPAD_OUTPUT = "MIN(MAX($1,$2),$3)";
+
     public static final String BEGRENSET_NEDAD_MATCH = "^(.*) begrenset nedad til (.*)$";
     public static final String BEGRENSET_NEDAD_OUTPUT = "MAX($1,$2)";
 
@@ -46,6 +49,7 @@ public class ExcelFormel implements ExcelUttrykk {
 
         uttrykkStreng = HvisParser.parse(uttrykkStreng);
         uttrykkStreng = uttrykkStreng.replaceAll(SUM_MATCH, SUM_OUTPUT);
+        uttrykkStreng = uttrykkStreng.replaceAll(BEGRENSET_NEDAD_OPPAD_MATCH, BEGRENSET_NEDAD_OPPAD_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(BEGRENSET_NEDAD_MATCH, BEGRENSET_NEDAD_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(BEGRENSET_OPPAD_MATCH, BEGRENSET_OPPAD_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(MINSTE_AV_MATCH, MINSTE_AV_OUTPUT);

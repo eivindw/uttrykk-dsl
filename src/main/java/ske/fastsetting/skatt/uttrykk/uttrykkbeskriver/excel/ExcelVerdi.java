@@ -24,7 +24,7 @@ class ExcelVerdi implements ExcelUttrykk {
     protected enum Type {
         Prosent,
         Belop,
-        Tekst
+        Heltall, Tekst
     }
 
     public static ExcelUttrykk parse(String text) {
@@ -46,6 +46,9 @@ class ExcelVerdi implements ExcelUttrykk {
             return new ExcelVerdi(Type.Tekst,text.replaceAll(TABELLNUMMER_REGEX,TABELLNUMMER_OUTPUT));
         } else if(text.startsWith("Post")) {
             return new ExcelVerdi(Type.Belop,0L);
+        }
+        else if (text.matches("-?\\d+")) {
+            return new ExcelVerdi(Type.Heltall, Integer.parseInt(text));
         }
         else {
             return new ExcelVerdi(Type.Tekst, text);
@@ -73,6 +76,10 @@ class ExcelVerdi implements ExcelUttrykk {
             case Prosent:
                 ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.PROSENT_FORMATERING);
                 celle.setCellValue((double) value);
+                break;
+            case Heltall:
+                ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.HELTALL_FORMATERING);
+                celle.setCellValue((int) value);
                 break;
             default:
                 celle.setCellValue(value.toString());

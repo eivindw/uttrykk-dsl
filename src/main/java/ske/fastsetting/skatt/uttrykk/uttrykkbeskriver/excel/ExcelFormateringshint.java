@@ -9,6 +9,7 @@ import java.util.Map;
 public class ExcelFormateringshint {
     public static final String BELOP_FORMATERING = "kr ###,###,###,##0";
     public static final String PROSENT_FORMATERING = "0.00%";
+    public static final String HELTALL_FORMATERING = "##0";
     private final Map<String,String> patternFormatMap = new HashMap<>();
     private String standardFormat = "";
 
