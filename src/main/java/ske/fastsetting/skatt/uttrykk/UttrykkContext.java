@@ -8,4 +8,6 @@ public interface UttrykkContext {
     String nyId();
 
     <T> T input(Class<T> clazz);
+
+    <T> boolean harInput(Class<T> clazz);
 }
