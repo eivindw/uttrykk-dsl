@@ -18,6 +18,10 @@
         <poi.ooxml.version>3.9</poi.ooxml.version>
     </properties>
 
+    <scm>
+        <developerConnection>scm:git:https://github.com/eivindw/uttrykk-dsl.git</developerConnection>
+    </scm>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
