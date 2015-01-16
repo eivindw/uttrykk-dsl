@@ -7,7 +7,7 @@ import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.UttrykkContextImpl.*;
-import static ske.fastsetting.skatt.uttrykk.UttrykkTest.PostUttrykk.post;
+import static ske.fastsetting.skatt.uttrykk.UttrykkTest.SkattegrunnlagobjektUttrykk.skattegrunnlagobjekt;
 import static ske.fastsetting.skatt.uttrykk.SkattegrunnlagHelper.kr;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopSumUttrykk.sum;
 import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
@@ -25,7 +25,7 @@ public class UttrykkTest {
     @Test
     public void prosentUttrykk() {
         final BelopUttrykk ti = kr(100).multiplisertMed(prosent(10)).navn("asdad");
-        final BelopUttrykk tjue = sum(ti, ti, post("2.1.1")).navn("asdasd");
+        final BelopUttrykk tjue = sum(ti, ti, skattegrunnlagobjekt("2.1.1")).navn("asdasd");
 
         Skattegrunnlag sg = new Skattegrunnlag();
 
@@ -46,7 +46,7 @@ public class UttrykkTest {
             sum(
                 lonn,
                 kr(2).navn("Test"),
-                post("4.3.3").navn("dasdad")
+                skattegrunnlagobjekt("4.3.3").navn("dasdad")
             ).regler(Regel.skatteloven("323")),
             kr(4),
             lonn.multiplisertMed(prosent(50))
@@ -65,26 +65,26 @@ public class UttrykkTest {
         kr(6).navn("test").navn("test igjen");
     }
 
-    public static class PostUttrykk extends AbstractUttrykk<Belop, PostUttrykk> implements BelopUttrykk {
+    public static class SkattegrunnlagobjektUttrykk extends AbstractUttrykk<Belop, SkattegrunnlagobjektUttrykk> implements BelopUttrykk {
 
-        private String postnummer;
+        private String skatteobjekttype;
 
-        public PostUttrykk(String postnr) {
-            this.postnummer = postnr;
+        public SkattegrunnlagobjektUttrykk(String postnr) {
+            this.skatteobjekttype = postnr;
         }
 
-        public static PostUttrykk post(String postnummer) {
-            return new PostUttrykk(postnummer);
+        public static SkattegrunnlagobjektUttrykk skattegrunnlagobjekt(String postnummer) {
+            return new SkattegrunnlagobjektUttrykk(postnummer);
         }
 
         @Override
         public Belop eval(UttrykkContext ctx) {
-            return ctx.input(Skattegrunnlag.class).getPostBelop(postnummer);
+            return ctx.input(Skattegrunnlag.class).getPostBelop(skatteobjekttype);
         }
 
         @Override
         public String beskriv(UttrykkContext ctx) {
-            return "Post " + postnummer;
+            return "Post " + skatteobjekttype;
         }
     }
 }

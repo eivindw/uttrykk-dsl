@@ -8,6 +8,7 @@ import java.util.Map;
 public class Skattegrunnlag {
 
 
+    public static final String SKATTEGRUNNLAGOBJEKT_TYPE__INNTEKT_JORDBRUK = "inntekt_jordbruk";
     private Map<String,Belop> poster = new HashMap<>();
 
     public Skattegrunnlag post(String postnr, Belop belop) {
