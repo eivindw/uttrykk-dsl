@@ -1,6 +1,7 @@
 package ske.fastsetting.skatt.domene;
 
 import org.javamoney.moneta.Money;
+import org.javamoney.moneta.RoundedMoney;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -26,6 +27,10 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
         this(belop.intValue());
     }
 
+    public Belop rundAvTilHeleKroner() {
+        return new Belop(toInteger());
+    }
+    
     public String toString() {
 //        String belopFormatert = String.format("%'d", belop.getNumberStripped().toPlainString());
 
