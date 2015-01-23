@@ -26,23 +26,23 @@ public class ExcelArk {
     }
 
 
-    public void leggTilVerdi(String navn, String verdi, String hjemmel) {
-        Cell uttrykkCelle = opprettUttrykkCelle(navn, hjemmel);
+    public void leggTilVerdi(String celleId, String navn, String verdi, String hjemmel) {
+        Cell uttrykkCelle = opprettUttrykkCelle(celleId, navn, hjemmel);
 
         ExcelUttrykk excelVerdi = ExcelVerdi.parse(verdi);
 
         excelVerdi.skrivTilCelle(uttrykkCelle);
     }
 
-    public void leggTilFunksjon(String navn, String excelFormel, String hjemmel) {
-        Cell uttrykkCelle = opprettUttrykkCelle(navn, hjemmel);
+    public void leggTilFunksjon(String celleId, String navn, String excelFormel, String hjemmel) {
+        Cell uttrykkCelle = opprettUttrykkCelle(celleId, navn, hjemmel);
 
         ExcelFormel formel = new ExcelFormel(excelFormel);
 
         formel.skrivTilCelle(uttrykkCelle);
     }
 
-    private Cell opprettUttrykkCelle(String navn, String hjemmel) {
+    private Cell opprettUttrykkCelle(String celleId, String navn, String hjemmel) {
         int rad = gjeldendeRadNummer++;
 
         Row row = ark.createRow(rad);
@@ -53,7 +53,7 @@ public class ExcelArk {
         Cell uttrykkCelle = row.createCell(1);
         ExcelUtil.formaterCelleverdi(uttrykkCelle, formateringshint.finnFormat(navn));
 
-        ExcelUtil.settCellenavn(ark, rad, 1, navn);
+        ExcelUtil.settCellenavn(ark, rad, 1, celleId);
 
         return uttrykkCelle;
     }
