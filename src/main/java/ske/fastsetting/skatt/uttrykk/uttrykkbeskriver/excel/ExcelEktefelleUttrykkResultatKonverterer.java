@@ -12,17 +12,20 @@ import java.util.stream.Stream;
  */
 public class ExcelEktefelleUttrykkResultatKonverterer<V>  {
 
-    public final static String KEY_ID = "id";
+    public final static String KEY_EXCEL_ID = "excel_id";
     public static final String EKTEFELLE_REGEX = "^ektefelles (.*)$";
     public static final String EKTEFELLE_OUTPUT = "$1";
+    public static final String HOVERPEERSON_PREFIKS = "hp_";
+    public static final String EKTEFELLE_PREFIKS = "ef_";
 
     private final Set<String> fellesTags;
 
-    private final String standardTag;
+    private final Set<String> standardTags;
 
     public ExcelEktefelleUttrykkResultatKonverterer(String standardTag, String... fellesTags) {
 
-        this.standardTag = standardTag;
+        this.standardTags = new HashSet<>();
+        this.standardTags.add(standardTag);
         this.fellesTags = Stream.of(fellesTags).collect(Collectors.toSet());
     }
 
@@ -36,50 +39,43 @@ public class ExcelEktefelleUttrykkResultatKonverterer<V>  {
 
     private String byggRekursivt(Map<String,Map> uttrykksmap, boolean erHovedPerson, UttrykkResultat<V> resultat, String id) {
         Map map = resultat.uttrykk(id);
+        final Set<String> tags = (Set<String>) map.getOrDefault(UttrykkResultat.KEY_TAGS, standardTags);
 
-        String prefix = erHovedPerson ? "hp_" : "ef_";
-        String nyId = (erFellesTag(map) ? "": prefix)+id;
-
-        Map<String,Object> nyMap = new HashMap<>();
-        uttrykksmap.put(nyId,nyMap);
+        final String prefiks = erHovedPerson ? HOVERPEERSON_PREFIKS : EKTEFELLE_PREFIKS;
+        final String nyId = kvalifisertPrefiks(tags, prefiks) +id;
 
         final String navn = (String)map.getOrDefault(UttrykkResultat.KEY_NAVN, null);
-
-        nyMap.put(KEY_ID,navn != null ? (erFellesTag(map) ? "" : prefix)+ExcelUtil.lagGyldigCellenavn(navn):null);
-        nyMap.put(UttrykkResultat.KEY_NAVN, navn);
-        nyMap.put(UttrykkResultat.KEY_REGLER,map.getOrDefault(UttrykkResultat.KEY_REGLER, Collections.emptyList()));
-
-        final Set<String> tags = (Set<String>) map.getOrDefault(UttrykkResultat.KEY_TAGS, standardTags());
-        nyMap.put(UttrykkResultat.KEY_TAGS, tags.stream().map(t -> fellesTags.contains(t) ? t : prefix + t).collect(Collectors.toSet()));
+        final String excelID = navn != null ? kvalifisertPrefiks(tags, prefiks) + ExcelUtil.lagGyldigCellenavn(navn) : null;
+        final Object regler = map.getOrDefault(UttrykkResultat.KEY_REGLER, Collections.emptyList());
+        final Set<String> nyeTags = tags.stream()
+                .map(t -> fellesTags.contains(t) ? t : prefiks + t).collect(Collectors.toSet());
 
         String uttrykk = (String)map.getOrDefault(UttrykkResultat.KEY_UTTRYKK,"");
+
         if(uttrykk.matches(EKTEFELLE_REGEX)) {
             erHovedPerson=!erHovedPerson;
             uttrykk = uttrykk.replaceFirst(EKTEFELLE_REGEX, EKTEFELLE_OUTPUT);
         }
 
-        Set<String> subIder = IdUtil.parseIder(uttrykk);
-
-        for(String subId : subIder) {
+        for(String subId : IdUtil.parseIder(uttrykk)) {
             uttrykk = uttrykk.replaceAll(subId, byggRekursivt(uttrykksmap,erHovedPerson,resultat,subId));
         }
 
+        Map<String,Object> nyMap = new HashMap<>();
+        uttrykksmap.put(nyId,nyMap);
+
+        nyMap.put(KEY_EXCEL_ID, excelID);
+        nyMap.put(UttrykkResultat.KEY_NAVN, navn);
+        nyMap.put(UttrykkResultat.KEY_REGLER, regler);
+        nyMap.put(UttrykkResultat.KEY_TAGS, nyeTags);
         nyMap.put(UttrykkResultat.KEY_UTTRYKK,uttrykk);
 
         return nyId;
     }
 
-    private boolean erFellesTag(Map map) {
-        final Set<String> tags = (Set<String>) map.getOrDefault(UttrykkResultat.KEY_TAGS, standardTags());
-
-        return fellesTags.contains((tags.size() > 0 ? new ArrayList<String>(tags).get(0) : null));
-    }
-
-
-    private Set<String> standardTags() {
-        HashSet<String> tags = new HashSet<>();
-        tags.add(standardTag);
-        return tags;
+    private String kvalifisertPrefiks(Set<String> tags, String prefiks) {
+        final String tag1 = tags.size() > 0 ? new ArrayList<String>(tags).get(0) : null;
+        return fellesTags.contains(tag1) ? "": prefiks;
     }
 
     private static class IndreUttrykkResultat<V> implements UttrykkResultat<V> {

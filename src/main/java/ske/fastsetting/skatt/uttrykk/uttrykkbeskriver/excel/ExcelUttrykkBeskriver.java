@@ -25,7 +25,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
     private UttrykkResultat<?> resultat;
 
     public ExcelUttrykkBeskriver() {
-        this(new XSSFWorkbook(),"uklassifisert");
+        this(new XSSFWorkbook(), "uklassifisert");
 
     }
 
@@ -44,7 +44,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
         new RekursivUttrykkBeskriver(resultat.start()).beskriv();
 
-        ExcelUtil.autotilpassKolonner(workbook, 0,1,2);
+        ExcelUtil.autotilpassKolonner(workbook, 0, 1, 2);
 
         return workbook;
     }
@@ -77,11 +77,11 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
     private static String finnId(Map map) {
         String id = "";
-        if (map.containsKey(ExcelEktefelleUttrykkResultatKonverterer.KEY_ID)) {
-            id = (String) map.get(ExcelEktefelleUttrykkResultatKonverterer.KEY_ID);
-        }
-        else {
-            id = ExcelUtil.lagGyldigCellenavn(finnNavn(map));
+        if (map.containsKey(ExcelEktefelleUttrykkResultatKonverterer.KEY_EXCEL_ID)) {
+            id = (String) map.get(ExcelEktefelleUttrykkResultatKonverterer.KEY_EXCEL_ID);
+        } else {
+            final String navn = finnNavn(map);
+            id = navn != null ? ExcelUtil.lagGyldigCellenavn(navn) : null;
         }
         return id;
     }
@@ -135,7 +135,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
             String resultatUttrykk = uttrykk;
 
-            if(harSubIder()) {
+            if (harSubIder()) {
                 resultatUttrykk = ExcelFormel.parse(resultatUttrykk).tilTekst();
             }
 
@@ -152,7 +152,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
             String uttrykkString;
 
-            if (resultatUttrykk==null || resultatUttrykk.length() == 0) {
+            if (resultatUttrykk == null || resultatUttrykk.length() == 0) {
                 uttrykkString = "";
             } else if (harSubIder()) {
                 uttrykkString = "(" + resultatUttrykk + ")";
