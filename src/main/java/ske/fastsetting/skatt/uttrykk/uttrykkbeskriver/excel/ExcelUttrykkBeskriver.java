@@ -75,6 +75,18 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
         return tmpUttrykkString;
     }
 
+    private static String finnId(Map map) {
+        String id = "";
+        if (map.containsKey(ExcelEktefelleUttrykkResultatKonverterer.KEY_ID)) {
+            id = (String) map.get(ExcelEktefelleUttrykkResultatKonverterer.KEY_ID);
+        }
+        else {
+            id = ExcelUtil.lagGyldigCellenavn(finnNavn(map));
+        }
+        return id;
+    }
+
+
     private static String finnNavn(Map map) {
         String navn = null;
 
@@ -85,16 +97,21 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
     }
 
     private ExcelArk finnExcelArk(Map map) {
-        final Set<String> tags = (Set<String>) map.getOrDefault(UttrykkResultat.KEY_TAGS, Collections.emptySet());
-
-        String arkNavn = tags.size() > 0 ? new ArrayList<>(tags).get(0) : standardArkNavn;
+        String arkNavn = finnArknavn(map);
 
         return opprettArk(arkNavn);
+    }
+
+    private String finnArknavn(Map map) {
+        final Set<String> tags = (Set<String>) map.getOrDefault(UttrykkResultat.KEY_TAGS, Collections.emptySet());
+
+        return (String) (tags.size() > 0 ? new ArrayList<>(tags).get(0) : standardArkNavn);
     }
 
 
     private class RekursivUttrykkBeskriver {
 
+        private final String celleId;
         private final String navn;
         private final String uttrykk;
         private final String hjemmel;
@@ -105,6 +122,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
             Map map = resultat.uttrykk(id);
 
+            celleId = finnId(map);
             navn = finnNavn(map);
             uttrykk = finnUttrykk(map);
             hjemmel = finnHjemler(map);
@@ -146,20 +164,16 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
         }
 
         private String beskrivNavngittUttrykk(String resultatUttrykk) {
-            if (!registrerteUttrykk.contains(navn)) {
-                registrerNavngittUttrykk(resultatUttrykk);
-            }
-            return ExcelUtil.lagGyldigCellenavn(navn);
-        }
+            if (!registrerteUttrykk.contains(celleId)) {
+                if (harSubIder()) {
+                    ark.leggTilFunksjon(celleId, navn, resultatUttrykk, hjemmel);
+                } else {
+                    ark.leggTilVerdi(celleId, navn, resultatUttrykk, hjemmel);
+                }
 
-        private void registrerNavngittUttrykk(String resultatUttrykk) {
-            if (harSubIder()) {
-                ark.leggTilFunksjon(navn, resultatUttrykk, hjemmel);
-            } else {
-                ark.leggTilVerdi(navn, resultatUttrykk, hjemmel);
+                registrerteUttrykk.add(celleId);
             }
-
-            registrerteUttrykk.add(navn);
+            return celleId;
         }
 
         private boolean harSubIder() {

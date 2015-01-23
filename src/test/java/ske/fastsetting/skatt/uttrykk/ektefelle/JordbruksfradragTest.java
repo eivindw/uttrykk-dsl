@@ -8,6 +8,7 @@ import ske.fastsetting.skatt.uttrykk.Skattegrunnlag;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConfluenceUttrykkBeskriver;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver;
+import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel.ExcelEktefelleUttrykkResultatKonverterer;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel.ExcelUttrykkBeskriver;
 
 import java.io.FileOutputStream;
@@ -73,8 +74,11 @@ public class JordbruksfradragTest {
         BelopUttrykk jordbruksfradrag = SkatteberegningHelper.jordbruksfradrag();
 
         final ConsoleUttrykkBeskriver beskriver = new ConsoleUttrykkBeskriver();
+        ExcelEktefelleUttrykkResultatKonverterer konverterer = new ExcelEktefelleUttrykkResultatKonverterer("skatt","sats");
 
-        String res = beskriver.beskriv(skattyterKontekst2.beskrivResultat(jordbruksfradrag));
+        String res =beskriver.beskriv(konverterer.konverterResultat(skattyterKontekst1.beskrivResultat(jordbruksfradrag),true));
+
+        //String res = beskriver.beskriv(skattyterKontekst2.beskrivResultat(jordbruksfradrag));
 
         System.out.println(res);
     }
@@ -85,8 +89,10 @@ public class JordbruksfradragTest {
 
         final ExcelUttrykkBeskriver beskriver = new ExcelUttrykkBeskriver();
 
-        beskriver.beskriv(skattyterKontekst1.beskrivResultat(jordbruksfradrag));
-        final Workbook wb = beskriver.beskriv(skattyterKontekst2.beskrivResultat(jordbruksfradrag));
+        ExcelEktefelleUttrykkResultatKonverterer konverterer = new ExcelEktefelleUttrykkResultatKonverterer("skatt","sats");
+
+        beskriver.beskriv(konverterer.konverterResultat(skattyterKontekst1.beskrivResultat(jordbruksfradrag),true));
+        final Workbook wb = beskriver.beskriv(konverterer.konverterResultat(skattyterKontekst2.beskrivResultat(jordbruksfradrag),false));
 
         FileOutputStream out = new FileOutputStream("jordbruksfradrag.xlsx");
         wb.write(out);
