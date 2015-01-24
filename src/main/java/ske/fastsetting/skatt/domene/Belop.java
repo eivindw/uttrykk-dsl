@@ -1,7 +1,6 @@
 package ske.fastsetting.skatt.domene;
 
 import org.javamoney.moneta.Money;
-import org.javamoney.moneta.RoundedMoney;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -16,6 +15,10 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     private final Money belop;
 
     public Belop(int belop) {
+        this(Money.of(belop, "NOK"));
+    }
+
+    public Belop(double belop) {
         this(Money.of(belop, "NOK"));
     }
 
