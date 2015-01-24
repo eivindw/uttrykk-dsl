@@ -40,7 +40,7 @@ public interface Uttrykk<V>  {
         @Override
         public String beskriv(UttrykkContext ctx) {
             return verdier.stream().map(T::toString)
-                    .collect(Collectors.joining(", ", uttrykk.beskriv(ctx) + " er en av (", ")"));
+                    .collect(Collectors.joining(", ", ctx.beskriv(uttrykk) + " er en av (", ")"));
         }
     }
 
