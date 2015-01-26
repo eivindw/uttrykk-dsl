@@ -1,5 +1,6 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel;
 
+import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 
@@ -46,9 +47,8 @@ public class ExcelEktefelleUttrykkResultatKonverterer<V>  {
 
         final String navn = (String)map.getOrDefault(UttrykkResultat.KEY_NAVN, null);
         final String excelID = navn != null ? kvalifisertPrefiks(tags, prefiks) + ExcelUtil.lagGyldigCellenavn(navn) : null;
-        final Object regler = map.getOrDefault(UttrykkResultat.KEY_REGLER, Collections.emptyList());
-        final Set<String> nyeTags = tags.stream()
-                .map(t -> fellesTags.contains(t) ? t : prefiks + t).collect(Collectors.toSet());
+        final List<Regel> regler = (List< Regel>)map.getOrDefault(UttrykkResultat.KEY_REGLER, null);
+        final Set<String> nyeTags = tags.stream().map(t -> fellesTags.contains(t) ? t : prefiks + t).collect(Collectors.toSet());
 
         String uttrykk = (String)map.getOrDefault(UttrykkResultat.KEY_UTTRYKK,"");
 
@@ -64,10 +64,10 @@ public class ExcelEktefelleUttrykkResultatKonverterer<V>  {
         Map<String,Object> nyMap = new HashMap<>();
         uttrykksmap.put(nyId,nyMap);
 
-        nyMap.put(KEY_EXCEL_ID, excelID);
-        nyMap.put(UttrykkResultat.KEY_NAVN, navn);
-        nyMap.put(UttrykkResultat.KEY_REGLER, regler);
-        nyMap.put(UttrykkResultat.KEY_TAGS, nyeTags);
+        nyMap.computeIfAbsent(KEY_EXCEL_ID, k -> excelID);
+        nyMap.computeIfAbsent(UttrykkResultat.KEY_NAVN, k -> navn);
+        nyMap.computeIfAbsent(UttrykkResultat.KEY_REGLER,k-> regler);
+        nyMap.computeIfAbsent(UttrykkResultat.KEY_TAGS,k-> nyeTags);
         nyMap.put(UttrykkResultat.KEY_UTTRYKK,uttrykk);
 
         return nyId;
