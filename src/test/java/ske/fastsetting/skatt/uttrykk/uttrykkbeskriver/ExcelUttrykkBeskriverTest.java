@@ -7,8 +7,8 @@ import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.BasisTest;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
-import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel.ExcelFormel;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel.ExcelUttrykkBeskriver;
+import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel.ExcelUttrykkKonverterer;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,11 +34,11 @@ public class ExcelUttrykkBeskriverTest {
     @Test
     public void testHvisParser() {
 
-        Assert.assertEquals("if(A,B)", ExcelFormel.HvisParser.parse("hvis A bruk da B"));
-        Assert.assertEquals("if(A,B,C)", ExcelFormel.HvisParser.parse("hvis A bruk da B ellers bruk C"));
-        Assert.assertEquals("if(A,B,if(C,D))", ExcelFormel.HvisParser.parse("hvis A bruk da B ellers hvis C bruk da D"));
-        Assert.assertEquals("if(A,B,if(C,D,E))", ExcelFormel.HvisParser.parse("hvis A bruk da B ellers hvis C bruk da D ellers bruk E"));
-        Assert.assertEquals("if(A,B,if(C,D,if(E,F)))", ExcelFormel.HvisParser.parse("hvis A bruk da B ellers hvis C bruk da D ellers hvis E bruk da F"));
+        Assert.assertEquals("if(A,B)", ExcelUttrykkKonverterer.HvisParser.parse("hvis A bruk da B"));
+        Assert.assertEquals("if(A,B,C)", ExcelUttrykkKonverterer.HvisParser.parse("hvis A bruk da B ellers bruk C"));
+        Assert.assertEquals("if(A,B,if(C,D))", ExcelUttrykkKonverterer.HvisParser.parse("hvis A bruk da B ellers hvis C bruk da D"));
+        Assert.assertEquals("if(A,B,if(C,D,E))", ExcelUttrykkKonverterer.HvisParser.parse("hvis A bruk da B ellers hvis C bruk da D ellers bruk E"));
+        Assert.assertEquals("if(A,B,if(C,D,if(E,F)))", ExcelUttrykkKonverterer.HvisParser.parse("hvis A bruk da B ellers hvis C bruk da D ellers hvis E bruk da F"));
     }
 
 }

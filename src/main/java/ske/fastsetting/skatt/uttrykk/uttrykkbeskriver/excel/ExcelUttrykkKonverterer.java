@@ -1,18 +1,19 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel;
 
-import org.apache.poi.ss.usermodel.Cell;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Created by jorn ola birkeland on 11.01.15.
- */
-public class ExcelFormel implements ExcelUttrykk {
+import static ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel.ExcelUttrykk.*;
 
-    private final String formel;
+/**
+ * Created by jorn ola birkeland on 27.01.15.
+ */
+public class ExcelUttrykkKonverterer {
+
+    private static final String TABELLNUMMER_REGEX = "Tabellnummer: (.*)";
+    private static final String TABELLNUMMER_OUTPUT = "\"$1\"";
 
     public static final String SUM_MATCH = "^Summen av (.*)$";
     public static final String SUM_OUTPUT = "sum($1)";
@@ -46,14 +47,35 @@ public class ExcelFormel implements ExcelUttrykk {
 
     private static final String ER_EN_AV_REGEX = "^(.*) er en av \\((.*)\\)$";
 
+    public ExcelUttrykk konverterVerdi(String text
+    ) {
+        if (text.startsWith("kr ")) {
+            return belop(Long.parseLong(text.replace("kr ", "").replace(" ", "")));
+        } else if (text.endsWith("%")) {
+            return prosent(Double.parseDouble(text.replace("%", "")) / 100);
+        } else if (text.endsWith(" år")) {
+            return heltall(Integer.parseInt(text.replace(" år", "")));
+        } else if(text.matches("Hvis-uttrykk mangler en verdi for ellersBruk")) {
+            return tekst("\""+text+"\"");
+        } else if(text.matches(TABELLNUMMER_REGEX)) {
+            return tekst(text.replaceAll(TABELLNUMMER_REGEX,TABELLNUMMER_OUTPUT));
+        } else if(text.startsWith("Post")) {
+            return belop(0L);
+        } else if(text.startsWith("skattyters alder")) {
+            return heltall(34);
+        } else if(text.startsWith("skattyters bostedkommune")) {
+            return tekst("Lørenskog");
+        }
+        else if (text.matches("-?\\d+")) {
+            return heltall(Integer.parseInt(text));
+        }
+        else {
+            return tekst(text);
+        }
 
-    public ExcelFormel(String uttrykkStreng) {
-
-        this.formel = uttrykkStreng;
     }
 
-    public static ExcelFormel parse(String uttrykkStreng) {
-
+    public ExcelUttrykk konverterFormel(String uttrykkStreng) {
         uttrykkStreng = HvisParser.parse(uttrykkStreng);
         uttrykkStreng = uttrykkStreng.replaceAll(SUM_MATCH, SUM_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(BEGRENSET_NEDAD_OPPAD_MATCH, BEGRENSET_NEDAD_OPPAD_OUTPUT);
@@ -73,27 +95,10 @@ public class ExcelFormel implements ExcelUttrykk {
             uttrykkStreng = "NOT(ISERROR(FIND(" + matcher.group(1) + "," + liste + ")))";
         }
 
-        return new ExcelFormel(uttrykkStreng);
+        return formel(uttrykkStreng);
+
+
     }
-
-
-    public void skrivTilCelle(Cell celle) {
-        try {
-            celle.setCellFormula(formel);
-        } catch (Throwable e) {
-            celle.setCellValue(formel);
-        }
-    }
-
-    @Override
-    public String tilTekst() {
-        return formel;
-    }
-
-    public String toString() {
-        return formel;
-    }
-
 
     public static class HvisParser {
 
@@ -111,5 +116,4 @@ public class ExcelFormel implements ExcelUttrykk {
                 return uttrykk;
         }
     }
-
 }

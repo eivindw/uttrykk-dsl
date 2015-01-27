@@ -22,6 +22,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
     private final Map<String, ExcelArk> excelArk;
     private final Set<String> registrerteUttrykk;
     private final ExcelFormateringshint formateringshint;
+    private final ExcelUttrykkKonverterer konverterer;
     private UttrykkResultat<?> resultat;
 
     public ExcelUttrykkBeskriver() {
@@ -35,6 +36,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
         excelArk = new HashMap<>();
         registrerteUttrykk = new HashSet<>();
         formateringshint = new ExcelFormateringshint();
+        konverterer = new ExcelUttrykkKonverterer();
     }
 
     @Override
@@ -136,7 +138,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
             String resultatUttrykk = uttrykk;
 
             if (harSubIder()) {
-                resultatUttrykk = ExcelFormel.parse(resultatUttrykk).tilTekst();
+                resultatUttrykk = konverterer.konverterFormel(resultatUttrykk).tilTekst();
             }
 
             for (String subId : subIder) {
@@ -157,7 +159,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
             } else if (harSubIder()) {
                 uttrykkString = "(" + resultatUttrykk + ")";
             } else {
-                uttrykkString = ExcelVerdi.parse(resultatUttrykk).tilTekst();
+                uttrykkString = konverterer.konverterVerdi(resultatUttrykk).tilTekst();
             }
 
             return uttrykkString;
@@ -166,9 +168,9 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
         private String beskrivNavngittUttrykk(String resultatUttrykk) {
             if (!registrerteUttrykk.contains(celleId)) {
                 if (harSubIder()) {
-                    ark.leggTilFunksjon(celleId, navn, resultatUttrykk, hjemmel);
+                    ark.leggTilUttrykk(celleId, navn, ExcelUttrykk.formel(resultatUttrykk), hjemmel);
                 } else {
-                    ark.leggTilVerdi(celleId, navn, resultatUttrykk, hjemmel);
+                    ark.leggTilUttrykk(celleId, navn, konverterer.konverterVerdi(resultatUttrykk), hjemmel);
                 }
 
                 registrerteUttrykk.add(celleId);
