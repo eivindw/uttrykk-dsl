@@ -4,6 +4,8 @@ import org.apache.poi.ss.usermodel.Cell;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by jorn ola birkeland on 11.01.15.
@@ -36,8 +38,13 @@ public class ExcelFormel implements ExcelUttrykk {
     public static final String FRAOGMED_TIL_MATCH = "^(.*?) <= (.*?) < (.*?)$";
     public static final String FRAOGMED_TIL_OUTPUT = "AND(($1<=$2),($2<$3))";
 
+    public static final String FRA_TIL_ÅR_MATCH = "^(.*?) < (.*?) < (.*?)$";
+    public static final String FRA_TIL_ÅR_OUTPUT = "AND(($1<$2),($2<$3))";
+
     public static final String OG_MATCH = "^(.*) og (.*)$";
     public static final String OG_OUTPUT = "AND($1,$2)";
+
+    private static final String ER_EN_AV_REGEX = "^(.*) er en av \\((.*)\\)$";
 
 
     public ExcelFormel(String uttrykkStreng) {
@@ -54,9 +61,17 @@ public class ExcelFormel implements ExcelUttrykk {
         uttrykkStreng = uttrykkStreng.replaceAll(BEGRENSET_OPPAD_MATCH, BEGRENSET_OPPAD_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(MINSTE_AV_MATCH, MINSTE_AV_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(STOERSTE_AV_MATCH, STOERSTE_AV_OUTPUT);
+        uttrykkStreng = uttrykkStreng.replaceAll(FRA_TIL_ÅR_MATCH, FRA_TIL_ÅR_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(FRA_TILOGMED_MATCH, FRA_TILOGMED_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(FRAOGMED_TIL_MATCH, FRAOGMED_TIL_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(OG_MATCH, OG_OUTPUT);
+
+        if (uttrykkStreng.matches(ER_EN_AV_REGEX)) {
+            Matcher matcher = Pattern.compile(ER_EN_AV_REGEX).matcher(uttrykkStreng);
+            matcher.find();
+            String liste = "\"" + Stream.of(matcher.group(2).split(", ")).collect(Collectors.joining("\"&\"")) + "\"";
+            uttrykkStreng = "NOT(ISERROR(FIND(" + matcher.group(1) + "," + liste + ")))";
+        }
 
         return new ExcelFormel(uttrykkStreng);
     }

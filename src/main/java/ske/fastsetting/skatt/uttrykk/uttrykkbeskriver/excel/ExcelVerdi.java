@@ -2,18 +2,11 @@ package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel;
 
 import org.apache.poi.ss.usermodel.Cell;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 /**
  * Created by jorn ola birkeland on 11.01.15.
  */
 class ExcelVerdi implements ExcelUttrykk {
 
-    private static final String SKATTYTERS_ALDER_REGEX = "skattyters alder er mellom (.*) og (.*) år";
-    private static final String SKATTYTERS_BOSTEDKOMMUNE_REGEX = "bostedkommune er en av \\((.*)\\)";
     private static final String TABELLNUMMER_REGEX = "Tabellnummer: (.*)";
     private static final String TABELLNUMMER_OUTPUT = "\"$1\"";
 
@@ -32,20 +25,18 @@ class ExcelVerdi implements ExcelUttrykk {
             return new ExcelVerdi(Type.Belop, Long.parseLong(text.replace("kr ", "").replace(" ", "")));
         } else if (text.endsWith("%")) {
             return new ExcelVerdi(Type.Prosent, Double.parseDouble(text.replace("%", "")) / 100);
+        } else if (text.endsWith(" år")) {
+            return new ExcelVerdi(Type.Heltall, Integer.parseInt(text.replace(" år", "")));
         } else if(text.matches("Hvis-uttrykk mangler en verdi for ellersBruk")) {
             return new ExcelVerdi(Type.Tekst,"\""+text+"\"");
-        } else if (text.matches(SKATTYTERS_ALDER_REGEX)) {
-            return new ExcelFormel(text.replaceFirst(SKATTYTERS_ALDER_REGEX,"alder=median(alder,$1,$2)"));
-        } else if (text.matches(SKATTYTERS_BOSTEDKOMMUNE_REGEX)) {
-            Matcher matcher = Pattern.compile(SKATTYTERS_BOSTEDKOMMUNE_REGEX).matcher(text);
-            matcher.find();
-            String kommuneString = "\""+Stream.of(matcher.group(1).split(", ")).collect(Collectors.joining("\"&\""))+"\"";
-            return new ExcelFormel("NOT(ISERROR(FIND(bostedkommune,"+kommuneString+")))");
-
         } else if(text.matches(TABELLNUMMER_REGEX)) {
             return new ExcelVerdi(Type.Tekst,text.replaceAll(TABELLNUMMER_REGEX,TABELLNUMMER_OUTPUT));
         } else if(text.startsWith("Post")) {
             return new ExcelVerdi(Type.Belop,0L);
+        } else if(text.startsWith("skattyters alder")) {
+            return new ExcelVerdi(Type.Heltall,34);
+        } else if(text.startsWith("skattyters bostedkommune")) {
+            return new ExcelVerdi(Type.Tekst,"Lørenskog");
         }
         else if (text.matches("-?\\d+")) {
             return new ExcelVerdi(Type.Heltall, Integer.parseInt(text));
