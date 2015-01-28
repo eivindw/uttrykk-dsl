@@ -33,6 +33,15 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     public Belop rundAvTilHeleKroner() {
         return new Belop(toInteger());
     }
+
+    public Belop rundOppTilNaermeste(int naermesteKrone) {
+
+        return new Belop(
+            belop.add(Money.of(naermesteKrone / 2, "NOK"))
+                .divideToIntegralValue(naermesteKrone)
+                .multiply(naermesteKrone)
+        );
+    }
     
     public String toString() {
 //        String belopFormatert = String.format("%'d", belop.getNumberStripped().toPlainString());
