@@ -13,19 +13,42 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     public static final Belop NULL = new Belop(0);
 
     private final Money belop;
+    
+    public static Belop av(int belop){ return new Belop(Money.of(belop,"NOK"));}
+    public static Belop av(double belop){ return new Belop(Money.of(belop,"NOK"));}
+    public static Belop av(Money belop){ return new Belop(belop);}
+    public static Belop av(BigInteger bigInteger){return  new Belop(Money.of(bigInteger,"NOK"));}
+    
 
+
+    
+    
+    /**
+     * @Deprecated bruk Belop.av()
+     */
+    @Deprecated
     public Belop(int belop) {
         this(Money.of(belop, "NOK"));
     }
 
+    /**
+     * @Deprecated bruk Belop.av()
+     */
+    @Deprecated
     public Belop(double belop) {
         this(Money.of(belop, "NOK"));
     }
 
+    //TODO Make private then all references have been removed
     public Belop(Money belop) {
         this.belop = belop;
     }
 
+
+    /**
+     * @Deprecated bruk Belop.av()
+     */
+    @Deprecated
     public Belop(BigInteger belop) {
         this(belop.intValue());
     }
@@ -34,13 +57,21 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
         return new Belop(toInteger());
     }
 
-    public Belop rundOppTilNaermeste(int naermesteKrone) {
+    public Belop rundAvTilNaermeste(int naermesteKrone) {
+
 
         return new Belop(
             belop.add(Money.of(naermesteKrone / 2, "NOK"))
                 .divideToIntegralValue(naermesteKrone)
                 .multiply(naermesteKrone)
         );
+    }
+
+    public static void main(String[] args) {
+        Belop b = new Belop(206300);
+
+        System.out.println(b.rundAvTilNaermeste(1000));
+        
     }
     
     public String toString() {
