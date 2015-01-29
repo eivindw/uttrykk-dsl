@@ -10,21 +10,29 @@ import java.text.DecimalFormatSymbols;
 
 public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
-    public static final Belop NULL = new Belop(0);
+    public static final Belop NULL = Belop.fra(0);
 
     private final Money belop;
-    
-    public static Belop av(int belop){ return new Belop(Money.of(belop,"NOK"));}
-    public static Belop av(double belop){ return new Belop(Money.of(belop,"NOK"));}
-    public static Belop av(Money belop){ return new Belop(belop);}
-    public static Belop av(BigInteger bigInteger){return  new Belop(Money.of(bigInteger,"NOK"));}
-    
+
+    public static Belop fra(int belop) {
+        return new Belop(Money.of(belop, "NOK"));
+    }
+
+    public static Belop fra(double belop) {
+        return new Belop(Money.of(belop, "NOK"));
+    }
+
+    public static Belop fra(Money belop) {
+        return new Belop(belop);
+    }
+
+    public static Belop fra(BigInteger bigInteger) {
+        return new Belop(Money.of(bigInteger, "NOK"));
+    }
 
 
-    
-    
     /**
-     * @Deprecated bruk Belop.av()
+     * @Deprecated bruk Belop.fra()
      */
     @Deprecated
     public Belop(int belop) {
@@ -32,7 +40,7 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     }
 
     /**
-     * @Deprecated bruk Belop.av()
+     * @Deprecated bruk Belop.fra()
      */
     @Deprecated
     public Belop(double belop) {
@@ -46,7 +54,7 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
 
     /**
-     * @Deprecated bruk Belop.av()
+     * @Deprecated bruk Belop.fra()
      */
     @Deprecated
     public Belop(BigInteger belop) {
@@ -71,9 +79,9 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
         Belop b = new Belop(206300);
 
         System.out.println(b.rundAvTilNaermeste(1000));
-        
+
     }
-    
+
     public String toString() {
 //        String belopFormatert = String.format("%'d", belop.getNumberStripped().toPlainString());
 
@@ -93,6 +101,7 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
         return new Belop(this.belop.subtract(ledd.belop));
     }
 
+
     public int sammenliknMed(Belop verdi) {
         return compareTo(verdi);
     }
@@ -107,6 +116,11 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
     public Integer toInteger() {
         return this.belop.getNumberStripped().setScale(0, RoundingMode.HALF_UP).intValue();
+    }
+
+    public BigInteger toBigInteger() {
+        return this.belop.getNumberStripped().setScale(0, RoundingMode.HALF_UP).toBigInteger();
+
     }
 
     public BigDecimal dividertMed(Belop divident) {
