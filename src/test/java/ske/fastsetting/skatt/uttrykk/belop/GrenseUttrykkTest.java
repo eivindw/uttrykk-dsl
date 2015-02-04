@@ -56,7 +56,7 @@ public class GrenseUttrykkTest {
     }
 
     private void assertUendret(int belop) {
-        assertGrense(new Belop(belop), belop);
+        assertGrense(Belop.kr(belop), belop);
     }
 
     private void assertGrense(Belop forventet, int belop) {

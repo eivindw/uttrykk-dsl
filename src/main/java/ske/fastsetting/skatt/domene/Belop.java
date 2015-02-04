@@ -10,15 +10,15 @@ import java.text.DecimalFormatSymbols;
 
 public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
-    public static final Belop NULL = Belop.fra(0);
+    public static final Belop NULL = Belop.kr(0);
 
     private final Money belop;
 
-    public static Belop fra(int belop) {
+    public static Belop kr(int belop) {
         return new Belop(Money.of(belop, "NOK"));
     }
 
-    public static Belop fra(double belop) {
+    public static Belop kr(double belop) {
         return new Belop(Money.of(belop, "NOK"));
     }
 
@@ -26,48 +26,19 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
         return new Belop(belop);
     }
 
-    public static Belop fra(BigInteger bigInteger) {
+    public static Belop kr(BigInteger bigInteger) {
         return new Belop(Money.of(bigInteger, "NOK"));
     }
 
-
-    /**
-     * @Deprecated bruk Belop.fra()
-     */
-    @Deprecated
-    public Belop(int belop) {
-        this(Money.of(belop, "NOK"));
-    }
-
-    /**
-     * @Deprecated bruk Belop.fra()
-     */
-    @Deprecated
-    public Belop(double belop) {
-        this(Money.of(belop, "NOK"));
-    }
-
-    //TODO Make private then all references have been removed
-    public Belop(Money belop) {
+    private Belop(Money belop) {
         this.belop = belop;
     }
 
-
-    /**
-     * @Deprecated bruk Belop.fra()
-     */
-    @Deprecated
-    public Belop(BigInteger belop) {
-        this(belop.intValue());
-    }
-
     public Belop rundAvTilHeleKroner() {
-        return new Belop(toInteger());
+        return Belop.kr(toInteger());
     }
 
     public Belop rundAvTilNaermeste(int naermesteKrone) {
-
-
         return new Belop(
             belop.add(Money.of(naermesteKrone / 2, "NOK"))
                 .divideToIntegralValue(naermesteKrone)
@@ -75,16 +46,7 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
         );
     }
 
-    public static void main(String[] args) {
-        Belop b = new Belop(206300);
-
-        System.out.println(b.rundAvTilNaermeste(1000));
-
-    }
-
     public String toString() {
-//        String belopFormatert = String.format("%'d", belop.getNumberStripped().toPlainString());
-
         DecimalFormat decimalFormat = new DecimalFormat();
         DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
         formatSymbols.setGroupingSeparator(' ');
@@ -100,7 +62,6 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     public Belop minus(Belop ledd) {
         return new Belop(this.belop.subtract(ledd.belop));
     }
-
 
     public int sammenliknMed(Belop verdi) {
         return compareTo(verdi);
@@ -120,7 +81,6 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
     public BigInteger toBigInteger() {
         return this.belop.getNumberStripped().setScale(0, RoundingMode.HALF_UP).toBigInteger();
-
     }
 
     public BigDecimal dividertMed(Belop divident) {
