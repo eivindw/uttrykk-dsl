@@ -15,11 +15,11 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     private final Money belop;
 
     public static Belop kr(int belop) {
-        return new Belop(Money.of(belop, "NOK"));
+        return fra(Money.of(belop, "NOK"));
     }
 
     public static Belop kr(double belop) {
-        return new Belop(Money.of(belop, "NOK"));
+        return fra(Money.of(belop, "NOK"));
     }
 
     public static Belop fra(Money belop) {
@@ -27,7 +27,7 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     }
 
     public static Belop kr(BigInteger bigInteger) {
-        return new Belop(Money.of(bigInteger, "NOK"));
+        return fra(Money.of(bigInteger, "NOK"));
     }
 
     private Belop(Money belop) {
@@ -39,7 +39,7 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     }
 
     public Belop rundAvTilNaermeste(int naermesteKrone) {
-        return new Belop(
+        return fra(
             belop.add(Money.of(naermesteKrone / 2, "NOK"))
                 .divideToIntegralValue(naermesteKrone)
                 .multiply(naermesteKrone)
@@ -56,11 +56,11 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     }
 
     public Belop pluss(Belop ledd) {
-        return ledd != null ? new Belop(this.belop.add(ledd.belop)) : this;
+        return ledd != null ? fra(this.belop.add(ledd.belop)) : this;
     }
 
     public Belop minus(Belop ledd) {
-        return new Belop(this.belop.subtract(ledd.belop));
+        return fra(this.belop.subtract(ledd.belop));
     }
 
     public int sammenliknMed(Belop verdi) {
@@ -68,11 +68,11 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     }
 
     public Belop multiplisertMed(BigDecimal ledd) {
-        return new Belop(belop.multiply(ledd));
+        return fra(belop.multiply(ledd));
     }
 
     public Belop dividertMed(BigDecimal ledd) {
-        return new Belop(belop.divide(ledd));
+        return fra(belop.divide(ledd));
     }
 
     public Integer toInteger() {
