@@ -26,7 +26,8 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
     public enum TallUttrykkType {
         ZERO,
         UKJENT,
-        PROSENT
+        PROSENT,
+        HELTALL
     }
 
     public Tall() {
@@ -35,6 +36,10 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
 
     public static Tall prosent(double prosent) {
         return new Tall(TallUttrykkType.PROSENT, BigDecimal.valueOf(prosent).divide(BigDecimal.valueOf(100)));
+    }
+
+    public static Tall heltall(int heltall) {
+        return new Tall(TallUttrykkType.HELTALL, BigDecimal.valueOf(heltall));
     }
 
     public static Tall ukjent(BigDecimal verdi) {
@@ -77,6 +82,8 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
         switch (type) {
             case PROSENT:
                 return verdi.movePointRight(2).toString() + "%";
+            case HELTALL:
+                return Integer.toString(verdi.intValueExact());
             default:
                 return verdi.toString();
         }

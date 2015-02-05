@@ -10,33 +10,43 @@ import java.text.DecimalFormatSymbols;
 
 public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
-    public static final Belop NULL = new Belop(0);
+    public static final Belop NULL = Belop.kr(0);
 
     private final Money belop;
 
-    public Belop(int belop) {
-        this(Money.of(belop, "NOK"));
+    public static Belop kr(int belop) {
+        return fra(Money.of(belop, "NOK"));
     }
 
-    public Belop(double belop) {
-        this(Money.of(belop, "NOK"));
+    public static Belop kr(double belop) {
+        return fra(Money.of(belop, "NOK"));
     }
 
-    public Belop(Money belop) {
+    public static Belop fra(Money belop) {
+        return new Belop(belop);
+    }
+
+    public static Belop kr(BigInteger bigInteger) {
+        return fra(Money.of(bigInteger, "NOK"));
+    }
+
+    private Belop(Money belop) {
         this.belop = belop;
     }
 
-    public Belop(BigInteger belop) {
-        this(belop.intValue());
-    }
-
     public Belop rundAvTilHeleKroner() {
-        return new Belop(toInteger());
+        return Belop.kr(toInteger());
     }
-    
-    public String toString() {
-//        String belopFormatert = String.format("%'d", belop.getNumberStripped().toPlainString());
 
+    public Belop rundAvTilNaermeste(int naermesteKrone) {
+        return fra(
+            belop.add(Money.of(naermesteKrone / 2, "NOK"))
+                .divideToIntegralValue(naermesteKrone)
+                .multiply(naermesteKrone)
+        );
+    }
+
+    public String toString() {
         DecimalFormat decimalFormat = new DecimalFormat();
         DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
         formatSymbols.setGroupingSeparator(' ');
@@ -46,11 +56,11 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     }
 
     public Belop pluss(Belop ledd) {
-        return ledd != null ? new Belop(this.belop.add(ledd.belop)) : this;
+        return ledd != null ? fra(this.belop.add(ledd.belop)) : this;
     }
 
     public Belop minus(Belop ledd) {
-        return new Belop(this.belop.subtract(ledd.belop));
+        return fra(this.belop.subtract(ledd.belop));
     }
 
     public int sammenliknMed(Belop verdi) {
@@ -58,15 +68,19 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     }
 
     public Belop multiplisertMed(BigDecimal ledd) {
-        return new Belop(belop.multiply(ledd));
+        return fra(belop.multiply(ledd));
     }
 
     public Belop dividertMed(BigDecimal ledd) {
-        return new Belop(belop.divide(ledd));
+        return fra(belop.divide(ledd));
     }
 
     public Integer toInteger() {
         return this.belop.getNumberStripped().setScale(0, RoundingMode.HALF_UP).intValue();
+    }
+
+    public BigInteger toBigInteger() {
+        return this.belop.getNumberStripped().setScale(0, RoundingMode.HALF_UP).toBigInteger();
     }
 
     public BigDecimal dividertMed(Belop divident) {

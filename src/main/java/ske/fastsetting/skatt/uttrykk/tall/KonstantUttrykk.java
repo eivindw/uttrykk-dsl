@@ -18,6 +18,10 @@ public class KonstantUttrykk extends AbstractUttrykk<Tall, KonstantUttrykk> impl
         return new KonstantUttrykk(Tall.ukjent(BigDecimal.valueOf(konstant)));
     }
 
+    public static KonstantUttrykk heltall(int konstant) {
+        return new KonstantUttrykk(Tall.heltall(konstant));
+    }
+
     @Override
     public Tall eval(UttrykkContext ctx) {
         return verdi;

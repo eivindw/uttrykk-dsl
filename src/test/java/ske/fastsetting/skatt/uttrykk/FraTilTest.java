@@ -2,7 +2,6 @@ package ske.fastsetting.skatt.uttrykk;
 
 import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
 import static org.junit.Assert.assertEquals;
@@ -12,13 +11,14 @@ import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver.print;
 
 public class FraTilTest {
+
     @Test
     public void testTil() {
         BelopUttrykk bu = hvis(kr(5).erInntil(kr(5))).brukDa(kr(100)).ellersBruk(kr(50));
 
         UttrykkResultat<Belop> resultat = beregneOgBeskrive(bu);
 
-        assertEquals(new Belop(50), resultat.verdi());
+        assertEquals(Belop.kr(50), resultat.verdi());
 
         print(resultat);
     }
@@ -29,7 +29,7 @@ public class FraTilTest {
 
         UttrykkResultat<Belop> resultat = beregneOgBeskrive(bu);
 
-        assertEquals(new Belop(100), resultat.verdi());
+        assertEquals(Belop.kr(100), resultat.verdi());
         print(resultat);
     }
 
@@ -39,7 +39,7 @@ public class FraTilTest {
 
         UttrykkResultat<Belop> resultat = beregneOgBeskrive(bu);
 
-        assertEquals(new Belop(50), resultat.verdi());
+        assertEquals(Belop.kr(50), resultat.verdi());
         print(resultat);
     }
 
@@ -49,7 +49,7 @@ public class FraTilTest {
 
         UttrykkResultat<Belop> resultat = beregneOgBeskrive(bu);
 
-        assertEquals(new Belop(100), resultat.verdi());
+        assertEquals(Belop.kr(100), resultat.verdi());
         print(resultat);
     }
 
@@ -59,7 +59,7 @@ public class FraTilTest {
 
         UttrykkResultat<Belop> resultat = beregneOgBeskrive(bu);
 
-        assertEquals(new Belop(100), resultat.verdi());
+        assertEquals(Belop.kr(100), resultat.verdi());
         print(resultat);
     }
 
@@ -69,10 +69,9 @@ public class FraTilTest {
 
         UttrykkResultat<Belop> resultat = beregneOgBeskrive(bu);
 
-        assertEquals(new Belop(100), resultat.verdi());
+        assertEquals(Belop.kr(100), resultat.verdi());
         print(resultat);
     }
-
 
     @Test
     public void testUgyldigTilFra() {
@@ -80,8 +79,7 @@ public class FraTilTest {
 
         UttrykkResultat<Belop> resultat = beregneOgBeskrive(bu);
 
-        assertEquals(new Belop(50), resultat.verdi());
+        assertEquals(Belop.kr(50), resultat.verdi());
         print(resultat);
     }
-
 }

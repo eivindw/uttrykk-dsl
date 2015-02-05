@@ -19,7 +19,7 @@ public class UttrykkTest {
     public void tallUttrykk() {
         Uttrykk<Belop> en = kr(1);
 
-        assertEquals(new Belop(1), en.eval(null));
+        assertEquals(Belop.kr(1), en.eval(null));
     }
 
     @Test
@@ -29,7 +29,7 @@ public class UttrykkTest {
 
         Skattegrunnlag sg = new Skattegrunnlag();
 
-        assertEquals(new Belop(65), beregne(tjue, sg).verdi());
+        assertEquals(Belop.kr(65), beregne(tjue, sg).verdi());
 
         print(beregne(tjue, sg));
         System.out.println("\n###");
@@ -55,7 +55,7 @@ public class UttrykkTest {
         Skattegrunnlag sg = new Skattegrunnlag();
         UttrykkResultat ctx = beregneOgBeskrive(sum, sg);
 
-        assertEquals(new Belop(62), ctx.verdi());
+        assertEquals(Belop.kr(62), ctx.verdi());
 
         print(ctx);
     }

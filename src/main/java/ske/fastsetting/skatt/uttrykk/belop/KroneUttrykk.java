@@ -17,15 +17,15 @@ public class KroneUttrykk extends AbstractUttrykk<Belop, KroneUttrykk> implement
     }
 
     public static KroneUttrykk kr(int belop) {
-        return new KroneUttrykk(new Belop(belop));
+        return new KroneUttrykk(Belop.kr(belop));
     }
 
     public static KroneUttrykk kr(BigInteger belop) {
-        return new KroneUttrykk(new Belop(belop.intValue()));
+        return new KroneUttrykk(Belop.kr(belop.intValue()));
     }
 
     public static KroneUttrykk kr(double belop) {
-        return new KroneUttrykk(new Belop(belop));
+        return new KroneUttrykk(Belop.kr(belop));
     }
 
     @Override

@@ -21,7 +21,7 @@ public class BasisTest {
     public void prosentUttrykk() {
         final UttrykkResultat<Belop> resultat = lagEnkeltUttrykkResultat();
 
-        assertEquals(new Belop(8_692), resultat.verdi());
+        assertEquals(Belop.kr(8_692), resultat.verdi());
 
         ConsoleUttrykkBeskriver.print(resultat);
     }
