@@ -5,6 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
+import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel.ExcelUttrykkBeskriver;
 
 import java.io.FileOutputStream;
@@ -70,6 +71,19 @@ public class BelopMultisatsFunksjonTest {
         FileOutputStream out = new FileOutputStream("workbook.xlsx");
         wb.write(out);
         out.close();
+    }
+
+
+    @Test
+    @Ignore
+    public void skriveTest() throws IOException {
+        BelopUttrykk multisats = multisatsFunksjonAv(kr(200)).medSats(prosent(10)).til(kr(50)).deretterMedSats(prosent(20)).til(kr(100)).deretterMedSats(prosent(7)).navn("multisats");
+
+        ConsoleUttrykkBeskriver beskriver = new ConsoleUttrykkBeskriver();
+
+        String s = beskriver.beskriv(UttrykkContextImpl.beskrive(multisats));
+
+        System.out.println(s);
     }
 
 }
