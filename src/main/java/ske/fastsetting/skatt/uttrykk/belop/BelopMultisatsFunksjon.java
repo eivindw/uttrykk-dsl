@@ -41,7 +41,7 @@ public class BelopMultisatsFunksjon extends AbstractUttrykk<Belop, BelopMultisat
 
     @Override
     public String beskriv(UttrykkContext ctx) {
-        return satsSteg.stream().map(ss->stegTilString(ctx,ss)).collect(Collectors.joining(";", "multisats(" + ctx.beskriv(xVerdi)+";", ")"));
+        return satsSteg.stream().map(ss->stegTilString(ctx,ss)).collect(Collectors.joining(";", "multisats(", ")"));
     }
 
     private BelopUttrykk stegTilGrenseUttrykk(SatsStegUttrykk steg) {
@@ -57,9 +57,9 @@ public class BelopMultisatsFunksjon extends AbstractUttrykk<Belop, BelopMultisat
         String stegResultat;
 
         if (steg.oevreGrense != null) {
-            stegResultat = "satsFraTil(" + ctx.beskriv(steg.sats) + ";" + ctx.beskriv(steg.nedreGrense) + ";" + ctx.beskriv(steg.oevreGrense) + ")";
+            stegResultat = "satsFraTil(" + ctx.beskriv(xVerdi)+";" + ctx.beskriv(steg.sats) + ";" + ctx.beskriv(steg.nedreGrense) + ";" + ctx.beskriv(steg.oevreGrense) + ")";
         } else {
-            stegResultat = "satsFra(" + ctx.beskriv(steg.sats) + ";" + ctx.beskriv(steg.nedreGrense) + ")";
+            stegResultat = "satsFra(" + ctx.beskriv(xVerdi)+";" + ctx.beskriv(steg.sats) + ";" + ctx.beskriv(steg.nedreGrense) + ")";
         }
         return stegResultat;
     }
