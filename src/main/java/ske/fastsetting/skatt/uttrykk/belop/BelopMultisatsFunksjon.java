@@ -17,7 +17,7 @@ import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 public class BelopMultisatsFunksjon extends AbstractUttrykk<Belop, BelopMultisatsFunksjon> implements BelopUttrykk {
 
     private BelopUttrykk xVerdi;
-    private List<SatsStegUttrykk> satsSteg = new ArrayList<>();
+    private List<BelopUttrykk> satsSteg = new ArrayList<>();
 
     public BelopMultisatsFunksjon(BelopUttrykk x) {
 
@@ -28,81 +28,92 @@ public class BelopMultisatsFunksjon extends AbstractUttrykk<Belop, BelopMultisat
         return new BelopMultisatsFunksjon(x);
     }
 
-    public SatsStegUttrykk medSats(TallUttrykk sats) {
+    public SatsStegBuilderUttrykk medSats(TallUttrykk sats) {
 
-        return new SatsStegUttrykk(this, kr(0), sats);
+        return new SatsStegBuilderUttrykk(this, kr(0), sats);
     }
 
     @Override
     public Belop eval(UttrykkContext ctx) {
 
-        return ctx.eval(sum(satsSteg.stream().map(this::stegTilGrenseUttrykk).collect(Collectors.toList())));
+        return ctx.eval(sum(satsSteg));
     }
 
     @Override
     public String beskriv(UttrykkContext ctx) {
-        return satsSteg.stream().map(ss->stegTilString(ctx,ss)).collect(Collectors.joining(";", "multisats(", ")"));
-    }
-
-    private BelopUttrykk stegTilGrenseUttrykk(SatsStegUttrykk steg) {
-        GrenseUttrykk grenseUttrykk = begrens(xVerdi.minus(steg.nedreGrense).multiplisertMed(steg.sats)).nedad(kr(0));
-        if (steg.oevreGrense != null) {
-            grenseUttrykk.oppad(steg.oevreGrense.minus(steg.nedreGrense).multiplisertMed(steg.sats));
-        }
-
-        return grenseUttrykk;
-    }
-
-    private String stegTilString(UttrykkContext ctx, SatsStegUttrykk steg) {
-        String stegResultat;
-
-        if (steg.oevreGrense != null) {
-            stegResultat = "satsFraTil(" + ctx.beskriv(xVerdi)+";" + ctx.beskriv(steg.sats) + ";" + ctx.beskriv(steg.nedreGrense) + ";" + ctx.beskriv(steg.oevreGrense) + ")";
-        } else {
-            stegResultat = "satsFra(" + ctx.beskriv(xVerdi)+";" + ctx.beskriv(steg.sats) + ";" + ctx.beskriv(steg.nedreGrense) + ")";
-        }
-        return stegResultat;
+        return satsSteg.stream().map(ctx::beskriv).collect(Collectors.joining(",", "multisats(", ")"));
     }
 
 
-    public class SatsStegUttrykk extends AbstractSatsStegUttrykk<SatsStegUttrykk>  {
+    public class SatsStegUttrykk extends AbstractUttrykk<Belop,SatsStegUttrykk> implements BelopUttrykk {
         private final TallUttrykk sats;
         private BelopUttrykk oevreGrense;
         private final BelopUttrykk nedreGrense;
 
-
-        public SatsStegUttrykk(BelopMultisatsFunksjon funksjon, BelopUttrykk nedreGrense, TallUttrykk sats) {
-            super(funksjon);
+        public SatsStegUttrykk(BelopUttrykk nedreGrense, TallUttrykk sats) {
             this.sats = sats;
             this.nedreGrense = nedreGrense;
-            this.funksjon.satsSteg.add(this);
         }
 
-        public TilSatsStegUttrykk til(BelopUttrykk til) {
-            oevreGrense = til;
-            return new TilSatsStegUttrykk(funksjon);
+        @Override
+        public Belop eval(UttrykkContext ctx) {
+            GrenseUttrykk grenseUttrykk = begrens(xVerdi.minus(nedreGrense).multiplisertMed(sats)).nedad(kr(0));
+            if (oevreGrense != null) {
+                grenseUttrykk.oppad(oevreGrense.minus(nedreGrense).multiplisertMed(sats));
+            }
+
+            return ctx.eval(grenseUttrykk);
         }
 
-        public class TilSatsStegUttrykk extends AbstractSatsStegUttrykk<TilSatsStegUttrykk>  {
+        @Override
+        public String beskriv(UttrykkContext ctx) {
+            String stegResultat;
 
-            public TilSatsStegUttrykk(BelopMultisatsFunksjon funksjon) {
+            if (oevreGrense != null) {
+                stegResultat = "satsFraTil(" + ctx.beskriv(xVerdi)+"," + ctx.beskriv(sats) + "," + ctx.beskriv(nedreGrense) + "," + ctx.beskriv(oevreGrense) + ")";
+            } else {
+                stegResultat = "satsFra(" + ctx.beskriv(xVerdi)+"," + ctx.beskriv(sats) + "," + ctx.beskriv(nedreGrense) + ")";
+            }
+            return stegResultat;
+        }
+    }
+
+
+    public class SatsStegBuilderUttrykk extends AbstractSatsStegBuilderUttrykk<SatsStegBuilderUttrykk> {
+        private final SatsStegUttrykk satsStegUttrykk;
+
+
+        public SatsStegBuilderUttrykk(BelopMultisatsFunksjon funksjon, BelopUttrykk nedreGrense, TallUttrykk sats) {
+            super(funksjon);
+            this.satsStegUttrykk = new SatsStegUttrykk(nedreGrense,sats);
+            this.funksjon.satsSteg.add(satsStegUttrykk);
+        }
+
+        public TilSatsStegBuilderUttrykk til(BelopUttrykk til) {
+            satsStegUttrykk.oevreGrense = til;
+            return new TilSatsStegBuilderUttrykk(funksjon);
+        }
+
+        public class TilSatsStegBuilderUttrykk extends AbstractSatsStegBuilderUttrykk<TilSatsStegBuilderUttrykk> {
+
+            public TilSatsStegBuilderUttrykk(BelopMultisatsFunksjon funksjon) {
                 super(funksjon);
             }
 
-            public SatsStegUttrykk deretterMedSats(TallUttrykk sats) {
-                return new SatsStegUttrykk(funksjon, oevreGrense, sats);
+            public SatsStegBuilderUttrykk deretterMedSats(TallUttrykk sats) {
+                return new SatsStegBuilderUttrykk(funksjon, satsStegUttrykk.oevreGrense, sats);
             }
 
         }
     }
 
-    protected abstract class AbstractSatsStegUttrykk<B extends AbstractSatsStegUttrykk<B>> extends AbstractUttrykk<Belop,B> implements BelopUttrykk {
+    protected abstract class AbstractSatsStegBuilderUttrykk<B extends AbstractSatsStegBuilderUttrykk<B>> extends AbstractUttrykk<Belop,B> implements BelopUttrykk {
         protected final BelopMultisatsFunksjon funksjon;
 
         @SuppressWarnings("unchecked")
         protected B self = (B) this;
 
-        protected AbstractSatsStegUttrykk(BelopMultisatsFunksjon funksjon) {
+        protected AbstractSatsStegBuilderUttrykk(BelopMultisatsFunksjon funksjon) {
             this.funksjon = funksjon;
         }
 

@@ -50,6 +50,14 @@ public class ExcelFormel implements ExcelUttrykk {
     public static final String RUND_AV_TIL_HELE_KRONER_MATCH = "^rund av til hele kroner \\((.*)\\)$";
     public static final String RUND_AV_TIL_HELE_KRONER_OUTPUT = "ROUND($1,0)";
 
+    public static final String MULTISATS_MATCH = "^multisats\\((.*)\\)$";
+    public static final String MULTISATS_OUTPUT = "SUM($1)";
+
+    public static final String SATS_FRATIL_MATCH = "^satsFraTil\\((.*),(.*),(.*),(.*)\\)$";
+    public static final String SATS_FRATIL_OUTPUT = "MIN(MAX(($1 - $3) * $2,0),($4 - $3) * $2)";
+
+    public static final String SATS_FRA_MATCH = "^satsFra\\((.*),(.*),(.*)\\)$";
+    public static final String SATS_FRA_OUTPUT = "MAX(($1 - $3) * $2,0)";
 
     private static final String ER_EN_AV_REGEX = "^(.*) er en av \\((.*)\\)$";
 
@@ -64,6 +72,9 @@ public class ExcelFormel implements ExcelUttrykk {
 
         uttrykkStreng = HvisParser.parse(uttrykkStreng);
         uttrykkStreng = uttrykkStreng.replaceAll(SUM_MATCH, SUM_OUTPUT);
+        uttrykkStreng = uttrykkStreng.replaceAll(MULTISATS_MATCH, MULTISATS_OUTPUT);
+        uttrykkStreng = uttrykkStreng.replaceAll(SATS_FRATIL_MATCH, SATS_FRATIL_OUTPUT);
+        uttrykkStreng = uttrykkStreng.replaceAll(SATS_FRA_MATCH, SATS_FRA_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(BEGRENSET_NEDAD_OPPAD_MATCH, BEGRENSET_NEDAD_OPPAD_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(BEGRENSET_NEDAD_MATCH, BEGRENSET_NEDAD_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(BEGRENSET_OPPAD_MATCH, BEGRENSET_OPPAD_OUTPUT);

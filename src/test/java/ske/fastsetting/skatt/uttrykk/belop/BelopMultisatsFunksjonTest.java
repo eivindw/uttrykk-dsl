@@ -52,15 +52,7 @@ public class BelopMultisatsFunksjonTest {
 
         assertEquals(Belop.kr(22), UttrykkContextImpl.beregne(multisats).verdi());
 
-        String s = "multisats(satsTil(kr(200),%(5),kr(50)),satsFraTil(kr(200),%(20),kr(50),kr(100)),satsFra(kr(200),%(7),kr(100)))";
-        String s4 = "multisats(satsTil(kr(200);%(5);kr(50));satsFraTil(kr(200);%(20);kr(50);kr(100));satsFra(kr(200),%(7),kr(100)))";
-        String s2 = "begrensNedreØvre(kr(200),kr(0),kr(500))";
-        String s3 = "hvisEllers(>(a;b);kr(50);hvis(>=(c;a);))";
-
-        String wiki = "5% av 200 kr inntil kr 50, 20% av 200 kr over kr 50 inntil kr 100, 7% av 200 kr over kr 100";
-        String wiki2 = "5% av grunnlag inntil kr 50, 20% av grunnlag over kr 50 inntil kr 100, 7% av grunnlag over kr 100";
-        String excel = "=((MAX(((200 - 100) * 0,07);0)) + (((MIN(MAX(((200 - 50) * 0,2);0);((100 - 50) * 0,2))) + ((MIN(MAX(((200 - 0) * 0,1);0);((50 - 0) * 0,1)))))))";
-    }
+     }
 
     @Test
     @Ignore
@@ -87,5 +79,15 @@ public class BelopMultisatsFunksjonTest {
 
         System.out.println(s);
     }
+
+//    String s = "multisats(satsTil(kr(200),%(5),kr(50)),satsFraTil(kr(200),%(20),kr(50),kr(100)),satsFra(kr(200),%(7),kr(100)))";
+//    String s4 = "multisats(satsTil(kr(200);%(5);kr(50));satsFraTil(kr(200);%(20);kr(50);kr(100));satsFra(kr(200),%(7),kr(100)))";
+//    String s2 = "begrensNedreØvre(kr(200),kr(0),kr(500))";
+//    String s3 = "hvisEllers(>(a;b);kr(50);hvis(>=(c;a);))";
+//
+//    String wiki = "5% av 200 kr inntil kr 50, 20% av 200 kr over kr 50 inntil kr 100, 7% av 200 kr over kr 100";
+//    String wiki2 = "5% av grunnlag inntil kr 50, 20% av grunnlag over kr 50 inntil kr 100, 7% av grunnlag over kr 100";
+//    String excel = "=((MAX(((200 - 100) * 0,07);0)) + (((MIN(MAX(((200 - 50) * 0,2);0);((100 - 50) * 0,2))) + ((MIN(MAX(((200 - 0) * 0,1);0);((50 - 0) * 0,1)))))))";
+
 
 }
