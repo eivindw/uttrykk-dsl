@@ -44,7 +44,15 @@ public class ExcelFormel implements ExcelUttrykk {
     public static final String OG_MATCH = "^(.*) og (.*)$";
     public static final String OG_OUTPUT = "AND($1,$2)";
 
+    public static final String ELLER_MATCH = "^(.*) eller (.*)$";
+    public static final String ELLER_OUTPUT = "OR($1,$2)";
+
+    public static final String RUND_AV_TIL_HELE_KRONER_MATCH = "^rund av til hele kroner \\((.*)\\)$";
+    public static final String RUND_AV_TIL_HELE_KRONER_OUTPUT = "ROUND($1,0)";
+
+
     private static final String ER_EN_AV_REGEX = "^(.*) er en av \\((.*)\\)$";
+
 
 
     public ExcelFormel(String uttrykkStreng) {
@@ -64,7 +72,9 @@ public class ExcelFormel implements ExcelUttrykk {
         uttrykkStreng = uttrykkStreng.replaceAll(FRA_TIL_ÅR_MATCH, FRA_TIL_ÅR_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(FRA_TILOGMED_MATCH, FRA_TILOGMED_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(FRAOGMED_TIL_MATCH, FRAOGMED_TIL_OUTPUT);
+        uttrykkStreng = uttrykkStreng.replaceAll(RUND_AV_TIL_HELE_KRONER_MATCH, RUND_AV_TIL_HELE_KRONER_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(OG_MATCH, OG_OUTPUT);
+        uttrykkStreng = uttrykkStreng.replaceAll(ELLER_MATCH, ELLER_OUTPUT);
 
         if (uttrykkStreng.matches(ER_EN_AV_REGEX)) {
             Matcher matcher = Pattern.compile(ER_EN_AV_REGEX).matcher(uttrykkStreng);
