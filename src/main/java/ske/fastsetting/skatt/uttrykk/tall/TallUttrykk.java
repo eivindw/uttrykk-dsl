@@ -11,4 +11,8 @@ public interface TallUttrykk extends CompareableUttrykk<Tall> {
     default TallUttrykk dividertMed(TallUttrykk verdi) {
         return new TallDivisjonsUttrykk(this, verdi);
     }
+
+    default AvrundTallUttrykk rundOpp() {
+        return new AvrundTallUttrykk(this);
+    }
 }

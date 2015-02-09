@@ -2,6 +2,7 @@ package ske.fastsetting.skatt.domene;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 
 public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
 
@@ -22,6 +23,7 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
     public BigInteger toBigInteger() {
         return verdi.toBigInteger();
     }
+
 
     public enum TallUttrykkType {
         ZERO,
@@ -72,6 +74,15 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
         return new Tall(type, verdi.divide(divisor));
     }
 
+    public Tall rundOpp() {
+        switch (type) {
+            case PROSENT:
+                return new Tall(TallUttrykkType.PROSENT, this.verdi.setScale(2, RoundingMode.UP));
+            default:
+                return this;
+        }
+    }
+
 
     private TallUttrykkType finnType(Tall ledd) {
         return type != TallUttrykkType.ZERO ? type : ledd.type;
@@ -87,5 +98,25 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
             default:
                 return verdi.toString();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tall tall = (Tall) o;
+
+        if (type != tall.type) return false;
+        if (!verdi.equals(tall.verdi)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = verdi.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
     }
 }
