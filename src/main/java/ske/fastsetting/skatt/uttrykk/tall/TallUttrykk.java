@@ -1,5 +1,6 @@
 package ske.fastsetting.skatt.uttrykk.tall;
 
+import ske.fastsetting.skatt.domene.Avrunding;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
 
@@ -12,7 +13,13 @@ public interface TallUttrykk extends CompareableUttrykk<Tall> {
         return new TallDivisjonsUttrykk(this, verdi);
     }
 
+    @Deprecated()
     default AvrundTallUttrykk rundOpp() {
-        return new AvrundTallUttrykk(this);
+        return new AvrundTallUttrykk(this, 2, Avrunding.Opp);
     }
+
+    default AvrundTallUttrykk rundAv(int presisjon, Avrunding avrunding) {
+        return new AvrundTallUttrykk(this, presisjon, avrunding);
+    }
+
 }

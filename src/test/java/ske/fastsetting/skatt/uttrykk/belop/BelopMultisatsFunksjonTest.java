@@ -57,7 +57,8 @@ public class BelopMultisatsFunksjonTest {
     @Test
     @Ignore
     public void excelSkriveTest() throws IOException {
-        BelopUttrykk multisats = multisatsFunksjonAv(kr(200)).medSats(prosent(10)).til(kr(50)).deretterMedSats(prosent(20)).til(kr(100)).deretterMedSats(prosent(7)).navn("multisats");
+        final KroneUttrykk kr = kr(20).navn("grunnlag");
+        BelopUttrykk multisats = multisatsFunksjonAv(kr).medSats(prosent(10)).til(kr(50)).deretterMedSats(prosent(20)).til(kr(100)).deretterMedSats(prosent(7)).navn("multisats");
         ExcelUttrykkBeskriver beskriver = new ExcelUttrykkBeskriver();
 
         Workbook wb = beskriver.beskriv(UttrykkContextImpl.beskrive(multisats));

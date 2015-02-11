@@ -2,6 +2,7 @@ package ske.fastsetting.skatt.domene;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.math.RoundingMode;
 
 public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
@@ -74,15 +75,27 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
         return new Tall(type, verdi.divide(divisor));
     }
 
+    @Deprecated
     public Tall rundOpp() {
         switch (type) {
             case PROSENT:
-                return new Tall(TallUttrykkType.PROSENT, this.verdi.setScale(2, RoundingMode.UP));
+                return new Tall(TallUttrykkType.PROSENT, this.verdi.round(new MathContext(2, RoundingMode.UP)));
             default:
                 return this;
         }
     }
 
+    public Tall rundOpp(int presisjon) {
+        return rundAv(presisjon, Avrunding.Opp);
+    }
+
+    public Tall rundNed(int presisjon) {
+        return rundAv(presisjon, Avrunding.Ned);
+    }
+
+    public Tall rundAv(int presisjon, Avrunding avrunding) {
+        return new Tall(type, avrunding.rundAv(verdi,presisjon) );
+    }
 
     private TallUttrykkType finnType(Tall ledd) {
         return type != TallUttrykkType.ZERO ? type : ledd.type;
