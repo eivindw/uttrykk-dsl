@@ -21,6 +21,8 @@ public class ExcelUtil {
         formaterCelleverdi(celle, "kr #,##0");
     }
 
+    
+    //TODO bruk noko anna enn _ her...
     public static String lagGyldigCellenavn(String navn) {
         return navn.replaceAll("[^A-Za-z0-9]","_");
     }
