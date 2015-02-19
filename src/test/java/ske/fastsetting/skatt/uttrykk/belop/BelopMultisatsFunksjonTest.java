@@ -5,11 +5,15 @@ import org.junit.Ignore;
 import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
+import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
+import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConfluenceResultatKonverterer;
+import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConfluenceUttrykkBeskriver;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel.ExcelUttrykkBeskriver;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopMultisatsFunksjon.multisatsFunksjonAv;
@@ -80,6 +84,23 @@ public class BelopMultisatsFunksjonTest {
 
         System.out.println(s);
     }
+
+    @Test
+    @Ignore
+    public void confluenceSkriveTest() throws IOException {
+        BelopUttrykk multisats = multisatsFunksjonAv(kr(200)).medSats(prosent(10)).til(kr(50)).deretterMedSats(prosent(20)).til(kr(100)).deretterMedSats(prosent(7)).navn("multisats");
+
+        ConfluenceUttrykkBeskriver beskriver = new ConfluenceUttrykkBeskriver("Tittel");
+
+        UttrykkResultat<Belop> resultat = UttrykkContextImpl.beskrive(multisats);
+
+        UttrykkResultat<Belop> endretResultat = ConfluenceResultatKonverterer.konverterResultat(resultat);
+
+        Map<String, ConfluenceUttrykkBeskriver.ConfluenceSide> sider = beskriver.beskriv(endretResultat);
+
+        sider.entrySet().stream().map(e->e.getValue()).map(ConfluenceUttrykkBeskriver.ConfluenceSide::getInnhold).forEach(System.out::println);
+    }
+
 
 //    String s = "multisats(satsTil(kr(200),%(5),kr(50)),satsFraTil(kr(200),%(20),kr(50),kr(100)),satsFra(kr(200),%(7),kr(100)))";
 //    String s4 = "multisats(satsTil(kr(200);%(5);kr(50));satsFraTil(kr(200);%(20);kr(50);kr(100));satsFra(kr(200),%(7),kr(100)))";

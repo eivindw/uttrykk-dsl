@@ -1,14 +1,13 @@
-package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel;
+package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
 
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExcelEnsligUttrykkResultatKonverterer {
+public class ConfluenceResultatKonverterer {
 
 
-    public final static String KEY_EXCEL_ID = "excel_id";
     public static final String UTTRYKK = UttrykkResultat.KEY_UTTRYKK;
 
 
@@ -16,41 +15,36 @@ public class ExcelEnsligUttrykkResultatKonverterer {
         final Map<String, Map> uttrykksmap = new HashMap<>();
 
         uttrykkResultat.uttrykk().entrySet()
-            .forEach(e -> uttrykksmap.put(e.getKey(), kopierOgErstattEktefellesMed0(e.getValue())));
+            .forEach(e -> uttrykksmap.put(e.getKey(), kopierOgErstattUttrykk(e.getValue())));
 
         return new IndreUttrykkResultat<V>(uttrykksmap, uttrykkResultat.start());
     }
 
-    private static Map<String, Object> kopierOgErstattEktefellesMed0(Map<String, Object> map) {
+    private static Map<String, Object> kopierOgErstattUttrykk(Map<String, Object> map) {
         Map<String, Object> nyMap = new HashMap<>();
 
         //Copy
         map.entrySet().forEach(e -> nyMap.put(e.getKey(), e.getValue()));
 
-        //Fix excel_ID
-        nyMap.put(KEY_EXCEL_ID,
-            ExcelUtil.lagGyldigCellenavn((String) map.getOrDefault(UttrykkResultat.KEY_NAVN, ""))
-        );
-
         //Replace "ektefelles" with 0
-        if (nyMap.containsKey(UTTRYKK))
-            if (((String) nyMap.get(UTTRYKK)).contains("ektefelles"))
-                nyMap.put(UTTRYKK, "0");
+        if (nyMap.containsKey(UTTRYKK)) {
+            String uttrykk = erstattUttrykk((String) nyMap.get(UTTRYKK));
+            nyMap.put(UTTRYKK, uttrykk);
+        }
 
         return nyMap;
     }
 
+    private static String erstattUttrykk(String uttrykk) {
 
-    public static void main(String[] args) {
+        String resultat = uttrykk;
 
-        Map<String, Integer> m = new HashMap<>();
+        resultat = resultat.startsWith("multisats") ? resultat.replace(",",", ") : resultat;
+        resultat = resultat.replaceAll("multisats\\((.*)\\)","$1");
+        resultat = resultat.replaceAll("satsFraTil\\((.*),(.*),(.*),(.*)\\)","$2 av $1 over $3 og inntil $4");
+        resultat = resultat.replaceAll("satsFra\\((.*),(.*),(.*)\\)","$2 av $1 over $3");
 
-        m.put("k", null);
-
-        System.out.println(m.get("z"));
-        System.out.println(m.get("k"));
-
-
+        return resultat;
     }
 
 
