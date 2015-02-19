@@ -4,7 +4,7 @@
 
     <groupId>ske.fastsetting.skatt</groupId>
     <artifactId>uttrykk</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <name>Uttrykk DSL</name>
     <packaging>jar</packaging>
 
@@ -19,7 +19,8 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/eivindw/uttrykk-dsl.git</developerConnection>
-    </scm>
+      <tag>HEAD</tag>
+  </scm>
 
     <dependencyManagement>
         <dependencies>
