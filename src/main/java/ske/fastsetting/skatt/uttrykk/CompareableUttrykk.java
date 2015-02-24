@@ -6,6 +6,10 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         return new ErStorreEnn<>(this, belop);
     }
 
+    default BolskUttrykk erStorreEllerLik(CompareableUttrykk<T> belop) {
+        return new ErStorreEllerLik<>(this, belop);
+    }
+
     default BolskUttrykk er(CompareableUttrykk<T> belop) {
         return new ErLik<>(this, belop);
     }
@@ -61,6 +65,27 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
             return ctx.beskriv(belopUttrykk) + " > " + ctx.beskriv(sammenliknMed);
         }
     }
+
+    static class ErStorreEllerLik<T extends Comparable<T>> extends BolskUttrykk {
+        private final CompareableUttrykk<T> belopUttrykk;
+        private final CompareableUttrykk<T> sammenliknMed;
+
+        public ErStorreEllerLik(CompareableUttrykk<T> belopUttrykk, CompareableUttrykk<T> sammenliknMed) {
+            this.belopUttrykk = belopUttrykk;
+            this.sammenliknMed = sammenliknMed;
+        }
+
+        @Override
+        public Boolean eval(UttrykkContext ctx) {
+            return ctx.eval(belopUttrykk).compareTo(ctx.eval(sammenliknMed)) >= 0;
+        }
+
+        @Override
+        public String beskriv(UttrykkContext ctx) {
+            return ctx.beskriv(belopUttrykk) + " >= " + ctx.beskriv(sammenliknMed);
+        }
+    }
+
 
     static class ErLik<T extends Comparable<T>> extends BolskUttrykk {
         private final CompareableUttrykk<T> belopUttrykk1;
