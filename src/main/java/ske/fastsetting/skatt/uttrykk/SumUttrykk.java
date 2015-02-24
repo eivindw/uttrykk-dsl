@@ -9,7 +9,7 @@ public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttryk
     extends AbstractUttrykk<T, B>
 {
 
-    private final Collection<U> uttrykk;
+    protected final Collection<U> uttrykk;
 
     protected SumUttrykk(Collection<U> uttrykk) {
         this.uttrykk = uttrykk;
@@ -31,4 +31,6 @@ public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttryk
             .map(ctx::beskriv)
             .collect(Collectors.joining(" + "));
     }
+
+
 }

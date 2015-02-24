@@ -30,7 +30,7 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
         return fra(Money.of(bigInteger, "NOK"));
     }
 
-    private Belop(Money belop) {
+    protected Belop(Money belop) {
         this.belop = belop;
     }
 
@@ -113,5 +113,9 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     @Override
     public int hashCode() {
         return belop.hashCode();
+    }
+
+    public Belop byttFortegn() {
+        return new Belop(belop.negate());
     }
 }

@@ -29,4 +29,13 @@ public class BelopSumUttrykk
     public static BelopSumUttrykk sum(Collection<BelopUttrykk> uttrykk) {
         return new BelopSumUttrykk(uttrykk);
     }
+
+    public BelopSumUttrykk pluss(BelopSumUttrykk sumUttrykk) {
+        return new BelopSumUttrykk(Stream.concat(this.uttrykk.stream(),sumUttrykk.uttrykk.stream()).collect(Collectors.toList()));
+    }
+
+    public BelopSumUttrykk pluss(BelopUttrykk uttrykk) {
+        return new BelopSumUttrykk(Stream.concat(this.uttrykk.stream(),Stream.of(uttrykk)).collect(Collectors.toList()));
+    }
+
 }
