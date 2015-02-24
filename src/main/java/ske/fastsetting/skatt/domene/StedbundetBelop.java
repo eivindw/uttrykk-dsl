@@ -82,4 +82,10 @@ public class StedbundetBelop implements KalkulerbarVerdi<StedbundetBelop> {
 
         return new StedbundetBelop(filtrertMap);
     }
+
+
+    @Override
+    public String toString() {
+        return stedBelopMap.toString();
+    }
 }

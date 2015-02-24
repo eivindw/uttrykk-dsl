@@ -29,6 +29,8 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
         return new BelopDividertMedBelopUttrykk(this, divident);
     }
 
+    default BelopUttrykk byttFortegn() { return new BelopByttFortegnUttrykk(this);  }
+
     static class BelopDividertMedBelopUttrykk extends AbstractUttrykk<Tall, BelopDividertMedBelopUttrykk> implements TallUttrykk {
         private final BelopUttrykk divisior;
         private final BelopUttrykk divident;
@@ -49,4 +51,21 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
         }
     }
 
+    class BelopByttFortegnUttrykk extends AbstractUttrykk<Belop,BelopByttFortegnUttrykk>  implements BelopUttrykk {
+        private BelopUttrykk belopUttrykk;
+
+        public BelopByttFortegnUttrykk(BelopUttrykk belopUttrykk) {
+            this.belopUttrykk = belopUttrykk;
+        }
+
+        @Override
+        public Belop eval(UttrykkContext ctx) {
+            return ctx.eval(belopUttrykk).byttFortegn();
+        }
+
+        @Override
+        public String beskriv(UttrykkContext ctx) {
+            return " - "+ ctx.beskriv(belopUttrykk);
+        }
+    }
 }

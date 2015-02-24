@@ -23,9 +23,13 @@ public interface StedbundetBelopUttrykk extends Uttrykk<StedbundetBelop> {
     default StedbundetBelopUttrykk multiplisertMed(TallUttrykk tall) {return new StedbundetBelopMultiplikasjonsUttrykk(this,tall);}
     default StedbundetBelopUttrykk filtrer(Predicate<String> filter) { return new FiltrertStedbundetBelopUttrykk(this,filter);}
 
+    default BelopUttrykk minus(BelopUttrykk ledd) { return new TilSteduavhengigBelopUttrykk(this).minus(ledd);}
+
     default BelopUttrykk steduavhengig() {
         return new TilSteduavhengigBelopUttrykk(this);
     }
+
+    default StedbundetBelopUttrykk minusProporsjonalt(BelopUttrykk ledd) { return new FordelProporsjonaltUttrykk(this, ledd.byttFortegn());}
 
     static class StedbundetBelopSumUttrykk extends SumUttrykk<StedbundetBelop,StedbundetBelopUttrykk,StedbundetBelopSumUttrykk> implements StedbundetBelopUttrykk{
 
