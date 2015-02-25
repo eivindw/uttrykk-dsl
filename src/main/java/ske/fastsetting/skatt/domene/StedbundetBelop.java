@@ -10,13 +10,22 @@ import java.util.stream.Collectors;
  * Created by jorn ola birkeland on 23.02.15.
  */
 public class StedbundetBelop implements KalkulerbarVerdi<StedbundetBelop> {
+    public static final Belop I_PRAKSIS_NULL = Belop.kr(0.0001d);
     private final Map<String,Belop> stedBelopMap;
 
-    public static final StedbundetBelop NULL = new StedbundetBelop(null,0);
+    public static final StedbundetBelop NULL = new StedbundetBelop(null,Belop.NULL);
 
-    public StedbundetBelop(String sted, int belop) {
+    public static StedbundetBelop kr(int belop, String sted) {
+        return new StedbundetBelop(sted,Belop.kr(belop));
+    }
+
+    public static StedbundetBelop kr(double belop, String sted) {
+        return new StedbundetBelop(sted,Belop.kr(belop));
+    }
+
+    public StedbundetBelop(String sted, Belop belop) {
         stedBelopMap = new HashMap<>();
-        stedBelopMap.put(sted,Belop.kr(belop));
+        stedBelopMap.put(sted,belop);
     }
 
     private StedbundetBelop(Map<String,Belop> stedBelopMap) {
@@ -63,11 +72,16 @@ public class StedbundetBelop implements KalkulerbarVerdi<StedbundetBelop> {
     public StedbundetBelop fordelProporsjonalt(Belop belop) {
         Map<String,Belop> resultat = new HashMap<>();
 
-        Belop sum = steduavhengig();
+        Belop sum = abs().steduavhengig();
 
         this.stedBelopMap.entrySet().stream().forEach(e->resultat.put(e.getKey(), e.getValue()));
-        this.stedBelopMap.entrySet().stream().forEach(e->resultat.merge(e.getKey(), belop.multiplisertMed(belop.dividertMed(sum)), Belop::pluss));
 
+        if(sum.erStorreEnn(Belop.NULL)) {
+            this.stedBelopMap.entrySet().stream().forEach(e -> resultat.merge(e.getKey(), belop.multiplisertMed(e.getValue().abs().dividertMed(sum)), Belop::pluss));
+        } else {
+            Belop andel = belop.dividertMed(stedBelopMap.size());
+            this.stedBelopMap.entrySet().stream().forEach(e -> resultat.merge(e.getKey(), andel, Belop::pluss));
+        }
         return new StedbundetBelop(resultat);
     }
 
@@ -87,5 +101,19 @@ public class StedbundetBelop implements KalkulerbarVerdi<StedbundetBelop> {
     @Override
     public String toString() {
         return stedBelopMap.toString();
+    }
+
+    public Belop get(String sted) {
+        return stedBelopMap.get(sted);
+    }
+
+    public StedbundetBelop abs() {
+
+        Map<String,Belop> resultat = stedBelopMap.entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().abs()));
+
+        return new StedbundetBelop(resultat);
+
     }
 }

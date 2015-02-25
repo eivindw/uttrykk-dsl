@@ -1,16 +1,17 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
-import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
+import ske.fastsetting.skatt.uttrykk.UttrykkContext;
+import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopUttrykk;
 
 public class GrenseUttrykk extends AbstractUttrykk<Belop, GrenseUttrykk> implements BelopUttrykk {
 
     private final BelopUttrykk uttrykk;
-    private BelopUttrykk minimum;
-    private BelopUttrykk maksimum;
+    protected BelopUttrykk minimum;
+    protected BelopUttrykk maksimum;
 
-    private GrenseUttrykk(BelopUttrykk uttrykk) {
+    protected GrenseUttrykk(BelopUttrykk uttrykk) {
         this.uttrykk = uttrykk;
     }
 
@@ -27,8 +28,18 @@ public class GrenseUttrykk extends AbstractUttrykk<Belop, GrenseUttrykk> impleme
         return this;
     }
 
+    public GrenseUttrykk nedad(StedbundetBelopUttrykk minimum) {
+        this.minimum = minimum.steduavhengig();
+        return this;
+    }
+
     public GrenseUttrykk oppad(BelopUttrykk maksimum) {
         this.maksimum = maksimum;
+        return this;
+    }
+
+    public GrenseUttrykk oppad(StedbundetBelopUttrykk maksimum) {
+        this.maksimum = maksimum.steduavhengig();
         return this;
     }
 

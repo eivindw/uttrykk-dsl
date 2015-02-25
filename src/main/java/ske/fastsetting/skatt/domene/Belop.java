@@ -75,6 +75,8 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
         return fra(belop.divide(ledd));
     }
 
+    public Belop dividertMed(int ledd) { return fra(belop.divide(ledd)); }
+
     public Integer toInteger() {
         return this.belop.getNumberStripped().setScale(0, RoundingMode.HALF_UP).intValue();
     }
@@ -117,5 +119,9 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
     public Belop byttFortegn() {
         return new Belop(belop.negate());
+    }
+
+    public Belop abs() {
+        return new Belop(belop.abs());
     }
 }
