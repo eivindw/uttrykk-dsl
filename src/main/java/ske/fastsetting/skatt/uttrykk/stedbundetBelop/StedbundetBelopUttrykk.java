@@ -83,7 +83,7 @@ public interface StedbundetBelopUttrykk extends Uttrykk<StedbundetBelop> {
 
         @Override
         public String beskriv(UttrykkContext ctx) {
-            return ctx.beskriv(stedbundetBelopUttrykk);
+            return  ctx.beskriv(stedbundetBelopUttrykk);
         }
     }
 
@@ -103,7 +103,7 @@ public interface StedbundetBelopUttrykk extends Uttrykk<StedbundetBelop> {
 
         @Override
         public String beskriv(UttrykkContext ctx) {
-            return stedbundetBelopUttrykk.beskriv(ctx);
+            return ctx.beskriv(stedbundetBelopUttrykk);
         }
     }
 }
