@@ -1,9 +1,10 @@
 package ske.fastsetting.skatt.uttrykk.tekst;
 
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
+import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class TekstUttrykk extends AbstractUttrykk<String, TekstUttrykk> {
+public class TekstUttrykk extends AbstractUttrykk<String, TekstUttrykk> implements CompareableUttrykk<String> {
     private final String tekst;
 
     public static TekstUttrykk tekst(String tekst) {
