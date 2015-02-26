@@ -5,13 +5,13 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static ske.fastsetting.skatt.uttrykk.tekst.TekstUttrykk.tekst;
+import static ske.fastsetting.skatt.uttrykk.tekst.KonstantTekstUttrykk.tekst;
 
 public class TekstUttrykkTest {
     @Test
     public void test() {
-        TekstUttrykk a = tekst("A");
-        TekstUttrykk b = tekst("B");
+        KonstantTekstUttrykk a = tekst("A");
+        KonstantTekstUttrykk b = tekst("B");
 
         assertTrue(UttrykkContextImpl.beregne(a.er(a)).verdi());
         assertFalse(UttrykkContextImpl.beregne(a.er(b)).verdi());
