@@ -3,9 +3,17 @@ package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
 import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.StedbundetBelop;
+import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
+import ske.fastsetting.skatt.uttrykk.UttrykkContext;
+import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
+import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
+import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
+
+import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.domene.StedbundetBelop.kr;
+import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
 
 /**
  * Created by jorn ola birkeland on 24.02.15.
@@ -95,6 +103,57 @@ public class StedbundetBelopTest {
         assertEquals(Belop.kr(2), b.get("A").rundAvTilHeleKroner());
         assertEquals(Belop.kr(4), b.get("B").rundAvTilHeleKroner());
     }
+
+    @Test
+    public void beregningsgrunnlagTest() {
+        TallUttrykk pensjonsgrad = BeregningsgrunnlagTallUttrykk.beregningsgrunnlag(bg->bg.getAlderspensjon().pensjonsgrad());
+
+    }
+
+    @Test
+    public void recTest() {
+
+        Rec.Key<Rec> alderspensjonKey = new Rec.Key<>();
+        Rec.Key<BelopUttrykk> belopKey = new Rec.Key<>();
+        Rec.Key<TallUttrykk> pensjonsgradKey = new Rec.Key<>();
+
+        Rec beregningsgrunnlag = new Rec();
+        Rec alderspensjonRec = new Rec();
+
+        beregningsgrunnlag.put(alderspensjonKey,alderspensjonRec);
+        alderspensjonRec.put(belopKey, KroneUttrykk.kr(45));
+        alderspensjonRec.put(pensjonsgradKey, prosent(45));
+
+        TallUttrykk pensjonsgrad = beregningsgrunnlag.get(alderspensjonKey).get(pensjonsgradKey);
+
+        BelopUttrykk alderspensjon = new RecBelopUttrykk(r->r.get(alderspensjonKey).get(belopKey));
+    }
+
+
+    static class RecBelopUttrykk extends AbstractUttrykk<Belop,RecBelopUttrykk> implements BelopUttrykk {
+
+
+        private Function<Rec, BelopUttrykk> func;
+
+        RecBelopUttrykk(Function<Rec,BelopUttrykk> func) {
+            this.func = func;
+        }
+
+        @Override
+        public Belop eval(UttrykkContext ctx) {
+            Rec rec = ctx.input(Rec.class);
+
+            return ctx.eval(func.apply(rec));
+        }
+
+        @Override
+        public String beskriv(UttrykkContext ctx) {
+            Rec rec = ctx.input(Rec.class);
+
+            return ctx.beskriv(func.apply(rec));
+        }
+    }
+
 
 
 }

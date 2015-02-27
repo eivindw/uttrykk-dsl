@@ -2,6 +2,7 @@ package ske.fastsetting.skatt.domene;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -97,15 +98,19 @@ public class StedbundetBelop implements KalkulerbarVerdi<StedbundetBelop> {
         return new StedbundetBelop(filtrertMap);
     }
 
+    public List<String> steder() {
+        return stedBelopMap.keySet().stream().collect(Collectors.toList());
+    }
+
+    public Belop get(String sted) {
+        return stedBelopMap.get(sted);
+    }
 
     @Override
     public String toString() {
         return stedBelopMap.toString();
     }
 
-    public Belop get(String sted) {
-        return stedBelopMap.get(sted);
-    }
 
     public StedbundetBelop abs() {
 
