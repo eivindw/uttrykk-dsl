@@ -14,7 +14,7 @@ public class StedbundetBelop implements KalkulerbarVerdi<StedbundetBelop> {
     public static final Belop I_PRAKSIS_NULL = Belop.kr(0.0001d);
     private final Map<String,Belop> stedBelopMap;
 
-    public static final StedbundetBelop NULL = new StedbundetBelop(null,Belop.NULL);
+    public static final StedbundetBelop NULL = new StedbundetBelop();
 
     public static StedbundetBelop kr(int belop, String sted) {
         return new StedbundetBelop(sted,Belop.kr(belop));
@@ -27,6 +27,10 @@ public class StedbundetBelop implements KalkulerbarVerdi<StedbundetBelop> {
     public StedbundetBelop(String sted, Belop belop) {
         stedBelopMap = new HashMap<>();
         stedBelopMap.put(sted,belop);
+    }
+
+    public StedbundetBelop() {
+        stedBelopMap = new HashMap<>();
     }
 
     private StedbundetBelop(Map<String,Belop> stedBelopMap) {
@@ -79,7 +83,7 @@ public class StedbundetBelop implements KalkulerbarVerdi<StedbundetBelop> {
 
         if(sum.erStorreEnn(Belop.NULL)) {
             this.stedBelopMap.entrySet().stream().forEach(e -> resultat.merge(e.getKey(), belop.multiplisertMed(e.getValue().abs().dividertMed(sum)), Belop::pluss));
-        } else {
+        } else if(this.stedBelopMap.size()>0) {
             Belop andel = belop.dividertMed(stedBelopMap.size());
             this.stedBelopMap.entrySet().stream().forEach(e -> resultat.merge(e.getKey(), andel, Belop::pluss));
         }
@@ -103,7 +107,7 @@ public class StedbundetBelop implements KalkulerbarVerdi<StedbundetBelop> {
     }
 
     public Belop get(String sted) {
-        return stedBelopMap.get(sted);
+        return stedBelopMap.getOrDefault(sted,Belop.NULL);
     }
 
     @Override

@@ -24,4 +24,9 @@ public class StedbundetBelopSumUttrykk extends SumUttrykk<StedbundetBelop,Stedbu
     public static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopSumUttrykk sum(StedbundetBelopUttrykk... stedbundetBelopUttrykk) {
         return new ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopSumUttrykk(Stream.of(stedbundetBelopUttrykk).collect(Collectors.toList()));
     }
+
+    public static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopSumUttrykk sum(Collection<StedbundetBelopUttrykk> stedbundneBelopUttrykk) {
+        return new ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopSumUttrykk(stedbundneBelopUttrykk);
+    }
+
 }
