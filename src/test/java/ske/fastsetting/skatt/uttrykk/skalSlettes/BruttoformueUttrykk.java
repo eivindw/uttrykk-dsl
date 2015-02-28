@@ -1,6 +1,7 @@
-package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
+package ske.fastsetting.skatt.uttrykk.skalSlettes;
 
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
+import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopUttrykk;
 
 /**
  * Created by jorn ola birkeland on 26.02.15.

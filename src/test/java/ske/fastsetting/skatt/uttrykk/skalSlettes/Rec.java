@@ -1,4 +1,4 @@
-package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
+package ske.fastsetting.skatt.uttrykk.skalSlettes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by jorn ola birkeland on 27.02.15.
  */
-public class Rec {
+public class Rec<V> {
 
     Map<Key<?>,Object> map = new HashMap<>();
 

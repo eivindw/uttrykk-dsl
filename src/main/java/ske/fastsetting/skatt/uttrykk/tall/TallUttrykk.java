@@ -13,6 +13,8 @@ public interface TallUttrykk extends CompareableUttrykk<Tall> {
         return new TallDivisjonsUttrykk(this, verdi);
     }
 
+    default TallUttrykk pluss(TallUttrykk verdi) {return SumTallUttrykk.sum(this,verdi);}
+
     @Deprecated()
     default AvrundTallUttrykk rundOpp() {
         return new AvrundTallUttrykk(this, 2, Avrunding.Opp);

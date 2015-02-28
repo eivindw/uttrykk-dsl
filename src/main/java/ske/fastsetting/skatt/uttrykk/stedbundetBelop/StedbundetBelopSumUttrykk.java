@@ -10,23 +10,23 @@ import java.util.stream.Stream;
 /**
 * Created by jorn ola birkeland on 24.02.15.
 */
-public class StedbundetBelopSumUttrykk extends SumUttrykk<StedbundetBelop,StedbundetBelopUttrykk,StedbundetBelopSumUttrykk> implements StedbundetBelopUttrykk{
+public class StedbundetBelopSumUttrykk<K> extends SumUttrykk<StedbundetBelop<K>,StedbundetBelopUttrykk<K>,StedbundetBelopSumUttrykk<K>> implements StedbundetBelopUttrykk<K>{
 
-    protected StedbundetBelopSumUttrykk(Collection<StedbundetBelopUttrykk> uttrykk) {
+    protected StedbundetBelopSumUttrykk(Collection<StedbundetBelopUttrykk<K>> uttrykk) {
         super(uttrykk);
     }
 
     @Override
-    protected StedbundetBelop nullVerdi() {
-        return StedbundetBelop.NULL;
+    protected StedbundetBelop<K> nullVerdi() {
+        return StedbundetBelop.kr0();
     }
 
-    public static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopSumUttrykk sum(StedbundetBelopUttrykk... stedbundetBelopUttrykk) {
-        return new ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopSumUttrykk(Stream.of(stedbundetBelopUttrykk).collect(Collectors.toList()));
+    public static <K> StedbundetBelopSumUttrykk<K> sum(StedbundetBelopUttrykk<K>... stedbundetBelopUttrykk) {
+        return new StedbundetBelopSumUttrykk<K>(Stream.of(stedbundetBelopUttrykk).collect(Collectors.toList()));
     }
 
-    public static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopSumUttrykk sum(Collection<StedbundetBelopUttrykk> stedbundneBelopUttrykk) {
-        return new ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopSumUttrykk(stedbundneBelopUttrykk);
+    public static <K> StedbundetBelopSumUttrykk<K> sum(Collection<StedbundetBelopUttrykk<K>> stedbundneBelopUttrykk) {
+        return new StedbundetBelopSumUttrykk<>(stedbundneBelopUttrykk);
     }
 
 }

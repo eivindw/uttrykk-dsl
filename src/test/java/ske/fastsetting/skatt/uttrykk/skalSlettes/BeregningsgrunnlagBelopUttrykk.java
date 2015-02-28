@@ -1,4 +1,4 @@
-package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
+package ske.fastsetting.skatt.uttrykk.skalSlettes;
 
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;

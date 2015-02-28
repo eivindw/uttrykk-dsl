@@ -2,43 +2,45 @@ package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
 
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.StedbundetBelop;
-import ske.fastsetting.skatt.uttrykk.*;
+import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
+import ske.fastsetting.skatt.uttrykk.Uttrykk;
+import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
-import java.util.function.Predicate;
+import java.util.Arrays;
 
 /**
  * Created by jorn ola birkeland on 23.02.15.
  */
-public interface StedbundetBelopUttrykk extends Uttrykk<StedbundetBelop> {
-    default StedbundetBelopSumUttrykk pluss(StedbundetBelopUttrykk ledd) { return StedbundetBelopSumUttrykk.sum(this, ledd);}
+public interface StedbundetBelopUttrykk<K> extends Uttrykk<StedbundetBelop<K>> {
+    default StedbundetBelopSumUttrykk<K> pluss(StedbundetBelopUttrykk<K> ledd) { return StedbundetBelopSumUttrykk.sum(Arrays.asList(this, ledd));}
 
-    default SumProporsjonalFordelingUttrykk plussProporsjonalt(BelopUttrykk belop) { return new SumProporsjonalFordelingUttrykk(this, belop);}
-    default StedbundetBelopDivisjonsUttrykk dividertMed(TallUttrykk tall) {return new StedbundetBelopDivisjonsUttrykk(this,tall);}
-    default StedbundetBelopMultiplikasjonsUttrykk multiplisertMed(TallUttrykk tall) {return new StedbundetBelopMultiplikasjonsUttrykk(this,tall);}
-    default FiltrertStedbundetBelopUttrykk filtrer(Predicate<String> filter) { return new FiltrertStedbundetBelopUttrykk(this,filter);}
+    default SumProporsjonalFordelingUttrykk<K> plussProporsjonalt(BelopUttrykk belop) { return new SumProporsjonalFordelingUttrykk<>(this, belop);}
+    default StedbundetBelopDivisjonsUttrykk<K> dividertMed(TallUttrykk tall) {return new StedbundetBelopDivisjonsUttrykk<>(this,tall);}
+    default StedbundetBelopMultiplikasjonsUttrykk<K> multiplisertMed(TallUttrykk tall) {return new StedbundetBelopMultiplikasjonsUttrykk<>(this,tall);}
 
-    default BelopUttrykk minus(BelopUttrykk ledd) { return new TilSteduavhengigBelopUttrykk(this).minus(ledd);}
+    default BelopUttrykk minus(BelopUttrykk ledd) { return new TilSteduavhengigBelopUttrykk<>(this).minus(ledd);}
 
     default BelopUttrykk steduavhengig() {
-        return new TilSteduavhengigBelopUttrykk(this);
+        return new TilSteduavhengigBelopUttrykk<>(this);
     }
 
-    default DiffProporsjonalFordelingUttrykk minusProporsjonalt(BelopUttrykk ledd) { return new DiffProporsjonalFordelingUttrykk(this, ledd);}
+    default DiffProporsjonalFordelingUttrykk<K> minusProporsjonalt(BelopUttrykk ledd) { return new DiffProporsjonalFordelingUttrykk<>(this, ledd);}
 
+    default MinusStedUttrykk<K> minusSted(StedbundetBelopUttrykk<K> ledd) { return new MinusStedUttrykk<>(this,ledd);}
 
-    static class DiffProporsjonalFordelingUttrykk extends AbstractUttrykk<StedbundetBelop,DiffProporsjonalFordelingUttrykk> implements StedbundetBelopUttrykk {
-        private final StedbundetBelopUttrykk stedbundetBelopUttrykk;
+    static class DiffProporsjonalFordelingUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,DiffProporsjonalFordelingUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+        private final StedbundetBelopUttrykk<K> stedbundetBelopUttrykk;
         private final BelopUttrykk belop;
 
-        public DiffProporsjonalFordelingUttrykk(StedbundetBelopUttrykk stedbundetBelopUttrykk, BelopUttrykk belop) {
+        public DiffProporsjonalFordelingUttrykk(StedbundetBelopUttrykk<K> stedbundetBelopUttrykk, BelopUttrykk belop) {
             this.stedbundetBelopUttrykk = stedbundetBelopUttrykk;
             this.belop = belop;
         }
 
         @Override
-        public StedbundetBelop eval(UttrykkContext ctx) {
+        public StedbundetBelop<K> eval(UttrykkContext ctx) {
             return ctx.eval(stedbundetBelopUttrykk).fordelProporsjonalt(ctx.eval(belop.byttFortegn()));
         }
 
@@ -48,62 +50,100 @@ public interface StedbundetBelopUttrykk extends Uttrykk<StedbundetBelop> {
         }
     }
 
-    static class SumProporsjonalFordelingUttrykk extends AbstractUttrykk<StedbundetBelop,SumProporsjonalFordelingUttrykk> implements StedbundetBelopUttrykk {
-        private final StedbundetBelopUttrykk stedbundetBelopUttrykk;
-        private final BelopUttrykk belop;
+    static class SumProporsjonalFordelingUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,SumProporsjonalFordelingUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+        private final StedbundetBelopUttrykk<K> stedbundetBelopUttrykk;
+        private final BelopUttrykk belopUttrykk;
 
-        public SumProporsjonalFordelingUttrykk(StedbundetBelopUttrykk stedbundetBelopUttrykk, BelopUttrykk belop) {
+        public SumProporsjonalFordelingUttrykk(StedbundetBelopUttrykk<K> stedbundetBelopUttrykk, BelopUttrykk belopUttrykk) {
             this.stedbundetBelopUttrykk = stedbundetBelopUttrykk;
-            this.belop = belop;
+            this.belopUttrykk = belopUttrykk;
         }
 
         @Override
-        public StedbundetBelop eval(UttrykkContext ctx) {
-            return ctx.eval(stedbundetBelopUttrykk).fordelProporsjonalt(ctx.eval(belop));
+        public StedbundetBelop<K> eval(UttrykkContext ctx) {
+            return ctx.eval(stedbundetBelopUttrykk).fordelProporsjonalt(ctx.eval(belopUttrykk));
+
+//            final StedbundetBelop<K> stedbundetBelop = ctx.eval(stedbundetBelopUttrykk);
+//            final Belop belop = ctx.eval(belopUttrykk);
+//
+//            Belop absSum = stedbundetBelop.steder().stream()
+//                    .map(s -> stedbundetBelop.get(s).abs())
+//                    .reduce(Belop.NULL, Belop::pluss);
+//
+//            StedbundetBelop<K> resultat = StedbundetBelop.kr0();
+//
+//            if(absSum.erStorreEnn(Belop.NULL)) {
+//                resultat = stedbundetBelop.steder().stream()
+//                        .map(s -> StedbundetBelop.kr(stedbundetBelop.get(s).pluss(belop.multiplisertMed(stedbundetBelop.get(s).abs().dividertMed(absSum))), s))
+//                        .reduce(StedbundetBelop.kr0(), StedbundetBelop::pluss);
+//
+//            } else if(stedbundetBelop.steder().size()>0) {
+//                Belop andel = belop.dividertMed(stedbundetBelop.steder().size());
+//                resultat = stedbundetBelop.steder().stream()
+//                        .map(s -> StedbundetBelop.kr(stedbundetBelop.get(s).pluss(andel),s))
+//                        .reduce(StedbundetBelop.kr0(), StedbundetBelop::pluss);
+//            }
+//            return resultat;
+
         }
 
         @Override
         public String beskriv(UttrykkContext ctx) {
-            return ctx.beskriv(stedbundetBelopUttrykk)+ " + " +ctx.beskriv(belop);
+            return ctx.beskriv(stedbundetBelopUttrykk)+ " + " +ctx.beskriv(belopUttrykk);
         }
     }
 
 
-    static class TilSteduavhengigBelopUttrykk extends AbstractUttrykk<Belop,TilSteduavhengigBelopUttrykk> implements BelopUttrykk {
-        private StedbundetBelopUttrykk stedbundetBelopUttrykk;
+    static class TilSteduavhengigBelopUttrykk<K> extends AbstractUttrykk<Belop,TilSteduavhengigBelopUttrykk<K>> implements BelopUttrykk {
+        private StedbundetBelopUttrykk<K> stedbundetBelopUttrykk;
 
-        public TilSteduavhengigBelopUttrykk(StedbundetBelopUttrykk stedbundetBelopUttrykk) {
+        public TilSteduavhengigBelopUttrykk(StedbundetBelopUttrykk<K> stedbundetBelopUttrykk) {
             this.stedbundetBelopUttrykk = stedbundetBelopUttrykk;
         }
 
         @Override
         public Belop eval(UttrykkContext ctx) {
-            return ctx.eval(stedbundetBelopUttrykk).steduavhengig();
-        }
 
-        @Override
-        public String beskriv(UttrykkContext ctx) {
-            return  ctx.beskriv(stedbundetBelopUttrykk);
-        }
-    }
+            final StedbundetBelop<K> stedbundetBelop = ctx.eval(stedbundetBelopUttrykk);
 
-    static class FiltrertStedbundetBelopUttrykk extends AbstractUttrykk<StedbundetBelop,FiltrertStedbundetBelopUttrykk> implements StedbundetBelopUttrykk {
-        private final StedbundetBelopUttrykk stedbundetBelopUttrykk;
-        private final Predicate<String> filter;
-
-        public FiltrertStedbundetBelopUttrykk(StedbundetBelopUttrykk stedbundetBelopUttrykk, Predicate<String> filter) {
-            this.stedbundetBelopUttrykk = stedbundetBelopUttrykk;
-            this.filter = filter;
-        }
-
-        @Override
-        public StedbundetBelop eval(UttrykkContext ctx) {
-            return ctx.eval(stedbundetBelopUttrykk).filtrer(filter);
+            return stedbundetBelop.steder().stream()
+                    .map(stedbundetBelop::get)
+                    .reduce(Belop.NULL, Belop::pluss);
         }
 
         @Override
         public String beskriv(UttrykkContext ctx) {
             return ctx.beskriv(stedbundetBelopUttrykk);
+        }
+    }
+
+
+    static class MinusStedUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,MinusStedUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+
+        private final StedbundetBelopUttrykk<K> uttrykk;
+        private final StedbundetBelopUttrykk<K> ledd;
+
+        public MinusStedUttrykk(StedbundetBelopUttrykk<K> stedbundetBelopUttrykk, StedbundetBelopUttrykk<K> ledd) {
+
+            this.uttrykk = stedbundetBelopUttrykk;
+            this.ledd = ledd;
+        }
+
+        @Override
+        public StedbundetBelop<K> eval(UttrykkContext ctx) {
+
+            StedbundetBelop<K> ledd1 = ctx.eval(uttrykk);
+            StedbundetBelop<K> ledd2 = ctx.eval(ledd);
+
+            return ledd1.steder().stream()
+                    .filter(s -> !ledd2.harSted(s))
+                    .map(s -> StedbundetBelop.kr(ledd1.get(s), s))
+                    .reduce(StedbundetBelop.kr0(), StedbundetBelop::pluss);
+        }
+
+        @Override
+        public String beskriv(UttrykkContext ctx) {
+            return ctx.beskriv(uttrykk)+ " - sted("+ctx.beskriv(ledd)+")";
         }
     }
 }
