@@ -6,8 +6,8 @@ import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
-import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConfluenceResultatKonverterer;
-import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConfluenceUttrykkBeskriver;
+import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.confluence.ConfluenceResultatKonverterer;
+import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.confluence.ConfluenceUttrykkBeskriver;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel.ExcelUttrykkBeskriver;
 

@@ -9,7 +9,7 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk;
-import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConfluenceUttrykkBeskriver;
+import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.confluence.ConfluenceUttrykkBeskriver;
 
 import java.util.Map;
 
@@ -19,6 +19,7 @@ import static ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk.begrens;
 import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopSumUttrykk.sum;
 import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetKroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
+import static ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.Debug.debug;
 
 /**
  * Created by jorn ola birkeland on 23.02.15.
@@ -84,33 +85,38 @@ public class StedbundetBelopUttrykkTest {
 
         StedbundetBelopUttrykk<Kommune> fritid1 = kr(316_250, Kommune.Hvaler);
         StedbundetBelopUttrykk<Kommune> fritid2 = kr(660_000, Kommune.Hamar);
+        StedbundetBelopUttrykk<Kommune> fritid3 = kr(260_000, Kommune.Lorenskog);
+
 
         BelopUttrykk gjeld = KroneUttrykk.kr(1_700_000).navn("gjeld");
 
-        StedbundetBelopUttrykk<Kommune>  bruttoformueFritidsbolig = sum(fritid1, fritid2).navn("bruttoformue fritidsbolig");
+        StedbundetBelopUttrykk<Kommune>  bruttoformueFritidsbolig = sum(fritid1, fritid2, fritid3).navn("bruttoformue fritidsbolig");
         StedbundetBelopUttrykk<Kommune>  bruttoformueUtenFritidsbolig = sum(egenBolig,tomt,bankinnskudd,bil).navn("bruttoformue uten fritidsbolig");
+        StedbundetBelopUttrykk<Kommune>  bruttoformueHytte = bruttoformueFritidsbolig.minusSted(bruttoformueUtenFritidsbolig).navn("bruttoformue hytte");
+        StedbundetBelopUttrykk<Kommune>  oevrigStedbundenBruttoformue = bruttoformueUtenFritidsbolig.pluss(bruttoformueFritidsbolig.minusSted(bruttoformueHytte)).navn("øvrig stedbunden formue");
 
-        BelopUttrykk            maksGjeldsfradragFormueUtenFritidsbolig = begrens(gjeld).oppad(bruttoformueUtenFritidsbolig).navn("maks gjeldsfradrag formue uten fritidsbolig");
+        BelopUttrykk                      maksGjeldsfradragFormueUtenHytte = begrens(gjeld).oppad(oevrigStedbundenBruttoformue).navn("maks gjeldsfradrag formue uten hytte");
 
-        StedbundetBelopUttrykk<Kommune>  nettoformueUtenFritidsbolig = bruttoformueUtenFritidsbolig.minusProporsjonalt(maksGjeldsfradragFormueUtenFritidsbolig).navn("nettoformue uten fritidsbolig");
+        StedbundetBelopUttrykk<Kommune>  nettoformueUtenHytte = oevrigStedbundenBruttoformue.minusProporsjonalt(maksGjeldsfradragFormueUtenHytte).navn("nettoformue uten hytte");
 
-        BelopUttrykk            maksFribelopFormueUtenFritidsbolig = begrens(fribelop).oppad(nettoformueUtenFritidsbolig).navn("maks fribeløp formue uten fritidsbolig");
+        BelopUttrykk            maksFribelopFormueUtenHytte = begrens(fribelop).oppad(nettoformueUtenHytte).navn("maks fribeløp formue uten hytte");
 
-        StedbundetBelopUttrykk<Kommune>  grunnlagKommuneskattUtenFritidsbolig = nettoformueUtenFritidsbolig.minusProporsjonalt(maksFribelopFormueUtenFritidsbolig).navn("grunnlag kommuneskatt hjemsted");
+        StedbundetBelopUttrykk<Kommune>  grunnlagKommuneskattUtenHytte = nettoformueUtenHytte.minusProporsjonalt(maksFribelopFormueUtenHytte).navn("grunnlag kommuneskatt skattekommune");
 
-        BelopUttrykk            restGjeldTilFordelingFritidsbolig = begrens(gjeld.minus(maksGjeldsfradragFormueUtenFritidsbolig)).oppad(bruttoformueFritidsbolig).navn("gjeldsfradrag til fordeling utenbygds");
+        BelopUttrykk            restGjeldTilFordelingHytte = begrens(gjeld.minus(maksGjeldsfradragFormueUtenHytte)).oppad(bruttoformueHytte).navn("gjeldsfradrag til fordeling utenbygds");
 
-        StedbundetBelopUttrykk<Kommune>  nettoFormueFritidsbolig = bruttoformueFritidsbolig.minusProporsjonalt(restGjeldTilFordelingFritidsbolig).navn("nettoformue utenbygds fritidsbolig");
+        StedbundetBelopUttrykk<Kommune>  nettoFormueHytte = bruttoformueHytte.minusProporsjonalt(restGjeldTilFordelingHytte).navn("nettoformue utenbygds fritidsbolig");
 
-        BelopUttrykk            begrensetRestFribelop = begrens(fribelop.minus(maksFribelopFormueUtenFritidsbolig)).oppad(nettoFormueFritidsbolig).navn("fribeløp til fordeling utenbygds");
+        BelopUttrykk            begrensetRestFribelop = begrens(fribelop.minus(maksFribelopFormueUtenHytte)).oppad(nettoFormueHytte).navn("fribeløp til fordeling utenbygds");
 
-        StedbundetBelopUttrykk<Kommune>  grunnlagKommuneskattFritidsbolig = nettoFormueFritidsbolig.minusProporsjonalt(begrensetRestFribelop).navn("grunnlag kommuneskatt utenbygds fritidsbolig");
+        StedbundetBelopUttrykk<Kommune>  grunnlagKommuneskattHytte = nettoFormueHytte.minusProporsjonalt(begrensetRestFribelop).navn("grunnlag kommuneskatt utenbygds fritidsbolig");
 
-        StedbundetBelopUttrykk<Kommune>  grunnlagKommuneskatt = grunnlagKommuneskattFritidsbolig.pluss(grunnlagKommuneskattUtenFritidsbolig).navn("grunnlag kommuneskatt");
+        StedbundetBelopUttrykk<Kommune>  grunnlagKommuneskatt = grunnlagKommuneskattHytte.pluss(grunnlagKommuneskattUtenHytte).navn("grunnlag kommuneskatt");
 
         StedbundetBelopUttrykk<Kommune>  kommuneskatt = grunnlagKommuneskatt.multiplisertMed(satsKommuneskatt).navn("kommuneskatt");
 
-        skrivtUtVerdi(kommuneskatt);
+        //skrivtUtVerdi(kommuneskatt);
+        debug(kommuneskatt);
 
         //skrivUtWiki(kommuneskatt);
     }

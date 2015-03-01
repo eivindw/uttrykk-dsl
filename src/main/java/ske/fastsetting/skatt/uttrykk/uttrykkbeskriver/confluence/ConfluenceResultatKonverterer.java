@@ -1,4 +1,4 @@
-package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
+package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.confluence;
 
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 

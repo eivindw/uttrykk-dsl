@@ -1,8 +1,9 @@
-package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
+package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.confluence;
 
 import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 import ske.fastsetting.skatt.uttrykk.util.IdUtil;
+import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.UttrykkBeskriver;
 
 import java.util.*;
 
