@@ -21,6 +21,7 @@ public class StedbundetBelopSumUttrykk<K> extends SumUttrykk<StedbundetBelop<K>,
         return StedbundetBelop.kr0();
     }
 
+    @SafeVarargs
     public static <K> StedbundetBelopSumUttrykk<K> sum(StedbundetBelopUttrykk<K>... stedbundetBelopUttrykk) {
         return new StedbundetBelopSumUttrykk<K>(Stream.of(stedbundetBelopUttrykk).collect(Collectors.toList()));
     }
