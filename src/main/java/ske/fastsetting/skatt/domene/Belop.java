@@ -2,35 +2,32 @@ package ske.fastsetting.skatt.domene;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
     public static final Belop NULL = Belop.kr(0);
-    private static final MathContext MATHCONTEXT = new MathContext(256, RoundingMode.HALF_EVEN);
 
-    private final BigDecimal belop;
+    private final double belop;
 
     public static Belop kr(int belop) {
-        return fra(BigDecimal.valueOf(belop));
+        return fra(belop);
     }
 
     public static Belop kr(double belop) {
-        return fra(BigDecimal.valueOf(belop));
+        return fra(belop);
     }
 
-    public static Belop fra(BigDecimal belop) {
+    public static Belop fra(double belop) {
         return new Belop(belop);
     }
 
     public static Belop kr(BigInteger bigInteger) {
-        return fra(new BigDecimal(bigInteger));
+        return fra(bigInteger.doubleValue());
     }
 
-    protected Belop(BigDecimal belop) {
+    protected Belop(double belop) {
         this.belop = belop;
     }
 
@@ -41,9 +38,9 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     public Belop rundAvTilNaermeste(int naermesteKrone) {
         BigDecimal kr = BigDecimal.valueOf(naermesteKrone);
         return fra(
-            belop.add(BigDecimal.valueOf(naermesteKrone / 2))
+            BigDecimal.valueOf(belop).add(BigDecimal.valueOf(naermesteKrone / 2))
                 .divideToIntegralValue(kr)
-                .multiply(kr)
+                .multiply(kr).doubleValue()
         );
     }
 
@@ -53,15 +50,15 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
         formatSymbols.setGroupingSeparator(' ');
         decimalFormat.setDecimalFormatSymbols(formatSymbols);
 
-        return "kr " + decimalFormat.format(belop.stripTrailingZeros());
+        return "kr " + decimalFormat.format(belop);
     }
 
     public Belop pluss(Belop ledd) {
-        return ledd != null ? fra(this.belop.add(ledd.belop)) : this;
+        return ledd != null ? fra(this.belop + ledd.belop) : this;
     }
 
     public Belop minus(Belop ledd) {
-        return fra(this.belop.subtract(ledd.belop));
+        return fra(this.belop - ledd.belop);
     }
 
     public int sammenliknMed(Belop verdi) {
@@ -69,30 +66,30 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     }
 
     public Belop multiplisertMed(BigDecimal ledd) {
-        return fra(belop.multiply(ledd));
+        return fra(belop * ledd.doubleValue());
     }
 
     public BigDecimal dividertMed(Belop divident) {
-        return belop.divide(divident.belop, MATHCONTEXT).stripTrailingZeros();
+        return BigDecimal.valueOf(belop / divident.belop);
     }
 
     public Belop dividertMed(int ledd) { return dividertMed(BigDecimal.valueOf(ledd)); }
 
     public Belop dividertMed(BigDecimal ledd) {
-        return fra(belop.divide(ledd, MATHCONTEXT));
+        return fra(belop / ledd.doubleValue());
     }
 
     public Integer toInteger() {
-        return this.belop.stripTrailingZeros().setScale(0, RoundingMode.HALF_UP).intValue();
+        return (int) Math.round(this.belop);
     }
 
     public BigInteger toBigInteger() {
-        return this.belop.stripTrailingZeros().setScale(0, RoundingMode.HALF_UP).toBigInteger();
+        return BigInteger.valueOf(Math.round(this.belop));
     }
 
     @Override
     public int compareTo(Belop verdi) {
-        return belop.compareTo(verdi.belop);
+        return Double.compare(belop, verdi.belop);
     }
 
     public boolean erMindreEnn(Belop v) {
@@ -105,19 +102,19 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof Belop && belop.stripTrailingZeros().equals(((Belop) o).belop.stripTrailingZeros());
+        return o instanceof Belop && belop == ((Belop) o).belop;
     }
 
     @Override
     public int hashCode() {
-        return belop.hashCode();
+        return (int) belop;
     }
 
     public Belop byttFortegn() {
-        return new Belop(belop.negate());
+        return new Belop(- belop);
     }
 
     public Belop abs() {
-        return new Belop(belop.abs());
+        return new Belop(Math.abs(belop));
     }
 }
