@@ -126,4 +126,12 @@ public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> 
     public boolean harSted(T sted) {
         return stedBelopMap.containsKey(sted);
     }
+
+    public StedbundetBelop<T> rundAvTilHeleKroner() {
+        Map<T,Belop> resultat = stedBelopMap.entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().rundAvTilHeleKroner()));
+
+        return new StedbundetBelop<>(resultat);
+    }
 }

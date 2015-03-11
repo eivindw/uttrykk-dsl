@@ -16,6 +16,8 @@ public interface StedbundetBelopUttrykk<K> extends Uttrykk<StedbundetBelop<K>> {
     default StedbundetBelopDivisjonsUttrykk<K> dividertMed(TallUttrykk tall) {return new StedbundetBelopDivisjonsUttrykk<>(this,tall);}
     default StedbundetBelopMultiplikasjonsUttrykk<K> multiplisertMed(TallUttrykk tall) {return new StedbundetBelopMultiplikasjonsUttrykk<>(this,tall);}
 
+    default StedbundetBelopDiffUttrykk<K> minus(StedbundetBelopUttrykk<K> ledd) { return new StedbundetBelopDiffUttrykk<K>(this,ledd);}
+
     default BelopUttrykk minus(BelopUttrykk ledd) { return new TilSteduavhengigBelopUttrykk<>(this).minus(ledd);}
     default BelopUttrykk pluss(BelopUttrykk ledd) { return new TilSteduavhengigBelopUttrykk<>(this).pluss(ledd);}
 
