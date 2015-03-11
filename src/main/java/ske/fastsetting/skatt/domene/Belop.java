@@ -1,10 +1,7 @@
 package ske.fastsetting.skatt.domene;
 
-import org.javamoney.moneta.Money;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
@@ -12,37 +9,47 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
     public static final Belop NULL = Belop.kr(0);
 
-    private final Money belop;
+    private static final int ORE_I_KR = 100;
+
+    private final long belop;
 
     public static Belop kr(int belop) {
-        return fra(Money.of(belop, "NOK"));
+        return fraKr(belop);
     }
 
     public static Belop kr(double belop) {
-        return fra(Money.of(belop, "NOK"));
-    }
-
-    public static Belop fra(Money belop) {
-        return new Belop(belop);
+        return fraKr(belop);
     }
 
     public static Belop kr(BigInteger bigInteger) {
-        return fra(Money.of(bigInteger, "NOK"));
+        return fraKr(bigInteger.doubleValue());
     }
 
-    protected Belop(Money belop) {
+    private static Belop fraOre(long belop) {
+        return new Belop(belop);
+    }
+
+    private static Belop fraKr(double belop) {
+        return new Belop(Math.round(belop * ORE_I_KR));
+    }
+
+    private Belop(long belop) {
         this.belop = belop;
     }
 
     public Belop rundAvTilHeleKroner() {
-        return Belop.kr(toInteger());
+        return Belop.fraKr(toInteger());
     }
 
     public Belop rundAvTilNaermeste(int naermesteKrone) {
-        return fra(
-            belop.add(Money.of(naermesteKrone / 2, "NOK"))
-                .divideToIntegralValue(naermesteKrone)
-                .multiply(naermesteKrone)
+        BigDecimal kr = BigDecimal.valueOf(naermesteKrone);
+        return fraKr(
+            BigDecimal
+                .valueOf(toInteger())
+                .add(BigDecimal.valueOf(naermesteKrone / 2))
+                .divideToIntegralValue(kr)
+                .multiply(kr)
+                .doubleValue()
         );
     }
 
@@ -52,15 +59,15 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
         formatSymbols.setGroupingSeparator(' ');
         decimalFormat.setDecimalFormatSymbols(formatSymbols);
 
-        return "kr " + decimalFormat.format(belop.getNumberStripped());
+        return "kr " + decimalFormat.format(toInteger());
     }
 
     public Belop pluss(Belop ledd) {
-        return ledd != null ? fra(this.belop.add(ledd.belop)) : this;
+        return ledd != null ? fraOre(this.belop + ledd.belop) : this;
     }
 
     public Belop minus(Belop ledd) {
-        return fra(this.belop.subtract(ledd.belop));
+        return fraOre(this.belop - ledd.belop);
     }
 
     public int sammenliknMed(Belop verdi) {
@@ -68,30 +75,32 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
     }
 
     public Belop multiplisertMed(BigDecimal ledd) {
-        return fra(belop.multiply(ledd));
-    }
-
-    public Belop dividertMed(BigDecimal ledd) {
-        return fra(belop.divide(ledd));
-    }
-
-    public Belop dividertMed(int ledd) { return fra(belop.divide(ledd)); }
-
-    public Integer toInteger() {
-        return this.belop.getNumberStripped().setScale(0, RoundingMode.HALF_UP).intValue();
-    }
-
-    public BigInteger toBigInteger() {
-        return this.belop.getNumberStripped().setScale(0, RoundingMode.HALF_UP).toBigInteger();
+        return fraOre(Math.round(belop * ledd.doubleValue()));
     }
 
     public BigDecimal dividertMed(Belop divident) {
-        return belop.divide(divident.belop.getNumber()).getNumberStripped();
+        return BigDecimal.valueOf((double) belop / divident.belop);
+    }
+
+    public Belop dividertMed(int ledd) {
+        return dividertMed(BigDecimal.valueOf(ledd));
+    }
+
+    public Belop dividertMed(BigDecimal ledd) {
+        return fraOre(Math.round(belop / ledd.doubleValue()));
+    }
+
+    public Integer toInteger() {
+        return (int) Math.round((double) this.belop / ORE_I_KR);
+    }
+
+    public BigInteger toBigInteger() {
+        return BigInteger.valueOf(toInteger());
     }
 
     @Override
     public int compareTo(Belop verdi) {
-        return belop.compareTo(verdi.belop);
+        return Long.compare(belop, verdi.belop);
     }
 
     public boolean erMindreEnn(Belop v) {
@@ -104,24 +113,19 @@ public class Belop implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Belop belop1 = (Belop) o;
-
-        return belop.equals(belop1.belop);
+        return o instanceof Belop && belop == ((Belop) o).belop;
     }
 
     @Override
     public int hashCode() {
-        return belop.hashCode();
+        return (int) belop;
     }
 
     public Belop byttFortegn() {
-        return new Belop(belop.negate());
+        return new Belop(-belop);
     }
 
     public Belop abs() {
-        return new Belop(belop.abs());
+        return new Belop(Math.abs(belop));
     }
 }

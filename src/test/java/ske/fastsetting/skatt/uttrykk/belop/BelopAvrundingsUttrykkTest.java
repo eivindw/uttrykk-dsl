@@ -12,7 +12,7 @@ public class BelopAvrundingsUttrykkTest {
     @Test
     public void skalRundeAvOereTilNaermesteHeleKrone() {
         assertEquals(Belop.kr(51), beregne(rundAvTilHeleKroner(kr(50.5))).verdi());
-        assertEquals(Belop.kr(50), beregne(rundAvTilHeleKroner(kr(50.4999999))).verdi());
+        assertEquals(Belop.kr(50), beregne(rundAvTilHeleKroner(kr(50.49))).verdi());
     }
 
     @Test

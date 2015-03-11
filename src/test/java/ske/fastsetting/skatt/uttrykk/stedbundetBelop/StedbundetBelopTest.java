@@ -9,9 +9,6 @@ import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.domene.StedbundetBelop.kr;
 
-/**
- * Created by jorn ola birkeland on 24.02.15.
- */
 public class StedbundetBelopTest {
 
     @Test
@@ -40,7 +37,6 @@ public class StedbundetBelopTest {
         assertEquals(Belop.kr(2), b.get("A"));
         assertEquals(Belop.kr(3), b.get("B"));
     }
-
 
     @Test
     public void skalFordelePositivtProporsjonaltPaaNull() {
@@ -91,7 +87,7 @@ public class StedbundetBelopTest {
 
     @Test
     public void skalFordeleProporsjonaltPaaSmaaVerdier() {
-        StedbundetBelop<String> a = kr(0.000001d, "A").pluss(kr(0.000002d, "B"));
+        StedbundetBelop<String> a = kr(0.01, "A").pluss(kr(0.02, "B"));
         StedbundetBelop<String> b = a.fordelProporsjonalt(Belop.kr(6));
 
         assertEquals(Belop.kr(2), b.get("A").rundAvTilHeleKroner());
@@ -103,6 +99,4 @@ public class StedbundetBelopTest {
         TallUttrykk pensjonsgrad = BeregningsgrunnlagTallUttrykk.beregningsgrunnlag(bg -> bg.getAlderspensjon().pensjonsgrad());
 
     }
-
-
 }
