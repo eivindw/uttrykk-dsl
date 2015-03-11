@@ -134,4 +134,8 @@ public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> 
 
         return new StedbundetBelop<>(resultat);
     }
+
+    public StedbundetBelop<T> nyMedSammeFordeling(Belop belop) {
+        return fordelProporsjonalt(belop).minus(this);
+    }
 }
