@@ -4,9 +4,6 @@ import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-/**
- * Created by x00mbf on 22.01.15.
- */
 public class BelopAvrundingsUttrykk extends AbstractUttrykk<Belop,BelopAvrundingsUttrykk> implements BelopUttrykk {
 
     private BelopUttrykk belopUttrykk;
@@ -19,7 +16,6 @@ public class BelopAvrundingsUttrykk extends AbstractUttrykk<Belop,BelopAvrunding
     public static BelopAvrundingsUttrykk rundAvTilHeleKroner(BelopUttrykk belopUttrykk) {
         return new BelopAvrundingsUttrykk(belopUttrykk);
     }
-
 
     @Override
     public Belop eval(UttrykkContext uttrykkContext) {
