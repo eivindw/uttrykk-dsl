@@ -8,9 +8,6 @@ import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
 import java.util.Arrays;
 
-/**
- * Created by jorn ola birkeland on 23.02.15.
- */
 public interface StedbundetBelopUttrykk<K> extends Uttrykk<StedbundetBelop<K>> {
     default StedbundetBelopSumUttrykk<K> pluss(StedbundetBelopUttrykk<K> ledd) { return StedbundetBelopSumUttrykk.sum(Arrays.asList(this, ledd));}
 

@@ -5,9 +5,6 @@ import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
 import java.util.function.Function;
 
-/**
- * Created by jorn ola birkeland on 26.02.15.
- */
 public class BeregningsgrunnlagBelopUttrykk extends Beregningsgrunnlag.BeregningsgrunnlagUttrykk<Belop,BelopUttrykk,BeregningsgrunnlagBelopUttrykk> implements BelopUttrykk {
 
     public static BelopUttrykk beregningsgrunnlag(Function<Beregningsgrunnlag, BelopUttrykk> function) {

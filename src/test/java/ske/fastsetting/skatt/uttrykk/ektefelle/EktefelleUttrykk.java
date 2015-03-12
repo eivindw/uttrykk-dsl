@@ -6,11 +6,7 @@ import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
-/**
- * Created by jorn ola birkeland on 15.01.15.
- */
 public class EktefelleUttrykk extends AbstractUttrykk<Belop,EktefelleUttrykk> implements BelopUttrykk {
-
 
     private Uttrykk<Belop> ektefelleUttrykk;
 

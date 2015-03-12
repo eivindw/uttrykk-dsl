@@ -2,9 +2,6 @@ package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel;
 
 import org.apache.poi.ss.usermodel.Cell;
 
-/**
- * Created by jorn ola birkeland on 11.01.15.
- */
 class ExcelVerdi implements ExcelUttrykk {
 
     private static final String TABELLNUMMER_REGEX = "Tabellnummer: (.*)";

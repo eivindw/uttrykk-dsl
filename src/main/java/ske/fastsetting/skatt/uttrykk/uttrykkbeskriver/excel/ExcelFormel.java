@@ -7,9 +7,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Created by jorn ola birkeland on 11.01.15.
- */
 public class ExcelFormel implements ExcelUttrykk {
 
     private final String formel;

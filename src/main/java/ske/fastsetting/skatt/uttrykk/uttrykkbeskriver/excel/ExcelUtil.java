@@ -4,9 +4,6 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellReference;
 
-/**
-* Created by jorn ola birkeland on 11.01.15.
-*/
 public class ExcelUtil {
 
     public static void formaterCelleverdi(Cell celle, String format) {

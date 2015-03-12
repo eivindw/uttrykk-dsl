@@ -2,9 +2,6 @@ package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel;
 
 import org.apache.poi.ss.usermodel.*;
 
-/**
-* Created by jorn ola birkeland on 11.01.15.
-*/
 public class ExcelArk {
 
     private final Sheet ark;

@@ -13,9 +13,6 @@ import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel.ExcelUttrykkBeskrive
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-/**
- * Created by jorn ola birkeland on 10.01.15.
- */
 public class ExcelUttrykkBeskriverTest {
 
     @Test

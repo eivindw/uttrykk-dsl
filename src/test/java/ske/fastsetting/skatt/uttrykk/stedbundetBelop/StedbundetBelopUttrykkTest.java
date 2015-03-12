@@ -21,11 +21,7 @@ import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetKroneUttry
 import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
 import static ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.Debug.debug;
 
-/**
- * Created by jorn ola birkeland on 23.02.15.
- */
 public class StedbundetBelopUttrykkTest {
-
 
     @Test
     public void skalFordeleProporsjonaltVedMinus() {

@@ -8,9 +8,6 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
 
-/**
- * Created by x00jen on 09.02.15.
- */
 public class TallAvrundingUttrykkTest {
 
     @Test

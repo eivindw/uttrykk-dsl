@@ -18,9 +18,6 @@ import java.util.function.Function;
 
 import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
 
-/**
- * Created by jorn ola birkeland on 28.02.15.
- */
 public class RecTest {
     @Test
     public void recTest() {

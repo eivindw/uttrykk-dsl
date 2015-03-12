@@ -4,9 +4,6 @@ import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 
-/**
- * Created by jorn ola birkeland on 16.01.15.
- */
 public class EktefelleUttrykkContext<V> extends UttrykkContextImpl<V> {
     private EktefelleUttrykkContext(Object... input) {
         super(input);

@@ -5,9 +5,6 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
-/**
-* Created by jorn ola birkeland on 01.03.15.
-*/
 public class BelopDividertMedBelopUttrykk extends AbstractUttrykk<Tall, BelopDividertMedBelopUttrykk> implements TallUttrykk {
     private final BelopUttrykk divident;
     private final BelopUttrykk divisor;

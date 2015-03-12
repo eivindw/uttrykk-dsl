@@ -5,9 +5,6 @@ import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-/**
- * Created by x00jen on 09.02.15.
- */
 public class AvrundTallUttrykk extends AbstractUttrykk<Tall,AvrundTallUttrykk> implements TallUttrykk {
 
     private TallUttrykk uttrykk;

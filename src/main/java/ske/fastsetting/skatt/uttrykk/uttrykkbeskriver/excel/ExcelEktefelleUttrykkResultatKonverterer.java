@@ -8,9 +8,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Created by jorn ola birkeland on 22.01.15.
- */
 public class ExcelEktefelleUttrykkResultatKonverterer<V>  {
 
     public final static String KEY_EXCEL_ID = "excel_id";

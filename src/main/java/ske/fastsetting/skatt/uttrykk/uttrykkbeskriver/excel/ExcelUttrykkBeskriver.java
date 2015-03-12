@@ -1,10 +1,5 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel;
 
-/**
- * Created by jorn ola birkeland on 10.01.15.
- */
-
-
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ske.fastsetting.skatt.domene.Regel;

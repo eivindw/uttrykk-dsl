@@ -4,9 +4,6 @@ import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-/**
-* Created by jorn ola birkeland on 01.03.15.
-*/
 public class MinusStedUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,MinusStedUttrykk<K>> implements StedbundetBelopUttrykk<K> {
 
     private final StedbundetBelopUttrykk<K> uttrykk;

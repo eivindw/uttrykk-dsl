@@ -3,9 +3,6 @@ package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by jorn ola birkeland on 14.01.15.
- */
 public class ExcelFormateringshint {
     public static final String BELOP_FORMATERING = "kr ###,###,###,##0";
     public static final String PROSENT_FORMATERING = "0.00%";

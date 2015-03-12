@@ -7,9 +7,6 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
-* Created by jorn ola birkeland on 24.02.15.
-*/
 public class StedbundetBelopSumUttrykk<K> extends SumUttrykk<StedbundetBelop<K>,StedbundetBelopUttrykk<K>,StedbundetBelopSumUttrykk<K>> implements StedbundetBelopUttrykk<K>{
 
     protected StedbundetBelopSumUttrykk(Collection<StedbundetBelopUttrykk<K>> uttrykk) {

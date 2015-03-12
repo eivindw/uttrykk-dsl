@@ -9,9 +9,6 @@ import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
 import java.util.function.Function;
 
-/**
- * Created by jorn ola birkeland on 26.02.15.
- */
 public interface Beregningsgrunnlag {
     BruttoformueUttrykk getBruttoformue();
 

@@ -6,9 +6,6 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
-/**
-* Created by jorn ola birkeland on 01.03.15.
-*/
 public class TilSteduavhengigBelopUttrykk<K> extends AbstractUttrykk<Belop,TilSteduavhengigBelopUttrykk<K>> implements BelopUttrykk {
     private StedbundetBelopUttrykk<K> stedbundetBelopUttrykk;
 

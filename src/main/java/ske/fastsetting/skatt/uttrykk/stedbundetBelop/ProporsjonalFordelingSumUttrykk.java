@@ -5,9 +5,6 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
-/**
-* Created by jorn ola birkeland on 01.03.15.
-*/
 public class ProporsjonalFordelingSumUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,ProporsjonalFordelingSumUttrykk<K>> implements StedbundetBelopUttrykk<K> {
     private final StedbundetBelopUttrykk<K> stedbundetBelopUttrykk;
     private final BelopUttrykk belopUttrykk;
