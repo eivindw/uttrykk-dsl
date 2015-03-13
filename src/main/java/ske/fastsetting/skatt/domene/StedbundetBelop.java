@@ -4,9 +4,29 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> {
+
+    public static class BelopSted<T> {
+        private final T sted;
+        private final Belop belop;
+
+        public BelopSted(T sted, Belop belop) {
+            this.sted = sted;
+            this.belop = belop;
+        }
+
+        public T getSted() {
+            return sted;
+        }
+
+        public Belop getBelop() {
+            return belop;
+        }
+    }
+
     private final Map<T, Belop> stedBelopMap;
 
     public static <T> StedbundetBelop<T> kr0() {
@@ -102,6 +122,10 @@ public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> 
 
     public List<T> steder() {
         return stedBelopMap.keySet().stream().collect(Collectors.toList());
+    }
+
+    public Set<BelopSted<T>> splitt() {
+        return stedBelopMap.entrySet().stream().map(e -> new BelopSted<>(e.getKey(), e.getValue())).collect(Collectors.toSet());
     }
 
     public Belop get(T sted) {

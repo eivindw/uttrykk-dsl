@@ -17,6 +17,7 @@ public class StebundetGrenseUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K
         this.uttrykk = uttrykk;
     }
 
+    @Deprecated
     public static <K >StebundetGrenseUttrykk<K> nedre0(StedbundetBelopUttrykk<K> uttrykk) {
         return begrens(uttrykk).nedadProporsjonalt(KroneUttrykk.KR_0);
     }
@@ -71,13 +72,14 @@ public class StebundetGrenseUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K
             stringBuilder.append(" Advarsel: Uttrykket mangler øvre og/eller nedre grense ");
         }
         if (null != minimum) {
-            stringBuilder.append(" begrenset nedadProporsjonalt til ");
+            stringBuilder.append(" begrenset nedad proporsjonalt til ");
             stringBuilder.append(ctx.beskriv(minimum));
         }
         if (null != maksimum) {
-            stringBuilder.append(" begrenset oppadProporsjonalt til ");
+            stringBuilder.append(" begrenset oppad proporsjonalt til ");
             stringBuilder.append(ctx.beskriv(maksimum));
         }
         return stringBuilder.toString();
     }
+
 }
