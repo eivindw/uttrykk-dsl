@@ -36,6 +36,25 @@ public class StedbundetBelopUttrykkTest {
     }
 
     @Test
+    public void skalPlusseOgMinuse() {
+        StedbundetBelopUttrykk<String> almFF = kr(320_000, "L")
+                .pluss(kr(210_000, "E"))
+                .pluss(kr(420_000, "R"))
+                .pluss(kr(6_000, "L"))
+                .minus(kr(3_850, "L"))
+                .minus(kr(89_050, "L"))
+                .minus(kr(55_467, "E"))
+                .minus(kr(110_933, "R"));
+
+        StedbundetBelop<String> belop = UttrykkContextImpl.beregne(almFF).verdi();
+
+        assertEquals(Belop.kr(309_067), belop.get("R").rundAvTilHeleKroner());
+        assertEquals(Belop.kr(154_533), belop.get("E").rundAvTilHeleKroner());
+        assertEquals(Belop.kr(233_100), belop.get("L").rundAvTilHeleKroner());
+    }
+
+
+    @Test
     public void skalTrekkeFraSteder() {
         StedbundetBelopUttrykk<String> a = kr(30, "A").pluss(kr(60, "B"));
         StedbundetBelopUttrykk<String> b = kr(45, "B");
