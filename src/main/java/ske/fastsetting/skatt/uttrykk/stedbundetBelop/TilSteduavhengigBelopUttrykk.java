@@ -9,6 +9,10 @@ import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 public class TilSteduavhengigBelopUttrykk<K> extends AbstractUttrykk<Belop,TilSteduavhengigBelopUttrykk<K>> implements BelopUttrykk {
     private StedbundetBelopUttrykk<K> stedbundetBelopUttrykk;
 
+    public static <T> TilSteduavhengigBelopUttrykk<T> steduavhengig(StedbundetBelopUttrykk<T> stedbundetBelopUttrykk)  {
+        return new TilSteduavhengigBelopUttrykk<>(stedbundetBelopUttrykk);
+    }
+
     public TilSteduavhengigBelopUttrykk(StedbundetBelopUttrykk<K> stedbundetBelopUttrykk) {
         this.stedbundetBelopUttrykk = stedbundetBelopUttrykk;
     }
