@@ -46,9 +46,9 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
 
     protected UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
 
-        if (this.start == null) {
+//        if (this.start == null) {
             this.start = uttrykk.id(this);
-        }
+//        }
 
 
         if (eval) {
