@@ -7,28 +7,24 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
-public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext {
+public class UttrykkContextImpl implements UttrykkContext {
 
-    private String start;
     private final Map<String, Map> uttrykksmap = new HashMap<>();
     private final Map<Class, Object> input = new HashMap<>();
 
     public static <X> UttrykkResultat<X> beregne(Uttrykk<X> uttrykk, Object... input) {
-        UttrykkContextImpl uttrykkContext = new UttrykkContextImpl<>(input);
-        uttrykkContext.kalkuler(uttrykk, true, false);
-        return uttrykkContext;
+        UttrykkContextImpl uttrykkContext = new UttrykkContextImpl(input);
+        return uttrykkContext.kalkuler(uttrykk, true, false);
     }
 
     public static <X> UttrykkResultat<X> beskrive(Uttrykk<X> uttrykk, Object... input) {
-        UttrykkContextImpl uttrykkContext = new UttrykkContextImpl<>(input);
-        uttrykkContext.kalkuler(uttrykk, false, true);
-        return uttrykkContext;
+        UttrykkContextImpl uttrykkContext = new UttrykkContextImpl(input);
+        return uttrykkContext.kalkuler(uttrykk, false, true);
     }
 
     public static <X> UttrykkResultat<X> beregneOgBeskrive(Uttrykk<X> uttrykk, Object... input) {
-        UttrykkContextImpl uttrykkContext = new UttrykkContextImpl<>(input);
-        uttrykkContext.kalkuler(uttrykk, true, true);
-        return uttrykkContext;
+        UttrykkContextImpl uttrykkContext = new UttrykkContextImpl(input);
+        return uttrykkContext.kalkuler(uttrykk, true, true);
     }
 
     protected UttrykkContextImpl(Object[] input) {
@@ -44,12 +40,7 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
         });
     }
 
-    protected UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
-
-//        if (this.start == null) {
-            this.start = uttrykk.id();
-//        }
-
+    protected <V> UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
 
         if (eval) {
             eval(uttrykk);
@@ -59,34 +50,15 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
             beskriv(uttrykk);
         }
 
-        return this;
+        return new UttrykkResultatImpl<>(uttrykk.id(),uttrykksmap);
     }
 
-    @Override
-    public Map<String, Map> uttrykk() {
-        return uttrykksmap;
-    }
-
-    @Override
-    public Map uttrykk(String id) {
-        return uttrykksmap.get(id);
-    }
-
-    @Override
-    public V verdi() {
-        return (V) uttrykk(start).get(KEY_VERDI);
-    }
-
-    @Override
-    public String start() {
-        return start;
-    }
 
     @Override
     public String beskriv(Uttrykk<?> uttrykk) {
 
 
-        initUttrykk(uttrykk).computeIfAbsent(KEY_UTTRYKK, k -> uttrykk.beskriv(this));
+        initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_UTTRYKK, k -> uttrykk.beskriv(this));
 
         return IdUtil.idLink(uttrykk.id());
     }
@@ -94,7 +66,7 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
     @Override
     public <X> X eval(Uttrykk<X> uttrykk) {
 
-        return (X) initUttrykk(uttrykk).computeIfAbsent(KEY_VERDI, k -> uttrykk.eval(this));
+        return (X) initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI, k -> uttrykk.eval(this));
     }
 
 
@@ -124,11 +96,40 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
     private Map map(Uttrykk uttrykk) {
         Map<String, Object> map = new HashMap<>();
 
-        map.computeIfAbsent(KEY_NAVN, k -> uttrykk.navn());
-        map.computeIfAbsent(KEY_REGLER, k -> uttrykk.regler());
-        map.computeIfAbsent(KEY_TAGS, k -> uttrykk.tags());
+        map.computeIfAbsent(UttrykkResultat.KEY_NAVN, k -> uttrykk.navn());
+        map.computeIfAbsent(UttrykkResultat.KEY_REGLER, k -> uttrykk.regler());
+        map.computeIfAbsent(UttrykkResultat.KEY_TAGS, k -> uttrykk.tags());
 
         return map;
     }
 
+    private class UttrykkResultatImpl<V> implements UttrykkResultat<V> {
+        private final String start;
+        private final Map<String, Map> uttrykksmap;
+
+        public UttrykkResultatImpl(String startId, Map<String, Map> uttrykksmap) {
+            this.start = startId;
+            this.uttrykksmap = uttrykksmap;
+        }
+
+        @Override
+        public Map<String, Map> uttrykk() {
+            return uttrykksmap;
+        }
+
+        @Override
+        public Map uttrykk(String id) {
+            return uttrykksmap.get(id);
+        }
+
+        @Override
+        public V verdi() {
+            return (V) uttrykk(start).get(KEY_VERDI);
+        }
+
+        @Override
+        public String start() {
+            return start;
+        }
+    }
 }

@@ -19,8 +19,8 @@ import static org.junit.Assert.assertNotNull;
 
 public class JordbruksfradragTest {
 
-    private EktefelleUttrykkContext<Belop> skattyterKontekst1;
-    private EktefelleUttrykkContext<Belop> skattyterKontekst2;
+    private EktefelleUttrykkContext skattyterKontekst1;
+    private EktefelleUttrykkContext skattyterKontekst2;
 
     @Before
     public void init() {

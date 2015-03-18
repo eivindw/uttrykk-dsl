@@ -4,24 +4,24 @@ import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 
-public class EktefelleUttrykkContext<V> extends UttrykkContextImpl<V> {
+public class EktefelleUttrykkContext extends UttrykkContextImpl {
     private EktefelleUttrykkContext(Object... input) {
         super(input);
     }
 
-    public static <X> EktefelleUttrykkContext<X> ny(Object... input) {
-        return new EktefelleUttrykkContext<>(input);
+    public static EktefelleUttrykkContext ny(Object... input) {
+        return new EktefelleUttrykkContext(input);
     }
 
-    public EktefelleUttrykkContext<V> medEktefelle(Object... input) {
-        EktefelleUttrykkContext<V> ektefelle = ny(input);
+    public EktefelleUttrykkContext medEktefelle(Object... input) {
+        EktefelleUttrykkContext ektefelle = ny(input);
         this.leggTilInput(ektefelle);
         ektefelle.leggTilInput(this);
 
         return ektefelle;
     }
 
-    public UttrykkResultat<V> beskrivResultat(Uttrykk<V> jordbruksfradrag) {
+    public <V> UttrykkResultat<V> beskrivResultat(Uttrykk<V> jordbruksfradrag) {
         return kalkuler(jordbruksfradrag,false,true);
     }
 }
