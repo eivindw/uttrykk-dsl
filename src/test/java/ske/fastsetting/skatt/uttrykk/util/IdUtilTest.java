@@ -2,10 +2,10 @@ package ske.fastsetting.skatt.uttrykk.util;
 
 import org.junit.Test;
 
-import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class IdUtilTest {
 
@@ -38,18 +38,4 @@ public class IdUtilTest {
         assertTrue("Mangler id2", ider.contains("id2"));
     }
 
-    @Test
-    public void kontrollerTilfeldighet() {
-        final int antall = 100_000;
-        final Set<String> ider = new HashSet<>(antall);
-
-        for (int i = 0; i < antall; i++) {
-            ider.add(IdUtil.lagTilfeldigId());
-        }
-
-        final int duplikater = antall - ider.size();
-        final double prosent = (duplikater * 100) / (double) antall;
-
-        System.out.printf("Total: %s Duplikat: %s Andel: %.4f %%\n", antall, duplikater, prosent);
-    }
 }

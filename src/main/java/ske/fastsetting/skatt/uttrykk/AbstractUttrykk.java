@@ -59,10 +59,7 @@ public abstract class AbstractUttrykk<V, B extends AbstractUttrykk<V, B>> implem
     }
 
     @Override
-    public String id(UttrykkContext ctx) {
-        if (id == null) {
-            id = ctx.nyId();
-        }
+    public String id() {
         return id;
     }
 }

@@ -47,7 +47,7 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
     protected UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
 
 //        if (this.start == null) {
-            this.start = uttrykk.id(this);
+            this.start = uttrykk.id();
 //        }
 
 
@@ -88,7 +88,7 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
 
         initUttrykk(uttrykk).computeIfAbsent(KEY_UTTRYKK, k -> uttrykk.beskriv(this));
 
-        return IdUtil.idLink(uttrykk.id(this));
+        return IdUtil.idLink(uttrykk.id());
     }
 
     @Override
@@ -97,14 +97,6 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
         return (X) initUttrykk(uttrykk).computeIfAbsent(KEY_VERDI, k -> uttrykk.eval(this));
     }
 
-    @Override
-    public String nyId() {
-        String id = IdUtil.lagTilfeldigId();
-        while (uttrykksmap.containsKey(id)) {
-            id = IdUtil.lagTilfeldigId();
-        }
-        return id;
-    }
 
     @Override
     public <T> T input(Class<T> clazz) {
@@ -126,7 +118,7 @@ public class UttrykkContextImpl<V> implements UttrykkResultat<V>, UttrykkContext
     }
 
     private Map initUttrykk(Uttrykk<?> uttrykk) {
-        return uttrykksmap.computeIfAbsent(uttrykk.id(this), k -> map(uttrykk));
+        return uttrykksmap.computeIfAbsent(uttrykk.id(), k -> map(uttrykk));
     }
 
     private Map map(Uttrykk uttrykk) {

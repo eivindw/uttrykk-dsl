@@ -12,7 +12,7 @@ public interface Uttrykk<V>  {
 
     String beskriv(UttrykkContext ctx);
 
-    String id(UttrykkContext ctx);
+    String id();
 
     String navn();
 

@@ -2,7 +2,6 @@ package ske.fastsetting.skatt.uttrykk.util;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,8 +30,4 @@ public final class IdUtil {
         return ider;
     }
 
-    public static String lagTilfeldigId() {
-        // TODO - denne er ikke garantert unik - for korthet - kom opp med noe bedre :)
-        return Integer.toHexString(UUID.randomUUID().hashCode());
-    }
 }
