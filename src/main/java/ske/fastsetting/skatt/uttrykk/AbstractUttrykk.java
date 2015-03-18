@@ -2,15 +2,12 @@ package ske.fastsetting.skatt.uttrykk;
 
 import ske.fastsetting.skatt.domene.Regel;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 public abstract class AbstractUttrykk<V, B extends AbstractUttrykk<V, B>> implements Uttrykk<V> {
 
-    private String id;
+    private String id = UUID.randomUUID().toString();
     private String navn;
     private Set<String> tags;
     private List<Regel> regler;

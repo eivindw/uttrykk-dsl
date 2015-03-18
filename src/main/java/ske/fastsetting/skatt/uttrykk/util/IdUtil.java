@@ -11,7 +11,7 @@ public final class IdUtil {
     private static final String LINK_START = "<";
     private static final String LINK_END = ">";
     private static final Pattern ID_PATTERN =
-        Pattern.compile(String.format("%1$s([_A-Za-z0-9]*)%2$s", LINK_START, LINK_END));
+        Pattern.compile(String.format("%1$s([_A-Za-z0-9\\-]*)%2$s", LINK_START, LINK_END));
 
     private IdUtil() {}
 
