@@ -6,21 +6,27 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
-public class TilSteduavhengigBelopUttrykk<K> extends AbstractUttrykk<Belop,TilSteduavhengigBelopUttrykk<K>> implements BelopUttrykk {
-    private StedbundetBelopUttrykk<K> stedbundetBelopUttrykk;
+import java.util.Map;
 
-    public static <T> TilSteduavhengigBelopUttrykk<T> steduavhengig(StedbundetBelopUttrykk<T> stedbundetBelopUttrykk)  {
-        return new TilSteduavhengigBelopUttrykk<>(stedbundetBelopUttrykk);
+public class TilSteduavhengigBelopUttrykk extends AbstractUttrykk<Belop,TilSteduavhengigBelopUttrykk> implements BelopUttrykk {
+    private StedbundetBelopUttrykk<?> stedbundetBelopUttrykk;
+
+    public static TilSteduavhengigBelopUttrykk steduavhengig(StedbundetBelopUttrykk<?> stedbundetBelopUttrykk)  {
+        return new TilSteduavhengigBelopUttrykk(stedbundetBelopUttrykk);
     }
 
-    public TilSteduavhengigBelopUttrykk(StedbundetBelopUttrykk<K> stedbundetBelopUttrykk) {
+    public TilSteduavhengigBelopUttrykk(StedbundetBelopUttrykk<?> stedbundetBelopUttrykk) {
         this.stedbundetBelopUttrykk = stedbundetBelopUttrykk;
+    }
+
+    public void test(Map<?,Belop> map) {
+        map.get("asdas");
     }
 
     @Override
     public Belop eval(UttrykkContext ctx) {
 
-        final StedbundetBelop<K> stedbundetBelop = ctx.eval(stedbundetBelopUttrykk);
+        final StedbundetBelop<?> stedbundetBelop = ctx.eval(stedbundetBelopUttrykk);
 
         return stedbundetBelop.steder().stream()
                 .map(stedbundetBelop::get)

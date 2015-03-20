@@ -128,7 +128,7 @@ public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> 
         return stedBelopMap.entrySet().stream().map(e -> new BelopSted<>(e.getKey(), e.getValue())).collect(Collectors.toSet());
     }
 
-    public Belop get(T sted) {
+    public Belop get(Object sted) {
         return stedBelopMap.getOrDefault(sted, Belop.NULL);
     }
 
