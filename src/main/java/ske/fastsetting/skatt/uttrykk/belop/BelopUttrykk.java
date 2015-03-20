@@ -2,6 +2,7 @@ package ske.fastsetting.skatt.uttrykk.belop;
 
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.Kvantitet;
+import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
@@ -10,7 +11,7 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
 
 
 
-    default BelopMultiplikasjonsUttrykk multiplisertMed(TallUttrykk verdi) {
+    default BelopMultiplikasjonsUttrykk multiplisertMed(Uttrykk<Tall> verdi) {
         return new BelopMultiplikasjonsUttrykk(this, verdi);
     }
 

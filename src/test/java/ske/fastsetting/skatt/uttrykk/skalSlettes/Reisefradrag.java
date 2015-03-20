@@ -9,8 +9,7 @@ import ske.fastsetting.skatt.uttrykk.distanse.Distanse;
 import ske.fastsetting.skatt.uttrykk.distanse.DistanseUttrykk;
 
 import static ske.fastsetting.skatt.uttrykk.belop.BelopHvisUttrykk.hvis;
-import static ske.fastsetting.skatt.uttrykk.belop.BelopMultisatsFunksjon2.multisatsFunksjonAv;
-import static ske.fastsetting.skatt.uttrykk.belop.BelopPerKvantitetUttrykk.NULL;
+import static ske.fastsetting.skatt.uttrykk.belop.BelopMultisatsKvantitetUttrykk.multisats;
 import static ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk.begrens;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.distanse.KilometerUttrykk.km;
@@ -21,8 +20,8 @@ public class Reisefradrag {
 
     @Test
     public void test() {
-        System.out.println(UttrykkContextImpl.beregne(reisefradrag(km(200), km(4_000), kr(3_400))).verdi());
-//        System.out.println(UttrykkContextImpl.beregne(prosent2()).verdi());
+        System.out.println(UttrykkContextImpl.beregne(reisefradrag(km(200000), km(4_000), kr(3_400))).verdi());
+        System.out.println(UttrykkContextImpl.beregne(prosent2()).verdi());
 //        System.out.println(UttrykkContextImpl.beregne(km(18).pluss(km(19)).pluss(km(31))).verdi());
 //        System.out.println(UttrykkContextImpl.beregne(km(18).multiplisertMed(kr(1.40).per(km()))).verdi());
     }
@@ -40,10 +39,10 @@ public class Reisefradrag {
 
         DistanseUttrykk reiseKm = hjemArbeidReiseKm.pluss(besoekReiseKm);
 
-        BelopUttrykk bruttoReise = multisatsFunksjonAv(reiseKm)
-                .medSats(SATS_REISE_HOY).til(OEVRE_GRENSE_SATS_REISE_HØY_KM)
-                .deretterMedSats(SATS_REISE_LAV).til(OEVRE_GRENSE_SATS_REISE_LAV_KM)
-                .deretterMedSats(NULL());
+        BelopUttrykk bruttoReise = multisats(reiseKm)
+                .medSats(SATS_REISE_HOY)
+                .til(OEVRE_GRENSE_SATS_REISE_HØY_KM)
+                .deretterMedSats(SATS_REISE_LAV).til(OEVRE_GRENSE_SATS_REISE_LAV_KM);
 
         BelopUttrykk bomEtcUtgifter = hvis(bomEtcBrutto.erStorreEnn(NEDRE_GRENSE_BOM)).brukDa(bomEtcBrutto).ellersBruk(kr(0));
 
