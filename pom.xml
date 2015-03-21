@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ske.fastsetting.skatt</groupId>
-    <artifactId>uttrykk</artifactId>
+    <artifactId>grunnlag</artifactId>
     <version>1.3-SNAPSHOT</version>
     <name>Uttrykk DSL</name>
     <packaging>jar</packaging>
