@@ -5,13 +5,18 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class MultisatsUttrykk<V,K,S,B extends MultisatsUttrykk<V, K,S,B>> extends AbstractUttrykk<V,B> {
+// V - type på verdi som returneres ved eval, f.eks Belop, Tall eller StedbundetBelop
+// G - type på grunnlag, f.eks Belop eller Distanse
+// S - type på sats, Tall eller BelopPerKvantitet
+// L - type på "limits" - på øvre og nedre grenser
+// B - baseklasse - brukes for self-referanser
+public abstract class MultisatsUttrykk<V,G,S,L,B extends MultisatsUttrykk<V,G,S,L,B>> extends AbstractUttrykk<V,B> {
 
-    private Uttrykk<K> grunnlag;
+    private Uttrykk<G> grunnlag;
     private List<Uttrykk<V>> alleSatsSteg = new ArrayList<>();
-    private SatsStegUttrykk<V,K,S> gjeldendeSatsSteg;
+    private SatsStegUttrykk<V,G,S,L> gjeldendeSatsSteg;
 
-    public MultisatsUttrykk(Uttrykk<K> grunnlag) {
+    public MultisatsUttrykk(Uttrykk<G> grunnlag) {
         this.grunnlag = grunnlag;
     }
 
@@ -19,8 +24,8 @@ public abstract class MultisatsUttrykk<V,K,S,B extends MultisatsUttrykk<V, K,S,B
          return medSats(sats,null);
     }
 
-    public B medSats(Uttrykk<S> sats, Uttrykk<K> oevreGrense) {
-        Uttrykk<K> nedreGrense = gjeldendeSatsSteg!=null ? gjeldendeSatsSteg.oevreGrense : null;
+    public B medSats(Uttrykk<S> sats, Uttrykk<L> oevreGrense) {
+        Uttrykk<L> nedreGrense = gjeldendeSatsSteg!=null ? gjeldendeSatsSteg.oevreGrense : null;
 
         gjeldendeSatsSteg = lagSteg()
                 .medGrunnlag(grunnlag)
@@ -43,17 +48,17 @@ public abstract class MultisatsUttrykk<V,K,S,B extends MultisatsUttrykk<V, K,S,B
         return alleSatsSteg.stream().map(ctx::beskriv).collect(Collectors.joining(",", "multisats(", ")"));
     }
 
-    protected abstract SatsStegUttrykk<V,K, S> lagSteg();
+    protected abstract SatsStegUttrykk<V,G,S,L> lagSteg();
     protected abstract Uttrykk<V> sum(Collection<Uttrykk<V>> satsSteg);
 
     /**
     * Created by jorn ola birkeland on 20.03.15.
     */
-    public static abstract class SatsStegUttrykk<V,K,S> extends AbstractUttrykk<V,SatsStegUttrykk<V,K,S>>  {
+    public static abstract class SatsStegUttrykk<V,G,S,L> extends AbstractUttrykk<V,SatsStegUttrykk<V,G,S,L>>  {
         protected Uttrykk<S> sats;
-        protected Uttrykk<K> oevreGrense;
-        protected Uttrykk<K> nedreGrense;
-        protected Uttrykk<K> grunnlag;
+        protected Uttrykk<L> oevreGrense;
+        protected Uttrykk<L> nedreGrense;
+        protected Uttrykk<G> grunnlag;
 
         protected SatsStegUttrykk() {
         }
@@ -74,22 +79,22 @@ public abstract class MultisatsUttrykk<V,K,S,B extends MultisatsUttrykk<V, K,S,B
             return stegResultat;
         }
 
-        public SatsStegUttrykk<V,K,S> medOevreGrense(Uttrykk<K> oevregrense) {
+        public SatsStegUttrykk<V,G,S,L> medOevreGrense(Uttrykk<L> oevregrense) {
             if(oevregrense!=null) { this.oevreGrense = oevregrense; }
             return this;
         }
 
-        public SatsStegUttrykk<V,K,S> medNedreGrense(Uttrykk<K> nedregrense) {
+        public SatsStegUttrykk<V,G,S,L> medNedreGrense(Uttrykk<L> nedregrense) {
             if(nedregrense!=null) { this.nedreGrense = nedregrense; }
             return this;
         }
 
-        public SatsStegUttrykk<V,K,S> medSats(Uttrykk<S> sats) {
+        public SatsStegUttrykk<V,G,S,L> medSats(Uttrykk<S> sats) {
             if(sats!=null) { this.sats = sats; }
             return this;
         }
 
-        public SatsStegUttrykk<V,K,S> medGrunnlag(Uttrykk<K> grunnlag) {
+        public SatsStegUttrykk<V,G,S,L> medGrunnlag(Uttrykk<G> grunnlag) {
             if(grunnlag==null) { throw new IllegalArgumentException("grunnlag kan ikke være null");}
 
             this.grunnlag = grunnlag;

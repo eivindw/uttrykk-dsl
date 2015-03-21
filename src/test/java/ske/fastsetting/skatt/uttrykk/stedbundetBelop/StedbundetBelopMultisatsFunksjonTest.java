@@ -15,8 +15,8 @@ public class StedbundetBelopMultisatsFunksjonTest {
         StedbundetBelopUttrykk<String> uttrykk = begrensHvertSted(kr(34,"Asker").pluss(kr(-12,"Askim"))).nedad(KroneUttrykk.KR_0);
 
         StedbundetBelopUttrykk<String> jordfradrag = multisatsFunksjonAv(uttrykk)
-                .medSats(prosent(100)).til(KroneUttrykk.kr(20)).deretterMedSats(prosent(70))
-                .til(KroneUttrykk.kr(50)).navn("jordfradrag");
+                .medSats(prosent(100),KroneUttrykk.kr(20))
+                .medSats(prosent(50),KroneUttrykk.kr(50)).navn("jordfradrag");
 
         System.out.println(UttrykkContextImpl.beregne(jordfradrag).verdi());
     }

@@ -14,7 +14,7 @@ import static ske.fastsetting.skatt.uttrykk.belop.BelopPerKvantitetUttrykk.NULL;
 
 
 public class BelopMultisatsKvantitetUttrykk<K extends Kvantitet>
-        extends MultisatsUttrykk<Belop,K,BelopPerKvantitet<K>,BelopMultisatsKvantitetUttrykk<K>>
+        extends MultisatsUttrykk<Belop,K,BelopPerKvantitet<K>,K,BelopMultisatsKvantitetUttrykk<K>>
         implements BelopUttrykk {
 
     public BelopMultisatsKvantitetUttrykk(Uttrykk<K> grunnlag) {
@@ -26,8 +26,8 @@ public class BelopMultisatsKvantitetUttrykk<K extends Kvantitet>
     }
 
     @Override
-    protected SatsStegUttrykk<Belop,K, BelopPerKvantitet<K>> lagSteg() {
-        final SatsStegUttrykk<Belop, K, BelopPerKvantitet<K>> satsStegUttrykk = new SatsStegUttrykk<Belop,K, BelopPerKvantitet<K>>() {
+    protected SatsStegUttrykk<Belop,K, BelopPerKvantitet<K>,K> lagSteg() {
+        final SatsStegUttrykk<Belop, K, BelopPerKvantitet<K>,K> satsStegUttrykk = new SatsStegUttrykk<Belop,K, BelopPerKvantitet<K>,K>() {
             @Override
             public Belop eval(UttrykkContext ctx) {
                 final BelopPerKvantitet<K> satsEval = ctx.eval(sats);
