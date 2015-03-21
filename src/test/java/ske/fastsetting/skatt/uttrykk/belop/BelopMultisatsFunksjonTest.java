@@ -31,28 +31,28 @@ public class BelopMultisatsFunksjonTest {
 
     @Test
     public void testRettLinjeMedOevreGrense() {
-        BelopUttrykk multisats = multisatsFunksjonAv(kr(100)).medSats(prosent(10)).til(kr(50));
+        BelopUttrykk multisats = multisatsFunksjonAv(kr(100)).medSats(prosent(10),kr(50));
 
         assertEquals(Belop.kr(5), UttrykkContextImpl.beregne(multisats).verdi());
     }
 
     @Test
     public void testMedToSatserUtenOevreGrense() {
-        BelopUttrykk multisats = multisatsFunksjonAv(kr(100)).medSats(prosent(10)).til(kr(50)).deretterMedSats(prosent(20));
+        BelopUttrykk multisats = multisatsFunksjonAv(kr(100)).medSats(prosent(10),kr(50)).medSats(prosent(20));
 
         assertEquals(Belop.kr(15), UttrykkContextImpl.beregne(multisats).verdi());
     }
 
     @Test
     public void testMedToSatserMedOevreGrense() {
-        BelopUttrykk multisats = multisatsFunksjonAv(kr(500)).medSats(prosent(10)).til(kr(50)).deretterMedSats(prosent(20)).til(kr(100));
+        BelopUttrykk multisats = multisatsFunksjonAv(kr(500)).medSats(prosent(10),kr(50)).medSats(prosent(20),kr(100));
 
         assertEquals(Belop.kr(15), UttrykkContextImpl.beregne(multisats).verdi());
     }
 
     @Test
     public void testMedTreSatser() throws IOException {
-        BelopUttrykk multisats = multisatsFunksjonAv(kr(200)).medSats(prosent(10)).til(kr(50)).deretterMedSats(prosent(20)).til(kr(100)).deretterMedSats(prosent(7));
+        BelopUttrykk multisats = multisatsFunksjonAv(kr(200)).medSats(prosent(10),kr(50)).medSats(prosent(20),kr(100)).medSats(prosent(7));
 
         assertEquals(Belop.kr(22), UttrykkContextImpl.beregne(multisats).verdi());
 
@@ -62,7 +62,7 @@ public class BelopMultisatsFunksjonTest {
     @Ignore
     public void excelSkriveTest() throws IOException {
         final KroneUttrykk kr = kr(20).navn("grunnlag");
-        BelopUttrykk multisats = multisatsFunksjonAv(kr).medSats(prosent(10)).til(kr(50)).deretterMedSats(prosent(20)).til(kr(100)).deretterMedSats(prosent(7)).navn("multisats");
+        BelopUttrykk multisats = multisatsFunksjonAv(kr).medSats(prosent(10),kr(50)).medSats(prosent(20),kr(100)).medSats(prosent(7)).navn("multisats");
         ExcelUttrykkBeskriver beskriver = new ExcelUttrykkBeskriver();
 
         Workbook wb = beskriver.beskriv(UttrykkContextImpl.beskrive(multisats));
@@ -76,7 +76,7 @@ public class BelopMultisatsFunksjonTest {
     @Test
     @Ignore
     public void skriveTest() throws IOException {
-        BelopUttrykk multisats = multisatsFunksjonAv(kr(200)).medSats(prosent(10)).til(kr(50)).deretterMedSats(prosent(20)).til(kr(100)).deretterMedSats(prosent(7)).navn("multisats");
+        BelopUttrykk multisats = multisatsFunksjonAv(kr(200)).medSats(prosent(10),kr(50)).medSats(prosent(20),kr(100)).medSats(prosent(7)).navn("multisats");
 
         ConsoleUttrykkBeskriver beskriver = new ConsoleUttrykkBeskriver();
 
@@ -88,7 +88,7 @@ public class BelopMultisatsFunksjonTest {
     @Test
     @Ignore
     public void confluenceSkriveTest() throws IOException {
-        BelopUttrykk multisats = multisatsFunksjonAv(kr(200)).medSats(prosent(10)).til(kr(50)).deretterMedSats(prosent(20)).til(kr(100)).deretterMedSats(prosent(7)).navn("multisats");
+        BelopUttrykk multisats = multisatsFunksjonAv(kr(200)).medSats(prosent(10),kr(50)).medSats(prosent(20),kr(100)).medSats(prosent(7)).navn("multisats");
 
         ConfluenceUttrykkBeskriver beskriver = new ConfluenceUttrykkBeskriver("Tittel");
 

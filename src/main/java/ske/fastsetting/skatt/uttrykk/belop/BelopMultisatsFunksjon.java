@@ -4,15 +4,17 @@ import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
-import ske.fastsetting.skatt.uttrykk.belop.multisats.BelopMultisatsUttrykk;
-import ske.fastsetting.skatt.uttrykk.belop.multisats.SatsStegUttrykk;
+import ske.fastsetting.skatt.uttrykk.MultisatsUttrykk;
+
+import java.util.Collection;
 
 import static ske.fastsetting.skatt.uttrykk.belop.BelopDiffUttrykk.differanseMellom;
+import static ske.fastsetting.skatt.uttrykk.belop.TilBelopUttrykk.tilBelopUttrykk;
 import static ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk.begrens;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.tall.KonstantUttrykk.tall;
 
-public class BelopMultisatsFunksjon extends BelopMultisatsUttrykk<Belop,Tall> {
+public class BelopMultisatsFunksjon extends MultisatsUttrykk<Belop,Belop,Tall,BelopMultisatsFunksjon> implements BelopUttrykk {
     public BelopMultisatsFunksjon(Uttrykk<Belop> grunnlag) {
         super(grunnlag);
     }
@@ -22,8 +24,8 @@ public class BelopMultisatsFunksjon extends BelopMultisatsUttrykk<Belop,Tall> {
     }
 
     @Override
-    protected SatsStegUttrykk<Belop, Tall> lagSteg() {
-        final SatsStegUttrykk<Belop, Tall> satsStegUttrykk = new SatsStegUttrykk<Belop, Tall>() {
+    protected SatsStegUttrykk<Belop,Belop, Tall> lagSteg() {
+        final SatsStegUttrykk<Belop,Belop, Tall> satsStegUttrykk = new SatsStegUttrykk<Belop,Belop, Tall>() {
 
             @Override
             public Belop eval(UttrykkContext ctx) {
@@ -36,6 +38,14 @@ public class BelopMultisatsFunksjon extends BelopMultisatsUttrykk<Belop,Tall> {
             }
         };
 
+
         return satsStegUttrykk.medNedreGrense(kr(0)).medSats(tall(0));
     }
+
+    @Override
+    protected Uttrykk<Belop> sum(Collection<Uttrykk<Belop>> satsSteg) {
+        return BelopSumUttrykk.sum(tilBelopUttrykk(satsSteg));
+    }
+
+
 }

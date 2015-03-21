@@ -40,9 +40,8 @@ public class Reisefradrag {
         DistanseUttrykk reiseKm = hjemArbeidReiseKm.pluss(besoekReiseKm);
 
         BelopUttrykk bruttoReise = multisats(reiseKm)
-                .medSats(SATS_REISE_HOY)
-                .til(OEVRE_GRENSE_SATS_REISE_HØY_KM)
-                .deretterMedSats(SATS_REISE_LAV).til(OEVRE_GRENSE_SATS_REISE_LAV_KM);
+                .medSats(SATS_REISE_HOY, OEVRE_GRENSE_SATS_REISE_HØY_KM)
+                .medSats(SATS_REISE_LAV, OEVRE_GRENSE_SATS_REISE_LAV_KM);
 
         BelopUttrykk bomEtcUtgifter = hvis(bomEtcBrutto.erStorreEnn(NEDRE_GRENSE_BOM)).brukDa(bomEtcBrutto).ellersBruk(kr(0));
 
@@ -54,9 +53,9 @@ public class Reisefradrag {
 
     BelopUttrykk prosent2() {
 
-        return BelopMultisatsFunksjon.multisatsFunksjonAv(kr(650)).medSats(prosent(12)).til(kr(300))
-                .deretterMedSats(prosent(6)).til(kr(700))
-                .deretterMedSats(prosent(0));
+        return BelopMultisatsFunksjon.multisatsFunksjonAv(kr(650)).medSats(prosent(12), kr(300))
+                .medSats(prosent(6), kr(700))
+                .medSats(prosent(0), null);
 
     }
 

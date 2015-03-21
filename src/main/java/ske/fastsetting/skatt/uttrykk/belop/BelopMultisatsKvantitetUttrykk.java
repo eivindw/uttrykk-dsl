@@ -5,13 +5,17 @@ import ske.fastsetting.skatt.domene.BelopPerKvantitet;
 import ske.fastsetting.skatt.domene.Kvantitet;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
-import ske.fastsetting.skatt.uttrykk.belop.multisats.BelopMultisatsUttrykk;
-import ske.fastsetting.skatt.uttrykk.belop.multisats.SatsStegUttrykk;
+import ske.fastsetting.skatt.uttrykk.MultisatsUttrykk;
 
+import java.util.Collection;
+
+import static ske.fastsetting.skatt.uttrykk.belop.TilBelopUttrykk.tilBelopUttrykk;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopPerKvantitetUttrykk.NULL;
 
 
-public class BelopMultisatsKvantitetUttrykk<K extends Kvantitet> extends BelopMultisatsUttrykk<K,BelopPerKvantitet<K>> {
+public class BelopMultisatsKvantitetUttrykk<K extends Kvantitet>
+        extends MultisatsUttrykk<Belop,K,BelopPerKvantitet<K>,BelopMultisatsKvantitetUttrykk<K>>
+        implements BelopUttrykk {
 
     public BelopMultisatsKvantitetUttrykk(Uttrykk<K> grunnlag) {
         super(grunnlag);
@@ -22,8 +26,8 @@ public class BelopMultisatsKvantitetUttrykk<K extends Kvantitet> extends BelopMu
     }
 
     @Override
-    protected SatsStegUttrykk<K, BelopPerKvantitet<K>> lagSteg() {
-        final SatsStegUttrykk<K, BelopPerKvantitet<K>> satsStegUttrykk = new SatsStegUttrykk<K, BelopPerKvantitet<K>>() {
+    protected SatsStegUttrykk<Belop,K, BelopPerKvantitet<K>> lagSteg() {
+        final SatsStegUttrykk<Belop, K, BelopPerKvantitet<K>> satsStegUttrykk = new SatsStegUttrykk<Belop,K, BelopPerKvantitet<K>>() {
             @Override
             public Belop eval(UttrykkContext ctx) {
                 final BelopPerKvantitet<K> satsEval = ctx.eval(sats);
@@ -43,5 +47,10 @@ public class BelopMultisatsKvantitetUttrykk<K extends Kvantitet> extends BelopMu
         };
 
         return satsStegUttrykk.medSats(NULL());
+    }
+
+    @Override
+    protected Uttrykk<Belop> sum(Collection<Uttrykk<Belop>> satsSteg) {
+        return BelopSumUttrykk.sum(tilBelopUttrykk(satsSteg));
     }
 }
