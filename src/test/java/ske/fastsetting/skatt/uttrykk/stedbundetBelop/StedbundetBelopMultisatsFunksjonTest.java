@@ -1,6 +1,5 @@
 package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
@@ -153,14 +152,13 @@ public class StedbundetBelopMultisatsFunksjonTest {
     }
 
     @Test
-    @Ignore
     public void testEtStedToSatserOeverstegrenseLavereEnnUnderste() {
         StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(0, "A"))
+                = multisatsFunksjonAv(kr(100, "A"))
                 .medSats(prosent(50), KroneUttrykk.kr(50))
                 .medSats(prosent(25), KroneUttrykk.kr(0));
 
-        assertStedBelop(multisats, Belop.kr(0), "A");
+        assertStedBelop(multisats, Belop.kr(25), "A");
 
     }
 

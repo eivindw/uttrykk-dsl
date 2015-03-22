@@ -7,9 +7,11 @@ import ske.fastsetting.skatt.uttrykk.MultisatsUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopDiffUttrykk;
+import ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk;
 
 import java.util.Collection;
 
+import static ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk.begrens;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StebundetGrenseUttrykk.begrensFordholdmessig;
 import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.TilStedbundetBelopUttrykk.tilStedbundetBelopUttrykk;
@@ -35,7 +37,8 @@ public class StedbundetBelopMultisatsFunksjon<K>
                 StebundetGrenseUttrykk<K> grenseUttrykk = begrensFordholdmessig(new ProporsjonalFordelingDiffUttrykk<>(grunnlag, nedreGrense).multiplisertMed(sats))
                         .nedad(kr(0));
                 if (oevreGrense != null) {
-                    grenseUttrykk.oppad(new BelopDiffUttrykk(oevreGrense, nedreGrense).multiplisertMed(sats));
+                    GrenseUttrykk grenseDiff = begrens(new BelopDiffUttrykk(oevreGrense, nedreGrense)).nedad(kr(0));
+                    grenseUttrykk.oppad(grenseDiff.multiplisertMed(sats));
                 }
 
                 return ctx.eval(grenseUttrykk);
