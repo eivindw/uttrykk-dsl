@@ -1,6 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
 
 import ske.fastsetting.skatt.domene.StedbundetBelop;
+import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopDiffUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopDividertMedBelopUttrykk;
@@ -17,7 +18,7 @@ public interface StedbundetBelopUttrykk<K> extends Uttrykk<StedbundetBelop<K>> {
     default BelopDividertMedBelopUttrykk dividertMed(StedbundetBelopUttrykk<K> divident) {return new BelopDividertMedBelopUttrykk(this.steduavhengig(), divident.steduavhengig());}
     default BelopDividertMedBelopUttrykk dividertMed(BelopUttrykk divident) {return new BelopDividertMedBelopUttrykk(this.steduavhengig(), divident);}
 
-    default StedbundetBelopMultiplikasjonsUttrykk<K> multiplisertMed(TallUttrykk tall) {return new StedbundetBelopMultiplikasjonsUttrykk<>(this,tall);}
+    default StedbundetBelopMultiplikasjonsUttrykk<K> multiplisertMed(Uttrykk<Tall> tall) {return new StedbundetBelopMultiplikasjonsUttrykk<>(this,tall);}
 
     default StedbundetBelopDiffUttrykk<K> minus(StedbundetBelopUttrykk<K> ledd) { return new StedbundetBelopDiffUttrykk<K>(this,ledd);}
 
