@@ -20,4 +20,16 @@ public class StedbundetBelopMultisatsFunksjonTest {
 
         System.out.println(UttrykkContextImpl.beregne(jordfradrag).verdi());
     }
+
+    @Test
+    public void testEtStedToSatserOeverstegrenseLavereEnnUnderste() {
+        StedbundetBelopUttrykk<String> multisats
+                = multisatsFunksjonAv(kr(0, "A"))
+                .medSats(prosent(50)).til(KroneUttrykk.kr(50))
+                .deretterMedSats(prosent(25)).til(KroneUttrykk.kr(0));
+
+        System.out.println(UttrykkContextImpl.beregne(multisats).verdi());
+
+    }
+
 }
