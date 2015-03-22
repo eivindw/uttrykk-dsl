@@ -4,7 +4,7 @@
 
     <groupId>ske.fastsetting.skatt</groupId>
     <artifactId>uttrykk</artifactId>
-    <version>1.3</version>
+    <version>1.3-SNAPSHOT</version>
     <name>Uttrykk DSL</name>
     <packaging>jar</packaging>
 
