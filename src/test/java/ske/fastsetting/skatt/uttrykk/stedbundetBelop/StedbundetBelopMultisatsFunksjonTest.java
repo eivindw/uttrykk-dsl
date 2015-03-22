@@ -166,15 +166,5 @@ public class StedbundetBelopMultisatsFunksjonTest {
         assertEquals(forventetBelop, UttrykkContextImpl.beregne(uttrykk).verdi().get(sted).rundAvTilHeleKroner());
     }
 
-    @Test
-    public void testEtStedToSatserOeverstegrenseLavereEnnUnderste() {
-        StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(0, "A"))
-                .medSats(prosent(50)).til(KroneUttrykk.kr(50))
-                .deretterMedSats(prosent(25)).til(KroneUttrykk.kr(0));
-
-        System.out.println(UttrykkContextImpl.beregne(multisats).verdi());
-
-    }
 
 }
