@@ -6,15 +6,15 @@ import ske.fastsetting.skatt.domene.Belop;
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.UttrykkContextImpl.beregne;
 import static ske.fastsetting.skatt.uttrykk.UttrykkContextImpl.beregneOgBeskrive;
-import static ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk.nedre0;
+import static ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk.nedre0;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopHvisUttrykk.hvis;
-import static ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk.begrens;
+import static ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk.begrens;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.KR_0;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
-import static ske.fastsetting.skatt.uttrykk.belop.StorsteAvUttrykk.storsteAv;
+import static ske.fastsetting.skatt.uttrykk.belop.BelopStorsteAvUttrykk.storsteAv;
 import static ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver.print;
 
-public class GrenseUttrykkTest {
+public class BelopGrenseUttrykkTest {
 
     @Test
     public void negativBlirNull() {

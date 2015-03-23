@@ -10,7 +10,7 @@ import ske.fastsetting.skatt.uttrykk.distanse.DistanseUttrykk;
 
 import static ske.fastsetting.skatt.uttrykk.belop.BelopHvisUttrykk.hvis;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopMultisatsKvantitetUttrykk.multisats;
-import static ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk.begrens;
+import static ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk.begrens;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.distanse.KilometerUttrykk.km;
 import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;

@@ -29,10 +29,10 @@ public interface StedbundetBelopUttrykk<K> extends Uttrykk<StedbundetBelop<K>> {
         return new TilSteduavhengigBelopUttrykk(this);
     }
 
-    default ProporsjonalFordelingDiffUttrykk<K> minusProporsjonalt(BelopUttrykk ledd) { return new ProporsjonalFordelingDiffUttrykk<>(this, ledd);}
-    default ProporsjonalFordelingSumUttrykk<K> plussProporsjonalt(BelopUttrykk belop) { return new ProporsjonalFordelingSumUttrykk<>(this, belop);}
+    default StedbundetBelopForholdsmessigFordelingDiffUttrykk<K> minusProporsjonalt(BelopUttrykk ledd) { return new StedbundetBelopForholdsmessigFordelingDiffUttrykk<>(this, ledd);}
+    default StedbundetBelopForholdsmessigFordelingSumUttrykk<K> plussProporsjonalt(BelopUttrykk belop) { return new StedbundetBelopForholdsmessigFordelingSumUttrykk<>(this, belop);}
 
-    default MinusStedUttrykk<K> minusSted(StedbundetBelopUttrykk<K> ledd) { return new MinusStedUttrykk<>(this,ledd);}
+    default StedbundetBelopMinusStedUttrykk<K> minusSted(StedbundetBelopUttrykk<K> ledd) { return new StedbundetBelopMinusStedUttrykk<>(this,ledd);}
 
 
 }

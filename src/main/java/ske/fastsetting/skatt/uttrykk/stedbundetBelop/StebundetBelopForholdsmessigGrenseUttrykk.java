@@ -4,15 +4,15 @@ import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.GrenseUttrykk;
 
-public class StebundetGrenseUttrykk<K> extends GrenseUttrykk<StedbundetBelop<K>, Belop, StebundetGrenseUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+public class StebundetBelopForholdsmessigGrenseUttrykk<K> extends GrenseUttrykk<StedbundetBelop<K>, Belop, StebundetBelopForholdsmessigGrenseUttrykk<K>> implements StedbundetBelopUttrykk<K> {
 
 
-    protected StebundetGrenseUttrykk(StedbundetBelopUttrykk<K> grunnlag) {
+    protected StebundetBelopForholdsmessigGrenseUttrykk(StedbundetBelopUttrykk<K> grunnlag) {
         super(grunnlag);
     }
 
-    public static <K> StebundetGrenseUttrykk<K> begrensFordholdmessig(StedbundetBelopUttrykk<K> grunnlag) {
-        return new StebundetGrenseUttrykk<>(grunnlag);
+    public static <K> StebundetBelopForholdsmessigGrenseUttrykk<K> begrensFordholdmessig(StedbundetBelopUttrykk<K> grunnlag) {
+        return new StebundetBelopForholdsmessigGrenseUttrykk<>(grunnlag);
     }
 
     @Override

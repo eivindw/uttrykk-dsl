@@ -31,7 +31,7 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
         return new BelopDividertMedBelopUttrykk(this, divident);
     }
 
-    default BelopUttrykk byttFortegn() { return new ByttFortegnBelopUttrykk(this);  }
+    default BelopUttrykk byttFortegn() { return new BelopByttFortegnUttrykk(this);  }
 
     default <K extends Kvantitet> BelopPerKvantitetUttrykk<K> per(Uttrykk<K> uttrykk) {
         return new BelopPerKvantitetUttrykk<>(this,uttrykk);

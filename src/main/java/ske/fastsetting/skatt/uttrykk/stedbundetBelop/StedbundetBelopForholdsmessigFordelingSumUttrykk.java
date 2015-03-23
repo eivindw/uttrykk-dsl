@@ -5,11 +5,11 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
-public class ProporsjonalFordelingSumUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,ProporsjonalFordelingSumUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+public class StedbundetBelopForholdsmessigFordelingSumUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,StedbundetBelopForholdsmessigFordelingSumUttrykk<K>> implements StedbundetBelopUttrykk<K> {
     private final StedbundetBelopUttrykk<K> stedbundetBelopUttrykk;
     private final BelopUttrykk belopUttrykk;
 
-    public ProporsjonalFordelingSumUttrykk(StedbundetBelopUttrykk<K> stedbundetBelopUttrykk, BelopUttrykk belopUttrykk) {
+    public StedbundetBelopForholdsmessigFordelingSumUttrykk(StedbundetBelopUttrykk<K> stedbundetBelopUttrykk, BelopUttrykk belopUttrykk) {
         this.stedbundetBelopUttrykk = stedbundetBelopUttrykk;
         this.belopUttrykk = belopUttrykk;
     }

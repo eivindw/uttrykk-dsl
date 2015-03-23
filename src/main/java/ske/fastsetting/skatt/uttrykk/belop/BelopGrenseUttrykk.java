@@ -3,26 +3,26 @@ package ske.fastsetting.skatt.uttrykk.belop;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopUttrykk;
 
-public class GrenseUttrykk extends ske.fastsetting.skatt.uttrykk.GrenseUttrykk<Belop,Belop, GrenseUttrykk> implements BelopUttrykk {
+public class BelopGrenseUttrykk extends ske.fastsetting.skatt.uttrykk.GrenseUttrykk<Belop,Belop, BelopGrenseUttrykk> implements BelopUttrykk {
 
-    protected GrenseUttrykk(BelopUttrykk grunnlag) {
+    protected BelopGrenseUttrykk(BelopUttrykk grunnlag) {
         super(grunnlag);
     }
 
-    public static GrenseUttrykk nedre0(BelopUttrykk grunnlag) {
+    public static BelopGrenseUttrykk nedre0(BelopUttrykk grunnlag) {
         return begrens(grunnlag).nedad(KroneUttrykk.KR_0);
     }
 
-    public static GrenseUttrykk begrens(BelopUttrykk grunnlag) {
-        return new GrenseUttrykk(grunnlag);
+    public static BelopGrenseUttrykk begrens(BelopUttrykk grunnlag) {
+        return new BelopGrenseUttrykk(grunnlag);
     }
 
-    public GrenseUttrykk nedad(StedbundetBelopUttrykk minimum) {
+    public BelopGrenseUttrykk nedad(StedbundetBelopUttrykk minimum) {
         return nedad(minimum.steduavhengig());
     }
 
 
-    public GrenseUttrykk oppad(StedbundetBelopUttrykk maksimum) {
+    public BelopGrenseUttrykk oppad(StedbundetBelopUttrykk maksimum) {
         return oppad(maksimum.steduavhengig());
     }
 

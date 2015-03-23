@@ -4,12 +4,12 @@ import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class MinusStedUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,MinusStedUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+public class StedbundetBelopMinusStedUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,StedbundetBelopMinusStedUttrykk<K>> implements StedbundetBelopUttrykk<K> {
 
     private final StedbundetBelopUttrykk<K> uttrykk;
     private final StedbundetBelopUttrykk<K> ledd;
 
-    public MinusStedUttrykk(StedbundetBelopUttrykk<K> stedbundetBelopUttrykk, StedbundetBelopUttrykk<K> ledd) {
+    public StedbundetBelopMinusStedUttrykk(StedbundetBelopUttrykk<K> stedbundetBelopUttrykk, StedbundetBelopUttrykk<K> ledd) {
 
         this.uttrykk = stedbundetBelopUttrykk;
         this.ledd = ledd;

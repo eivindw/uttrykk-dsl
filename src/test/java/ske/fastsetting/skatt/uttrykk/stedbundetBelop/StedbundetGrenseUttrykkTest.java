@@ -4,7 +4,7 @@ import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
 
-import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StebundetGrenseUttrykk.begrensFordholdmessig;
+import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StebundetBelopForholdsmessigGrenseUttrykk.begrensFordholdmessig;
 import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopMultisatsFunksjonTest.assertStedBelop;
 import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetKroneUttrykk.kr;
 

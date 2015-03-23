@@ -5,19 +5,19 @@ import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.GrenseUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
 
-public class StebundetHverGrenseUttrykk<K> extends GrenseUttrykk<StedbundetBelop<K>, Belop, StebundetHverGrenseUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+public class StebundetBelopHverGrenseUttrykk<K> extends GrenseUttrykk<StedbundetBelop<K>, Belop, StebundetBelopHverGrenseUttrykk<K>> implements StedbundetBelopUttrykk<K> {
 
 
-    protected StebundetHverGrenseUttrykk(StedbundetBelopUttrykk<K> grunnlag) {
+    protected StebundetBelopHverGrenseUttrykk(StedbundetBelopUttrykk<K> grunnlag) {
         super(grunnlag);
     }
 
-    public static <K >StebundetHverGrenseUttrykk<K> nedre0(StedbundetBelopUttrykk<K> grunnlag) {
+    public static <K >StebundetBelopHverGrenseUttrykk<K> nedre0(StedbundetBelopUttrykk<K> grunnlag) {
         return begrensHvertSted(grunnlag).nedad(KroneUttrykk.KR_0);
     }
 
-    public static <K> StebundetHverGrenseUttrykk<K> begrensHvertSted(StedbundetBelopUttrykk<K> grunnlag) {
-        return new StebundetHverGrenseUttrykk<>(grunnlag);
+    public static <K> StebundetBelopHverGrenseUttrykk<K> begrensHvertSted(StedbundetBelopUttrykk<K> grunnlag) {
+        return new StebundetBelopHverGrenseUttrykk<>(grunnlag);
     }
 
     @Override
