@@ -44,7 +44,10 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
         final String uttrykkString = tmpUttrykkString;
 
         if (navn != null) {
-            innholdsfortegnelse.computeIfAbsent(navn, tittel ->
+
+            String vasketNavn = navn.replace('/','-');
+
+            innholdsfortegnelse.computeIfAbsent(vasketNavn, tittel ->
                 new InnholdConfluenceSide(
                     tittel,
                     uttrykkString,
@@ -53,7 +56,7 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
                 )
             );
 
-            return "[" + navn + "]";
+            return "[" + vasketNavn + "]";
         } else if (!subIder.isEmpty()) {
             return "(" + uttrykkString + ")";
         } else {
