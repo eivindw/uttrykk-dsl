@@ -8,9 +8,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BelopSumUttrykk
-    extends SumUttrykk<Belop, BelopUttrykk, BelopSumUttrykk>
-    implements BelopUttrykk
-{
+  extends SumUttrykk<Belop, BelopUttrykk, BelopSumUttrykk>
+  implements BelopUttrykk {
 
     private BelopSumUttrykk(Collection<BelopUttrykk> uttrykk) {
         super(uttrykk);
@@ -31,11 +30,13 @@ public class BelopSumUttrykk
     }
 
     public BelopSumUttrykk pluss(BelopSumUttrykk sumUttrykk) {
-        return new BelopSumUttrykk(Stream.concat(this.uttrykk.stream(),sumUttrykk.uttrykk.stream()).collect(Collectors.toList()));
+        return new BelopSumUttrykk(Stream.concat(this.uttrykk.stream(), sumUttrykk.uttrykk.stream()).collect
+          (Collectors.toList()));
     }
 
     public BelopSumUttrykk pluss(BelopUttrykk uttrykk) {
-        return new BelopSumUttrykk(Stream.concat(this.uttrykk.stream(),Stream.of(uttrykk)).collect(Collectors.toList()));
+        return new BelopSumUttrykk(Stream.concat(this.uttrykk.stream(), Stream.of(uttrykk)).collect(Collectors.toList
+          ()));
     }
 
 }

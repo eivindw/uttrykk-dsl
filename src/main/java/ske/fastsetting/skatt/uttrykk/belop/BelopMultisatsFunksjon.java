@@ -14,7 +14,8 @@ import static ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk.begrens;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.tall.KonstantUttrykk.tall;
 
-public class BelopMultisatsFunksjon extends MultisatsUttrykk<Belop,Belop,Tall,Belop,BelopMultisatsFunksjon> implements BelopUttrykk {
+public class BelopMultisatsFunksjon extends MultisatsUttrykk<Belop, Belop, Tall, Belop, BelopMultisatsFunksjon>
+  implements BelopUttrykk {
     public BelopMultisatsFunksjon(Uttrykk<Belop> grunnlag) {
         super(grunnlag);
     }
@@ -24,12 +25,14 @@ public class BelopMultisatsFunksjon extends MultisatsUttrykk<Belop,Belop,Tall,Be
     }
 
     @Override
-    protected SatsStegUttrykk<Belop,Belop,Tall,Belop> lagSteg() {
-        final SatsStegUttrykk<Belop,Belop,Tall,Belop> satsStegUttrykk = new SatsStegUttrykk<Belop,Belop,Tall,Belop>() {
+    protected SatsStegUttrykk<Belop, Belop, Tall, Belop> lagSteg() {
+        final SatsStegUttrykk<Belop, Belop, Tall, Belop> satsStegUttrykk = new SatsStegUttrykk<Belop, Belop, Tall,
+          Belop>() {
 
             @Override
             public Belop eval(UttrykkContext ctx) {
-                GrenseUttrykk grenseUttrykk = begrens(differanseMellom(grunnlag, nedreGrense).multiplisertMed(sats)).nedad(kr(0));
+                GrenseUttrykk grenseUttrykk = begrens(differanseMellom(grunnlag, nedreGrense).multiplisertMed(sats))
+                  .nedad(kr(0));
                 if (oevreGrense != null) {
                     grenseUttrykk.oppad(differanseMellom(oevreGrense, nedreGrense).multiplisertMed(sats));
                 }
@@ -37,7 +40,6 @@ public class BelopMultisatsFunksjon extends MultisatsUttrykk<Belop,Belop,Tall,Be
                 return ctx.eval(grenseUttrykk);
             }
         };
-
 
         return satsStegUttrykk.medNedreGrense(kr(0)).medSats(tall(0));
     }

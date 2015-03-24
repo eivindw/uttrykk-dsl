@@ -78,10 +78,10 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
     @Deprecated
     public Tall rundOpp() {
         switch (type) {
-            case PROSENT:
-                return new Tall(TallUttrykkType.PROSENT, this.verdi.round(new MathContext(2, RoundingMode.UP)));
-            default:
-                return this;
+        case PROSENT:
+            return new Tall(TallUttrykkType.PROSENT, this.verdi.round(new MathContext(2, RoundingMode.UP)));
+        default:
+            return this;
         }
     }
 
@@ -94,7 +94,7 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
     }
 
     public Tall rundAv(int presisjon, Avrunding avrunding) {
-        return new Tall(type, avrunding.rundAv(verdi,presisjon) );
+        return new Tall(type, avrunding.rundAv(verdi, presisjon));
     }
 
     private TallUttrykkType finnType(Tall ledd) {
@@ -104,24 +104,28 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
     @Override
     public String toString() {
         switch (type) {
-            case PROSENT:
-                return verdi.movePointRight(2).toString() + "%";
-            case HELTALL:
-                return Integer.toString(verdi.intValueExact());
-            default:
-                return verdi.toString();
+        case PROSENT:
+            return verdi.movePointRight(2).toString() + "%";
+        case HELTALL:
+            return Integer.toString(verdi.intValueExact());
+        default:
+            return verdi.toString();
         }
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         Tall tall = (Tall) o;
 
-        if (type != tall.type) return false;
-        if (!verdi.equals(tall.verdi)) return false;
+        if (type != tall.type)
+            return false;
+        if (!verdi.equals(tall.verdi))
+            return false;
 
         return true;
     }

@@ -8,7 +8,7 @@ public class Debug {
     public static void debug(Uttrykk<?> uttrykk, Object... input) {
         final UttrykkResultat<?> resultat = UttrykkContextImpl.beregneOgBeskrive(uttrykk, input);
 
-        System.out.println("verdi: "+resultat.verdi());
+        System.out.println("verdi: " + resultat.verdi());
         System.out.println();
         System.out.println("***** Beregning *****");
 

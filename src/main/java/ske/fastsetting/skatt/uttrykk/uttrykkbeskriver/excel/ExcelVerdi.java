@@ -24,21 +24,19 @@ class ExcelVerdi implements ExcelUttrykk {
             return new ExcelVerdi(Type.Prosent, Double.parseDouble(text.replace("%", "")) / 100);
         } else if (text.endsWith(" år")) {
             return new ExcelVerdi(Type.Heltall, Integer.parseInt(text.replace(" år", "")));
-        } else if(text.matches("Hvis-uttrykk mangler en verdi for ellersBruk")) {
-            return new ExcelVerdi(Type.Tekst,"\""+text+"\"");
-        } else if(text.matches(TABELLNUMMER_REGEX)) {
-            return new ExcelVerdi(Type.Tekst,text.replaceAll(TABELLNUMMER_REGEX,TABELLNUMMER_OUTPUT));
-        } else if(text.startsWith("Post")) {
-            return new ExcelVerdi(Type.Belop,0L);
-        } else if(text.startsWith("skattyters alder")) {
-            return new ExcelVerdi(Type.Heltall,34);
-        } else if(text.startsWith("skattyters bostedkommune")) {
-            return new ExcelVerdi(Type.Tekst,"Lørenskog");
-        }
-        else if (text.matches("-?\\d+")) {
+        } else if (text.matches("Hvis-uttrykk mangler en verdi for ellersBruk")) {
+            return new ExcelVerdi(Type.Tekst, "\"" + text + "\"");
+        } else if (text.matches(TABELLNUMMER_REGEX)) {
+            return new ExcelVerdi(Type.Tekst, text.replaceAll(TABELLNUMMER_REGEX, TABELLNUMMER_OUTPUT));
+        } else if (text.startsWith("Post")) {
+            return new ExcelVerdi(Type.Belop, 0L);
+        } else if (text.startsWith("skattyters alder")) {
+            return new ExcelVerdi(Type.Heltall, 34);
+        } else if (text.startsWith("skattyters bostedkommune")) {
+            return new ExcelVerdi(Type.Tekst, "Lørenskog");
+        } else if (text.matches("-?\\d+")) {
             return new ExcelVerdi(Type.Heltall, Integer.parseInt(text));
-        }
-        else {
+        } else {
             return new ExcelVerdi(Type.Tekst, text);
         }
 
@@ -57,21 +55,21 @@ class ExcelVerdi implements ExcelUttrykk {
     public void skrivTilCelle(Cell celle) {
 
         switch (type) {
-            case Belop:
-                ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.BELOP_FORMATERING);
-                celle.setCellValue(((Long) value).doubleValue());
-                break;
-            case Prosent:
-                ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.PROSENT_FORMATERING);
-                celle.setCellValue((double) value);
-                break;
-            case Heltall:
-                ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.HELTALL_FORMATERING);
-                celle.setCellValue((int) value);
-                break;
-            default:
-                celle.setCellValue(value.toString());
-                break;
+        case Belop:
+            ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.BELOP_FORMATERING);
+            celle.setCellValue(((Long) value).doubleValue());
+            break;
+        case Prosent:
+            ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.PROSENT_FORMATERING);
+            celle.setCellValue((double) value);
+            break;
+        case Heltall:
+            ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.HELTALL_FORMATERING);
+            celle.setCellValue((int) value);
+            break;
+        default:
+            celle.setCellValue(value.toString());
+            break;
         }
     }
 

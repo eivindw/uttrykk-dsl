@@ -11,19 +11,19 @@ public class Regel {
 
     private enum RegelType {
         Skattevedtak(
-            "SSV",
-            "Stortingets skattevedtak for inntektsåret 2014",
-            "forskrift/2013-12-05-1499"
+          "SSV",
+          "Stortingets skattevedtak for inntektsåret 2014",
+          "forskrift/2013-12-05-1499"
         ),
         Skatteloven(
-            "Skatteloven",
-            "Lov om skatt av formue og inntekt (skatteloven)",
-            "lov/1999-03-26-14"
+          "Skatteloven",
+          "Lov om skatt av formue og inntekt (skatteloven)",
+          "lov/1999-03-26-14"
         ),
         Folketrygdloven(
-            "Folketrygdloven",
-            "Lov om folketrygd (folketrygdloven)",
-            "lov/1997-02-28-19"
+          "Folketrygdloven",
+          "Lov om folketrygd (folketrygdloven)",
+          "lov/1997-02-28-19"
         );
 
         private final String tittel;

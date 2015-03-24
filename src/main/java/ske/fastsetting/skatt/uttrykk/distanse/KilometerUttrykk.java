@@ -4,7 +4,7 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
 
-public class KilometerUttrykk extends AbstractUttrykk<Distanse,KilometerUttrykk> implements DistanseUttrykk {
+public class KilometerUttrykk extends AbstractUttrykk<Distanse, KilometerUttrykk> implements DistanseUttrykk {
 
 
     private final Distanse distanse;

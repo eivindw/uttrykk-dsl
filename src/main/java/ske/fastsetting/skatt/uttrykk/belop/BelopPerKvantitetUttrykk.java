@@ -10,7 +10,8 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 /**
  * Created by jorn ola birkeland on 19.03.15.
  */
-public class BelopPerKvantitetUttrykk<K extends Kvantitet> extends AbstractUttrykk<BelopPerKvantitet<K>, BelopPerKvantitetUttrykk<K>> {
+public class BelopPerKvantitetUttrykk<K extends Kvantitet> extends AbstractUttrykk<BelopPerKvantitet<K>,
+  BelopPerKvantitetUttrykk<K>> {
 
     private final BelopUttrykk belopUttrykk;
     private final Uttrykk<K> kvantitetUttrykk;

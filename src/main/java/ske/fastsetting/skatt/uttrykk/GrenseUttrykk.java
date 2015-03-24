@@ -3,7 +3,7 @@ package ske.fastsetting.skatt.uttrykk;
 // G - type på grunnlag
 // L - type på øvre og nedre grense ("limit")
 // B - baseklasse - brukes for self-referanser
-public abstract class GrenseUttrykk<G,L,B extends GrenseUttrykk<G,L,B>> extends AbstractUttrykk<G, B>  {
+public abstract class GrenseUttrykk<G, L, B extends GrenseUttrykk<G, L, B>> extends AbstractUttrykk<G, B> {
 
     private final Uttrykk<G> grunnlag;
     private Uttrykk<L> minimum;
@@ -29,11 +29,11 @@ public abstract class GrenseUttrykk<G,L,B extends GrenseUttrykk<G,L,B>> extends 
 
         if (null != minimum) {
             L min = ctx.eval(minimum);
-            verdi = begrensNedad(verdi,min);
+            verdi = begrensNedad(verdi, min);
         }
         if (null != maksimum) {
             L max = ctx.eval(maksimum);
-            verdi = begrensOppad(verdi,max);
+            verdi = begrensOppad(verdi, max);
         }
         return verdi;
     }
@@ -55,7 +55,8 @@ public abstract class GrenseUttrykk<G,L,B extends GrenseUttrykk<G,L,B>> extends 
         return stringBuilder.toString();
     }
 
-    protected abstract G begrensNedad(G verdi,L min);
-    protected abstract G begrensOppad(G verdi,L max);
+    protected abstract G begrensNedad(G verdi, L min);
+
+    protected abstract G begrensOppad(G verdi, L max);
 
 }

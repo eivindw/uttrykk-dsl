@@ -1,6 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
 
 import org.junit.Test;
+
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
@@ -17,8 +18,8 @@ public class StedbundetBelopMultisatsFunksjonTest {
     public void testEnkeltStedEnSatsGrunnlagUnderNull() {
 
         StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(-5, "A"))
-                .medSats(prosent(10));
+          = multisatsFunksjonAv(kr(-5, "A"))
+          .medSats(prosent(10));
 
         assertStedBelop(multisats, Belop.kr(0), "A");
     }
@@ -27,8 +28,8 @@ public class StedbundetBelopMultisatsFunksjonTest {
     public void testEnkeltStedEnSatsUnderGrense() {
 
         StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(30, "A"))
-                .medSats(prosent(10),KroneUttrykk.kr(50));
+          = multisatsFunksjonAv(kr(30, "A"))
+          .medSats(prosent(10), KroneUttrykk.kr(50));
 
         assertStedBelop(multisats, Belop.kr(3), "A");
     }
@@ -37,8 +38,8 @@ public class StedbundetBelopMultisatsFunksjonTest {
     public void testEnkeltStedEnSatsOverGrense() {
 
         StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(70, "A"))
-                .medSats(prosent(10),KroneUttrykk.kr(50));
+          = multisatsFunksjonAv(kr(70, "A"))
+          .medSats(prosent(10), KroneUttrykk.kr(50));
 
         assertStedBelop(multisats, Belop.kr(5), "A");
     }
@@ -47,9 +48,9 @@ public class StedbundetBelopMultisatsFunksjonTest {
     public void testEnkeltStedToSatserUnderNedersteGrense() {
 
         StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(10, "A"))
-                .medSats(prosent(10),KroneUttrykk.kr(20))
-                .medSats(prosent(5), KroneUttrykk.kr(50));
+          = multisatsFunksjonAv(kr(10, "A"))
+          .medSats(prosent(10), KroneUttrykk.kr(20))
+          .medSats(prosent(5), KroneUttrykk.kr(50));
 
         assertStedBelop(multisats, Belop.kr(1), "A");
     }
@@ -59,9 +60,9 @@ public class StedbundetBelopMultisatsFunksjonTest {
     public void testEnkeltStedToSatserUnderOevrsteGense() {
 
         StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(30, "A"))
-                .medSats(prosent(100),KroneUttrykk.kr(20))
-                .medSats(prosent(50), KroneUttrykk.kr(50));
+          = multisatsFunksjonAv(kr(30, "A"))
+          .medSats(prosent(100), KroneUttrykk.kr(20))
+          .medSats(prosent(50), KroneUttrykk.kr(50));
 
         assertStedBelop(multisats, Belop.kr(25), "A");
     }
@@ -70,9 +71,9 @@ public class StedbundetBelopMultisatsFunksjonTest {
     public void testEnkeltStedToSatserOverOevrsteGense() {
 
         StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(70, "A"))
-                .medSats(prosent(100),KroneUttrykk.kr(20))
-                .medSats(prosent(50), KroneUttrykk.kr(50));
+          = multisatsFunksjonAv(kr(70, "A"))
+          .medSats(prosent(100), KroneUttrykk.kr(20))
+          .medSats(prosent(50), KroneUttrykk.kr(50));
 
         assertStedBelop(multisats, Belop.kr(35), "A");
     }
@@ -81,8 +82,8 @@ public class StedbundetBelopMultisatsFunksjonTest {
     public void testToStederEnSatsBeggeGrunnlagUnderNull() {
 
         StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(-5, "A").pluss(kr(-10,"B")))
-                .medSats(prosent(10));
+          = multisatsFunksjonAv(kr(-5, "A").pluss(kr(-10, "B")))
+          .medSats(prosent(10));
 
         assertStedBelop(multisats, Belop.kr(0), "A");
         assertStedBelop(multisats, Belop.kr(0), "B");
@@ -92,8 +93,8 @@ public class StedbundetBelopMultisatsFunksjonTest {
     public void testToStederEnSatsUnderGense() {
 
         StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(50, "A").pluss(kr(100, "B")))
-                .medSats(prosent(10),KroneUttrykk.kr(200));
+          = multisatsFunksjonAv(kr(50, "A").pluss(kr(100, "B")))
+          .medSats(prosent(10), KroneUttrykk.kr(200));
 
         assertStedBelop(multisats, Belop.kr(5), "A");
         assertStedBelop(multisats, Belop.kr(10), "B");
@@ -103,8 +104,8 @@ public class StedbundetBelopMultisatsFunksjonTest {
     public void testToStederEnSatsOverGense() {
 
         StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(100, "A").pluss(kr(200,"B")))
-                .medSats(prosent(100),KroneUttrykk.kr(200));
+          = multisatsFunksjonAv(kr(100, "A").pluss(kr(200, "B")))
+          .medSats(prosent(100), KroneUttrykk.kr(200));
 
         assertStedBelop(multisats, Belop.kr(67), "A");
         assertStedBelop(multisats, Belop.kr(133), "B");
@@ -114,9 +115,9 @@ public class StedbundetBelopMultisatsFunksjonTest {
     public void testToStederToSatserUnderOeversteGense() {
 
         StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(100, "A").pluss(kr(200,"B")))
-                .medSats(prosent(100),KroneUttrykk.kr(200))
-                .medSats(prosent(50),KroneUttrykk.kr(400));
+          = multisatsFunksjonAv(kr(100, "A").pluss(kr(200, "B")))
+          .medSats(prosent(100), KroneUttrykk.kr(200))
+          .medSats(prosent(50), KroneUttrykk.kr(400));
 
         // A: 66.67 + 16.67
         // B: 133.33 + 33.33
@@ -129,9 +130,9 @@ public class StedbundetBelopMultisatsFunksjonTest {
     public void testToStederToSatserOverOeversteGense() {
 
         StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(200, "A").pluss(kr(400,"B")))
-                .medSats(prosent(100),KroneUttrykk.kr(200))
-                .medSats(prosent(50),KroneUttrykk.kr(400));
+          = multisatsFunksjonAv(kr(200, "A").pluss(kr(400, "B")))
+          .medSats(prosent(100), KroneUttrykk.kr(200))
+          .medSats(prosent(50), KroneUttrykk.kr(400));
 
         // A: 66.67 + 33.33
         // B 133.33 + 66.67
@@ -144,8 +145,8 @@ public class StedbundetBelopMultisatsFunksjonTest {
     public void testToStederEnSatsEttGrunnlagUnderNull() {
 
         StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(-10, "A").pluss(kr(10,"B")))
-                .medSats(prosent(50));
+          = multisatsFunksjonAv(kr(-10, "A").pluss(kr(10, "B")))
+          .medSats(prosent(50));
 
         assertStedBelop(multisats, Belop.kr(-5), "A");
         assertStedBelop(multisats, Belop.kr(5), "B");
@@ -154,9 +155,9 @@ public class StedbundetBelopMultisatsFunksjonTest {
     @Test
     public void testEtStedToSatserOeverstegrenseLavereEnnUnderste() {
         StedbundetBelopUttrykk<String> multisats
-                = multisatsFunksjonAv(kr(100, "A"))
-                .medSats(prosent(50), KroneUttrykk.kr(50))
-                .medSats(prosent(25), KroneUttrykk.kr(0));
+          = multisatsFunksjonAv(kr(100, "A"))
+          .medSats(prosent(50), KroneUttrykk.kr(50))
+          .medSats(prosent(25), KroneUttrykk.kr(0));
 
         assertStedBelop(multisats, Belop.kr(25), "A");
 

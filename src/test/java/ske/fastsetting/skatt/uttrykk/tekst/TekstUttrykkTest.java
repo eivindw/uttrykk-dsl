@@ -1,6 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.tekst;
 
 import org.junit.Test;
+
 import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 
 import static org.junit.Assert.assertFalse;

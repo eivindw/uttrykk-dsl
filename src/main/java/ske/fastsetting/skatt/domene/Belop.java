@@ -7,7 +7,7 @@ import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-public class Belop extends Kvantitet<Long,Krone> implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
+public class Belop extends Kvantitet<Long, Krone> implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
     public static final Belop NULL = Belop.kr(0);
 
@@ -44,12 +44,12 @@ public class Belop extends Kvantitet<Long,Krone> implements Comparable<Belop>, K
     public Belop rundAvTilNaermeste(int naermesteKrone) {
         BigDecimal kr = BigDecimal.valueOf(naermesteKrone);
         return fraKr(
-            BigDecimal
-                .valueOf(toInteger())
-                .add(BigDecimal.valueOf(naermesteKrone / 2))
-                .divideToIntegralValue(kr)
-                .multiply(kr)
-                .doubleValue()
+          BigDecimal
+            .valueOf(toInteger())
+            .add(BigDecimal.valueOf(naermesteKrone / 2))
+            .divideToIntegralValue(kr)
+            .multiply(kr)
+            .doubleValue()
         );
     }
 

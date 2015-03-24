@@ -1,6 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
 import org.junit.Test;
+
 import ske.fastsetting.skatt.domene.Belop;
 
 import static org.junit.Assert.assertEquals;

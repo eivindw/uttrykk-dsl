@@ -9,9 +9,9 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
-* Created by jorn ola birkeland on 21.03.15.
-*/
-class TilBelopUttrykk extends AbstractUttrykk<Belop,TilBelopUttrykk> implements BelopUttrykk {
+ * Created by jorn ola birkeland on 21.03.15.
+ */
+class TilBelopUttrykk extends AbstractUttrykk<Belop, TilBelopUttrykk> implements BelopUttrykk {
     private Uttrykk<Belop> uttrykk;
 
     public static Collection<BelopUttrykk> tilBelopUttrykk(Collection<Uttrykk<Belop>> uttrykk) {

@@ -6,9 +6,8 @@ import ske.fastsetting.skatt.uttrykk.MultiplikasjonsUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 
 public class BelopMultiplikasjonsUttrykk
-    extends MultiplikasjonsUttrykk<Belop, BelopUttrykk, BelopMultiplikasjonsUttrykk>
-    implements BelopUttrykk
-{
+  extends MultiplikasjonsUttrykk<Belop, BelopUttrykk, BelopMultiplikasjonsUttrykk>
+  implements BelopUttrykk {
     public BelopMultiplikasjonsUttrykk(BelopUttrykk beloputtrykk, Uttrykk<Tall> tallUttrykk) {
         super(beloputtrykk, tallUttrykk);
     }

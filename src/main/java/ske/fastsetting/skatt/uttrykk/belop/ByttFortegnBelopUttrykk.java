@@ -4,7 +4,7 @@ import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class ByttFortegnBelopUttrykk extends AbstractUttrykk<Belop,ByttFortegnBelopUttrykk> implements BelopUttrykk {
+public class ByttFortegnBelopUttrykk extends AbstractUttrykk<Belop, ByttFortegnBelopUttrykk> implements BelopUttrykk {
     private BelopUttrykk belopUttrykk;
 
     public ByttFortegnBelopUttrykk(BelopUttrykk belopUttrykk) {
@@ -18,6 +18,6 @@ public class ByttFortegnBelopUttrykk extends AbstractUttrykk<Belop,ByttFortegnBe
 
     @Override
     public String beskriv(UttrykkContext ctx) {
-        return " - "+ ctx.beskriv(belopUttrykk);
+        return " - " + ctx.beskriv(belopUttrykk);
     }
 }

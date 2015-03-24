@@ -6,7 +6,7 @@ import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
-public class EktefelleUttrykk extends AbstractUttrykk<Belop,EktefelleUttrykk> implements BelopUttrykk {
+public class EktefelleUttrykk extends AbstractUttrykk<Belop, EktefelleUttrykk> implements BelopUttrykk {
 
     private Uttrykk<Belop> ektefelleUttrykk;
 
@@ -21,7 +21,7 @@ public class EktefelleUttrykk extends AbstractUttrykk<Belop,EktefelleUttrykk> im
 
     @Override
     public Belop eval(UttrykkContext ctx) {
-        if(ctx.harInput(EktefelleUttrykkContext.class)) {
+        if (ctx.harInput(EktefelleUttrykkContext.class)) {
             return ektefelleUttrykk.eval(ctx.input(EktefelleUttrykkContext.class));
         } else {
             return Belop.NULL;
@@ -30,7 +30,7 @@ public class EktefelleUttrykk extends AbstractUttrykk<Belop,EktefelleUttrykk> im
 
     @Override
     public String beskriv(UttrykkContext ctx) {
-        return "ektefelles "+ctx.beskriv(ektefelleUttrykk);
+        return "ektefelles " + ctx.beskriv(ektefelleUttrykk);
     }
 
 }

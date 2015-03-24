@@ -2,6 +2,7 @@ package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel;
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 import ske.fastsetting.skatt.uttrykk.util.IdUtil;
@@ -135,7 +136,8 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
             }
 
             for (String subId : subIder) {
-                resultatUttrykk = resultatUttrykk.replaceAll("<" + subId + ">", new RekursivUttrykkBeskriver(subId).beskriv());
+                resultatUttrykk = resultatUttrykk.replaceAll("<" + subId + ">", new RekursivUttrykkBeskriver(subId)
+                  .beskriv());
             }
 
             return harNavn() ? beskrivNavngittUttrykk(resultatUttrykk) : beskrivAnonymtUttrykk(resultatUttrykk);

@@ -2,6 +2,7 @@ package ske.fastsetting.skatt.uttrykk.skalSlettes;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
 import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 
 /**

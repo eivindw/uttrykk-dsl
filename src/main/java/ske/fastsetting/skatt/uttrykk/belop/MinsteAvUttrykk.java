@@ -21,14 +21,14 @@ public class MinsteAvUttrykk extends AbstractUttrykk<Belop, MinsteAvUttrykk> imp
     @Override
     public Belop eval(UttrykkContext ctx) {
         return Stream.of(uttrykk)
-            .map(ctx::eval)
-            .min(Belop::sammenliknMed).get();
+          .map(ctx::eval)
+          .min(Belop::sammenliknMed).get();
     }
 
     @Override
     public String beskriv(UttrykkContext ctx) {
         return Stream.of(uttrykk)
-            .map(ctx::beskriv)
-            .collect(Collectors.joining(",", "minste av (", ")"));
+          .map(ctx::beskriv)
+          .collect(Collectors.joining(",", "minste av (", ")"));
     }
 }

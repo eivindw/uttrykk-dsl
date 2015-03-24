@@ -3,7 +3,8 @@ package ske.fastsetting.skatt.uttrykk.belop;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopUttrykk;
 
-public class GrenseUttrykk extends ske.fastsetting.skatt.uttrykk.GrenseUttrykk<Belop,Belop, GrenseUttrykk> implements BelopUttrykk {
+public class GrenseUttrykk extends ske.fastsetting.skatt.uttrykk.GrenseUttrykk<Belop, Belop, GrenseUttrykk>
+  implements BelopUttrykk {
 
     protected GrenseUttrykk(BelopUttrykk grunnlag) {
         super(grunnlag);

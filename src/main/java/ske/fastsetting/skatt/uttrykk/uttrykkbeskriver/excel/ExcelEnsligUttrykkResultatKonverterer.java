@@ -16,7 +16,7 @@ public class ExcelEnsligUttrykkResultatKonverterer {
         final Map<String, Map> uttrykksmap = new HashMap<>();
 
         uttrykkResultat.uttrykk().entrySet()
-            .forEach(e -> uttrykksmap.put(e.getKey(), kopierOgErstattEktefellesMed0(e.getValue())));
+          .forEach(e -> uttrykksmap.put(e.getKey(), kopierOgErstattEktefellesMed0(e.getValue())));
 
         return new IndreUttrykkResultat<V>(uttrykksmap, uttrykkResultat.start());
     }
@@ -29,7 +29,7 @@ public class ExcelEnsligUttrykkResultatKonverterer {
 
         //Fix excel_ID
         nyMap.put(KEY_EXCEL_ID,
-            ExcelUtil.lagGyldigCellenavn((String) map.getOrDefault(UttrykkResultat.KEY_NAVN, ""))
+          ExcelUtil.lagGyldigCellenavn((String) map.getOrDefault(UttrykkResultat.KEY_NAVN, ""))
         );
 
         //Replace "ektefelles" with 0

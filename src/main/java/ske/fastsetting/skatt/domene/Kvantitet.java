@@ -19,5 +19,6 @@ public abstract class Kvantitet<V, E extends Enhet> {
     }
 
     public abstract BigDecimal toBigDecimal();
-    public abstract Kvantitet<V,E> multiplisertMed(BigDecimal faktor);
+
+    public abstract Kvantitet<V, E> multiplisertMed(BigDecimal faktor);
 }

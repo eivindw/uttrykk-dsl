@@ -18,13 +18,14 @@ public class SkatteberegningHelper {
 
     static BelopUttrykk jordbruksfradrag() {
 
-        BelopUttrykk jordbruksinntekt = skattegrunnlagobjekt(Skattegrunnlag.SKATTEGRUNNLAGOBJEKT_TYPE__INNTEKT_JORDBRUK).navn("Inntekt jordbruk").tags("skattegrunnlag");
+        BelopUttrykk jordbruksinntekt = skattegrunnlagobjekt(Skattegrunnlag
+          .SKATTEGRUNNLAGOBJEKT_TYPE__INNTEKT_JORDBRUK).navn("Inntekt jordbruk").tags("skattegrunnlag");
 
         BelopUttrykk totalJordbruksinntekt = jordbruksinntekt.pluss(ektefelles(jordbruksinntekt));
 
-        BelopUttrykk ubegrensetTotalfradrag =  MINSTE_JORDBRUKSFRADRAG
-                .pluss(((totalJordbruksinntekt
-                        .minus(MINSTE_JORDBRUKSFRADRAG)).multiplisertMed(JORDBRUKS_FRADRAG_SATS)));
+        BelopUttrykk ubegrensetTotalfradrag = MINSTE_JORDBRUKSFRADRAG
+          .pluss(((totalJordbruksinntekt
+            .minus(MINSTE_JORDBRUKSFRADRAG)).multiplisertMed(JORDBRUKS_FRADRAG_SATS)));
 
         BelopUttrykk totalfradrag = begrens(ubegrensetTotalfradrag).nedad(kr(0)).oppad(MAKS_JORDBRUKSFRADRAG);
 

@@ -8,7 +8,8 @@ import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.UttrykkBeskriver;
 import java.util.*;
 
 @SuppressWarnings("unchecked")
-public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, ConfluenceUttrykkBeskriver.ConfluenceSide>> {
+public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, ConfluenceUttrykkBeskriver
+  .ConfluenceSide>> {
 
     private final Map<String, ConfluenceSide> innholdsfortegnelse = new HashMap<>();
 
@@ -30,7 +31,7 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
 
         final String navn = (String) uttrykk.get(UttrykkResultat.KEY_NAVN);
         final List<Regel> regler =
-            (List<Regel>) uttrykk.getOrDefault(UttrykkResultat.KEY_REGLER, Collections.emptyList());
+          (List<Regel>) uttrykk.getOrDefault(UttrykkResultat.KEY_REGLER, Collections.emptyList());
         final Set<String> tags = (Set<String>) uttrykk.getOrDefault(UttrykkResultat.KEY_TAGS, Collections.emptySet());
 
         String tmpUttrykkString = (String) uttrykk.getOrDefault(UttrykkResultat.KEY_UTTRYKK, "");
@@ -45,14 +46,14 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
 
         if (navn != null) {
 
-            String vasketNavn = navn.replace('/','-');
+            String vasketNavn = navn.replace('/', '-');
 
             innholdsfortegnelse.computeIfAbsent(vasketNavn, tittel ->
                 new InnholdConfluenceSide(
-                    tittel,
-                    uttrykkString,
-                    tags,
-                    regler
+                  tittel,
+                  uttrykkString,
+                  tags,
+                  regler
                 )
             );
 
@@ -97,19 +98,21 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
             return tittel;
         }
 
-        public Set<String> getTags() { return tags; }
+        public Set<String> getTags() {
+            return tags;
+        }
 
         private String innholdMedOverskrift() {
             return "h3. " + tittel
-                + "\r\n"
-                + innhold.toString()
-                + lagReferanser();
+              + "\r\n"
+              + innhold.toString()
+              + lagReferanser();
         }
 
         private String satsInnhold() {
             return "{details:label=sats}\r\n" +
-                "sats: " + innhold.toString() +
-                "{details}" + lagReferanser();
+              "sats: " + innhold.toString() +
+              "{details}" + lagReferanser();
         }
 
         private String lagReferanser() {

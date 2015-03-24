@@ -4,7 +4,8 @@ import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class MinusStedUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,MinusStedUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+public class MinusStedUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>, MinusStedUttrykk<K>> implements
+  StedbundetBelopUttrykk<K> {
 
     private final StedbundetBelopUttrykk<K> uttrykk;
     private final StedbundetBelopUttrykk<K> ledd;
@@ -22,13 +23,13 @@ public class MinusStedUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,Minu
         StedbundetBelop<K> ledd2 = ctx.eval(ledd);
 
         return ledd1.steder().stream()
-                .filter(s -> !ledd2.harSted(s))
-                .map(s -> StedbundetBelop.kr(ledd1.get(s), s))
-                .reduce(StedbundetBelop.kr0(), StedbundetBelop::pluss);
+          .filter(s -> !ledd2.harSted(s))
+          .map(s -> StedbundetBelop.kr(ledd1.get(s), s))
+          .reduce(StedbundetBelop.kr0(), StedbundetBelop::pluss);
     }
 
     @Override
     public String beskriv(UttrykkContext ctx) {
-        return ctx.beskriv(uttrykk)+ " - sted("+ctx.beskriv(ledd)+")";
+        return ctx.beskriv(uttrykk) + " - sted(" + ctx.beskriv(ledd) + ")";
     }
 }

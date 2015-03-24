@@ -4,9 +4,9 @@ import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.Kvantitet;
 
 /**
-* Created by jorn ola birkeland on 19.03.15.
-*/
-public class BelopPerKvantitet<K extends Kvantitet>  {
+ * Created by jorn ola birkeland on 19.03.15.
+ */
+public class BelopPerKvantitet<K extends Kvantitet> {
 
     private Belop belop;
 

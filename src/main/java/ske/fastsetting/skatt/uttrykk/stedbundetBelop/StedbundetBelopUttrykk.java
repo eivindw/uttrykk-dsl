@@ -12,27 +12,53 @@ import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 import java.util.Arrays;
 
 public interface StedbundetBelopUttrykk<K> extends Uttrykk<StedbundetBelop<K>> {
-    default StedbundetBelopSumUttrykk<K> pluss(StedbundetBelopUttrykk<K> ledd) { return StedbundetBelopSumUttrykk.sum(Arrays.asList(this, ledd));}
+    default StedbundetBelopSumUttrykk<K> pluss(StedbundetBelopUttrykk<K> ledd) {
+        return StedbundetBelopSumUttrykk.sum(Arrays.asList(this, ledd));
+    }
 
-    default StedbundetBelopDivisjonsUttrykk<K> dividertMed(TallUttrykk tall) {return new StedbundetBelopDivisjonsUttrykk<>(this,tall);}
-    default BelopDividertMedBelopUttrykk dividertMed(StedbundetBelopUttrykk<K> divident) {return new BelopDividertMedBelopUttrykk(this.steduavhengig(), divident.steduavhengig());}
-    default BelopDividertMedBelopUttrykk dividertMed(BelopUttrykk divident) {return new BelopDividertMedBelopUttrykk(this.steduavhengig(), divident);}
+    default StedbundetBelopDivisjonsUttrykk<K> dividertMed(TallUttrykk tall) {
+        return new StedbundetBelopDivisjonsUttrykk<>(this, tall);
+    }
 
-    default StedbundetBelopMultiplikasjonsUttrykk<K> multiplisertMed(Uttrykk<Tall> tall) {return new StedbundetBelopMultiplikasjonsUttrykk<>(this,tall);}
+    default BelopDividertMedBelopUttrykk dividertMed(StedbundetBelopUttrykk<K> divident) {
+        return new BelopDividertMedBelopUttrykk(this.steduavhengig(), divident.steduavhengig());
+    }
 
-    default StedbundetBelopDiffUttrykk<K> minus(StedbundetBelopUttrykk<K> ledd) { return new StedbundetBelopDiffUttrykk<K>(this,ledd);}
+    default BelopDividertMedBelopUttrykk dividertMed(BelopUttrykk divident) {
+        return new BelopDividertMedBelopUttrykk(this.steduavhengig(), divident);
+    }
 
-    default BelopDiffUttrykk minus(BelopUttrykk ledd) { return new TilSteduavhengigBelopUttrykk(this).minus(ledd);}
-    default BelopSumUttrykk pluss(BelopUttrykk ledd) { return new TilSteduavhengigBelopUttrykk(this).pluss(ledd);}
+    default StedbundetBelopMultiplikasjonsUttrykk<K> multiplisertMed(Uttrykk<Tall> tall) {
+        return new StedbundetBelopMultiplikasjonsUttrykk<>(this, tall);
+    }
+
+    default StedbundetBelopDiffUttrykk<K> minus(StedbundetBelopUttrykk<K> ledd) {
+        return new StedbundetBelopDiffUttrykk<K>(this, ledd);
+    }
+
+    default BelopDiffUttrykk minus(BelopUttrykk ledd) {
+        return new TilSteduavhengigBelopUttrykk(this).minus(ledd);
+    }
+
+    default BelopSumUttrykk pluss(BelopUttrykk ledd) {
+        return new TilSteduavhengigBelopUttrykk(this).pluss(ledd);
+    }
 
     default TilSteduavhengigBelopUttrykk steduavhengig() {
         return new TilSteduavhengigBelopUttrykk(this);
     }
 
-    default ProporsjonalFordelingDiffUttrykk<K> minusProporsjonalt(BelopUttrykk ledd) { return new ProporsjonalFordelingDiffUttrykk<>(this, ledd);}
-    default ProporsjonalFordelingSumUttrykk<K> plussProporsjonalt(BelopUttrykk belop) { return new ProporsjonalFordelingSumUttrykk<>(this, belop);}
+    default ProporsjonalFordelingDiffUttrykk<K> minusProporsjonalt(BelopUttrykk ledd) {
+        return new ProporsjonalFordelingDiffUttrykk<>(this, ledd);
+    }
 
-    default MinusStedUttrykk<K> minusSted(StedbundetBelopUttrykk<K> ledd) { return new MinusStedUttrykk<>(this,ledd);}
+    default ProporsjonalFordelingSumUttrykk<K> plussProporsjonalt(BelopUttrykk belop) {
+        return new ProporsjonalFordelingSumUttrykk<>(this, belop);
+    }
+
+    default MinusStedUttrykk<K> minusSted(StedbundetBelopUttrykk<K> ledd) {
+        return new MinusStedUttrykk<>(this, ledd);
+    }
 
 
 }

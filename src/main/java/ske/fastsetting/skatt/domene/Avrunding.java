@@ -19,6 +19,6 @@ public enum Avrunding {
     }
 
     public BigDecimal rundAv(BigDecimal verdi, int presisjon) {
-        return verdi.round(new MathContext(presisjon,roundingMode));
+        return verdi.round(new MathContext(presisjon, roundingMode));
     }
 }

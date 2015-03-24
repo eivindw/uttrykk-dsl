@@ -1,6 +1,7 @@
 package ske.fastsetting.skatt.uttrykk;
 
 import org.junit.Test;
+
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 

@@ -1,6 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
 
 import org.junit.Test;
+
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.skalSlettes.BeregningsgrunnlagTallUttrykk;
@@ -96,7 +97,8 @@ public class StedbundetBelopTest {
 
     @Test
     public void beregningsgrunnlagTest() {
-        TallUttrykk pensjonsgrad = BeregningsgrunnlagTallUttrykk.beregningsgrunnlag(bg -> bg.getAlderspensjon().pensjonsgrad());
+        TallUttrykk pensjonsgrad = BeregningsgrunnlagTallUttrykk.beregningsgrunnlag(bg -> bg.getAlderspensjon()
+          .pensjonsgrad());
 
     }
 }

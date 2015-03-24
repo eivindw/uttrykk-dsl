@@ -1,6 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.skalSlettes;
 
 import org.junit.Test;
+
 import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 import ske.fastsetting.skatt.uttrykk.belop.BelopMultisatsFunksjon;
 import ske.fastsetting.skatt.uttrykk.belop.BelopPerKvantitetUttrykk;
@@ -26,7 +27,8 @@ public class Reisefradrag {
 //        System.out.println(UttrykkContextImpl.beregne(km(18).multiplisertMed(kr(1.40).per(km()))).verdi());
     }
 
-    BelopUttrykk reisefradrag(DistanseUttrykk hjemArbeidReiseKm, DistanseUttrykk besoekReiseKm, BelopUttrykk bomEtcBrutto) {
+    BelopUttrykk reisefradrag(DistanseUttrykk hjemArbeidReiseKm, DistanseUttrykk besoekReiseKm, BelopUttrykk
+      bomEtcBrutto) {
         final BelopPerKvantitetUttrykk<Distanse> SATS_REISE_HOY = kr(1.50).per(km());
         final BelopPerKvantitetUttrykk<Distanse> SATS_REISE_LAV = kr(0.70).per(km());
 
@@ -40,10 +42,11 @@ public class Reisefradrag {
         DistanseUttrykk reiseKm = hjemArbeidReiseKm.pluss(besoekReiseKm);
 
         BelopUttrykk bruttoReise = multisats(reiseKm)
-                .medSats(SATS_REISE_HOY, OEVRE_GRENSE_SATS_REISE_HØY_KM)
-                .medSats(SATS_REISE_LAV, OEVRE_GRENSE_SATS_REISE_LAV_KM);
+          .medSats(SATS_REISE_HOY, OEVRE_GRENSE_SATS_REISE_HØY_KM)
+          .medSats(SATS_REISE_LAV, OEVRE_GRENSE_SATS_REISE_LAV_KM);
 
-        BelopUttrykk bomEtcUtgifter = hvis(bomEtcBrutto.erStorreEnn(NEDRE_GRENSE_BOM)).brukDa(bomEtcBrutto).ellersBruk(kr(0));
+        BelopUttrykk bomEtcUtgifter = hvis(bomEtcBrutto.erStorreEnn(NEDRE_GRENSE_BOM)).brukDa(bomEtcBrutto)
+          .ellersBruk(kr(0));
 
         BelopUttrykk begrensetBrutto = begrens(bruttoReise.pluss(bomEtcUtgifter)).oppad(MAKS_REISEUTGIFTER);
 
@@ -54,8 +57,8 @@ public class Reisefradrag {
     BelopUttrykk prosent2() {
 
         return BelopMultisatsFunksjon.multisatsFunksjonAv(kr(650)).medSats(prosent(12), kr(300))
-                .medSats(prosent(6), kr(700))
-                .medSats(prosent(0), null);
+          .medSats(prosent(6), kr(700))
+          .medSats(prosent(0), null);
 
     }
 

@@ -6,7 +6,8 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
-public class StedbundetBelopAvrundingsUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,StedbundetBelopAvrundingsUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+public class StedbundetBelopAvrundingsUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,
+  StedbundetBelopAvrundingsUttrykk<K>> implements StedbundetBelopUttrykk<K> {
 
     private StedbundetBelopUttrykk<K> belopUttrykk;
 
@@ -27,6 +28,6 @@ public class StedbundetBelopAvrundingsUttrykk<K> extends AbstractUttrykk<Stedbun
 
     @Override
     public String beskriv(UttrykkContext uttrykkContext) {
-        return "rund av til hele kroner ("+uttrykkContext.beskriv(belopUttrykk)+")";
+        return "rund av til hele kroner (" + uttrykkContext.beskriv(belopUttrykk) + ")";
     }
 }

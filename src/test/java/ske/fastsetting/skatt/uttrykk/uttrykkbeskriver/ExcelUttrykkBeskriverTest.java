@@ -4,6 +4,7 @@ package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Assert;
 import org.junit.Test;
+
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.BasisTest;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
@@ -33,9 +34,12 @@ public class ExcelUttrykkBeskriverTest {
 
         Assert.assertEquals("if(A,B)", ExcelFormel.HvisParser.parse("hvis A bruk da B"));
         Assert.assertEquals("if(A,B,C)", ExcelFormel.HvisParser.parse("hvis A bruk da B ellers bruk C"));
-        Assert.assertEquals("if(A,B,if(C,D))", ExcelFormel.HvisParser.parse("hvis A bruk da B ellers hvis C bruk da D"));
-        Assert.assertEquals("if(A,B,if(C,D,E))", ExcelFormel.HvisParser.parse("hvis A bruk da B ellers hvis C bruk da D ellers bruk E"));
-        Assert.assertEquals("if(A,B,if(C,D,if(E,F)))", ExcelFormel.HvisParser.parse("hvis A bruk da B ellers hvis C bruk da D ellers hvis E bruk da F"));
+        Assert.assertEquals("if(A,B,if(C,D))", ExcelFormel.HvisParser.parse("hvis A bruk da B ellers hvis C bruk da "
+          + "D"));
+        Assert.assertEquals("if(A,B,if(C,D,E))", ExcelFormel.HvisParser.parse("hvis A bruk da B ellers hvis C bruk da"
+          + " D ellers bruk E"));
+        Assert.assertEquals("if(A,B,if(C,D,if(E,F)))", ExcelFormel.HvisParser.parse("hvis A bruk da B ellers hvis C "
+          + "bruk da D ellers hvis E bruk da F"));
     }
 
 }

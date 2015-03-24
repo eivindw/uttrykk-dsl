@@ -5,9 +5,10 @@ import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
 import java.util.function.Function;
 
-public class BeregningsgrunnlagTallUttrykk extends Beregningsgrunnlag.BeregningsgrunnlagUttrykk<Tall,TallUttrykk,BeregningsgrunnlagTallUttrykk> implements TallUttrykk {
+public class BeregningsgrunnlagTallUttrykk extends Beregningsgrunnlag.BeregningsgrunnlagUttrykk<Tall, TallUttrykk,
+  BeregningsgrunnlagTallUttrykk> implements TallUttrykk {
 
-    public static BeregningsgrunnlagTallUttrykk beregningsgrunnlag(Function<Beregningsgrunnlag,TallUttrykk> function) {
+    public static BeregningsgrunnlagTallUttrykk beregningsgrunnlag(Function<Beregningsgrunnlag, TallUttrykk> function) {
         return new BeregningsgrunnlagTallUttrykk(function);
     }
 

@@ -6,8 +6,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttrykk<T>, B extends SumUttrykk<T, U, B>>
-    extends AbstractUttrykk<T, B>
-{
+  extends AbstractUttrykk<T, B> {
 
     protected final Collection<U> uttrykk;
 
@@ -18,9 +17,9 @@ public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttryk
     @Override
     public T eval(UttrykkContext ctx) {
         return uttrykk.stream()
-            .map(ctx::eval)
-            .reduce(KalkulerbarVerdi::pluss)
-            .orElse(nullVerdi());
+          .map(ctx::eval)
+          .reduce(KalkulerbarVerdi::pluss)
+          .orElse(nullVerdi());
     }
 
     protected abstract T nullVerdi();
@@ -28,8 +27,8 @@ public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttryk
     @Override
     public String beskriv(UttrykkContext ctx) {
         return uttrykk.stream()
-            .map(ctx::beskriv)
-            .collect(Collectors.joining(" + "));
+          .map(ctx::beskriv)
+          .collect(Collectors.joining(" + "));
     }
 
 

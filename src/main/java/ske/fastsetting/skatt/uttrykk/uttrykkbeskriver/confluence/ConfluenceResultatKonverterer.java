@@ -15,7 +15,7 @@ public class ConfluenceResultatKonverterer {
         final Map<String, Map> uttrykksmap = new HashMap<>();
 
         uttrykkResultat.uttrykk().entrySet()
-            .forEach(e -> uttrykksmap.put(e.getKey(), kopierOgErstattUttrykk(e.getValue())));
+          .forEach(e -> uttrykksmap.put(e.getKey(), kopierOgErstattUttrykk(e.getValue())));
 
         return new IndreUttrykkResultat<V>(uttrykksmap, uttrykkResultat.start());
     }
@@ -39,10 +39,10 @@ public class ConfluenceResultatKonverterer {
 
         String resultat = uttrykk;
 
-        resultat = resultat.startsWith("multisats") ? resultat.replace(",",", ") : resultat;
-        resultat = resultat.replaceAll("multisats\\((.*)\\)","$1");
-        resultat = resultat.replaceAll("satsFraTil\\((.*),(.*),(.*),(.*)\\)","$2 av $1 over $3 og inntil $4");
-        resultat = resultat.replaceAll("satsFra\\((.*),(.*),(.*)\\)","$2 av $1 over $3");
+        resultat = resultat.startsWith("multisats") ? resultat.replace(",", ", ") : resultat;
+        resultat = resultat.replaceAll("multisats\\((.*)\\)", "$1");
+        resultat = resultat.replaceAll("satsFraTil\\((.*),(.*),(.*),(.*)\\)", "$2 av $1 over $3 og inntil $4");
+        resultat = resultat.replaceAll("satsFra\\((.*),(.*),(.*)\\)", "$2 av $1 over $3");
 
         return resultat;
     }

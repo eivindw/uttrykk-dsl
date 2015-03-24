@@ -5,7 +5,8 @@ import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
 import java.util.function.Function;
 
-public class BeregningsgrunnlagBelopUttrykk extends Beregningsgrunnlag.BeregningsgrunnlagUttrykk<Belop,BelopUttrykk,BeregningsgrunnlagBelopUttrykk> implements BelopUttrykk {
+public class BeregningsgrunnlagBelopUttrykk extends Beregningsgrunnlag.BeregningsgrunnlagUttrykk<Belop, BelopUttrykk,
+  BeregningsgrunnlagBelopUttrykk> implements BelopUttrykk {
 
     public static BelopUttrykk beregningsgrunnlag(Function<Beregningsgrunnlag, BelopUttrykk> function) {
         return new BeregningsgrunnlagBelopUttrykk(function);

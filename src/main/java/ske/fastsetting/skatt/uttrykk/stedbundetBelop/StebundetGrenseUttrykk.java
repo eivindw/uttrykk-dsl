@@ -4,7 +4,8 @@ import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.GrenseUttrykk;
 
-public class StebundetGrenseUttrykk<K> extends GrenseUttrykk<StedbundetBelop<K>, Belop, StebundetGrenseUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+public class StebundetGrenseUttrykk<K> extends GrenseUttrykk<StedbundetBelop<K>, Belop, StebundetGrenseUttrykk<K>>
+  implements StedbundetBelopUttrykk<K> {
 
 
     protected StebundetGrenseUttrykk(StedbundetBelopUttrykk<K> grunnlag) {

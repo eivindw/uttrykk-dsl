@@ -59,7 +59,6 @@ public class ExcelFormel implements ExcelUttrykk {
     private static final String ER_EN_AV_REGEX = "^(.*) er en av \\((.*)\\)$";
 
 
-
     public ExcelFormel(String uttrykkStreng) {
 
         this.formel = uttrykkStreng;

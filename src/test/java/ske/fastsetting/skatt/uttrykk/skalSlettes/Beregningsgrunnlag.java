@@ -18,7 +18,8 @@ public interface Beregningsgrunnlag {
 
     TallUttrykk getBjarne();
 
-    public abstract class BeregningsgrunnlagUttrykk<V, U extends Uttrykk<V>, B extends AbstractUttrykk<V, B>> extends AbstractUttrykk<V, B> {
+    public abstract class BeregningsgrunnlagUttrykk<V, U extends Uttrykk<V>, B extends AbstractUttrykk<V, B>> extends
+      AbstractUttrykk<V, B> {
 
 
         private Function<Beregningsgrunnlag, U> function;

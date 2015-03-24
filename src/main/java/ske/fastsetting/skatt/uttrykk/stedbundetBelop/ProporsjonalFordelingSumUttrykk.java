@@ -5,11 +5,13 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
-public class ProporsjonalFordelingSumUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,ProporsjonalFordelingSumUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+public class ProporsjonalFordelingSumUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,
+  ProporsjonalFordelingSumUttrykk<K>> implements StedbundetBelopUttrykk<K> {
     private final StedbundetBelopUttrykk<K> stedbundetBelopUttrykk;
     private final BelopUttrykk belopUttrykk;
 
-    public ProporsjonalFordelingSumUttrykk(StedbundetBelopUttrykk<K> stedbundetBelopUttrykk, BelopUttrykk belopUttrykk) {
+    public ProporsjonalFordelingSumUttrykk(StedbundetBelopUttrykk<K> stedbundetBelopUttrykk, BelopUttrykk
+      belopUttrykk) {
         this.stedbundetBelopUttrykk = stedbundetBelopUttrykk;
         this.belopUttrykk = belopUttrykk;
     }
@@ -29,7 +31,8 @@ public class ProporsjonalFordelingSumUttrykk<K> extends AbstractUttrykk<Stedbund
 //
 //            if(absSum.erStorreEnn(Belop.NULL)) {
 //                resultat = stedbundetBelop.steder().stream()
-//                        .map(s -> StedbundetBelop.kr(stedbundetBelop.get(s).pluss(belop.multiplisertMed(stedbundetBelop.get(s).abs().dividertMed(absSum))), s))
+//                        .map(s -> StedbundetBelop.kr(stedbundetBelop.get(s).pluss(belop.multiplisertMed
+// (stedbundetBelop.get(s).abs().dividertMed(absSum))), s))
 //                        .reduce(StedbundetBelop.kr0(), StedbundetBelop::pluss);
 //
 //            } else if(stedbundetBelop.steder().size()>0) {
@@ -44,6 +47,6 @@ public class ProporsjonalFordelingSumUttrykk<K> extends AbstractUttrykk<Stedbund
 
     @Override
     public String beskriv(UttrykkContext ctx) {
-        return ctx.beskriv(stedbundetBelopUttrykk)+ " + " +ctx.beskriv(belopUttrykk);
+        return ctx.beskriv(stedbundetBelopUttrykk) + " + " + ctx.beskriv(belopUttrykk);
     }
 }

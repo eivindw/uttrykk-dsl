@@ -17,8 +17,8 @@ import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StebundetGrenseUttry
 import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.TilStedbundetBelopUttrykk.tilStedbundetBelopUttrykk;
 
 public class StedbundetBelopMultisatsFunksjon<K>
-        extends MultisatsUttrykk<StedbundetBelop<K>,StedbundetBelop<K>,Tall,Belop,StedbundetBelopMultisatsFunksjon<K>>
-        implements StedbundetBelopUttrykk<K> {
+  extends MultisatsUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop, StedbundetBelopMultisatsFunksjon<K>>
+  implements StedbundetBelopUttrykk<K> {
 
 
     public StedbundetBelopMultisatsFunksjon(StedbundetBelopUttrykk<K> grunnlag) {
@@ -30,12 +30,14 @@ public class StedbundetBelopMultisatsFunksjon<K>
     }
 
     @Override
-    protected SatsStegUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall,Belop> lagSteg() {
-        final SatsStegUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop> satsStegUttrykk = new SatsStegUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop>() {
+    protected SatsStegUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop> lagSteg() {
+        final SatsStegUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop> satsStegUttrykk = new
+          SatsStegUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop>() {
             @Override
             public StedbundetBelop<K> eval(UttrykkContext ctx) {
-                StebundetGrenseUttrykk<K> grenseUttrykk = begrensFordholdmessig(new ProporsjonalFordelingDiffUttrykk<>(grunnlag, nedreGrense).multiplisertMed(sats))
-                        .nedad(kr(0));
+                StebundetGrenseUttrykk<K> grenseUttrykk = begrensFordholdmessig(new
+                  ProporsjonalFordelingDiffUttrykk<>(grunnlag, nedreGrense).multiplisertMed(sats))
+                  .nedad(kr(0));
                 if (oevreGrense != null) {
                     GrenseUttrykk grenseDiff = begrens(new BelopDiffUttrykk(oevreGrense, nedreGrense)).nedad(kr(0));
                     grenseUttrykk.oppad(grenseDiff.multiplisertMed(sats));

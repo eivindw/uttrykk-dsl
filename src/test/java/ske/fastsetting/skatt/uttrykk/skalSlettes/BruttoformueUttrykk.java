@@ -5,6 +5,8 @@ import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopUttrykk;
 
 public interface BruttoformueUttrykk extends BelopUttrykk {
     public StedbundetBelopUttrykk fritidseiendomHyttekommune();
+
     public StedbundetBelopUttrykk stedbundenFormue();
+
     public BelopUttrykk ovrigFormue();
 }

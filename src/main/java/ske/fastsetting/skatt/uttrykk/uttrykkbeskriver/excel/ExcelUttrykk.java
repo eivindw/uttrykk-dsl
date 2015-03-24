@@ -4,5 +4,6 @@ import org.apache.poi.ss.usermodel.Cell;
 
 public interface ExcelUttrykk {
     void skrivTilCelle(Cell celle);
+
     String tilTekst();
 }

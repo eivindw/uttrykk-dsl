@@ -8,10 +8,11 @@ import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
 import java.util.Map;
 
-public class TilSteduavhengigBelopUttrykk extends AbstractUttrykk<Belop,TilSteduavhengigBelopUttrykk> implements BelopUttrykk {
+public class TilSteduavhengigBelopUttrykk extends AbstractUttrykk<Belop, TilSteduavhengigBelopUttrykk> implements
+  BelopUttrykk {
     private StedbundetBelopUttrykk<?> stedbundetBelopUttrykk;
 
-    public static TilSteduavhengigBelopUttrykk steduavhengig(StedbundetBelopUttrykk<?> stedbundetBelopUttrykk)  {
+    public static TilSteduavhengigBelopUttrykk steduavhengig(StedbundetBelopUttrykk<?> stedbundetBelopUttrykk) {
         return new TilSteduavhengigBelopUttrykk(stedbundetBelopUttrykk);
     }
 
@@ -19,7 +20,7 @@ public class TilSteduavhengigBelopUttrykk extends AbstractUttrykk<Belop,TilStedu
         this.stedbundetBelopUttrykk = stedbundetBelopUttrykk;
     }
 
-    public void test(Map<?,Belop> map) {
+    public void test(Map<?, Belop> map) {
         map.get("asdas");
     }
 
@@ -29,8 +30,8 @@ public class TilSteduavhengigBelopUttrykk extends AbstractUttrykk<Belop,TilStedu
         final StedbundetBelop<?> stedbundetBelop = ctx.eval(stedbundetBelopUttrykk);
 
         return stedbundetBelop.steder().stream()
-                .map(stedbundetBelop::get)
-                .reduce(Belop.NULL, Belop::pluss);
+          .map(stedbundetBelop::get)
+          .reduce(Belop.NULL, Belop::pluss);
     }
 
     @Override

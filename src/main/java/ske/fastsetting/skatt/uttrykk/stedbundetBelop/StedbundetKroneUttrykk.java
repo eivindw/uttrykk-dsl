@@ -4,8 +4,8 @@ import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class StedbundetKroneUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,StedbundetKroneUttrykk<K>> implements StedbundetBelopUttrykk<K>
-{
+public class StedbundetKroneUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>, StedbundetKroneUttrykk<K>>
+  implements StedbundetBelopUttrykk<K> {
 
     private final StedbundetBelop<K> belop;
 
@@ -15,7 +15,7 @@ public class StedbundetKroneUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K
     }
 
     public static <K> StedbundetKroneUttrykk<K> kr(int belop, K sted) {
-        return new StedbundetKroneUttrykk<>(StedbundetBelop.kr(belop,sted));
+        return new StedbundetKroneUttrykk<>(StedbundetBelop.kr(belop, sted));
     }
 
     public static <K> StedbundetKroneUttrykk<K> kr0() {

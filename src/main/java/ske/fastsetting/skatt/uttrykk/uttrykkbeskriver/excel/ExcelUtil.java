@@ -18,10 +18,10 @@ public class ExcelUtil {
         formaterCelleverdi(celle, "kr #,##0");
     }
 
-    
+
     //TODO bruk noko anna enn _ her...
     public static String lagGyldigCellenavn(String navn) {
-        return navn.replaceAll("[^A-Za-z0-9]","_");
+        return navn.replaceAll("[^A-Za-z0-9]", "_");
     }
 
 
@@ -35,14 +35,15 @@ public class ExcelUtil {
     }
 
     static void autotilpassKolonner(Workbook workbook, int... kolonner) {
-        for(int i=0;i<workbook.getNumberOfSheets();i++) {
+        for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
             Sheet sheet = workbook.getSheetAt(i);
 
-            for(int kolonne : kolonner) {
+            for (int kolonne : kolonner) {
                 try {
                     sheet.autoSizeColumn(kolonne);
-                } catch(Exception e) {
-                    // In case if graphical environment is not available, you must tell Java that you are running in headless mode and set the following system property: java.awt.headless=true
+                } catch (Exception e) {
+                    // In case if graphical environment is not available, you must tell Java that you are running in
+                    // headless mode and set the following system property: java.awt.headless=true
                 }
             }
         }
@@ -56,8 +57,8 @@ public class ExcelUtil {
 
         CellStyle cs = lagOverskriftStil(workbook);
 
-        for(int i=0;i<kolonnenavn.length;i++) {
-            lagOverskrift(row, i, kolonnenavn[i],cs);
+        for (int i = 0; i < kolonnenavn.length; i++) {
+            lagOverskrift(row, i, kolonnenavn[i], cs);
         }
 
     }

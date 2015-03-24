@@ -1,6 +1,7 @@
 package ske.fastsetting.skatt.uttrykk;
 
 import org.junit.Test;
+
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
@@ -36,17 +37,18 @@ public class BasisTest {
         final KroneUttrykk lonn = kr(60_000).navn("Lønn").regler(Regel.skatteloven("5-1")).tags(TAG_GRLAG);
         final KroneUttrykk bonus = kr(40_000).navn("Bonus").tags(TAG_GRLAG);
         final BelopUttrykk sumLonn = sum(
-            lonn,
-            bonus,
-            hvis(lonn.erMindreEnn(kr(90_000)))
-                .brukDa(bonus.multiplisertMed(prosent(15)))
-                .ellersBruk(kr(0)).navn("Ekstrabonus").tags(TAG_GRLAG),
-            kr(20_000)
-                .minus(kr(15_000).navn("Særfradrag").tags(TAG_SATS))
-                .minus(kr(5_000).navn("Minstefradrag").tags(TAG_SATS))
+          lonn,
+          bonus,
+          hvis(lonn.erMindreEnn(kr(90_000)))
+            .brukDa(bonus.multiplisertMed(prosent(15)))
+            .ellersBruk(kr(0)).navn("Ekstrabonus").tags(TAG_GRLAG),
+          kr(20_000)
+            .minus(kr(15_000).navn("Særfradrag").tags(TAG_SATS))
+            .minus(kr(5_000).navn("Minstefradrag").tags(TAG_SATS))
         ).navn("Sum lønn").regler(Regel.skatteloven("3.2")).tags(TAG_GRLAG);
 
-        final BelopUttrykk trygdeavgift = sumLonn.multiplisertMed(satsTrygdeavgift).navn("Trygdeavgift").tags(TAG_SKATT);
+        final BelopUttrykk trygdeavgift = sumLonn.multiplisertMed(satsTrygdeavgift).navn("Trygdeavgift").tags
+          (TAG_SKATT);
         final BelopUttrykk skatt = sumLonn.multiplisertMed(satsSkatt).navn("Skatt").tags(TAG_SKATT);
         final BelopUttrykk sum = trygdeavgift.pluss(skatt).navn("Sum skatt & avgift").tags(TAG_SKATT);
 

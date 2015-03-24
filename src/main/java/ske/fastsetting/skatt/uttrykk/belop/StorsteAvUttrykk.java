@@ -21,14 +21,14 @@ public class StorsteAvUttrykk extends AbstractUttrykk<Belop, StorsteAvUttrykk> i
     @Override
     public Belop eval(UttrykkContext ctx) {
         return Stream.of(uttrykk)
-            .map(ctx::eval)
-            .max(Belop::sammenliknMed).get();
+          .map(ctx::eval)
+          .max(Belop::sammenliknMed).get();
     }
 
     @Override
     public String beskriv(UttrykkContext ctx) {
         return Stream.of(uttrykk)
-            .map(ctx::beskriv)
-            .collect(Collectors.joining(",", "største av (", ")"));
+          .map(ctx::beskriv)
+          .collect(Collectors.joining(",", "største av (", ")"));
     }
 }

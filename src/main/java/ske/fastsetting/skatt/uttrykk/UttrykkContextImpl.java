@@ -50,13 +50,12 @@ public class UttrykkContextImpl implements UttrykkContext {
             beskriv(uttrykk);
         }
 
-        return new UttrykkResultatImpl<>(uttrykk.id(),uttrykksmap);
+        return new UttrykkResultatImpl<>(uttrykk.id(), uttrykksmap);
     }
 
 
     @Override
     public String beskriv(Uttrykk<?> uttrykk) {
-
 
         initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_UTTRYKK, k -> uttrykk.beskriv(this));
 

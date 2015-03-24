@@ -3,6 +3,7 @@ package ske.fastsetting.skatt.uttrykk.ektefelle;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Before;
 import org.junit.Test;
+
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.Skattegrunnlag;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
@@ -24,8 +25,10 @@ public class JordbruksfradragTest {
 
     @Before
     public void init() {
-        Skattegrunnlag sg1 = new Skattegrunnlag().post(Skattegrunnlag.SKATTEGRUNNLAGOBJEKT_TYPE__INNTEKT_JORDBRUK, Belop.kr(300_000));
-        Skattegrunnlag sg2 = new Skattegrunnlag().post(Skattegrunnlag.SKATTEGRUNNLAGOBJEKT_TYPE__INNTEKT_JORDBRUK, Belop.kr(400_000));
+        Skattegrunnlag sg1 = new Skattegrunnlag().post(Skattegrunnlag.SKATTEGRUNNLAGOBJEKT_TYPE__INNTEKT_JORDBRUK,
+          Belop.kr(300_000));
+        Skattegrunnlag sg2 = new Skattegrunnlag().post(Skattegrunnlag.SKATTEGRUNNLAGOBJEKT_TYPE__INNTEKT_JORDBRUK,
+          Belop.kr(400_000));
 
         skattyterKontekst1 = EktefelleUttrykkContext.ny(sg1);
         skattyterKontekst2 = skattyterKontekst1.medEktefelle(sg2);
@@ -41,7 +44,8 @@ public class JordbruksfradragTest {
 
     @Test
     public void testJordbruksfradragUtenEktefelle() {
-        Skattegrunnlag sg1 = new Skattegrunnlag().post(Skattegrunnlag.SKATTEGRUNNLAGOBJEKT_TYPE__INNTEKT_JORDBRUK, Belop.kr(300_000));
+        Skattegrunnlag sg1 = new Skattegrunnlag().post(Skattegrunnlag.SKATTEGRUNNLAGOBJEKT_TYPE__INNTEKT_JORDBRUK,
+          Belop.kr(300_000));
 
         skattyterKontekst1 = EktefelleUttrykkContext.ny(sg1);
 
@@ -55,7 +59,8 @@ public class JordbruksfradragTest {
         final ConfluenceUttrykkBeskriver beskriver = new ConfluenceUttrykkBeskriver("Hovedside");
 
         beskriver.beskriv(skattyterKontekst1.beskrivResultat(jordbruksfradrag));
-        final Map<String, ConfluenceUttrykkBeskriver.ConfluenceSide> sider = beskriver.beskriv(skattyterKontekst2.beskrivResultat(jordbruksfradrag));
+        final Map<String, ConfluenceUttrykkBeskriver.ConfluenceSide> sider = beskriver.beskriv(skattyterKontekst2
+          .beskrivResultat(jordbruksfradrag));
 
         assertNotNull("Sider er null", sider);
 
@@ -70,9 +75,11 @@ public class JordbruksfradragTest {
         BelopUttrykk jordbruksfradrag = SkatteberegningHelper.jordbruksfradrag();
 
         final ConsoleUttrykkBeskriver beskriver = new ConsoleUttrykkBeskriver();
-        ExcelEktefelleUttrykkResultatKonverterer konverterer = new ExcelEktefelleUttrykkResultatKonverterer("skatt", "sats");
+        ExcelEktefelleUttrykkResultatKonverterer konverterer = new ExcelEktefelleUttrykkResultatKonverterer("skatt",
+          "sats");
 
-        String res = beskriver.beskriv(konverterer.konverterResultat(skattyterKontekst1.beskrivResultat(jordbruksfradrag), true));
+        String res = beskriver.beskriv(konverterer.konverterResultat(skattyterKontekst1.beskrivResultat
+          (jordbruksfradrag), true));
 
         //String res = beskriver.beskriv(skattyterKontekst2.beskrivResultat(jordbruksfradrag));
 
@@ -85,10 +92,12 @@ public class JordbruksfradragTest {
 
         final ExcelUttrykkBeskriver beskriver = new ExcelUttrykkBeskriver();
 
-        ExcelEktefelleUttrykkResultatKonverterer konverterer = new ExcelEktefelleUttrykkResultatKonverterer("skatt", "sats");
+        ExcelEktefelleUttrykkResultatKonverterer konverterer = new ExcelEktefelleUttrykkResultatKonverterer("skatt",
+          "sats");
 
         beskriver.beskriv(konverterer.konverterResultat(skattyterKontekst1.beskrivResultat(jordbruksfradrag), true));
-        final Workbook wb = beskriver.beskriv(konverterer.konverterResultat(skattyterKontekst2.beskrivResultat(jordbruksfradrag), false));
+        final Workbook wb = beskriver.beskriv(konverterer.konverterResultat(skattyterKontekst2.beskrivResultat
+          (jordbruksfradrag), false));
 
         FileOutputStream out = new FileOutputStream("jordbruksfradrag.xlsx");
         wb.write(out);

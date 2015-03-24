@@ -1,6 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.skalSlettes;
 
 import org.junit.Test;
+
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.domene.Tall;
@@ -22,23 +23,25 @@ public class RecTest {
     @Test
     public void recTest() {
 
-
         Rec<Beregningsgrunnlag> beregningsgrunnlag = new Rec<>();
         Rec<Alderspensjon> alderspensjonRec = new Rec<>();
-        alderspensjonRec.put(Alderspensjon.pensjonsgrad,prosent(50));
+        alderspensjonRec.put(Alderspensjon.pensjonsgrad, prosent(50));
         alderspensjonRec.put(Alderspensjon.belop, KroneUttrykk.kr(500));
 
         Rec<Bruttoformue> bruttoformue = new Rec<>();
         bruttoformue.put(Bruttoformue.fritidsbolig, StedbundetKroneUttrykk.kr(50, "A"));
 
-        beregningsgrunnlag.put(Beregningsgrunnlag.alderspensjon,alderspensjonRec);
-        beregningsgrunnlag.put(Beregningsgrunnlag.bruttoformue,bruttoformue);
+        beregningsgrunnlag.put(Beregningsgrunnlag.alderspensjon, alderspensjonRec);
+        beregningsgrunnlag.put(Beregningsgrunnlag.bruttoformue, bruttoformue);
 
-        BelopUttrykk alderspensjon = new RecBelopUttrykk<>(r->r.get(Beregningsgrunnlag.alderspensjon).get(Alderspensjon.belop));
+        BelopUttrykk alderspensjon = new RecBelopUttrykk<>(r -> r.get(Beregningsgrunnlag.alderspensjon).get
+          (Alderspensjon.belop));
 
-        StedbundetBelopUttrykk fritidsbolig = new RecStedbundetBelopUttrykk<>(r->r.get(Beregningsgrunnlag.bruttoformue).get(Bruttoformue.fritidsbolig));
+        StedbundetBelopUttrykk fritidsbolig = new RecStedbundetBelopUttrykk<>(r -> r.get(Beregningsgrunnlag
+          .bruttoformue).get(Bruttoformue.fritidsbolig));
 
-        TallUttrykk pensjonsgrad = new RecTallUttrykk<>(r->r.get(Beregningsgrunnlag.alderspensjon).get(Alderspensjon.pensjonsgrad));
+        TallUttrykk pensjonsgrad = new RecTallUttrykk<>(r -> r.get(Beregningsgrunnlag.alderspensjon).get
+          (Alderspensjon.pensjonsgrad));
 
         BelopUttrykk fullPensjon = alderspensjon.dividertMed(pensjonsgrad);
     }
@@ -61,17 +64,17 @@ public class RecTest {
         Rec.Key<BelopUttrykk> ovrigFormue = new Rec.Key<>();
     }
 
-    static abstract class RecUttrykk<V,T> extends AbstractUttrykk<V,RecUttrykk<V,T>> {
+    static abstract class RecUttrykk<V, T> extends AbstractUttrykk<V, RecUttrykk<V, T>> {
 
         private Function<Rec<T>, Uttrykk<V>> func;
 
-        RecUttrykk(Function<Rec<T>,Uttrykk<V>> func) {
+        RecUttrykk(Function<Rec<T>, Uttrykk<V>> func) {
             this.func = func;
         }
 
         @Override
         public V eval(UttrykkContext ctx) {
-            Rec<T> rec = (Rec<T>)ctx.input(Rec.class);
+            Rec<T> rec = (Rec<T>) ctx.input(Rec.class);
 
             final Uttrykk<V> apply = func.apply(rec);
             return ctx.eval(apply);
@@ -79,28 +82,29 @@ public class RecTest {
 
         @Override
         public String beskriv(UttrykkContext ctx) {
-            Rec<T> rec = (Rec<T>)ctx.input(Rec.class);
+            Rec<T> rec = (Rec<T>) ctx.input(Rec.class);
 
             return ctx.beskriv(func.apply(rec));
         }
     }
 
-    static class RecBelopUttrykk<T> extends RecUttrykk<Belop,T> implements BelopUttrykk {
+    static class RecBelopUttrykk<T> extends RecUttrykk<Belop, T> implements BelopUttrykk {
 
-        RecBelopUttrykk(Function<Rec<T>,Uttrykk<Belop>> func) {
+        RecBelopUttrykk(Function<Rec<T>, Uttrykk<Belop>> func) {
             super(func);
         }
 
     }
 
-    static class RecStedbundetBelopUttrykk<K, T> extends RecUttrykk<StedbundetBelop<K>,T> implements StedbundetBelopUttrykk<K> {
+    static class RecStedbundetBelopUttrykk<K, T> extends RecUttrykk<StedbundetBelop<K>, T> implements
+      StedbundetBelopUttrykk<K> {
 
-        RecStedbundetBelopUttrykk(Function<Rec<T>,Uttrykk<StedbundetBelop<K>>> func) {
+        RecStedbundetBelopUttrykk(Function<Rec<T>, Uttrykk<StedbundetBelop<K>>> func) {
             super(func);
         }
     }
 
-    static class RecTallUttrykk<T> extends RecUttrykk<Tall,T> implements TallUttrykk {
+    static class RecTallUttrykk<T> extends RecUttrykk<Tall, T> implements TallUttrykk {
 
         RecTallUttrykk(Function<Rec<T>, Uttrykk<Tall>> func) {
             super(func);

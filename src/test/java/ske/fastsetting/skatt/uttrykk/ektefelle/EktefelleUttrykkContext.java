@@ -22,6 +22,6 @@ public class EktefelleUttrykkContext extends UttrykkContextImpl {
     }
 
     public <V> UttrykkResultat<V> beskrivResultat(Uttrykk<V> jordbruksfradrag) {
-        return kalkuler(jordbruksfradrag,false,true);
+        return kalkuler(jordbruksfradrag, false, true);
     }
 }

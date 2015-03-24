@@ -44,7 +44,7 @@ public class ConsoleUttrykkBeskriver implements UttrykkBeskriver<String> {
             subIder.removeAll(behandledeIder);
         }
 
-        if(subIder != null) {
+        if (subIder != null) {
             behandledeIder.addAll(subIder);
             subIder.forEach(subId -> print(subId, resultat, behandledeIder, out.append("\n")));
         }

@@ -6,7 +6,8 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class ProporsjonalFordelingDiffUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,ProporsjonalFordelingDiffUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+public class ProporsjonalFordelingDiffUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,
+  ProporsjonalFordelingDiffUttrykk<K>> implements StedbundetBelopUttrykk<K> {
     private final Uttrykk<StedbundetBelop<K>> stedbundetBelopUttrykk;
     private final Uttrykk<Belop> belop;
 
@@ -22,6 +23,6 @@ public class ProporsjonalFordelingDiffUttrykk<K> extends AbstractUttrykk<Stedbun
 
     @Override
     public String beskriv(UttrykkContext ctx) {
-        return ctx.beskriv(stedbundetBelopUttrykk)+ " - " +ctx.beskriv(belop);
+        return ctx.beskriv(stedbundetBelopUttrykk) + " - " + ctx.beskriv(belop);
     }
 }

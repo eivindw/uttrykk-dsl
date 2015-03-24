@@ -18,13 +18,16 @@ import java.util.stream.Stream;
  */
 public interface DistanseUttrykk extends CompareableUttrykk<Distanse> {
 
-    default DistanseSumUttrykk pluss(DistanseUttrykk ledd) { return DistanseSumUttrykk.sum(this, ledd);}
-
-    default BelopUttrykk multiplisertMed(BelopPerKvantitetUttrykk<Distanse> belopPerDistanse) {
-        return new DistanseMultiplisertMedBelopPerDistanseUttrykk(this,belopPerDistanse);
+    default DistanseSumUttrykk pluss(DistanseUttrykk ledd) {
+        return DistanseSumUttrykk.sum(this, ledd);
     }
 
-    public class DistanseSumUttrykk extends SumUttrykk<Distanse,DistanseUttrykk,DistanseSumUttrykk> implements DistanseUttrykk {
+    default BelopUttrykk multiplisertMed(BelopPerKvantitetUttrykk<Distanse> belopPerDistanse) {
+        return new DistanseMultiplisertMedBelopPerDistanseUttrykk(this, belopPerDistanse);
+    }
+
+    public class DistanseSumUttrykk extends SumUttrykk<Distanse, DistanseUttrykk, DistanseSumUttrykk> implements
+      DistanseUttrykk {
 
         @SafeVarargs
         public static DistanseSumUttrykk sum(DistanseUttrykk... uttrykk) {
@@ -41,11 +44,13 @@ public interface DistanseUttrykk extends CompareableUttrykk<Distanse> {
         }
     }
 
-    class DistanseMultiplisertMedBelopPerDistanseUttrykk extends AbstractUttrykk<Belop,DistanseMultiplisertMedBelopPerDistanseUttrykk> implements BelopUttrykk {
+    class DistanseMultiplisertMedBelopPerDistanseUttrykk extends AbstractUttrykk<Belop,
+      DistanseMultiplisertMedBelopPerDistanseUttrykk> implements BelopUttrykk {
         private final DistanseUttrykk distanseUttrykk;
         private final BelopPerKvantitetUttrykk<Distanse> belopPerDistanseUttrykk;
 
-        public DistanseMultiplisertMedBelopPerDistanseUttrykk(DistanseUttrykk distanseUttrykk, BelopPerKvantitetUttrykk<Distanse> belopPerDistanseUttrykk) {
+        public DistanseMultiplisertMedBelopPerDistanseUttrykk(DistanseUttrykk distanseUttrykk,
+          BelopPerKvantitetUttrykk<Distanse> belopPerDistanseUttrykk) {
             this.distanseUttrykk = distanseUttrykk;
             this.belopPerDistanseUttrykk = belopPerDistanseUttrykk;
         }

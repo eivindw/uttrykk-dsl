@@ -5,7 +5,7 @@ import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class AvrundTallUttrykk extends AbstractUttrykk<Tall,AvrundTallUttrykk> implements TallUttrykk {
+public class AvrundTallUttrykk extends AbstractUttrykk<Tall, AvrundTallUttrykk> implements TallUttrykk {
 
     private TallUttrykk uttrykk;
     private final int presisjon;
@@ -38,7 +38,7 @@ public class AvrundTallUttrykk extends AbstractUttrykk<Tall,AvrundTallUttrykk> i
     @Override
     public Tall eval(UttrykkContext ctx) {
 
-        return ctx.eval(uttrykk).rundAv(presisjon,avrunding);
+        return ctx.eval(uttrykk).rundAv(presisjon, avrunding);
     }
 
     @Override

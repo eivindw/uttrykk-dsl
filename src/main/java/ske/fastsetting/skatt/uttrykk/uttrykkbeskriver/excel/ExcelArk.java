@@ -14,12 +14,12 @@ public class ExcelArk {
 
         ExcelUtil.lagOverskriftRad(sheet, "Begrep", "Definisjon", "Hjemmel");
 
-        gjeldendeRadNummer=1;
+        gjeldendeRadNummer = 1;
     }
 
     public static ExcelArk nytt(Workbook workbook, String navn, ExcelFormateringshint formateringshint) {
 
-        return new ExcelArk(workbook.createSheet(navn),formateringshint);
+        return new ExcelArk(workbook.createSheet(navn), formateringshint);
     }
 
 
@@ -61,7 +61,7 @@ public class ExcelArk {
     }
 
     private static String storForbokstav(String navn) {
-        return navn.substring(0,1).toUpperCase() + navn.substring(1);
+        return navn.substring(0, 1).toUpperCase() + navn.substring(1);
     }
 
 }

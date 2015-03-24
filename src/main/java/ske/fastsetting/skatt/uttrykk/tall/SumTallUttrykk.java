@@ -8,9 +8,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SumTallUttrykk
-    extends SumUttrykk<Tall, TallUttrykk, SumTallUttrykk>
-    implements TallUttrykk
-{
+  extends SumUttrykk<Tall, TallUttrykk, SumTallUttrykk>
+  implements TallUttrykk {
     private SumTallUttrykk(Collection<TallUttrykk> uttrykk) {
         super(uttrykk);
     }

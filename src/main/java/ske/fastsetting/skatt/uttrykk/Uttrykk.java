@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public interface Uttrykk<V>  {
+public interface Uttrykk<V> {
     V eval(UttrykkContext ctx);
 
     String beskriv(UttrykkContext ctx);
@@ -21,7 +21,7 @@ public interface Uttrykk<V>  {
     List<Regel> regler();
 
     default BolskUttrykk erEnAv(Collection<V> verdier) {
-        return new ErEnAvUttrykk<>(this,verdier);
+        return new ErEnAvUttrykk<>(this, verdier);
     }
 
     static class ErEnAvUttrykk<T> extends BolskUttrykk {
@@ -40,7 +40,7 @@ public interface Uttrykk<V>  {
         @Override
         public String beskriv(UttrykkContext ctx) {
             return verdier.stream().map(T::toString)
-                    .collect(Collectors.joining(", ", ctx.beskriv(uttrykk) + " er en av (", ")"));
+              .collect(Collectors.joining(", ", ctx.beskriv(uttrykk) + " er en av (", ")"));
         }
     }
 

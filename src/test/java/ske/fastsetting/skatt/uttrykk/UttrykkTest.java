@@ -1,6 +1,7 @@
 package ske.fastsetting.skatt.uttrykk;
 
 import org.junit.Test;
+
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
@@ -42,14 +43,14 @@ public class UttrykkTest {
     public void sumUttrykk() {
         final BelopUttrykk lonn = kr(6);
         final BelopUttrykk sum = sum(
-            kr(2),
-            sum(
-                lonn,
-                kr(2).navn("Test"),
-                skattegrunnlagobjekt("4.3.3").navn("dasdad")
-            ).regler(Regel.skatteloven("323")),
-            kr(4),
-            lonn.multiplisertMed(prosent(50))
+          kr(2),
+          sum(
+            lonn,
+            kr(2).navn("Test"),
+            skattegrunnlagobjekt("4.3.3").navn("dasdad")
+          ).regler(Regel.skatteloven("323")),
+          kr(4),
+          lonn.multiplisertMed(prosent(50))
         ).navn("Hallo");
 
         Skattegrunnlag sg = new Skattegrunnlag();
@@ -65,7 +66,8 @@ public class UttrykkTest {
         kr(6).navn("test").navn("test igjen");
     }
 
-    public static class SkattegrunnlagobjektUttrykk extends AbstractUttrykk<Belop, SkattegrunnlagobjektUttrykk> implements BelopUttrykk {
+    public static class SkattegrunnlagobjektUttrykk extends AbstractUttrykk<Belop, SkattegrunnlagobjektUttrykk>
+      implements BelopUttrykk {
 
         private String skatteobjekttype;
 

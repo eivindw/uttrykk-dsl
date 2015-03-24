@@ -103,14 +103,14 @@ public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> 
 
         if (sum.erStorreEnn(Belop.NULL)) {
             this.stedBelopMap.entrySet().stream()
-                .forEach(e -> {
-                    final Belop value = belop.multiplisertMed(e.getValue().abs().dividertMed(sum));
-                    resultat.merge(e.getKey(), value, Belop::pluss);
-                });
+              .forEach(e -> {
+                  final Belop value = belop.multiplisertMed(e.getValue().abs().dividertMed(sum));
+                  resultat.merge(e.getKey(), value, Belop::pluss);
+              });
         } else if (this.stedBelopMap.size() > 0) {
             Belop andel = belop.dividertMed(stedBelopMap.size());
             this.stedBelopMap.entrySet().stream()
-                .forEach(e -> resultat.merge(e.getKey(), andel, Belop::pluss));
+              .forEach(e -> resultat.merge(e.getKey(), andel, Belop::pluss));
         }
         return new StedbundetBelop<>(resultat);
     }
@@ -125,7 +125,8 @@ public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> 
     }
 
     public Set<BelopSted<T>> splitt() {
-        return stedBelopMap.entrySet().stream().map(e -> new BelopSted<>(e.getKey(), e.getValue())).collect(Collectors.toSet());
+        return stedBelopMap.entrySet().stream().map(e -> new BelopSted<>(e.getKey(), e.getValue())).collect
+          (Collectors.toSet());
     }
 
     public Belop get(Object sted) {
@@ -140,8 +141,8 @@ public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> 
     public StedbundetBelop abs() {
 
         Map<T, Belop> resultat = stedBelopMap.entrySet()
-            .stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().abs()));
+          .stream()
+          .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().abs()));
 
         return new StedbundetBelop<>(resultat);
 
@@ -152,9 +153,9 @@ public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> 
     }
 
     public StedbundetBelop<T> rundAvTilHeleKroner() {
-        Map<T,Belop> resultat = stedBelopMap.entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().rundAvTilHeleKroner()));
+        Map<T, Belop> resultat = stedBelopMap.entrySet()
+          .stream()
+          .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().rundAvTilHeleKroner()));
 
         return new StedbundetBelop<>(resultat);
     }
