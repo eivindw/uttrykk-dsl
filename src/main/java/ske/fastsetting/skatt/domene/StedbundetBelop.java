@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> {
 
+
     public static class BelopSted<T> {
         private final T sted;
         private final Belop belop;
@@ -76,6 +77,10 @@ public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> 
         this.stedBelopMap.entrySet().stream().forEach(e -> sum.merge(e.getKey(), e.getValue(), Belop::pluss));
 
         return new StedbundetBelop<>(sum);
+    }
+
+    public StedbundetBelop<T> pluss(BelopSted<T> belopSted) {
+        return pluss(kr(belopSted.getBelop(),belopSted.getSted()));
     }
 
     @Override
