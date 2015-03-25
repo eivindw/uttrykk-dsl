@@ -14,7 +14,7 @@ import java.util.Collection;
 import static ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk.begrens;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StebundetGrenseUttrykk.begrensFordholdmessig;
-import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.TilStedbundetBelopUttrykk.tilStedbundetBelopUttrykk;
+import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopWrapperUttrykk.tilStedbundetBelopUttrykk;
 
 public class StedbundetBelopMultisatsFunksjon<K>
   extends MultisatsUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop, StedbundetBelopMultisatsFunksjon<K>>

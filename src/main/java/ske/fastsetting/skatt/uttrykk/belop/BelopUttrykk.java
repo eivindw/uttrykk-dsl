@@ -1,5 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
+import static ske.fastsetting.skatt.uttrykk.belop.TilStedbundetBelopUttrykk.tilStedbundet;
+
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.Kvantitet;
 import ske.fastsetting.skatt.domene.Tall;
@@ -25,6 +27,8 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
     default BelopSumUttrykk pluss(BelopUttrykk uttrykk) {
         return BelopSumUttrykk.sum(this, uttrykk);
     }
+
+    default <T> TilStedbundetBelopUttrykk<T> i(T sted) {return tilStedbundet(this,sted); }
 
     default BelopDividertMedBelopUttrykk dividertMed(BelopUttrykk divident) {
         return new BelopDividertMedBelopUttrykk(this, divident);

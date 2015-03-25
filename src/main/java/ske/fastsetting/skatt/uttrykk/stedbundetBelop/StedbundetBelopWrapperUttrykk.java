@@ -9,22 +9,23 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
+<<<<<<< HEAD:src/main/java/ske/fastsetting/skatt/uttrykk/stedbundetBelop/TilStedbundetBelopUttrykk.java
  * Created by jorn ola birkeland on 21.03.15.
  */
-class TilStedbundetBelopUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>, TilStedbundetBelopUttrykk<K>>
+class StedbundetBelopWrapperUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>, StedbundetBelopWrapperUttrykk<K>>
   implements StedbundetBelopUttrykk<K> {
     private Uttrykk<StedbundetBelop<K>> uttrykk;
 
     public static <T> Collection<StedbundetBelopUttrykk<T>> tilStedbundetBelopUttrykk
       (Collection<Uttrykk<StedbundetBelop<T>>> uttrykk) {
-        return uttrykk.stream().map(TilStedbundetBelopUttrykk::tilStedbundetBelopUttrykk).collect(Collectors.toList());
+        return uttrykk.stream().map(StedbundetBelopWrapperUttrykk::tilStedbundetBelopUttrykk).collect(Collectors.toList());
     }
 
-    public static <T> TilStedbundetBelopUttrykk<T> tilStedbundetBelopUttrykk(Uttrykk<StedbundetBelop<T>> uttrykk) {
-        return new TilStedbundetBelopUttrykk<>(uttrykk);
+    public static <T> StedbundetBelopWrapperUttrykk<T> tilStedbundetBelopUttrykk(Uttrykk<StedbundetBelop<T>> uttrykk) {
+        return new StedbundetBelopWrapperUttrykk<>(uttrykk);
     }
 
-    public TilStedbundetBelopUttrykk(Uttrykk<StedbundetBelop<K>> uttrykk) {
+    public StedbundetBelopWrapperUttrykk(Uttrykk<StedbundetBelop<K>> uttrykk) {
         this.uttrykk = uttrykk;
     }
 
