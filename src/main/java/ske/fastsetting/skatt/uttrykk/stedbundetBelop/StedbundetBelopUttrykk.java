@@ -1,5 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
 
+import java.util.Arrays;
+
 import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
@@ -8,8 +10,6 @@ import ske.fastsetting.skatt.uttrykk.belop.BelopDividertMedBelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopSumUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
-
-import java.util.Arrays;
 
 public interface StedbundetBelopUttrykk<K> extends Uttrykk<StedbundetBelop<K>> {
     default StedbundetBelopSumUttrykk<K> pluss(StedbundetBelopUttrykk<K> ledd) {
@@ -43,6 +43,8 @@ public interface StedbundetBelopUttrykk<K> extends Uttrykk<StedbundetBelop<K>> {
     default BelopSumUttrykk pluss(BelopUttrykk ledd) {
         return new TilSteduavhengigBelopUttrykk(this).pluss(ledd);
     }
+
+    default StedbundetBelopAvrundingsUttrykk<K> rundAvTilHeleKroner() { return new StedbundetBelopAvrundingsUttrykk<K>(this); }
 
     default TilSteduavhengigBelopUttrykk steduavhengig() {
         return new TilSteduavhengigBelopUttrykk(this);
