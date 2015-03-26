@@ -1,10 +1,10 @@
 package ske.fastsetting.skatt.uttrykk.distanse;
 
-import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
-import ske.fastsetting.skatt.domene.Kvantitet;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
+import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
+import ske.fastsetting.skatt.domene.Kvantitet;
 
 public class Distanse extends Kvantitet<Double, Kilometer> implements Comparable<Distanse>, KalkulerbarVerdi<Distanse> {
 
@@ -59,6 +59,25 @@ public class Distanse extends Kvantitet<Double, Kilometer> implements Comparable
     public int compareTo(Distanse o) {
         return verdi().compareTo(o.verdi());
     }
+
+    public boolean erMindreEnn(Distanse v) {
+        return this.compareTo(v) < 0;
+    }
+
+    public boolean erStorreEnn(Distanse v) {
+        return this.compareTo(v) > 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Distanse && verdi().equals(((Distanse) o).verdi());
+    }
+
+    @Override
+    public int hashCode() {
+        return verdi().hashCode();
+    }
+
 
     @Override
     public String toString() {
