@@ -1,5 +1,14 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -7,9 +16,6 @@ import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.UttrykkBeskriver;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
@@ -19,6 +25,8 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
     private final Set<String> registrerteUttrykk;
     private final ExcelFormateringshint formateringshint;
     private UttrykkResultat<?> resultat;
+    private final Map<String,String> cache = new HashMap<>();
+
 
     public ExcelUttrykkBeskriver() {
         this(new XSSFWorkbook(), "uklassifisert");
@@ -114,7 +122,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
         private final Set<String> subIder;
         private final ExcelArk ark;
 
-        public RekursivUttrykkBeskriver(String id) {
+        private RekursivUttrykkBeskriver(String id) {
 
             Map map = resultat.uttrykk(id);
 
@@ -125,9 +133,14 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
             ark = finnExcelArk(map);
 
             subIder = IdUtil.parseIder(uttrykk);
+
         }
 
         public String beskriv() {
+
+            if(cache.containsKey(celleId)) {
+                return cache.get(celleId);
+            }
 
             String resultatUttrykk = uttrykk;
 
@@ -140,7 +153,11 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
                   .beskriv());
             }
 
-            return harNavn() ? beskrivNavngittUttrykk(resultatUttrykk) : beskrivAnonymtUttrykk(resultatUttrykk);
+            resultatUttrykk = harNavn() ? beskrivNavngittUttrykk(resultatUttrykk) : beskrivAnonymtUttrykk(resultatUttrykk);
+
+            cache.put(celleId,resultatUttrykk);
+
+            return resultatUttrykk;
 
         }
 

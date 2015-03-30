@@ -1,17 +1,24 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.confluence;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.UttrykkBeskriver;
-
-import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, ConfluenceUttrykkBeskriver
   .ConfluenceSide>> {
 
     private final Map<String, ConfluenceSide> innholdsfortegnelse = new HashMap<>();
+    private final Map<String,String> idWikiMap = new HashMap<>();
 
     public ConfluenceUttrykkBeskriver(String tittel) {
         ConfluenceSide hovedside = new InnholdConfluenceSide(tittel);
@@ -27,6 +34,11 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
     }
 
     private String leggTilUttrykk(String id, UttrykkResultat<?> resultat) {
+
+        if(idWikiMap.containsKey(id)) {
+            return idWikiMap.get(id);
+        }
+
         final Map uttrykk = resultat.uttrykk(id);
 
         final String navn = (String) uttrykk.get(UttrykkResultat.KEY_NAVN);
@@ -36,6 +48,8 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
 
         String tmpUttrykkString = (String) uttrykk.getOrDefault(UttrykkResultat.KEY_UTTRYKK, "");
 
+        String vasketNavn = navn!=null ? navn.replace('/', '-') : null;
+
         final Set<String> subIder = IdUtil.parseIder(tmpUttrykkString);
 
         for (String subId : subIder) {
@@ -44,25 +58,25 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
 
         final String uttrykkString = tmpUttrykkString;
 
-        if (navn != null) {
-
-            String vasketNavn = navn.replace('/', '-');
-
-            innholdsfortegnelse.computeIfAbsent(vasketNavn, tittel ->
-                new InnholdConfluenceSide(
-                  tittel,
-                  uttrykkString,
-                  tags,
-                  regler
-                )
+        if (vasketNavn != null) {
+            innholdsfortegnelse.computeIfAbsent(vasketNavn, tittel -> new InnholdConfluenceSide(
+                tittel,uttrykkString,tags,regler)
             );
-
-            return "[" + vasketNavn + "]";
-        } else if (!subIder.isEmpty()) {
-            return "(" + uttrykkString + ")";
-        } else {
-            return uttrykkString;
         }
+
+        String wikitekst;
+
+        if (vasketNavn != null) {
+            wikitekst = "[" + vasketNavn + "]";
+        } else if (!subIder.isEmpty()) {
+            wikitekst = "(" + uttrykkString + ")";
+        } else {
+            wikitekst = uttrykkString;
+        }
+
+        idWikiMap.put(id, wikitekst);
+
+        return wikitekst;
     }
 
     public interface ConfluenceSide {

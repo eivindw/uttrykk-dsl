@@ -1,12 +1,17 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 import ske.fastsetting.skatt.uttrykk.util.IdUtil;
-
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ExcelEktefelleUttrykkResultatKonverterer<V> {
 
@@ -19,6 +24,7 @@ public class ExcelEktefelleUttrykkResultatKonverterer<V> {
     private final Set<String> fellesTags;
 
     private final Set<String> standardTags;
+
 
     public ExcelEktefelleUttrykkResultatKonverterer(String standardTag, String... fellesTags) {
 
@@ -42,6 +48,10 @@ public class ExcelEktefelleUttrykkResultatKonverterer<V> {
 
         final String prefiks = erHovedPerson ? HOVERPEERSON_PREFIKS : EKTEFELLE_PREFIKS;
         final String nyId = kvalifisertPrefiks(tags, prefiks) + id;
+
+        if(uttrykksmap.containsKey(nyId)) {
+            return nyId;
+        }
 
         final String navn = (String) map.getOrDefault(UttrykkResultat.KEY_NAVN, null);
         final String excelID = navn != null ? kvalifisertPrefiks(tags, prefiks) + ExcelUtil.lagGyldigCellenavn(navn)

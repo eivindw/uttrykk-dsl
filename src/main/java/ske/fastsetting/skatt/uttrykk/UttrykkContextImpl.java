@@ -1,10 +1,10 @@
 package ske.fastsetting.skatt.uttrykk;
 
-import ske.fastsetting.skatt.uttrykk.util.IdUtil;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
+
+import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 
 @SuppressWarnings("unchecked")
 public class UttrykkContextImpl implements UttrykkContext {
@@ -57,15 +57,23 @@ public class UttrykkContextImpl implements UttrykkContext {
     @Override
     public String beskriv(Uttrykk<?> uttrykk) {
 
-        initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_UTTRYKK, k -> uttrykk.beskriv(this));
+        try {
+            initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_UTTRYKK, k -> uttrykk.beskriv(this));
+            return IdUtil.idLink(uttrykk.id());
+        } catch (Throwable e) {
+            throw new UttrykkException(e, uttrykk);
+        }
 
-        return IdUtil.idLink(uttrykk.id());
     }
 
     @Override
     public <X> X eval(Uttrykk<X> uttrykk) {
 
-        return (X) initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI, k -> uttrykk.eval(this));
+        try {
+            return (X) initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI, k -> uttrykk.eval(this));
+        } catch (Throwable e) {
+            throw new UttrykkException(e, uttrykk);
+        }
     }
 
 
