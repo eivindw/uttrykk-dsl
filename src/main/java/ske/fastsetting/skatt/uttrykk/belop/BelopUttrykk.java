@@ -7,6 +7,7 @@ import ske.fastsetting.skatt.domene.Kvantitet;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
+import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
 public interface BelopUttrykk extends CompareableUttrykk<Belop> {
@@ -40,6 +41,10 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
 
     default <K extends Kvantitet> BelopPerKvantitetUttrykk<K> per(Uttrykk<K> uttrykk) {
         return new BelopPerKvantitetUttrykk<>(this, uttrykk);
+    }
+
+    default <T> StedbundetBelopUttrykk<T> fordelSom(StedbundetBelopUttrykk<T> uttrykk) {
+        return new BelopFordelSomStebundetBelopUttrykk<T>(this,uttrykk);
     }
 
 }
