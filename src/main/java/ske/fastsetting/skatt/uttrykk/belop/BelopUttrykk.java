@@ -35,16 +35,20 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
         return new BelopDividertMedBelopUttrykk(this, divident);
     }
 
-    default BelopUttrykk byttFortegn() {
+    default ByttFortegnBelopUttrykk byttFortegn() {
         return new ByttFortegnBelopUttrykk(this);
+    }
+
+    default BelopAvrundingsUttrykk rundAvTilHeleKroner() {
+        return new BelopAvrundingsUttrykk(this);
     }
 
     default <K extends Kvantitet> BelopPerKvantitetUttrykk<K> per(Uttrykk<K> uttrykk) {
         return new BelopPerKvantitetUttrykk<>(this, uttrykk);
     }
 
-    default <T> StedbundetBelopUttrykk<T> fordelSom(StedbundetBelopUttrykk<T> uttrykk) {
-        return new BelopFordelSomStebundetBelopUttrykk<T>(this,uttrykk);
+    default <T> BelopFordelSomStebundetBelopUttrykk<T> fordelSom(StedbundetBelopUttrykk<T> uttrykk) {
+        return new BelopFordelSomStebundetBelopUttrykk<>(this,uttrykk);
     }
 
 }
