@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>uttrykk</artifactId>
+    <groupId>ske.fastsetting.skatt</groupId>
+    <version>1.4-SNAPSHOT</version>
+    <relativePath>../../uttrykk-dsl/pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>ske.fastsetting.skatt</groupId>
+  <artifactId>uttrykk-beskriver</artifactId>
+
+  <properties>
+    <poi.version>3.10.1</poi.version>
+    <poi.ooxml.version>3.9</poi.ooxml.version>
+  </properties>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>ske.fastsetting.skatt</groupId>
+      <artifactId>uttrykk-kjerne</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>${poi.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>${poi.ooxml.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+  </dependencies>
+
+
+</project>

@@ -4,16 +4,18 @@
 
   <groupId>ske.fastsetting.skatt</groupId>
   <artifactId>uttrykk</artifactId>
-  <version>1.4-SNAPSHOT</version>
+  <version>1.5-SNAPSHOT</version>
+  <modules>
+    <module>uttrykk-kjerne</module>
+    <module>uttrykk-beskriver</module>
+  </modules>
   <name>Uttrykk DSL</name>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <junit.version>4.11</junit.version>
-    <poi.version>3.10.1</poi.version>
-    <poi.ooxml.version>3.9</poi.ooxml.version>
   </properties>
 
   <scm>
@@ -24,22 +26,22 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>ske.fastsetting.skatt</groupId>
+        <artifactId>uttrykk-kjerne</artifactId>
+        <version>${project.version}</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>ske.fastsetting.skatt</groupId>
+        <artifactId>uttrykk-beskriver</artifactId>
+        <version>${project.version}</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${junit.version}</version>
         <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.poi</groupId>
-        <artifactId>poi</artifactId>
-        <version>${poi.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.poi</groupId>
-        <artifactId>poi-ooxml</artifactId>
-        <version>${poi.ooxml.version}</version>
-        <scope>provided</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -48,14 +50,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi-ooxml</artifactId>
     </dependency>
   </dependencies>
 
