@@ -1,9 +1,9 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.confluence;
 
-import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 
 public class ConfluenceResultatKonverterer {
 
@@ -26,7 +26,6 @@ public class ConfluenceResultatKonverterer {
         //Copy
         map.entrySet().forEach(e -> nyMap.put(e.getKey(), e.getValue()));
 
-        //Replace "ektefelles" with 0
         if (nyMap.containsKey(UTTRYKK)) {
             String uttrykk = erstattUttrykk((String) nyMap.get(UTTRYKK));
             nyMap.put(UTTRYKK, uttrykk);
@@ -39,10 +38,12 @@ public class ConfluenceResultatKonverterer {
 
         String resultat = uttrykk;
 
-        resultat = resultat.startsWith("multisats") ? resultat.replace(",", ", ") : resultat;
+        resultat = resultat.startsWith("multisats") ? resultat.replace(",", " og ") : resultat;
         resultat = resultat.replaceAll("multisats\\((.*)\\)", "$1");
         resultat = resultat.replaceAll("satsFraTil\\((.*),(.*),(.*),(.*)\\)", "$2 av $1 over $3 og inntil $4");
         resultat = resultat.replaceAll("satsFra\\((.*),(.*),(.*)\\)", "$2 av $1 over $3");
+        resultat = resultat.replaceAll("satsTil\\((.*),(.*),(.*)\\)", "$2 av $1 inntil $3");
+        resultat = resultat.replaceAll("- sted\\((.*)\\)", "unntatt steder som finnes i $1");
 
         return resultat;
     }

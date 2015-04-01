@@ -1,11 +1,11 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
-import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.uttrykk.SumUttrykk;
-
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import ske.fastsetting.skatt.domene.Belop;
+import ske.fastsetting.skatt.uttrykk.SumUttrykk;
 
 public class BelopSumUttrykk
   extends SumUttrykk<Belop, BelopUttrykk, BelopSumUttrykk>
@@ -30,13 +30,23 @@ public class BelopSumUttrykk
     }
 
     public BelopSumUttrykk pluss(BelopSumUttrykk sumUttrykk) {
-        return new BelopSumUttrykk(Stream.concat(this.uttrykk.stream(), sumUttrykk.uttrykk.stream()).collect
-          (Collectors.toList()));
+        if (this.navn() == null && sumUttrykk.navn() == null) {
+            return summer(sumUttrykk.uttrykk.stream());
+        } else {
+            return BelopSumUttrykk.sum(this, sumUttrykk);
+        }
     }
 
     public BelopSumUttrykk pluss(BelopUttrykk uttrykk) {
-        return new BelopSumUttrykk(Stream.concat(this.uttrykk.stream(), Stream.of(uttrykk)).collect(Collectors.toList
-          ()));
+        if (this.navn() == null && uttrykk.navn() == null) {
+            return summer(Stream.of(uttrykk));
+        } else {
+            return BelopSumUttrykk.sum(this, uttrykk);
+        }
     }
 
+    private BelopSumUttrykk summer(Stream<BelopUttrykk> stream) {
+        return new BelopSumUttrykk(Stream.concat(this.uttrykk.stream(), stream).collect
+          (Collectors.toList()));
+    }
 }

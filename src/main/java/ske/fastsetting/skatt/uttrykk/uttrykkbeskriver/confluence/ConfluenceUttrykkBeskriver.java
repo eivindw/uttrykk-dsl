@@ -67,7 +67,7 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
         String wikitekst;
 
         if (vasketNavn != null) {
-            wikitekst = "[" + vasketNavn + "]";
+            wikitekst = "[" + avkapitaliser(vasketNavn.toLowerCase()) + "]";
         } else if (subIder.size()>1) {
             wikitekst = "(" + uttrykkString + ")";
         } else {
@@ -77,6 +77,14 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
         idWikiMap.put(id, wikitekst);
 
         return wikitekst;
+    }
+
+    private String avkapitaliser(String tekst) {
+        if(tekst==null || tekst.length()<1) {
+            return tekst;
+        } else {
+            return tekst.substring(0, 1).toLowerCase() + tekst.substring(1);
+        }
     }
 
     public interface ConfluenceSide {

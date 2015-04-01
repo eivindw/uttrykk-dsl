@@ -1,11 +1,11 @@
 package ske.fastsetting.skatt.domene;
 
-import ske.fastsetting.skatt.domene.enhet.Krone;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+
+import ske.fastsetting.skatt.domene.enhet.Krone;
 
 public class Belop extends Kvantitet<Long, Krone> implements Comparable<Belop>, KalkulerbarVerdi<Belop> {
 
@@ -61,6 +61,18 @@ public class Belop extends Kvantitet<Long, Krone> implements Comparable<Belop>, 
 
         return "kr " + decimalFormat.format(toInteger());
     }
+
+    public String toStringMedOre() {
+        DecimalFormat decimalFormat = new DecimalFormat();
+        decimalFormat.setMaximumFractionDigits(2);
+        decimalFormat.setMinimumFractionDigits(2);
+        DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
+        formatSymbols.setGroupingSeparator(' ');
+        decimalFormat.setDecimalFormatSymbols(formatSymbols);
+
+        return "kr " + decimalFormat.format((double)this.verdi()/ORE_I_KR);
+    }
+
 
     public Belop pluss(Belop ledd) {
         return ledd != null ? fraOre(this.verdi() + ledd.verdi()) : this;

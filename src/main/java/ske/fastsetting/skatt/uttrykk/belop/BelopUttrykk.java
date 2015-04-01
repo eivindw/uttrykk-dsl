@@ -47,7 +47,7 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
         return new BelopPerKvantitetUttrykk<>(this, uttrykk);
     }
 
-    default <T> BelopFordelSomStebundetBelopUttrykk<T> fordelSom(StedbundetBelopUttrykk<T> uttrykk) {
+     default <T> BelopFordelSomStebundetBelopUttrykk<T> fordelSom(StedbundetBelopUttrykk<T> uttrykk) {
         return new BelopFordelSomStebundetBelopUttrykk<>(this,uttrykk);
     }
 

@@ -45,11 +45,11 @@ public abstract class GrenseUttrykk<G, L, B extends GrenseUttrykk<G, L, B>> exte
             stringBuilder.append(" Advarsel: Uttrykket mangler øvre og/eller nedre grense ");
         }
         if (null != minimum) {
-            stringBuilder.append(" begrenset nedad proporsjonalt til ");
+            stringBuilder.append(" begrenset nedad til ");
             stringBuilder.append(ctx.beskriv(minimum));
         }
         if (null != maksimum) {
-            stringBuilder.append(" begrenset oppad proporsjonalt til ");
+            stringBuilder.append(" begrenset oppad til ");
             stringBuilder.append(ctx.beskriv(maksimum));
         }
         return stringBuilder.toString();
