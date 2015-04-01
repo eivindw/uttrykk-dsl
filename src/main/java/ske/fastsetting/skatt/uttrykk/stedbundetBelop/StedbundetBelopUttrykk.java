@@ -44,22 +44,22 @@ public interface StedbundetBelopUttrykk<K> extends Uttrykk<StedbundetBelop<K>> {
         return new TilSteduavhengigBelopUttrykk(this).pluss(ledd);
     }
 
-    default StedbundetBelopAvrundingsUttrykk<K> rundAvTilHeleKroner() { return new StedbundetBelopAvrundingsUttrykk<K>(this); }
+    default StedbundetBelopAvrundUttrykk<K> rundAvTilHeleKroner() { return new StedbundetBelopAvrundUttrykk<K>(this); }
 
     default TilSteduavhengigBelopUttrykk steduavhengig() {
         return new TilSteduavhengigBelopUttrykk(this);
     }
 
-    default ProporsjonalFordelingDiffUttrykk<K> minusProporsjonalt(BelopUttrykk ledd) {
-        return new ProporsjonalFordelingDiffUttrykk<>(this, ledd);
+    default StedbundetBelopForholdsmessigDiffUttrykk<K> minusProporsjonalt(BelopUttrykk ledd) {
+        return new StedbundetBelopForholdsmessigDiffUttrykk<>(this, ledd);
     }
 
-    default ProporsjonalFordelingSumUttrykk<K> plussProporsjonalt(BelopUttrykk belop) {
-        return new ProporsjonalFordelingSumUttrykk<>(this, belop);
+    default StedbundetBelopForholdsmessigSumUttrykk<K> plussProporsjonalt(BelopUttrykk belop) {
+        return new StedbundetBelopForholdsmessigSumUttrykk<>(this, belop);
     }
 
-    default MinusStedUttrykk<K> minusSted(StedbundetBelopUttrykk<K> ledd) {
-        return new MinusStedUttrykk<>(this, ledd);
+    default StedbundetBelopMinusStedUttrykk<K> minusSted(StedbundetBelopUttrykk<K> ledd) {
+        return new StedbundetBelopMinusStedUttrykk<>(this, ledd);
     }
 
 

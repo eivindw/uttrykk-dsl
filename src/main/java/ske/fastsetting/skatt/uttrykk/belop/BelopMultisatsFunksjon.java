@@ -1,10 +1,10 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
 import static ske.fastsetting.skatt.uttrykk.belop.BelopDiffUttrykk.differanseMellom;
-import static ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk.begrens;
+import static ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk.begrens;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr0;
 import static ske.fastsetting.skatt.uttrykk.belop.TilBelopUttrykk.tilBelopUttrykk;
-import static ske.fastsetting.skatt.uttrykk.tall.KonstantUttrykk.tall;
+import static ske.fastsetting.skatt.uttrykk.tall.TallKonstantUttrykk.tall;
 
 import java.util.Collection;
 
@@ -31,7 +31,7 @@ public class BelopMultisatsFunksjon extends MultisatsUttrykk<Belop, Belop, Tall,
 
             @Override
             public Belop eval(UttrykkContext ctx) {
-                GrenseUttrykk grenseUttrykk = begrens(differanseMellom(grunnlag, nedreGrense).multiplisertMed(sats))
+                BelopGrenseUttrykk grenseUttrykk = begrens(differanseMellom(grunnlag, nedreGrense).multiplisertMed(sats))
                   .nedad(kr0());
                 if (oevreGrense != null) {
                     grenseUttrykk.oppad(differanseMellom(oevreGrense, nedreGrense).multiplisertMed(sats));

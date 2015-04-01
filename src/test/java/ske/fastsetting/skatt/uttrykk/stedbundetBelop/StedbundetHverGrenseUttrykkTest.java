@@ -2,7 +2,7 @@ package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
 
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr0;
-import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StebundetHverGrenseUttrykk.begrensHvertSted;
+import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StebundetBelopHverGrenseUttrykk.begrensHvertSted;
 import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetKroneUttrykk.kr;
 
 import org.junit.Test;

@@ -4,17 +4,17 @@ import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class BelopAvrundingsUttrykk extends AbstractUttrykk<Belop, BelopAvrundingsUttrykk> implements BelopUttrykk {
+public class BelopAvrundUttrykk extends AbstractUttrykk<Belop, BelopAvrundUttrykk> implements BelopUttrykk {
 
     private BelopUttrykk belopUttrykk;
 
-    public BelopAvrundingsUttrykk(BelopUttrykk belopUttrykk) {
+    public BelopAvrundUttrykk(BelopUttrykk belopUttrykk) {
 
         this.belopUttrykk = belopUttrykk;
     }
 
-    public static BelopAvrundingsUttrykk rundAvTilHeleKroner(BelopUttrykk belopUttrykk) {
-        return new BelopAvrundingsUttrykk(belopUttrykk);
+    public static BelopAvrundUttrykk rundAvTilHeleKroner(BelopUttrykk belopUttrykk) {
+        return new BelopAvrundUttrykk(belopUttrykk);
     }
 
     @Override

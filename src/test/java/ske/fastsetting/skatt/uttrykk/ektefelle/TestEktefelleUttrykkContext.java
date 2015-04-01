@@ -4,17 +4,17 @@ import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 
-public class EktefelleUttrykkContext extends UttrykkContextImpl {
-    private EktefelleUttrykkContext(Object... input) {
+public class TestEktefelleUttrykkContext extends UttrykkContextImpl {
+    private TestEktefelleUttrykkContext(Object... input) {
         super(input);
     }
 
-    public static EktefelleUttrykkContext ny(Object... input) {
-        return new EktefelleUttrykkContext(input);
+    public static TestEktefelleUttrykkContext ny(Object... input) {
+        return new TestEktefelleUttrykkContext(input);
     }
 
-    public EktefelleUttrykkContext medEktefelle(Object... input) {
-        EktefelleUttrykkContext ektefelle = ny(input);
+    public TestEktefelleUttrykkContext medEktefelle(Object... input) {
+        TestEktefelleUttrykkContext ektefelle = ny(input);
         this.leggTilInput(ektefelle);
         ektefelle.leggTilInput(this);
 

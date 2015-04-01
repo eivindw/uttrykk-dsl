@@ -6,10 +6,10 @@ import ske.fastsetting.skatt.domene.Belop;
 
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.UttrykkContextImpl.beregne;
-import static ske.fastsetting.skatt.uttrykk.belop.BelopAvrundingsUttrykk.rundAvTilHeleKroner;
+import static ske.fastsetting.skatt.uttrykk.belop.BelopAvrundUttrykk.rundAvTilHeleKroner;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 
-public class BelopAvrundingsUttrykkTest {
+public class BelopAvrundUttrykkTest {
     @Test
     public void skalRundeAvOereTilNaermesteHeleKrone() {
         assertEquals(Belop.kr(51), beregne(rundAvTilHeleKroner(kr(50.5))).verdi());

@@ -3,14 +3,14 @@ package ske.fastsetting.skatt.uttrykk.tekst;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class KonstantTekstUttrykk extends AbstractUttrykk<String, KonstantTekstUttrykk> implements TekstUttrykk {
+public class TekstKonstantUttrykk extends AbstractUttrykk<String, TekstKonstantUttrykk> implements TekstUttrykk {
     private final String tekst;
 
-    public static KonstantTekstUttrykk tekst(String tekst) {
-        return new KonstantTekstUttrykk(tekst);
+    public static TekstKonstantUttrykk tekst(String tekst) {
+        return new TekstKonstantUttrykk(tekst);
     }
 
-    private KonstantTekstUttrykk(String tabellnummer) {
+    private TekstKonstantUttrykk(String tabellnummer) {
         this.tekst = tabellnummer;
     }
 

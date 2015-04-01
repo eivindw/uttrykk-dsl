@@ -1,5 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.skalSlettes;
 
+import java.util.function.Function;
+
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.Skattegrunnlag;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
@@ -7,9 +9,7 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
-import java.util.function.Function;
-
-public interface Beregningsgrunnlag {
+interface Beregningsgrunnlag {
     BruttoformueUttrykk getBruttoformue();
 
     BelopUttrykk getGjeld();

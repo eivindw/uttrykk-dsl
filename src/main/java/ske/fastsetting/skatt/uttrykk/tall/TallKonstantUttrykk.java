@@ -1,25 +1,25 @@
 package ske.fastsetting.skatt.uttrykk.tall;
 
+import java.math.BigDecimal;
+
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-import java.math.BigDecimal;
-
-public class KonstantUttrykk extends AbstractUttrykk<Tall, KonstantUttrykk> implements TallUttrykk {
+public class TallKonstantUttrykk extends AbstractUttrykk<Tall, TallKonstantUttrykk> implements TallUttrykk {
 
     private final Tall verdi;
 
-    public KonstantUttrykk(Tall konstant) {
+    public TallKonstantUttrykk(Tall konstant) {
         this.verdi = konstant;
     }
 
-    public static KonstantUttrykk tall(double konstant) {
-        return new KonstantUttrykk(Tall.ukjent(BigDecimal.valueOf(konstant)));
+    public static TallKonstantUttrykk tall(double konstant) {
+        return new TallKonstantUttrykk(Tall.ukjent(BigDecimal.valueOf(konstant)));
     }
 
-    public static KonstantUttrykk heltall(int konstant) {
-        return new KonstantUttrykk(Tall.heltall(konstant));
+    public static TallKonstantUttrykk heltall(int konstant) {
+        return new TallKonstantUttrykk(Tall.heltall(konstant));
     }
 
     @Override

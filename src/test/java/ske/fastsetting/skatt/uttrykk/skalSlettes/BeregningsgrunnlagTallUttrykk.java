@@ -1,11 +1,11 @@
 package ske.fastsetting.skatt.uttrykk.skalSlettes;
 
+import java.util.function.Function;
+
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
-import java.util.function.Function;
-
-public class BeregningsgrunnlagTallUttrykk extends Beregningsgrunnlag.BeregningsgrunnlagUttrykk<Tall, TallUttrykk,
+class BeregningsgrunnlagTallUttrykk extends Beregningsgrunnlag.BeregningsgrunnlagUttrykk<Tall, TallUttrykk,
   BeregningsgrunnlagTallUttrykk> implements TallUttrykk {
 
     public static BeregningsgrunnlagTallUttrykk beregningsgrunnlag(Function<Beregningsgrunnlag, TallUttrykk> function) {

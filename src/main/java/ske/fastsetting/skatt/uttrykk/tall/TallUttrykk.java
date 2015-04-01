@@ -14,16 +14,16 @@ public interface TallUttrykk extends CompareableUttrykk<Tall> {
     }
 
     default TallUttrykk pluss(TallUttrykk verdi) {
-        return SumTallUttrykk.sum(this, verdi);
+        return TallSumUttrykk.sum(this, verdi);
     }
 
     @Deprecated()
-    default AvrundTallUttrykk rundOpp() {
-        return new AvrundTallUttrykk(this, 2, Avrunding.Opp);
+    default TallAvrundUttrykk rundOpp() {
+        return new TallAvrundUttrykk(this, 2, Avrunding.Opp);
     }
 
-    default AvrundTallUttrykk rundAv(int presisjon, Avrunding avrunding) {
-        return new AvrundTallUttrykk(this, presisjon, avrunding);
+    default TallAvrundUttrykk rundAv(int presisjon, Avrunding avrunding) {
+        return new TallAvrundUttrykk(this, presisjon, avrunding);
     }
 
 }

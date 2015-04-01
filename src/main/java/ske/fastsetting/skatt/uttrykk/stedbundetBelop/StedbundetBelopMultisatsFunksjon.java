@@ -1,9 +1,9 @@
 package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
 
-import static ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk.begrens;
+import static ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk.begrens;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr0;
-import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StebundetGrenseUttrykk.begrensFordholdmessig;
+import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StebundetBelopForholdsmessigGrenseUttrykk.begrensFordholdmessig;
 import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopWrapperUttrykk.tilStedbundetBelopUttrykk;
 
 import java.util.Collection;
@@ -15,7 +15,7 @@ import ske.fastsetting.skatt.uttrykk.MultisatsUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopDiffUttrykk;
-import ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk;
+import ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk;
 
 public class StedbundetBelopMultisatsFunksjon<K>
   extends MultisatsUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop, StedbundetBelopMultisatsFunksjon<K>>
@@ -36,11 +36,11 @@ public class StedbundetBelopMultisatsFunksjon<K>
           SatsStegUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop>() {
             @Override
             public StedbundetBelop<K> eval(UttrykkContext ctx) {
-                StebundetGrenseUttrykk<K> grenseUttrykk = begrensFordholdmessig(new
-                  ProporsjonalFordelingDiffUttrykk<>(grunnlag, nedreGrense).multiplisertMed(sats))
+                StebundetBelopForholdsmessigGrenseUttrykk<K> grenseUttrykk = begrensFordholdmessig(new
+                  StedbundetBelopForholdsmessigDiffUttrykk<>(grunnlag, nedreGrense).multiplisertMed(sats))
                   .nedad(kr0());
                 if (oevreGrense != null) {
-                    GrenseUttrykk grenseDiff = begrens(new BelopDiffUttrykk(oevreGrense, nedreGrense)).nedad(kr0());
+                    BelopGrenseUttrykk grenseDiff = begrens(new BelopDiffUttrykk(oevreGrense, nedreGrense)).nedad(kr0());
                     grenseUttrykk.oppad(grenseDiff.multiplisertMed(sats));
                 }
 

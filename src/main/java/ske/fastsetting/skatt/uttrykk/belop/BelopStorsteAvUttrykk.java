@@ -7,15 +7,15 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class StorsteAvUttrykk extends AbstractUttrykk<Belop, StorsteAvUttrykk> implements BelopUttrykk {
+public class BelopStorsteAvUttrykk extends AbstractUttrykk<Belop, BelopStorsteAvUttrykk> implements BelopUttrykk {
     private final BelopUttrykk[] uttrykk;
 
-    private StorsteAvUttrykk(BelopUttrykk[] uttrykk) {
+    private BelopStorsteAvUttrykk(BelopUttrykk[] uttrykk) {
         this.uttrykk = uttrykk;
     }
 
-    public static StorsteAvUttrykk storsteAv(BelopUttrykk... uttrykk) {
-        return new StorsteAvUttrykk(uttrykk);
+    public static BelopStorsteAvUttrykk storsteAv(BelopUttrykk... uttrykk) {
+        return new BelopStorsteAvUttrykk(uttrykk);
     }
 
     @Override

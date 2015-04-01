@@ -1,23 +1,21 @@
 package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
 
-import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
-import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
-public class StedbundetBelopAvrundingsUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,
-  StedbundetBelopAvrundingsUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+public class StedbundetBelopAvrundUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,
+  StedbundetBelopAvrundUttrykk<K>> implements StedbundetBelopUttrykk<K> {
 
     private StedbundetBelopUttrykk<K> belopUttrykk;
 
-    public StedbundetBelopAvrundingsUttrykk(StedbundetBelopUttrykk<K> belopUttrykk) {
+    public StedbundetBelopAvrundUttrykk(StedbundetBelopUttrykk<K> belopUttrykk) {
 
         this.belopUttrykk = belopUttrykk;
     }
 
-    public static <K> StedbundetBelopAvrundingsUttrykk<K> rundAvTilHeleKroner(StedbundetBelopUttrykk<K> belopUttrykk) {
-        return new StedbundetBelopAvrundingsUttrykk<>(belopUttrykk);
+    public static <K> StedbundetBelopAvrundUttrykk<K> rundAvTilHeleKroner(StedbundetBelopUttrykk<K> belopUttrykk) {
+        return new StedbundetBelopAvrundUttrykk<>(belopUttrykk);
     }
 
 

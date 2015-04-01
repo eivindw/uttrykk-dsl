@@ -4,11 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.UttrykkContextImpl.beregne;
 import static ske.fastsetting.skatt.uttrykk.UttrykkContextImpl.beregneOgBeskrive;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopHvisUttrykk.hvis;
-import static ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk.begrens;
-import static ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk.nedre0;
+import static ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk.begrens;
+import static ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk.nedre0;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr0;
-import static ske.fastsetting.skatt.uttrykk.belop.StorsteAvUttrykk.storsteAv;
+import static ske.fastsetting.skatt.uttrykk.belop.BelopStorsteAvUttrykk.storsteAv;
 import static ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver.print;
 
 import org.junit.Test;

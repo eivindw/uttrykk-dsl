@@ -3,7 +3,7 @@ package ske.fastsetting.skatt.uttrykk.skalSlettes;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopUttrykk;
 
-public interface BruttoformueUttrykk extends BelopUttrykk {
+interface BruttoformueUttrykk extends BelopUttrykk {
     public StedbundetBelopUttrykk fritidseiendomHyttekommune();
 
     public StedbundetBelopUttrykk stedbundenFormue();

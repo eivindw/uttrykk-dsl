@@ -6,23 +6,23 @@ import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
-public class EktefelleUttrykk extends AbstractUttrykk<Belop, EktefelleUttrykk> implements BelopUttrykk {
+class TestEktefelleUttrykk extends AbstractUttrykk<Belop, TestEktefelleUttrykk> implements BelopUttrykk {
 
     private Uttrykk<Belop> ektefelleUttrykk;
 
-    public EktefelleUttrykk(Uttrykk<Belop> ektefelleUttrykk) {
+    public TestEktefelleUttrykk(Uttrykk<Belop> ektefelleUttrykk) {
 
         this.ektefelleUttrykk = ektefelleUttrykk;
     }
 
-    public static EktefelleUttrykk ektefelles(Uttrykk<Belop> ektefelleUttrykk) {
-        return new EktefelleUttrykk(ektefelleUttrykk);
+    public static TestEktefelleUttrykk ektefelles(Uttrykk<Belop> ektefelleUttrykk) {
+        return new TestEktefelleUttrykk(ektefelleUttrykk);
     }
 
     @Override
     public Belop eval(UttrykkContext ctx) {
-        if (ctx.harInput(EktefelleUttrykkContext.class)) {
-            return ektefelleUttrykk.eval(ctx.input(EktefelleUttrykkContext.class));
+        if (ctx.harInput(TestEktefelleUttrykkContext.class)) {
+            return ektefelleUttrykk.eval(ctx.input(TestEktefelleUttrykkContext.class));
         } else {
             return Belop.NULL;
         }

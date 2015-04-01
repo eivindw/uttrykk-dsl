@@ -1,14 +1,14 @@
 package ske.fastsetting.skatt.uttrykk.ektefelle;
 
+import static ske.fastsetting.skatt.uttrykk.UttrykkTest.SkattegrunnlagobjektUttrykk.skattegrunnlagobjekt;
+import static ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk.begrens;
+import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
+import static ske.fastsetting.skatt.uttrykk.ektefelle.TestEktefelleUttrykk.ektefelles;
+import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
+
 import ske.fastsetting.skatt.uttrykk.Skattegrunnlag;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
-
-import static ske.fastsetting.skatt.uttrykk.UttrykkTest.SkattegrunnlagobjektUttrykk.skattegrunnlagobjekt;
-import static ske.fastsetting.skatt.uttrykk.belop.GrenseUttrykk.begrens;
-import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
-import static ske.fastsetting.skatt.uttrykk.ektefelle.EktefelleUttrykk.ektefelles;
-import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
 
 public class SkatteberegningHelper {
 

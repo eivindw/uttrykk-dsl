@@ -20,8 +20,8 @@ import static org.junit.Assert.assertNotNull;
 
 public class JordbruksfradragTest {
 
-    private EktefelleUttrykkContext skattyterKontekst1;
-    private EktefelleUttrykkContext skattyterKontekst2;
+    private TestEktefelleUttrykkContext skattyterKontekst1;
+    private TestEktefelleUttrykkContext skattyterKontekst2;
 
     @Before
     public void init() {
@@ -30,7 +30,7 @@ public class JordbruksfradragTest {
         Skattegrunnlag sg2 = new Skattegrunnlag().post(Skattegrunnlag.SKATTEGRUNNLAGOBJEKT_TYPE__INNTEKT_JORDBRUK,
           Belop.kr(400_000));
 
-        skattyterKontekst1 = EktefelleUttrykkContext.ny(sg1);
+        skattyterKontekst1 = TestEktefelleUttrykkContext.ny(sg1);
         skattyterKontekst2 = skattyterKontekst1.medEktefelle(sg2);
     }
 
@@ -47,7 +47,7 @@ public class JordbruksfradragTest {
         Skattegrunnlag sg1 = new Skattegrunnlag().post(Skattegrunnlag.SKATTEGRUNNLAGOBJEKT_TYPE__INNTEKT_JORDBRUK,
           Belop.kr(300_000));
 
-        skattyterKontekst1 = EktefelleUttrykkContext.ny(sg1);
+        skattyterKontekst1 = TestEktefelleUttrykkContext.ny(sg1);
 
         System.out.println(skattyterKontekst1.eval(SkatteberegningHelper.jordbruksfradrag()));
     }
