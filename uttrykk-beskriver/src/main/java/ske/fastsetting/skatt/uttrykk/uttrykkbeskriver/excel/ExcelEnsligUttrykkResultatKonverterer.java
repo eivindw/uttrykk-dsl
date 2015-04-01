@@ -32,12 +32,22 @@ public class ExcelEnsligUttrykkResultatKonverterer {
           ExcelUtil.lagGyldigCellenavn((String) map.getOrDefault(UttrykkResultat.KEY_NAVN, ""))
         );
 
-        //Replace "ektefelles" with 0
-        if (nyMap.containsKey(UTTRYKK))
-            if (((String) nyMap.get(UTTRYKK)).contains("ektefelles"))
-                nyMap.put(UTTRYKK, "0");
+        if (nyMap.containsKey(UTTRYKK)) {
+            String uttrykk = erstattUttrykk((String) nyMap.get(UTTRYKK));
+            nyMap.put(UTTRYKK, uttrykk);
+        }
 
         return nyMap;
+    }
+
+    private static String erstattUttrykk(String uttrykk) {
+
+        String resultat = uttrykk;
+
+        resultat = resultat.replaceAll("ektefelles (.*)", "0");
+        resultat = resultat.replaceAll("skattyter har ektefelle", "false");
+
+        return resultat;
     }
 
 

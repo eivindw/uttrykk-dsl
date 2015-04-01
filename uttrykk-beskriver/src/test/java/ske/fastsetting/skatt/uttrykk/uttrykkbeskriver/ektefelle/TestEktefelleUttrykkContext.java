@@ -18,7 +18,7 @@ public class TestEktefelleUttrykkContext extends UttrykkContextImpl {
         this.leggTilInput(ektefelle);
         ektefelle.leggTilInput(this);
 
-        return ektefelle;
+        return this;
     }
 
     public <V> UttrykkResultat<V> beskrivResultat(Uttrykk<V> jordbruksfradrag) {

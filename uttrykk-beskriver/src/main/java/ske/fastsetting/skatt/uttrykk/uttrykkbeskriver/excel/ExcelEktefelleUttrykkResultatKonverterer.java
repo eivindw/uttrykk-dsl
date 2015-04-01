@@ -64,8 +64,9 @@ public class ExcelEktefelleUttrykkResultatKonverterer<V> {
 
         if (uttrykk.matches(EKTEFELLE_REGEX)) {
             erHovedPerson = !erHovedPerson;
-            uttrykk = uttrykk.replaceFirst(EKTEFELLE_REGEX, EKTEFELLE_OUTPUT);
         }
+
+        uttrykk = erstattUttrykk(uttrykk);
 
         for (String subId : IdUtil.parseIder(uttrykk)) {
             uttrykk = uttrykk.replaceAll(subId, byggRekursivt(uttrykksmap, erHovedPerson, resultat, subId));
@@ -81,6 +82,16 @@ public class ExcelEktefelleUttrykkResultatKonverterer<V> {
         nyMap.put(UttrykkResultat.KEY_UTTRYKK, uttrykk);
 
         return nyId;
+    }
+
+    private static String erstattUttrykk(String uttrykk) {
+
+        String resultat = uttrykk;
+
+        resultat = resultat.replaceFirst(EKTEFELLE_REGEX, EKTEFELLE_OUTPUT);
+        resultat = resultat.replaceAll("skattyter har ektefelle", "true");
+
+        return resultat;
     }
 
     private String kvalifisertPrefiks(Set<String> tags, String prefiks) {

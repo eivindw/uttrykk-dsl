@@ -21,7 +21,7 @@ public class TekstKonstantUttrykk extends AbstractUttrykk<String, TekstKonstantU
 
     @Override
     public String beskriv(UttrykkContext ctx) {
-        return tekst;
+        return "\""+tekst+"\"";
     }
 }
 

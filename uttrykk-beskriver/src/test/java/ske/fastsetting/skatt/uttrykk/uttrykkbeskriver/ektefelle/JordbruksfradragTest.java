@@ -30,8 +30,8 @@ public class JordbruksfradragTest {
         Skattegrunnlag sg2 = new Skattegrunnlag().post(Skattegrunnlag.SKATTEGRUNNLAGOBJEKT_TYPE__INNTEKT_JORDBRUK,
           Belop.kr(400_000));
 
-        skattyterKontekst1 = TestEktefelleUttrykkContext.ny(sg1);
-        skattyterKontekst2 = skattyterKontekst1.medEktefelle(sg2);
+        skattyterKontekst1 = TestEktefelleUttrykkContext.ny(sg1).medEktefelle(sg2);
+        skattyterKontekst2 = TestEktefelleUttrykkContext.ny(sg2).medEktefelle(sg1);
     }
 
     @Test

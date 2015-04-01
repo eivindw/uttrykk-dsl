@@ -14,26 +14,33 @@ class ExcelVerdi implements ExcelUttrykk {
     protected enum Type {
         Prosent,
         Belop,
-        Heltall, Tekst
+        Heltall,
+        Kilometer,
+        Tekst
     }
 
     public static ExcelUttrykk parse(String text) {
         if (text.startsWith("kr ")) {
-            return new ExcelVerdi(Type.Belop, Long.parseLong(text.replace("kr ", "").replace(" ", "")));
+            return new ExcelVerdi(Type.Belop, Double.parseDouble(text.replace("kr ", "").replace(" ", "").replace("," +
+              "", ".")));
         } else if (text.endsWith("%")) {
             return new ExcelVerdi(Type.Prosent, Double.parseDouble(text.replace("%", "")) / 100);
         } else if (text.endsWith(" år")) {
             return new ExcelVerdi(Type.Heltall, Integer.parseInt(text.replace(" år", "")));
+        } else if (text.endsWith(" km")) {
+            return new ExcelVerdi(Type.Kilometer, Double.parseDouble(text.replace(" km", "")));
         } else if (text.matches("Hvis-uttrykk mangler en verdi for ellersBruk")) {
             return new ExcelVerdi(Type.Tekst, "\"" + text + "\"");
         } else if (text.matches(TABELLNUMMER_REGEX)) {
             return new ExcelVerdi(Type.Tekst, text.replaceAll(TABELLNUMMER_REGEX, TABELLNUMMER_OUTPUT));
         } else if (text.startsWith("Post")) {
-            return new ExcelVerdi(Type.Belop, 0L);
+            return new ExcelVerdi(Type.Belop, 0d);
         } else if (text.startsWith("skattyters alder")) {
             return new ExcelVerdi(Type.Heltall, 34);
         } else if (text.startsWith("skattyters bostedkommune")) {
             return new ExcelVerdi(Type.Tekst, "Lørenskog");
+        } else if (text.matches("\\{\\}")) {
+            return new ExcelVerdi(Type.Heltall, 0);
         } else if (text.matches("-?\\d+")) {
             return new ExcelVerdi(Type.Heltall, Integer.parseInt(text));
         } else {
@@ -57,10 +64,14 @@ class ExcelVerdi implements ExcelUttrykk {
         switch (type) {
         case Belop:
             ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.BELOP_FORMATERING);
-            celle.setCellValue(((Long) value).doubleValue());
+            celle.setCellValue(((double) value));
             break;
         case Prosent:
             ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.PROSENT_FORMATERING);
+            celle.setCellValue((double) value);
+            break;
+        case Kilometer:
+            ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.HELTALL_FORMATERING);
             celle.setCellValue((double) value);
             break;
         case Heltall:

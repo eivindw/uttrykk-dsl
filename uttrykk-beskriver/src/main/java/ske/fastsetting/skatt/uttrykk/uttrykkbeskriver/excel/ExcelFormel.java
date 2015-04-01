@@ -1,11 +1,11 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel;
 
-import org.apache.poi.ss.usermodel.Cell;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.poi.ss.usermodel.Cell;
 
 public class ExcelFormel implements ExcelUttrykk {
 
@@ -56,8 +56,13 @@ public class ExcelFormel implements ExcelUttrykk {
     public static final String SATS_FRA_MATCH = "^satsFra\\((.*),(.*),(.*)\\)$";
     public static final String SATS_FRA_OUTPUT = "MAX(($1 - $3) * $2,0)";
 
+    public static final String SATS_TIL_MATCH = "^satsTil\\((.*),(.*),(.*)\\)$";
+    public static final String SATS_TIL_OUTPUT = "MIN($1 * $2, $3 * $2)";
+
     private static final String ER_EN_AV_REGEX = "^(.*) er en av \\((.*)\\)$";
 
+    public static final String MINUS_STED_MATCH = "^(.*) - sted(.*)$";
+    public static final String MINUS_STED_OUTPUT = "$1";
 
     public ExcelFormel(String uttrykkStreng) {
 
@@ -71,6 +76,7 @@ public class ExcelFormel implements ExcelUttrykk {
         uttrykkStreng = uttrykkStreng.replaceAll(MULTISATS_MATCH, MULTISATS_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(SATS_FRATIL_MATCH, SATS_FRATIL_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(SATS_FRA_MATCH, SATS_FRA_OUTPUT);
+        uttrykkStreng = uttrykkStreng.replaceAll(SATS_TIL_MATCH, SATS_TIL_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(BEGRENSET_NEDAD_OPPAD_MATCH, BEGRENSET_NEDAD_OPPAD_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(BEGRENSET_NEDAD_MATCH, BEGRENSET_NEDAD_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(BEGRENSET_OPPAD_MATCH, BEGRENSET_OPPAD_OUTPUT);
@@ -82,6 +88,7 @@ public class ExcelFormel implements ExcelUttrykk {
         uttrykkStreng = uttrykkStreng.replaceAll(RUND_AV_TIL_HELE_KRONER_MATCH, RUND_AV_TIL_HELE_KRONER_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(OG_MATCH, OG_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(ELLER_MATCH, ELLER_OUTPUT);
+        uttrykkStreng = uttrykkStreng.replaceAll(MINUS_STED_MATCH, MINUS_STED_OUTPUT);
 
         if (uttrykkStreng.matches(ER_EN_AV_REGEX)) {
             Matcher matcher = Pattern.compile(ER_EN_AV_REGEX).matcher(uttrykkStreng);

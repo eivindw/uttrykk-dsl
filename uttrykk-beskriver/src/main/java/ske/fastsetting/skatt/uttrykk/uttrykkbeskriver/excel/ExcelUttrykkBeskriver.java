@@ -115,6 +115,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
     private class RekursivUttrykkBeskriver {
 
+        private final String id;
         private final String celleId;
         private final String navn;
         private final String uttrykk;
@@ -124,6 +125,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
         private RekursivUttrykkBeskriver(String id) {
 
+            this.id = id;
             Map map = resultat.uttrykk(id);
 
             celleId = finnId(map);
@@ -138,8 +140,8 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
         public String beskriv() {
 
-            if(cache.containsKey(celleId)) {
-                return cache.get(celleId);
+            if(cache.containsKey(id)) {
+                return cache.get(id);
             }
 
             String resultatUttrykk = uttrykk;
@@ -155,7 +157,7 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
             resultatUttrykk = harNavn() ? beskrivNavngittUttrykk(resultatUttrykk) : beskrivAnonymtUttrykk(resultatUttrykk);
 
-            cache.put(celleId,resultatUttrykk);
+            cache.put(id,resultatUttrykk);
 
             return resultatUttrykk;
 
