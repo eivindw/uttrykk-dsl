@@ -9,7 +9,7 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
-interface Beregningsgrunnlag {
+public interface Beregningsgrunnlag {
     BruttoformueUttrykk getBruttoformue();
 
     BelopUttrykk getGjeld();

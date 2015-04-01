@@ -4,7 +4,7 @@ import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
-interface AlderspensjonUttrykk extends BelopUttrykk {
+public interface AlderspensjonUttrykk extends BelopUttrykk {
     TallUttrykk pensjonAntallMaaneder();
 
     ProsentUttrykk pensjonsgrad();
