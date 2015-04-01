@@ -68,7 +68,7 @@ public class ConfluenceUttrykkBeskriver implements UttrykkBeskriver<Map<String, 
 
         if (vasketNavn != null) {
             wikitekst = "[" + vasketNavn + "]";
-        } else if (!subIder.isEmpty()) {
+        } else if (subIder.size()>1) {
             wikitekst = "(" + uttrykkString + ")";
         } else {
             wikitekst = uttrykkString;
