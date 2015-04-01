@@ -8,7 +8,7 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
 public class KroneUttrykk extends AbstractUttrykk<Belop, KroneUttrykk> implements BelopUttrykk {
 
-    public static final KroneUttrykk KR_0 = kr(0);
+    private static final KroneUttrykk KR_0 = kr(0);
     private final Type type;
 
     public static KroneUttrykk kr0() {return KR_0;};
