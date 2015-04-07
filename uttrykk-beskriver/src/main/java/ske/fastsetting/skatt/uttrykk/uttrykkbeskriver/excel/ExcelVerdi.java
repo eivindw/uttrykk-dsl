@@ -33,6 +33,10 @@ class ExcelVerdi implements ExcelUttrykk {
             return new ExcelVerdi(Type.Tekst, "\"" + text + "\"");
         } else if (text.matches(TABELLNUMMER_REGEX)) {
             return new ExcelVerdi(Type.Tekst, text.replaceAll(TABELLNUMMER_REGEX, TABELLNUMMER_OUTPUT));
+        } else if (text.startsWith("Post 3.2.8 (inntektsfradragReiseutgifterReiseHjemArbeid)")) {
+            return new ExcelVerdi(Type.Kilometer, 0d);
+        } else if (text.startsWith("Post 3.2.9 (inntektsfradragReiseutgifterBesoeksreise)")) {
+            return new ExcelVerdi(Type.Kilometer, 0d);
         } else if (text.startsWith("Post")) {
             return new ExcelVerdi(Type.Belop, 0d);
         } else if (text.startsWith("skattyters alder")) {
@@ -71,7 +75,7 @@ class ExcelVerdi implements ExcelUttrykk {
             celle.setCellValue((double) value);
             break;
         case Kilometer:
-            ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.HELTALL_FORMATERING);
+            ExcelUtil.formaterCelleverdi(celle, ExcelFormateringshint.KILOMETER_FORMATERING);
             celle.setCellValue((double) value);
             break;
         case Heltall:
