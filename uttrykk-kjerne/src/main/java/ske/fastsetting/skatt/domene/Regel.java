@@ -24,6 +24,16 @@ public class Regel {
           "Folketrygdloven",
           "Lov om folketrygd (folketrygdloven)",
           "lov/1997-02-28-19"
+        ),
+        Takseringsreglene(
+          "Takseringsreglene",
+          "Forskrift om takseringsregler 2014",
+          "forskrift/2014-11-26-1474"
+        ),
+        ForskriftTilSkatteloven(
+          "Forskrift til skatteloven",
+            "FSFIN Forskrift til skatteloven",
+            "forskrift/1999-11-19-1158"
         );
 
         private final String tittel;
@@ -63,6 +73,15 @@ public class Regel {
     public static Regel skatteloven(String paragraf) {
         return new Regel(RegelType.Skatteloven, paragraf);
     }
+
+    public static Regel takseringsreglene(String paragraf) {
+        return new Regel(RegelType.Takseringsreglene, paragraf);
+    }
+
+    public static Regel forskriftTilSkatteloven(String paragraf) {
+        return new Regel(RegelType.ForskriftTilSkatteloven, paragraf);
+    }
+
 
     public static Regel[] regler(Regel... regel) {
         return regel;
