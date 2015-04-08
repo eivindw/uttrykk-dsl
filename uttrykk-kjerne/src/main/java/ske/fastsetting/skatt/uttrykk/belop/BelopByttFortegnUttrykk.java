@@ -18,6 +18,6 @@ public class BelopByttFortegnUttrykk extends AbstractUttrykk<Belop, BelopByttFor
 
     @Override
     public String beskriv(UttrykkContext ctx) {
-        return " - " + ctx.beskriv(belopUttrykk);
+        return "(- " + ctx.beskriv(belopUttrykk)+")";
     }
 }

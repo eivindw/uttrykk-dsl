@@ -153,6 +153,17 @@ public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> 
 
     }
 
+    public StedbundetBelop<T> byttFortegn() {
+
+        Map<T, Belop> resultat = stedBelopMap.entrySet()
+          .stream()
+          .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().byttFortegn()));
+
+        return new StedbundetBelop<>(resultat);
+
+    }
+
+
     public boolean harSted(T sted) {
         return stedBelopMap.containsKey(sted);
     }
