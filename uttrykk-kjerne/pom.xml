@@ -6,12 +6,9 @@
     <artifactId>uttrykk</artifactId>
     <groupId>ske.fastsetting.skatt</groupId>
     <version>1.5-SNAPSHOT</version>
-    <relativePath>../../uttrykk-dsl/pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>ske.fastsetting.skatt</groupId>
   <artifactId>uttrykk-kjerne</artifactId>
-
 
 </project>
