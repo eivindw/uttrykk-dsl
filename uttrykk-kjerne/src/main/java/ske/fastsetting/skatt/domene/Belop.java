@@ -53,6 +53,8 @@ public class Belop extends Kvantitet<Long, Krone> implements Comparable<Belop>, 
         );
     }
 
+
+
     public String toString() {
         DecimalFormat decimalFormat = new DecimalFormat();
         DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();

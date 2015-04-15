@@ -2,6 +2,8 @@ package ske.fastsetting.skatt.uttrykk.belop;
 
 import static ske.fastsetting.skatt.uttrykk.belop.TilStedbundetBelopUttrykk.tilStedbundet;
 
+import java.math.BigDecimal;
+
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.Kvantitet;
 import ske.fastsetting.skatt.domene.Tall;
@@ -41,6 +43,14 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
 
     default BelopAvrundUttrykk rundAvTilHeleKroner() {
         return new BelopAvrundUttrykk(this);
+    }
+
+    default BelopAvrundOppTilDeleligMedUttrykk rundAvOppTilHoyesteDeleligMed(BigDecimal verdi) {
+        return new BelopAvrundOppTilDeleligMedUttrykk(this,verdi);
+    }
+
+    default BelopAvrundNedTilNaermeste100Uttrykk rundAvNedTilNaermeste100() {
+        return new BelopAvrundNedTilNaermeste100Uttrykk(this);
     }
 
     default <K extends Kvantitet> BelopPerKvantitetUttrykk<K> per(Uttrykk<K> uttrykk) {
