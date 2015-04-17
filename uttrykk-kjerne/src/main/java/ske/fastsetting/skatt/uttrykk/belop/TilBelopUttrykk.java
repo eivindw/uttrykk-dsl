@@ -8,10 +8,7 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-/**
- * Created by jorn ola birkeland on 21.03.15.
- */
-class TilBelopUttrykk extends AbstractUttrykk<Belop, TilBelopUttrykk> implements BelopUttrykk {
+public class TilBelopUttrykk extends AbstractUttrykk<Belop,TilBelopUttrykk> implements BelopUttrykk {
     private Uttrykk<Belop> uttrykk;
 
     public static Collection<BelopUttrykk> tilBelopUttrykk(Collection<Uttrykk<Belop>> uttrykk) {
@@ -19,6 +16,10 @@ class TilBelopUttrykk extends AbstractUttrykk<Belop, TilBelopUttrykk> implements
     }
 
     public static BelopUttrykk tilBelopUttrykk(Uttrykk<Belop> uttrykk) {
+        return new TilBelopUttrykk(uttrykk);
+    }
+
+    public static TilBelopUttrykk pakkInn(Uttrykk<Belop> uttrykk) {
         return new TilBelopUttrykk(uttrykk);
     }
 
