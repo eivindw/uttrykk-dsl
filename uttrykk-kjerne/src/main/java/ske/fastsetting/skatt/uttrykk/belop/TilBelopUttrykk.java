@@ -1,12 +1,12 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
-
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class TilBelopUttrykk extends AbstractUttrykk<Belop,TilBelopUttrykk> implements BelopUttrykk {
     private Uttrykk<Belop> uttrykk;
@@ -25,6 +25,7 @@ public class TilBelopUttrykk extends AbstractUttrykk<Belop,TilBelopUttrykk> impl
 
     public TilBelopUttrykk(Uttrykk<Belop> uttrykk) {
         this.uttrykk = uttrykk;
+        navn(uttrykk.navn());
     }
 
     @Override
@@ -36,4 +37,5 @@ public class TilBelopUttrykk extends AbstractUttrykk<Belop,TilBelopUttrykk> impl
     public String beskriv(UttrykkContext ctx) {
         return uttrykk.beskriv(ctx);
     }
+
 }
