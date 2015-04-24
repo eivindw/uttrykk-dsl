@@ -9,15 +9,17 @@ public class BelopDividertMedBelopUttrykk extends AbstractUttrykk<Tall, BelopDiv
   TallUttrykk {
     private final BelopUttrykk divident;
     private final BelopUttrykk divisor;
+    private Tall.TallUttrykkType type;
 
-    public BelopDividertMedBelopUttrykk(BelopUttrykk divident, BelopUttrykk divisor) {
+    public BelopDividertMedBelopUttrykk(BelopUttrykk divident, BelopUttrykk divisor, Tall.TallUttrykkType type) {
         this.divident = divident;
         this.divisor = divisor;
+        this.type = type;
     }
 
     @Override
     public Tall eval(UttrykkContext ctx) {
-        return Tall.ukjent(ctx.eval(divident).dividertMed(ctx.eval(divisor)));
+        return Tall.nytt(ctx.eval(divident).dividertMed(ctx.eval(divisor)),type);
     }
 
     @Override

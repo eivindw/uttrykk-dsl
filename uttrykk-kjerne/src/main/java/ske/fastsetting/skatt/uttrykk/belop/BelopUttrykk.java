@@ -34,7 +34,11 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
     default <T> TilStedbundetBelopUttrykk<T> i(T sted) {return tilStedbundet(this,sted); }
 
     default BelopDividertMedBelopUttrykk dividertMed(BelopUttrykk divident) {
-        return new BelopDividertMedBelopUttrykk(this, divident);
+        return new BelopDividertMedBelopUttrykk(this, divident, Tall.TallUttrykkType.UKJENT);
+    }
+
+    default BelopDividertMedBelopUttrykk dividertMedTilProsent(BelopUttrykk divident) {
+        return new BelopDividertMedBelopUttrykk(this, divident, Tall.TallUttrykkType.PROSENT);
     }
 
     default BelopByttFortegnUttrykk byttFortegn() {

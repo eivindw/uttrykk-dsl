@@ -21,11 +21,11 @@ public interface StedbundetBelopUttrykk<K> extends Uttrykk<StedbundetBelop<K>> {
     }
 
     default BelopDividertMedBelopUttrykk dividertMed(StedbundetBelopUttrykk<K> divident) {
-        return new BelopDividertMedBelopUttrykk(this.steduavhengig(), divident.steduavhengig());
+        return new BelopDividertMedBelopUttrykk(this.steduavhengig(), divident.steduavhengig(), Tall.TallUttrykkType.UKJENT);
     }
 
     default BelopDividertMedBelopUttrykk dividertMed(BelopUttrykk divident) {
-        return new BelopDividertMedBelopUttrykk(this.steduavhengig(), divident);
+        return new BelopDividertMedBelopUttrykk(this.steduavhengig(), divident, Tall.TallUttrykkType.UKJENT);
     }
 
     default StedbundetBelopMultiplikasjonsUttrykk<K> multiplisertMed(Uttrykk<Tall> tall) {

@@ -33,6 +33,7 @@ public class BelopAvrundOppTilDeleligMedUttrykk extends AbstractUttrykk<Belop, B
         BigDecimal g = f.multiply(verdi);
 
 
+
         return Belop.kr(g.toBigInteger());
     }
 

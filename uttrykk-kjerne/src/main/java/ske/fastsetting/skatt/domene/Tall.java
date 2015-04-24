@@ -37,6 +37,10 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
         this(TallUttrykkType.ZERO, BigDecimal.ZERO);
     }
 
+    public static Tall nytt(BigDecimal verdi,TallUttrykkType type) {
+        return new Tall(type, verdi);
+    }
+
     public static Tall prosent(double prosent) {
         return new Tall(TallUttrykkType.PROSENT, BigDecimal.valueOf(prosent).divide(BigDecimal.valueOf(100)));
     }
