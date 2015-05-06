@@ -64,6 +64,9 @@ public class ExcelFormel implements ExcelUttrykk {
     public static final String MINUS_STED_MATCH = "^(.*) - sted(.*)$";
     public static final String MINUS_STED_OUTPUT = "$1";
 
+    private static final String TABELLNUMMER_REGEX = "Tabellnummer: (\\d)(.*)(\\d\\d)";
+    private static final String TABELLNUMMER_OUTPUT = "CONCATENATE(\"$1\",$2,\"$3\")";
+
     public ExcelFormel(String uttrykkStreng) {
 
         this.formel = uttrykkStreng;
@@ -89,6 +92,7 @@ public class ExcelFormel implements ExcelUttrykk {
         uttrykkStreng = uttrykkStreng.replaceAll(OG_MATCH, OG_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(ELLER_MATCH, ELLER_OUTPUT);
         uttrykkStreng = uttrykkStreng.replaceAll(MINUS_STED_MATCH, MINUS_STED_OUTPUT);
+        uttrykkStreng = uttrykkStreng.replaceAll(TABELLNUMMER_REGEX, TABELLNUMMER_OUTPUT);
 
         if (uttrykkStreng.matches(ER_EN_AV_REGEX)) {
             Matcher matcher = Pattern.compile(ER_EN_AV_REGEX).matcher(uttrykkStreng);

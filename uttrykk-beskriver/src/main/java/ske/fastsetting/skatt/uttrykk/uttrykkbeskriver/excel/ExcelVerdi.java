@@ -4,8 +4,6 @@ import org.apache.poi.ss.usermodel.Cell;
 
 class ExcelVerdi implements ExcelUttrykk {
 
-    private static final String TABELLNUMMER_REGEX = "Tabellnummer: (.*)";
-    private static final String TABELLNUMMER_OUTPUT = "\"$1\"";
 
 
     private final Type type;
@@ -31,8 +29,6 @@ class ExcelVerdi implements ExcelUttrykk {
             return new ExcelVerdi(Type.Kilometer, Double.parseDouble(text.replace(" km", "")));
         } else if (text.matches("Hvis-uttrykk mangler en verdi for ellersBruk")) {
             return new ExcelVerdi(Type.Tekst, "\"" + text + "\"");
-        } else if (text.matches(TABELLNUMMER_REGEX)) {
-            return new ExcelVerdi(Type.Tekst, text.replaceAll(TABELLNUMMER_REGEX, TABELLNUMMER_OUTPUT));
         } else if (text.startsWith("Post 3.2.8 (inntektsfradragReiseutgifterReiseHjemArbeid)")) {
             return new ExcelVerdi(Type.Kilometer, 0d);
         } else if (text.startsWith("Post 3.2.9 (inntektsfradragReiseutgifterBesoeksreise)")) {
