@@ -19,7 +19,7 @@
   </properties>
 
   <scm>
-    <developerConnection>scm:git:https://github.com/eivindw/kvantitetUttrykk-dsl.git</developerConnection>
+    <developerConnection>scm:git:https://github.com/eivindw/uttrykk-dsl.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
