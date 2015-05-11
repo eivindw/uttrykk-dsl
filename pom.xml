@@ -19,8 +19,7 @@
   </properties>
 
   <scm>
-    <developerConnection>scm:git:https://github.com/eivindw/uttrykk-dsl.git</developerConnection>
-    <tag>HEAD</tag>
+    <connection>scm:git:https://aurora/git/scm/sof/utrykk-dsl.git</connection>
   </scm>
 
   <dependencyManagement>
