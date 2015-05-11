@@ -4,7 +4,7 @@
 
   <groupId>ske.fastsetting.skatt</groupId>
   <artifactId>uttrykk</artifactId>
-  <version>1.5-SNAPSHOT</version>
+  <version>1.6-SNAPSHOT</version>
   <modules>
     <module>uttrykk-kjerne</module>
     <module>uttrykk-beskriver</module>
@@ -14,13 +14,11 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
     <junit.version>4.11</junit.version>
   </properties>
 
   <scm>
-    <developerConnection>scm:git:https://github.com/eivindw/uttrykk-dsl.git</developerConnection>
-    <tag>HEAD</tag>
+    <connection>scm:git:https://aurora/git/scm/sof/uttrykk-dsl.git</connection>
   </scm>
 
   <dependencyManagement>

@@ -24,6 +24,10 @@ public interface Uttrykk<V> {
         return new ErEnAvUttrykk<>(this, verdier);
     }
 
+    default BolskUttrykk erIkkeEnAv(Collection<V> verdier) {
+        return new ErIkkeEnAvUttrykk<>(this, verdier);
+    }
+
     static class ErEnAvUttrykk<T> extends BolskUttrykk {
         private final Uttrykk<T> uttrykk;
         private final Collection<T> verdier;
@@ -41,6 +45,26 @@ public interface Uttrykk<V> {
         public String beskriv(UttrykkContext ctx) {
             return verdier.stream().map(T::toString)
               .collect(Collectors.joining(", ", ctx.beskriv(uttrykk) + " er en av (", ")"));
+        }
+    }
+
+    static class ErIkkeEnAvUttrykk<T> extends BolskUttrykk {
+        private final Uttrykk<T> uttrykk;
+        private final Collection<T> verdier;
+
+        private ErIkkeEnAvUttrykk(Uttrykk<T> uttrykk, Collection<T> verdier) {
+            this.uttrykk = uttrykk;
+            this.verdier = verdier;
+        }
+
+        public Boolean eval(UttrykkContext ctx) {
+            return !verdier.contains(ctx.eval(uttrykk));
+        }
+
+        @Override
+        public String beskriv(UttrykkContext ctx) {
+            return verdier.stream().map(T::toString)
+                    .collect(Collectors.joining(", ", ctx.beskriv(uttrykk) + " er ikke en av (", ")"));
         }
     }
 
