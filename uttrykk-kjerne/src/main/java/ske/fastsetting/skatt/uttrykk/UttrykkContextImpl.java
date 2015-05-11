@@ -1,10 +1,10 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import ske.fastsetting.skatt.uttrykk.util.IdUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
-
-import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 
 @SuppressWarnings("unchecked")
 public class UttrykkContextImpl implements UttrykkContext {
@@ -38,6 +38,10 @@ public class UttrykkContextImpl implements UttrykkContext {
             this.input.put(verdi.getClass(), verdi);
             Stream.of(verdi.getClass().getInterfaces()).forEach(i -> this.input.put(i, verdi));
         });
+    }
+
+    protected <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
+        initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI,k->verdi);
     }
 
     protected <V> UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
