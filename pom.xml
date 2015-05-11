@@ -4,7 +4,7 @@
 
   <groupId>ske.fastsetting.skatt</groupId>
   <artifactId>uttrykk</artifactId>
-  <version>1.5-SNAPSHOT</version>
+  <version>1.5</version>
   <modules>
     <module>uttrykk-kjerne</module>
     <module>uttrykk-beskriver</module>
