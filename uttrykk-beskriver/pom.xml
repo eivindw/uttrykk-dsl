@@ -16,7 +16,6 @@
     <poi.ooxml.version>3.9</poi.ooxml.version>
   </properties>
 
-
   <dependencies>
     <dependency>
       <groupId>ske.fastsetting.skatt</groupId>
