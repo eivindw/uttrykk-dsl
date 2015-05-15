@@ -146,6 +146,8 @@ public class ExcelUttrykkBeskriver implements UttrykkBeskriver<Workbook> {
 
             String resultatUttrykk = uttrykk;
 
+            System.out.println(navn+": "+resultatUttrykk);
+
             if (harSubIder()) {
                 resultatUttrykk = ExcelFormel.parse(resultatUttrykk).tilTekst();
             }
