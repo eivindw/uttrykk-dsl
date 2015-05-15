@@ -52,6 +52,6 @@ public class BasisTest {
         final BelopUttrykk skatt = sumLonn.multiplisertMed(satsSkatt).navn("Skatt").tags(TAG_SKATT);
         final BelopUttrykk sum = trygdeavgift.pluss(skatt).navn("Sum skatt & avgift").tags(TAG_SKATT);
 
-        return UttrykkContextImpl.beregneOgBeskrive(sum, new Skattegrunnlag());
+        return TestUttrykkContext.beregneOgBeskrive(sum, new Skattegrunnlag());
     }
 }

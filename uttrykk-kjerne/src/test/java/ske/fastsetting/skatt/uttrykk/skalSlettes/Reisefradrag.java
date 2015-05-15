@@ -9,7 +9,7 @@ import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
 
 import org.junit.Test;
 
-import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
+import ske.fastsetting.skatt.uttrykk.TestUttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopMultisatsFunksjon;
 import ske.fastsetting.skatt.uttrykk.belop.BelopPerKvantitetUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
@@ -20,8 +20,8 @@ class Reisefradrag {
 
     @Test
     public void test() {
-        System.out.println(UttrykkContextImpl.beregne(reisefradrag(km(200000), km(4_000), kr(3_400))).verdi());
-        System.out.println(UttrykkContextImpl.beregne(prosent2()).verdi());
+        System.out.println(TestUttrykkContext.beregne(reisefradrag(km(200000), km(4_000), kr(3_400))).verdi());
+        System.out.println(TestUttrykkContext.beregne(prosent2()).verdi());
 //        System.out.println(UttrykkContextImpl.beregne(km(18).pluss(km(19)).pluss(km(31))).verdi());
 //        System.out.println(UttrykkContextImpl.beregne(km(18).multiplisertMed(kr(1.40).per(km()))).verdi());
     }

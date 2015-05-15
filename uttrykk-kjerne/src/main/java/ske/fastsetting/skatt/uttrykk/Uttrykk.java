@@ -1,5 +1,6 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import ske.fastsetting.skatt.domene.Hjemmel;
 import ske.fastsetting.skatt.domene.Regel;
 
 import java.util.Collection;
@@ -18,7 +19,10 @@ public interface Uttrykk<V> {
 
     Set<String> tags();
 
+    @Deprecated
     List<Regel> regler();
+
+    List<Hjemmel> hjemler();
 
     default BolskUttrykk erEnAv(Collection<V> verdier) {
         return new ErEnAvUttrykk<>(this, verdier);

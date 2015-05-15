@@ -1,20 +1,18 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
 
+import org.junit.Test;
+import ske.fastsetting.skatt.domene.Belop;
+import ske.fastsetting.skatt.domene.Regel;
+import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
+import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
+import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
+import ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk;
+
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopHvisUttrykk.hvis;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopSumUttrykk.sum;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
-
-import org.junit.Test;
-
-import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.domene.Regel;
-import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
-import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
-import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
-import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
-import ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk;
 
 public class BasisTest {
 
@@ -53,6 +51,6 @@ public class BasisTest {
         final BelopUttrykk skatt = sumLonn.multiplisertMed(satsSkatt).navn("Skatt").tags(TAG_SKATT);
         final BelopUttrykk sum = trygdeavgift.pluss(skatt).navn("Sum skatt & avgift").tags(TAG_SKATT);
 
-        return UttrykkContextImpl.beregneOgBeskrive(sum);
+        return TestUttrykkContext.beregneOgBeskrive(sum);
     }
 }

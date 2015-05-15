@@ -9,7 +9,7 @@ public class Regel {
     private static final String PARAGRAF_TEGN = "§";
     private static final String HTML_PARAGRAF_TEGN = urlEncode(PARAGRAF_TEGN);
 
-    private enum RegelType {
+    enum RegelType {
         Skattevedtak(
           "SSV",
           "Stortingets skattevedtak for inntektsåret 2014",
@@ -87,7 +87,7 @@ public class Regel {
         return regel;
     }
 
-    private Regel(RegelType regel, String paragraf) {
+    Regel(RegelType regel, String paragraf) {
         this.regel = regel;
         this.paragraf = paragraf;
     }

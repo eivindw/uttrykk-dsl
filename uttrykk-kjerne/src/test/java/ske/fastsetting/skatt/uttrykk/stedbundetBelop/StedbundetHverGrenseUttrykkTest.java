@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.StedbundetBelop;
-import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
+import ske.fastsetting.skatt.uttrykk.TestUttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
 
 /**
@@ -23,7 +23,7 @@ public class StedbundetHverGrenseUttrykkTest {
           .nedad(kr0())
           .oppad(KroneUttrykk.kr(20));
 
-        final StedbundetBelop<String> faktisk = UttrykkContextImpl.beregne(begrenset).verdi();
+        final StedbundetBelop<String> faktisk = TestUttrykkContext.beregne(begrenset).verdi();
 
         System.out.println(faktisk);
 

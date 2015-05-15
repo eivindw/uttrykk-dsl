@@ -1,25 +1,23 @@
 package ske.fastsetting.skatt.uttrykk.uttrykkbeskriver;
 
-import static ske.fastsetting.skatt.uttrykk.belop.BelopMultisatsFunksjon.multisatsFunksjonAv;
-import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
-import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Map;
-
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Ignore;
 import org.junit.Test;
-
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.confluence.ConfluenceResultatKonverterer;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.confluence.ConfluenceUttrykkBeskriver;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.excel.ExcelUttrykkBeskriver;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Map;
+
+import static ske.fastsetting.skatt.uttrykk.belop.BelopMultisatsFunksjon.multisatsFunksjonAv;
+import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
+import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
 
 public class BelopMultisatsFunksjonTest {
 
@@ -31,7 +29,7 @@ public class BelopMultisatsFunksjonTest {
           .medSats(prosent(7)).navn("multisats");
         ExcelUttrykkBeskriver beskriver = new ExcelUttrykkBeskriver();
 
-        Workbook wb = beskriver.beskriv(UttrykkContextImpl.beskrive(multisats));
+        Workbook wb = beskriver.beskriv(TestUttrykkContext.beskrive(multisats));
 
         FileOutputStream out = new FileOutputStream("workbook.xlsx");
         wb.write(out);
@@ -47,7 +45,7 @@ public class BelopMultisatsFunksjonTest {
 
         ConfluenceUttrykkBeskriver beskriver = new ConfluenceUttrykkBeskriver("Tittel");
 
-        UttrykkResultat<Belop> resultat = UttrykkContextImpl.beskrive(multisats);
+        UttrykkResultat<Belop> resultat = TestUttrykkContext.beskrive(multisats);
 
         UttrykkResultat<Belop> endretResultat = ConfluenceResultatKonverterer.konverterResultat(resultat);
 

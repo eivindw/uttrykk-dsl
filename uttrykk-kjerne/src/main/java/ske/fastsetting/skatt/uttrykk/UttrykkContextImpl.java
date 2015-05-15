@@ -7,25 +7,11 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
-public class UttrykkContextImpl implements UttrykkContext {
+public abstract class UttrykkContextImpl implements UttrykkContext {
 
     private final Map<String, Map> uttrykksmap = new HashMap<>();
     private final Map<Class, Object> input = new HashMap<>();
 
-    public static <X> UttrykkResultat<X> beregne(Uttrykk<X> uttrykk, Object... input) {
-        UttrykkContextImpl uttrykkContext = new UttrykkContextImpl(input);
-        return uttrykkContext.kalkuler(uttrykk, true, false);
-    }
-
-    public static <X> UttrykkResultat<X> beskrive(Uttrykk<X> uttrykk, Object... input) {
-        UttrykkContextImpl uttrykkContext = new UttrykkContextImpl(input);
-        return uttrykkContext.kalkuler(uttrykk, false, true);
-    }
-
-    public static <X> UttrykkResultat<X> beregneOgBeskrive(Uttrykk<X> uttrykk, Object... input) {
-        UttrykkContextImpl uttrykkContext = new UttrykkContextImpl(input);
-        return uttrykkContext.kalkuler(uttrykk, true, true);
-    }
 
     protected UttrykkContextImpl(Object[] input) {
 
@@ -33,18 +19,18 @@ public class UttrykkContextImpl implements UttrykkContext {
 
     }
 
-    protected void leggTilInput(Object... input) {
+    protected final void leggTilInput(Object... input) {
         Stream.of(input).forEach(verdi -> {
             this.input.put(verdi.getClass(), verdi);
             Stream.of(verdi.getClass().getInterfaces()).forEach(i -> this.input.put(i, verdi));
         });
     }
 
-    protected <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
+    protected final <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
         initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI,k->verdi);
     }
 
-    protected <V> UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
+    protected final <V> UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
 
         if (eval) {
             eval(uttrykk);
@@ -54,7 +40,7 @@ public class UttrykkContextImpl implements UttrykkContext {
             beskriv(uttrykk);
         }
 
-        return new UttrykkResultatImpl<>(uttrykk.id(), uttrykksmap);
+        return new UttrykkResultatImpl<>(uttrykk.id());
     }
 
 
@@ -116,11 +102,9 @@ public class UttrykkContextImpl implements UttrykkContext {
 
     private class UttrykkResultatImpl<V> implements UttrykkResultat<V> {
         private final String start;
-        private final Map<String, Map> uttrykksmap;
 
-        public UttrykkResultatImpl(String startId, Map<String, Map> uttrykksmap) {
+        public UttrykkResultatImpl(String startId) {
             this.start = startId;
-            this.uttrykksmap = uttrykksmap;
         }
 
         @Override

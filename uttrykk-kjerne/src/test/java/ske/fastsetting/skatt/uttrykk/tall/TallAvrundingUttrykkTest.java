@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import ske.fastsetting.skatt.domene.Avrunding;
 import ske.fastsetting.skatt.domene.Tall;
-import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
+import ske.fastsetting.skatt.uttrykk.TestUttrykkContext;
 
 public class TallAvrundingUttrykkTest {
 
@@ -38,7 +38,7 @@ public class TallAvrundingUttrykkTest {
     }
 
     private Tall verdiAv(TallUttrykk avrundet) {
-        return UttrykkContextImpl.beregne(avrundet).verdi();
+        return TestUttrykkContext.beregne(avrundet).verdi();
     }
 
 

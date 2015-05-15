@@ -8,7 +8,7 @@ import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
 import org.junit.Test;
 
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
+import ske.fastsetting.skatt.uttrykk.TestUttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
 
 public class StedbundetBelopMultisatsFunksjonTest {
@@ -164,7 +164,7 @@ public class StedbundetBelopMultisatsFunksjonTest {
     }
 
     static void assertStedBelop(StedbundetBelopUttrykk<String> uttrykk, Belop forventetBelop, String sted) {
-        assertEquals(forventetBelop, UttrykkContextImpl.beregne(uttrykk).verdi().get(sted).rundAvTilHeleKroner());
+        assertEquals(forventetBelop, TestUttrykkContext.beregne(uttrykk).verdi().get(sted).rundAvTilHeleKroner());
     }
 
 
