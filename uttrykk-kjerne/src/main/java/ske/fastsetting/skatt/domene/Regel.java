@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 
+@Deprecated
 public class Regel {
 
     private static final String PARAGRAF_TEGN = "§";
