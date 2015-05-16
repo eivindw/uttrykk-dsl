@@ -9,9 +9,9 @@ import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
  */
 public class UttrykkContextTest {
 
-    @Test(expected = IllegalArgumentException.class)
-    public void skalIkkeKunneHaInputAvUlikType() {
-        TestUttrykkContext.beregne(kr(5),"1",3,new A());
+    @Test
+    public void skalKunneHaInputAvUlikTypeSomIkkeDelerSuperklasserEllerInterfacer() {
+        TestUttrykkContext.beregne(kr(5),new A(),new O());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -36,6 +36,7 @@ public class UttrykkContextTest {
 
     static interface I {}
     static interface J extends I {}
+    static class O {};
     static class A implements I {}
     static class B implements I {}
     static class C extends A {}
