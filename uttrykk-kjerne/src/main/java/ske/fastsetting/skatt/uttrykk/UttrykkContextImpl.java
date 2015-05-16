@@ -4,6 +4,7 @@ import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
@@ -14,20 +15,29 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
 
 
     protected UttrykkContextImpl(Object[] input) {
-
         Stream.of(input).forEach(this::leggTilInput);
-
     }
 
     protected final void leggTilInput(Object... input) {
         Stream.of(input).forEach(verdi -> {
-            this.input.put(verdi.getClass(), verdi);
-            Stream.of(verdi.getClass().getInterfaces()).forEach(i -> this.input.put(i, verdi));
+            leggTilInput(verdi.getClass(), verdi);
         });
     }
 
+    private void leggTilInput(Class<?> clazz, Object input) {
+        if (this.input.containsKey(clazz)) {
+            throw new IllegalArgumentException("Ugyldig input. Det finnes allerede input som er, implementerer eller arver " + clazz);
+        }
+
+        if (!Object.class.equals(clazz)) {
+            this.input.put(clazz, input);
+            Stream.of(clazz.getInterfaces()).forEach(i -> leggTilInput(i, input));
+            Optional.ofNullable(clazz.getSuperclass()).ifPresent(c -> leggTilInput(c, input));
+        }
+    }
+
     protected final <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
-        initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI,k->verdi);
+        initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI, k -> verdi);
     }
 
     protected final <V> UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
