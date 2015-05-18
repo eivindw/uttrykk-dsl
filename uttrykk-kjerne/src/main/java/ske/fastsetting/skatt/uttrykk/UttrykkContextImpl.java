@@ -4,47 +4,43 @@ import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
-public class UttrykkContextImpl implements UttrykkContext {
+public abstract class UttrykkContextImpl implements UttrykkContext {
 
     private final Map<String, Map> uttrykksmap = new HashMap<>();
     private final Map<Class, Object> input = new HashMap<>();
 
-    public static <X> UttrykkResultat<X> beregne(Uttrykk<X> uttrykk, Object... input) {
-        UttrykkContextImpl uttrykkContext = new UttrykkContextImpl(input);
-        return uttrykkContext.kalkuler(uttrykk, true, false);
-    }
-
-    public static <X> UttrykkResultat<X> beskrive(Uttrykk<X> uttrykk, Object... input) {
-        UttrykkContextImpl uttrykkContext = new UttrykkContextImpl(input);
-        return uttrykkContext.kalkuler(uttrykk, false, true);
-    }
-
-    public static <X> UttrykkResultat<X> beregneOgBeskrive(Uttrykk<X> uttrykk, Object... input) {
-        UttrykkContextImpl uttrykkContext = new UttrykkContextImpl(input);
-        return uttrykkContext.kalkuler(uttrykk, true, true);
-    }
 
     protected UttrykkContextImpl(Object[] input) {
-
         Stream.of(input).forEach(this::leggTilInput);
-
     }
 
-    protected void leggTilInput(Object... input) {
+    protected final void leggTilInput(Object... input) {
         Stream.of(input).forEach(verdi -> {
-            this.input.put(verdi.getClass(), verdi);
-            Stream.of(verdi.getClass().getInterfaces()).forEach(i -> this.input.put(i, verdi));
+            leggTilInput(verdi.getClass(), verdi);
         });
     }
 
-    protected <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
-        initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI,k->verdi);
+    private void leggTilInput(Class<?> clazz, Object input) {
+        if (this.input.containsKey(clazz)) {
+            throw new IllegalArgumentException("Ugyldig input. Det finnes allerede input som er, implementerer eller arver " + clazz);
+        }
+
+        if (!Object.class.equals(clazz)) {
+            this.input.put(clazz, input);
+            Stream.of(clazz.getInterfaces()).forEach(i -> leggTilInput(i, input));
+            Optional.ofNullable(clazz.getSuperclass()).ifPresent(c -> leggTilInput(c, input));
+        }
     }
 
-    protected <V> UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
+    protected final <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
+        initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI, k -> verdi);
+    }
+
+    protected final <V> UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
 
         if (eval) {
             eval(uttrykk);
@@ -54,7 +50,7 @@ public class UttrykkContextImpl implements UttrykkContext {
             beskriv(uttrykk);
         }
 
-        return new UttrykkResultatImpl<>(uttrykk.id(), uttrykksmap);
+        return new UttrykkResultatImpl<>(uttrykk.id());
     }
 
 
@@ -116,11 +112,9 @@ public class UttrykkContextImpl implements UttrykkContext {
 
     private class UttrykkResultatImpl<V> implements UttrykkResultat<V> {
         private final String start;
-        private final Map<String, Map> uttrykksmap;
 
-        public UttrykkResultatImpl(String startId, Map<String, Map> uttrykksmap) {
+        public UttrykkResultatImpl(String startId) {
             this.start = startId;
-            this.uttrykksmap = uttrykksmap;
         }
 
         @Override

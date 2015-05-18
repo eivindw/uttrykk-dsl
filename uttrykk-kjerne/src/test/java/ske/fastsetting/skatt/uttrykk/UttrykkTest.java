@@ -2,9 +2,9 @@ package ske.fastsetting.skatt.uttrykk;
 
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.SkattegrunnlagHelper.kr;
-import static ske.fastsetting.skatt.uttrykk.UttrykkContextImpl.beregne;
-import static ske.fastsetting.skatt.uttrykk.UttrykkContextImpl.beregneOgBeskrive;
-import static ske.fastsetting.skatt.uttrykk.UttrykkContextImpl.beskrive;
+import static ske.fastsetting.skatt.uttrykk.TestUttrykkContext.beregne;
+import static ske.fastsetting.skatt.uttrykk.TestUttrykkContext.beregneOgBeskrive;
+import static ske.fastsetting.skatt.uttrykk.TestUttrykkContext.beskrive;
 import static ske.fastsetting.skatt.uttrykk.SkattegrunnlagobjektUttrykk.skattegrunnlagobjekt;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopSumUttrykk.sum;
 import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;

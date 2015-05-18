@@ -1,8 +1,8 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
 import static org.junit.Assert.assertEquals;
-import static ske.fastsetting.skatt.uttrykk.UttrykkContextImpl.beregne;
-import static ske.fastsetting.skatt.uttrykk.UttrykkContextImpl.beregneOgBeskrive;
+import static ske.fastsetting.skatt.uttrykk.TestUttrykkContext.beregne;
+import static ske.fastsetting.skatt.uttrykk.TestUttrykkContext.beregneOgBeskrive;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopHvisUttrykk.hvis;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk.begrens;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk.nedre0;

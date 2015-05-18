@@ -1,7 +1,7 @@
 package ske.fastsetting.skatt.uttrykk;
 
 import static org.junit.Assert.assertEquals;
-import static ske.fastsetting.skatt.uttrykk.UttrykkContextImpl.beregneOgBeskrive;
+import static ske.fastsetting.skatt.uttrykk.TestUttrykkContext.beregneOgBeskrive;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopHvisUttrykk.hvis;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver.print;

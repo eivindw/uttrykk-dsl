@@ -14,7 +14,7 @@ import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
-import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
+import ske.fastsetting.skatt.uttrykk.TestUttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk;
@@ -27,7 +27,7 @@ public class StedbundetBelopUttrykkTest {
 
         StedbundetBelopUttrykk<String> diff = b.minusProporsjonalt(KroneUttrykk.kr(15));
 
-        StedbundetBelop<String> belop = UttrykkContextImpl.beregne(diff).verdi();
+        StedbundetBelop<String> belop = TestUttrykkContext.beregne(diff).verdi();
 
         assertEquals(Belop.kr(25), belop.get("A").rundAvTilHeleKroner());
         assertEquals(Belop.kr(50), belop.get("B").rundAvTilHeleKroner());
@@ -44,7 +44,7 @@ public class StedbundetBelopUttrykkTest {
           .minus(kr(55_467, "E"))
           .minus(kr(110_933, "R"));
 
-        StedbundetBelop<String> belop = UttrykkContextImpl.beregne(almFF).verdi();
+        StedbundetBelop<String> belop = TestUttrykkContext.beregne(almFF).verdi();
 
         assertEquals(Belop.kr(309_067), belop.get("R").rundAvTilHeleKroner());
         assertEquals(Belop.kr(154_533), belop.get("E").rundAvTilHeleKroner());
@@ -57,7 +57,7 @@ public class StedbundetBelopUttrykkTest {
         StedbundetBelopUttrykk<String> a = kr(30, "A").pluss(kr(60, "B"));
         StedbundetBelopUttrykk<String> b = kr(45, "B");
 
-        StedbundetBelop<String> belop = UttrykkContextImpl.beregne(a.minusSted(b)).verdi();
+        StedbundetBelop<String> belop = TestUttrykkContext.beregne(a.minusSted(b)).verdi();
 
         assertEquals(1, belop.steder().size());
         assertTrue(belop.harSted("A"));
@@ -69,7 +69,7 @@ public class StedbundetBelopUttrykkTest {
         StedbundetBelopUttrykk<String> a = kr(30, "A").pluss(kr(60, "B"));
         StedbundetBelopUttrykk<String> b = StedbundetKroneUttrykk.kr0();
 
-        StedbundetBelop belop = UttrykkContextImpl.beregne(a.minusSted(b)).verdi();
+        StedbundetBelop belop = TestUttrykkContext.beregne(a.minusSted(b)).verdi();
 
         assertEquals(2, belop.steder().size());
     }
@@ -79,7 +79,7 @@ public class StedbundetBelopUttrykkTest {
         StedbundetBelopUttrykk<String> a = kr(30, "A").pluss(kr(60, "B"));
         StedbundetBelopUttrykk<String> b = StedbundetKroneUttrykk.kr0();
 
-        StedbundetBelop<String> belop = UttrykkContextImpl.beregne(b.minusSted(a)).verdi();
+        StedbundetBelop<String> belop = TestUttrykkContext.beregne(b.minusSted(a)).verdi();
 
         assertEquals(0, belop.steder().size());
     }
@@ -146,7 +146,7 @@ public class StedbundetBelopUttrykkTest {
     }
 
     private void skrivtUtVerdi(Uttrykk<?> uttrykk) {
-        System.out.println(UttrykkContextImpl.beregne(uttrykk).verdi());
+        System.out.println(TestUttrykkContext.beregne(uttrykk).verdi());
     }
 
 

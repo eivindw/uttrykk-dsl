@@ -1,14 +1,13 @@
 package ske.fastsetting.skatt.uttrykk.skalSlettes;
 
-import static ske.fastsetting.skatt.uttrykk.belop.BelopSumUttrykk.sum;
-import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
-import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
-
 import org.junit.Test;
-
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.test.StubUttrykkContext;
+
+import static ske.fastsetting.skatt.uttrykk.belop.BelopSumUttrykk.sum;
+import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
+import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
 
 /**
  * Created by jorn ola birkeland on 11.05.15.

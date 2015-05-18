@@ -4,12 +4,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 
+@Deprecated
 public class Regel {
 
     private static final String PARAGRAF_TEGN = "§";
     private static final String HTML_PARAGRAF_TEGN = urlEncode(PARAGRAF_TEGN);
 
-    private enum RegelType {
+    enum RegelType {
         Skattevedtak(
           "SSV",
           "Stortingets skattevedtak for inntektsåret 2014",
@@ -62,32 +63,32 @@ public class Regel {
     private final RegelType regel;
     private final String paragraf;
 
-    public static Regel skattevedtak(String paragraf) {
-        return new Regel(RegelType.Skattevedtak, paragraf);
+    public static Hjemmel skattevedtak(String paragraf) {
+        return new Hjemmel(RegelType.Skattevedtak, paragraf);
     }
 
-    public static Regel folketrygdloven(String paragraf) {
-        return new Regel(RegelType.Folketrygdloven, paragraf);
+    public static Hjemmel folketrygdloven(String paragraf) {
+        return new Hjemmel(RegelType.Folketrygdloven, paragraf);
     }
 
-    public static Regel skatteloven(String paragraf) {
-        return new Regel(RegelType.Skatteloven, paragraf);
+    public static Hjemmel skatteloven(String paragraf) {
+        return new Hjemmel(RegelType.Skatteloven, paragraf);
     }
 
-    public static Regel takseringsreglene(String paragraf) {
-        return new Regel(RegelType.Takseringsreglene, paragraf);
+    public static Hjemmel takseringsreglene(String paragraf) {
+        return new Hjemmel(RegelType.Takseringsreglene, paragraf);
     }
 
-    public static Regel forskriftTilSkatteloven(String paragraf) {
-        return new Regel(RegelType.ForskriftTilSkatteloven, paragraf);
+    public static Hjemmel forskriftTilSkatteloven(String paragraf) {
+        return new Hjemmel(RegelType.ForskriftTilSkatteloven, paragraf);
     }
 
 
-    public static Regel[] regler(Regel... regel) {
+    public static Hjemmel[] regler(Hjemmel... regel) {
         return regel;
     }
 
-    private Regel(RegelType regel, String paragraf) {
+    Regel(RegelType regel, String paragraf) {
         this.regel = regel;
         this.paragraf = paragraf;
     }

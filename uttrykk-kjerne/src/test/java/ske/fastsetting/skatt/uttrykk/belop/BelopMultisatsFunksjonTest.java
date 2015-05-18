@@ -11,7 +11,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
+import ske.fastsetting.skatt.uttrykk.TestUttrykkContext;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver;
 
 public class BelopMultisatsFunksjonTest {
@@ -20,21 +20,21 @@ public class BelopMultisatsFunksjonTest {
     public void testRettLinje() {
         BelopUttrykk multisats = multisatsFunksjonAv(kr(100)).medSats(prosent(10));
 
-        assertEquals(Belop.kr(10), UttrykkContextImpl.beregne(multisats).verdi());
+        assertEquals(Belop.kr(10), TestUttrykkContext.beregne(multisats).verdi());
     }
 
     @Test
     public void testRettLinjeMedOevreGrense() {
         BelopUttrykk multisats = multisatsFunksjonAv(kr(100)).medSats(prosent(10), kr(50));
 
-        assertEquals(Belop.kr(5), UttrykkContextImpl.beregne(multisats).verdi());
+        assertEquals(Belop.kr(5), TestUttrykkContext.beregne(multisats).verdi());
     }
 
     @Test
     public void testMedToSatserUtenOevreGrense() {
         BelopUttrykk multisats = multisatsFunksjonAv(kr(100)).medSats(prosent(10), kr(50)).medSats(prosent(20));
 
-        assertEquals(Belop.kr(15), UttrykkContextImpl.beregne(multisats).verdi());
+        assertEquals(Belop.kr(15), TestUttrykkContext.beregne(multisats).verdi());
     }
 
     @Test
@@ -42,7 +42,7 @@ public class BelopMultisatsFunksjonTest {
         BelopUttrykk multisats = multisatsFunksjonAv(kr(500)).medSats(prosent(10), kr(50)).medSats(prosent(20), kr
           (100));
 
-        assertEquals(Belop.kr(15), UttrykkContextImpl.beregne(multisats).verdi());
+        assertEquals(Belop.kr(15), TestUttrykkContext.beregne(multisats).verdi());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class BelopMultisatsFunksjonTest {
         BelopUttrykk multisats = multisatsFunksjonAv(kr(200)).medSats(prosent(10), kr(50)).medSats(prosent(20), kr
           (100)).medSats(prosent(7));
 
-        assertEquals(Belop.kr(22), UttrykkContextImpl.beregne(multisats).verdi());
+        assertEquals(Belop.kr(22), TestUttrykkContext.beregne(multisats).verdi());
 
     }
 
@@ -63,7 +63,7 @@ public class BelopMultisatsFunksjonTest {
 
         ConsoleUttrykkBeskriver beskriver = new ConsoleUttrykkBeskriver();
 
-        String s = beskriver.beskriv(UttrykkContextImpl.beskrive(multisats));
+        String s = beskriver.beskriv(TestUttrykkContext.beskrive(multisats));
 
         System.out.println(s);
     }

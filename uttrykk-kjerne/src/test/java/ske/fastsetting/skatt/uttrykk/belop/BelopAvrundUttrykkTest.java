@@ -1,7 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
 import static org.junit.Assert.assertEquals;
-import static ske.fastsetting.skatt.uttrykk.UttrykkContextImpl.beregne;
+import static ske.fastsetting.skatt.uttrykk.TestUttrykkContext.beregne;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopAvrundUttrykk.rundAvTilHeleKroner;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 

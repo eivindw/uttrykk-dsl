@@ -1,5 +1,6 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import ske.fastsetting.skatt.domene.Hjemmel;
 import ske.fastsetting.skatt.domene.Regel;
 
 import java.util.*;
@@ -11,6 +12,7 @@ public abstract class AbstractUttrykk<V, B extends AbstractUttrykk<V, B>> implem
     private String navn;
     private Set<String> tags;
     private List<Regel> regler;
+    private List<Hjemmel> hjemler;
 
     @SuppressWarnings("unchecked")
     protected B self = (B) this;
@@ -36,12 +38,25 @@ public abstract class AbstractUttrykk<V, B extends AbstractUttrykk<V, B>> implem
         return self;
     }
 
+    @Deprecated
     public B regler(Regel... regel) {
         if (regler == null) {
             regler = new ArrayList<>();
         }
 
         Stream.of(regel).forEach(regler::add);
+
+        return self;
+    }
+
+    public B hjemler(Hjemmel... hjemler) {
+        regler(hjemler);
+
+        if (this.hjemler == null) {
+            this.hjemler = new ArrayList<>();
+        }
+
+        Stream.of(hjemler).forEach(this.hjemler::add);
 
         return self;
     }
@@ -56,6 +71,10 @@ public abstract class AbstractUttrykk<V, B extends AbstractUttrykk<V, B>> implem
 
     public List<Regel> regler() {
         return regler;
+    }
+
+    public List<Hjemmel> hjemler() {
+        return hjemler;
     }
 
     @Override
