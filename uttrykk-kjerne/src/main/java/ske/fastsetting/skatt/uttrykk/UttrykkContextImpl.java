@@ -1,11 +1,11 @@
 package ske.fastsetting.skatt.uttrykk;
 
-import ske.fastsetting.skatt.uttrykk.util.IdUtil;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 
 @SuppressWarnings("unchecked")
 public abstract class UttrykkContextImpl implements UttrykkContext {
@@ -29,11 +29,19 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
             throw new IllegalArgumentException("Ugyldig input. Det finnes allerede input som er, implementerer eller arver " + clazz);
         }
 
-        if (!Object.class.equals(clazz)) {
+        if (includeClass(clazz)) {
             this.input.put(clazz, input);
             Stream.of(clazz.getInterfaces()).forEach(i -> leggTilInput(i, input));
             Optional.ofNullable(clazz.getSuperclass()).ifPresent(c -> leggTilInput(c, input));
         }
+    }
+
+    private boolean includeClass(Class<?> clazz) {
+        return !(
+          Object.class.equals(clazz)
+            // Hack for å utelukke jaxb-interface'er
+          || clazz.getName().contains("org.jvnet.jaxb2_commons.lang.")
+        );
     }
 
     protected final <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
