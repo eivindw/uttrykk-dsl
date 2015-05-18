@@ -24,27 +24,8 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
         });
     }
 
-    private void leggTilInput(Class<?> clazz, Object input) {
-        if (this.input.containsKey(clazz)) {
-            throw new IllegalArgumentException("Ugyldig input. Det finnes allerede input som er, implementerer eller arver " + clazz);
-        }
 
-        if (includeClass(clazz)) {
-            this.input.put(clazz, input);
-            Stream.of(clazz.getInterfaces()).forEach(i -> leggTilInput(i, input));
-            Optional.ofNullable(clazz.getSuperclass()).ifPresent(c -> leggTilInput(c, input));
-        }
-    }
-
-    private boolean includeClass(Class<?> clazz) {
-        return !(
-          Object.class.equals(clazz)
-            // Hack for å utelukke jaxb-interface'er
-          || clazz.getName().contains("org.jvnet.jaxb2_commons.lang.")
-        );
-    }
-
-    protected final <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
+    public final <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
         initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI, k -> verdi);
     }
 
@@ -103,6 +84,27 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
     public String toString() {
         return uttrykksmap.toString();
     }
+
+    private void leggTilInput(Class<?> clazz, Object input) {
+        if (this.input.containsKey(clazz)) {
+            throw new IllegalArgumentException("Ugyldig input. Det finnes allerede input som er, implementerer eller arver " + clazz);
+        }
+
+        if (includeClass(clazz)) {
+            this.input.put(clazz, input);
+            Stream.of(clazz.getInterfaces()).forEach(i -> leggTilInput(i, input));
+            Optional.ofNullable(clazz.getSuperclass()).ifPresent(c -> leggTilInput(c, input));
+        }
+    }
+
+    private boolean includeClass(Class<?> clazz) {
+        return !(
+          Object.class.equals(clazz)
+            // Hack for å utelukke jaxb-interface'er
+            || clazz.getName().contains("org.jvnet.jaxb2_commons.lang.")
+        );
+    }
+
 
     private Map initUttrykk(Uttrykk<?> uttrykk) {
         return uttrykksmap.computeIfAbsent(uttrykk.id(), k -> map(uttrykk));
