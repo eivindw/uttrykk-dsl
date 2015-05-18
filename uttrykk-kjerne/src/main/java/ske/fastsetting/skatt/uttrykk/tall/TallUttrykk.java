@@ -5,17 +5,19 @@ import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
 
 public interface TallUttrykk extends CompareableUttrykk<Tall> {
-    default TallUttrykk multiplisertMed(TallUttrykk verdi) {
+    default TallMultiplikasjonsUttrykk multiplisertMed(TallUttrykk verdi) {
         return new TallMultiplikasjonsUttrykk(this, verdi);
     }
 
-    default TallUttrykk dividertMed(TallUttrykk verdi) {
+    default TallDivisjonsUttrykk dividertMed(TallUttrykk verdi) {
         return new TallDivisjonsUttrykk(this, verdi);
     }
 
-    default TallUttrykk pluss(TallUttrykk verdi) {
+    default TallSumUttrykk pluss(TallUttrykk verdi) {
         return TallSumUttrykk.sum(this, verdi);
     }
+
+    default TallDiffUttrykk minus(TallUttrykk verdi) { return TallDiffUttrykk.diff(this, verdi); }
 
     @Deprecated()
     default TallAvrundUttrykk rundOpp() {
