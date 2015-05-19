@@ -8,10 +8,6 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-/**
-<<<<<<< HEAD:src/main/java/ske/fastsetting/skatt/uttrykk/stedbundetBelop/TilStedbundetBelopUttrykk.java
- * Created by jorn ola birkeland on 21.03.15.
- */
 public class StedbundetBelopWrapperUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>, StedbundetBelopWrapperUttrykk<K>>
   implements StedbundetBelopUttrykk<K> {
     private Uttrykk<StedbundetBelop<K>> uttrykk;
