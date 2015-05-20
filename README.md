@@ -54,8 +54,10 @@ public class Skatteberegning {
 
     public static void main(String[] args) {
         SkattyterKontekst kontekst = SkattyterKontekst.ny();
-        Belop fellesskattBelop = kontekst.verdiAv(fellesskatt);
-        System.out.println(fellesskattBelop);
+
+        System.out.println(kontekst.verdiAv(fellesskatt));
+        System.out.println(kontekst.verdiAv(alminneligInntekt));
+        System.out.println(kontekst.verdiAv(fagforeningskontingent));
     }
 }
 ```
@@ -63,44 +65,90 @@ public class Skatteberegning {
 Kjører du `main`-metoden, så bør du få følgende opp i konsollet:
 ```
 kr 5 998
+kr 74 970
+kr 3 400
 ```
 
 Det første å legge merke til er at alle verdier og beregninger er *uttrykk*. Et uttrykk _representerer_ en kalkulasjon,
-som så kan kjedes sammen til større _uttrykkstrær_ avhengig av hvilke operasjoner en uttrykkstype støtter. De har altså ingen verdi, og hvis du kjører
+som så kan kjedes sammen til større _uttrykkstrær_ avhengig av hvilke operasjoner en uttrykkstype støtter.
+
+Det er først når et uttrykk *evalueres* at verdien kalkuleres. Det skjer i `main`-metoden over når `verdiAv`-metoden på `SkattyterKontekst`
+kalles med et av uttrykkene:
+
+``` java
+        ...
+        SkattyterKontekst kontekst = SkattyterKontekst.ny();
+
+        System.out.println(kontekst.verdiAv(fellesskatt));
+        ...
+```
+
+### Nytt uttrykk - en mer realistisk skatteberegning
+
+Eksempelet over virker bare for denne ene skattyteren, og i virkelighetens verden
+ønsker vi å hente skattyterenes verdier fra en ekstern datakilde, og kjøre skatteberegningene for alle.
+
+Vi begynner med å anta at vi har et uttrykk som representer verdien for et skatteobjekt angitt med en ID. Altså i stedet for å si
+``` java
+    ...
+    static final BelopUttrykk lonnsinntekt =          kr(78_100);
+    static final BelopUttrykk renteinntekt =             kr(270);
+    static final BelopUttrykk renteutgift =            kr(3_800);
+    static final BelopUttrykk fagforeningskontingent = kr(3_400);
+    ...
+```
+så kan vi si
+
+``` java
+    ...
+    static final BelopUttrykk lonnsinntekt =           skatteobjekt("lønnsinntekt");
+    static final BelopUttrykk renteinntekt =           skatteobjekt("renteinntekt");
+    static final BelopUttrykk renteutgift =            skatteobjekt("renteutgift");
+    static final BelopUttrykk fagforeningskontingent = skatteobjekt("fagforeningskontingent");
+    ...
+```
+
+La oss si at vår eksterne datakilde gir oss skattyterdatane som en liste av *Skattegrunnlag*, altså:
+
+``` java
+List<Skattegrunnlag> skattegrunnlag = ... // hent data fra ekstern kilde
+```
+
+der `Skattegrunnlag` er et enkelt `Map`-aktig interface som lar oss hente ut beløp for angitte skatteobjekt
+
+``` java
+List<Skattegrunnlag> skattegrunnlag = ... // hent data fra ekstern kilde
+
+Skattegrunnlag skattegrunnlag1 = skattegrunnlag.get(0)
+Belop lonnsinntektSY1 = skattegrunnlag1.skatteobjekt("lønnsinntekt")
+Belop renteinntektSY1 = skattegrunnlag1.skatteobjekt("renteinntekt")
+
+```
+
+
+
+# Ubrukt
+
+Uttrykkene selv har altså ingen verdi, og hvis du kjører
 
 ```
     public static void main(String[] args) {
         System.out.println(fellesskatt);
+        System.out.println(alminneligInntekt);
+        System.out.println(fagforeningskontingent);
     }
 ```
 
 så vil noe sånt som følgende dukke opp i konsollet.
 ```
-ske.fastsetting.skatt.uttrykk.belop.BelopMultiplikasjonsUttrykk@7106e68e
+ske.fastsetting.skatt.uttrykk.belop.BelopMultiplikasjonsUttrykk@7530d0a
+ske.fastsetting.skatt.uttrykk.belop.BelopDiffUttrykk@27bc2616
+ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk@3941a79c
 ```
 
-
-* <Ubrukt>
 
 
 Koden over viser to uttrykkstyper, `TallUttrykk` og `BelopUttrykk`, som representarer kalkulasjoner med henholdsvis Belop og Tall.
-
-Det er *først* når et uttrykk *evalueres* at verdien kalkuleres. Det skjer i `main`-metoden over:
-
-``` java
-SkattyterKontekst kontekst = SkattyterKontekst.ny();
-Belop fellesskattBelop = kontekst.verdiAv(fellesskatt);
-
-```
-
-Alle uttrykk må evalueres på denne måten:
-``` java
-SkattyterKontekst kontekst = SkattyterKontekst.ny();
-System.out.println(kontekst.verdiAv(fellesskatt));
-System.out.println(kontekst.verdiAv(alminneligInntekt));
-System.out.println(kontekst.verdiAv(fagforeningskontingent));
-
-```
 
 Skatteberegningen i eksempelet over bygger opp følgende uttrykkstre (uttrykkstypen i parentes):
 
@@ -115,6 +163,8 @@ Skatteberegningen i eksempelet over bygger opp følgende uttrykkstre (uttrykksty
 | |-<fagforeningskontingent> (KroneUttrykk) [kr 3 400]
 |-<FELLESSKATT_SATS> (ProsentUttrykk) [33 %]
 ```
+
+
 
 
 For eksempel så støtter `BelopUttrykk` operasjonen `pluss`, som tar et annet BelopUttrykk som parameter, og returner et BelopUttrykk:
