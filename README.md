@@ -108,6 +108,67 @@ så kan vi si
     ...
 ```
 
+`skatteobjekt(...)` impliserer en `factory method` som returner et BelopUttrykk, så vi lager en klasse som oppfyller det
+
+``` java
+public class BelopSkatteobjektUttrykk implements BelopUttrykk {
+
+    public static BelopSkatteobjektUttrykk skatteobjekt(String skatteobjekttype) {
+        return new BelopSkatteobjektUttrykk(skatteobjekttype)
+    }
+
+    private final String skatteobjekttype;
+
+    private BelopSkatteobjektUttrykk(String skatteobjekttype) {
+        this.skatteobjekttype = skatteobjekttype;
+    }
+}
+
+`BelopSkatteobjektUttrykk` er et `BelopUttrykk`, så `skatteobjekt(...)` kan returnere en ny instans av klassen.
+Konstruktøren initialiser instansen med skatteobjektstypen som blir sendt inn.
+
+Imidlertid vil ikke dette kompilere fordi `BelopUttrykk` (egentlig `Uttrykk`) krever at følgende metoder blir implementert:
+* `V eval(UttrykkContext ctx);`
+* `String beskriv(UttrykkContext ctx);`
+* `String id();`
+* `String navn();`
+* `Set<String> tags();`
+* `@Deprecated List<Regel> regler();`
+* `List<Hjemmel> hjemler();`
+
+Heldigvis finnes det en klasse som gir en god implementasjon av de fleste av disse metodene - `AbstractUttrykk`
+- og som i tillegg gir noen andre nyttige egenskaper, som vi skal se senere. De eneste metodene `AbstractUttrykk` ikke implementerer, er:
+* `V eval(UttrykkContext ctx);`
+* `String beskriv(UttrykkContext ctx);`
+
+Skjelettet av implementasjonen blir da før `eval` og `beskriv` implementeres:
+``` java
+public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteobjektUttrykk> implements BelopUttrykk {
+
+    public static BelopSkatteobjektUttrykk skatteobjekt(String skatteobjekttype) {
+        return new BelopSkatteobjektUttrykk(skatteobjekttype)
+    }
+
+    private final String skatteobjekttype;
+
+    private BelopSkatteobjektUttrykk(String skatteobjekttype) {
+        this.skatteobjekttype = skatteobjekttype;
+    }
+
+    public Belop eval(UttrykkContext) {
+
+    }
+
+    public String beskiriv(UttrykkContext) {
+
+    }
+}
+
+
+
+
+```
+
 La oss si at vår eksterne datakilde gir oss skattyterdatane som en liste av *Skattegrunnlag*, altså:
 
 ``` java
