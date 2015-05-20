@@ -123,6 +123,7 @@ public class BelopSkatteobjektUttrykk implements BelopUttrykk {
         this.skatteobjekttype = skatteobjekttype;
     }
 }
+```
 
 `BelopSkatteobjektUttrykk` er et `BelopUttrykk`, så `skatteobjekt(...)` kan returnere en ny instans av klassen.
 Konstruktøren initialiser instansen med skatteobjektstypen som blir sendt inn.
