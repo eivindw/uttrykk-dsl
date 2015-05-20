@@ -156,35 +156,177 @@ public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteo
         this.skatteobjekttype = skatteobjekttype;
     }
 
-    public Belop eval(UttrykkContext) {
+    public Belop eval(UttrykkContext uc) {
 
     }
 
-    public String beskiriv(UttrykkContext) {
+    public String beskriv(UttrykkContext uc) {
 
     }
 }
+```
 
+Beskrivelsen kan være det vi vil, og her er det naturlig at uttrykket sier noe om at den representer et skatteobjekt av den skatteobjektstypen den er blitt initalisert med
+``` java
+public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteobjektUttrykk> implements BelopUttrykk {
 
+    private final String skatteobjekttype;
 
+    ...
+
+    public String beskriv(UttrykkContext uc) {
+       return "Skatteobjekt "+skatteobjekttype;
+    }
+}
+```
+
+Da gjenstår `eval`-metoden, som skal gi verdien når uttrykket blir evaluert. Verdien skal vi få fra datakilden vår.
+
+La oss si at vår eksterne datakilde gir oss skattyterdata som et `Skattegrunnlag`,
+som vi antar er et enkelt `Map`-aktig interface som lar oss hente ut beløp for angitte skatteobjekt
+
+``` java
+Skattegrunnlag skattegrunnlag = ... // hent skattyters data fra ekstern kilde
+
+Belop lonnsinntektSY1 = skattegrunnlag.skatteobjekt("lønnsinntekt")
+Belop renteinntektSY1 = skattegrunnlag.skatteobjekt("renteinntekt")
 
 ```
 
-La oss si at vår eksterne datakilde gir oss skattyterdatane som en liste av *Skattegrunnlag*, altså:
-
+Da har vi nesten det vi trenger for å implementere `eval`-metoden også:
 ``` java
-List<Skattegrunnlag> skattegrunnlag = ... // hent data fra ekstern kilde
+public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteobjektUttrykk> implements BelopUttrykk {
+
+    private final String skatteobjekttype;
+
+    ...
+
+    public Belop eval(UttrykkContext uc) {
+        Skattegrunnlag skattegrunnlag = ... // hent skattyters data fra ekstern kilde
+        return skattegrunnlag.skatteobjekt(this.skatteobjekttype)
+    }
+}
 ```
 
-der `Skattegrunnlag` er et enkelt `Map`-aktig interface som lar oss hente ut beløp for angitte skatteobjekt
+`eval`-metoden _kunne_ gått rett mot den eksterne kilden, men det kan være en komplisert affære, og vi ønsker å holde uttrykkene enkle.
+I stedet lar vi uttrykket rett og slett forlange at noen har gitt `Skattegrunnlag`'et som en _input-verdi_. `UttrykkContext`'en som sendes inn til `eval`-metoden, gir nettopp tilgang til input-verdier
+
+Da har vi det vi trenger for å implementere `eval`-metoden også:
+``` java
+public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteobjektUttrykk> implements BelopUttrykk {
+
+    private final String skatteobjekttype;
+
+    ...
+
+    public Belop eval(UttrykkContext uc) {
+        Skattegrunnlag skattegrunnlag = uc.input(Skattegrunnlag.class) // anta at noen har sendt med riktig input
+        return skattegrunnlag.skatteobjekt(this.skatteobjekttype)
+    }
+}
+```
+
+Hvis noen mot formodning har glemt å sette et `Skattegrunnlag` som input, så vil evaluering av uttrykket feil med en exception.
+
+En mer forsiktig tilnærming kan være å sjekke om input'en finnes
+``` java
+public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteobjektUttrykk> implements BelopUttrykk {
+
+    private final String skatteobjekttype;
+
+    ...
+
+    public Belop eval(UttrykkContext uc) {
+        if(ic.harInput(Skattegrunnlag.class))   {
+            Skattegrunnlag skattegrunnlag = uc.input(Skattegrunnlag.class) // vi vet vi har input nå
+            return skattegrunnlag.skatteobjekt(this.skatteobjekttype)
+        } else {
+            return Belop.kr0();  // returner en default-verdi
+        }
+    }
+}
+```
+
+Vi går likevel for den agressive varianten, og den komplette uttrykksklassen ser da slik ut:
+``` java
+public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteobjektUttrykk> implements BelopUttrykk {
+
+    public static BelopSkatteobjektUttrykk skatteobjekt(String skatteobjekttype) {
+        return new BelopSkatteobjektUttrykk(skatteobjekttype)
+    }
+
+    private final String skatteobjekttype;
+
+    private BelopSkatteobjektUttrykk(String skatteobjekttype) {
+        this.skatteobjekttype = skatteobjekttype;
+    }
+
+    public Belop eval(UttrykkContext uc) {
+        Skattegrunnlag skattegrunnlag = uc.input(Skattegrunnlag.class) // anta at noen har sendt med riktig input
+        return skattegrunnlag.skatteobjekt(this.skatteobjekttype)
+    }
+
+    public String beskriv(UttrykkContext uc) {
+       return "Skatteobjekt "+skatteobjekttype;
+    }
+}
+```
+
+Det eneste som gjenstår er da å få send inn input-verdien, og det gjør vi når vi oppretter `SkattyterKontekst`, som er en implementasjon av UttrykkContext
+
+
+```
+public static void main(String[] args) {
+
+    Skattegrunnlag skattegrunnlag = ... // hent skattyters data fra ekstern kilde
+
+    SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag); // opprett SkattyterKontekst med input
+
+    System.out.println(kontekst.verdiAv(fellesskatt));
+
+    ...
+}
+```
+
+Den komplette beregningskoden ser da slik ut:
 
 ``` java
-List<Skattegrunnlag> skattegrunnlag = ... // hent data fra ekstern kilde
+import ske.fastsetting.skatt.domene.Belop;
+import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
+import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
-Skattegrunnlag skattegrunnlag1 = skattegrunnlag.get(0)
-Belop lonnsinntektSY1 = skattegrunnlag1.skatteobjekt("lønnsinntekt")
-Belop renteinntektSY1 = skattegrunnlag1.skatteobjekt("renteinntekt")
+import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
+import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
+import static ske.fastsetting.skatt.uttrykk.skattegrunnlag.BelopSkatteobjektUttrykk.skatteobjekt;
 
+public class Skatteberegning {
+
+    static final TallUttrykk FELLESSKATT_SATS = prosent(33);
+
+    static final BelopUttrykk lonnsinntekt =           skatteobjekt("lønnsinntekt");
+    static final BelopUttrykk renteinntekt =           skatteobjekt("renteinntekt");
+    static final BelopUttrykk renteutgift =            skatteobjekt("renteutgift");
+    static final BelopUttrykk fagforeningskontingent = skatteobjekt("fagforeningskontingent");
+
+    static final BelopUttrykk alminneligInntekt = lonnsinntekt
+                    .pluss(renteinntekt)
+                    .minus(renteutgift)
+                    .minus(fagforeningskontingent);
+
+    static final BelopUttrykk fellesskatt =
+            alminneligInntekt.multiplisertMed(FELLESSKATT_SATS);
+
+    public static void main(String[] args) {
+
+        Skattegrunnlag skattegrunnlag = ... // hent skattyters data fra ekstern kilde
+
+        SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag); // opprett SkattyterKontekst med input
+
+        System.out.println(kontekst.verdiAv(fellesskatt));
+        System.out.println(kontekst.verdiAv(alminneligInntekt));
+        System.out.println(kontekst.verdiAv(fagforeningskontingent));
+    }
+}
 ```
 
 
