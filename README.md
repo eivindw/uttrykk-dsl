@@ -20,7 +20,8 @@ Anta en verden med veldig enkle skattytere og enkel skatteberegning. Hver skatty
 Og skatten er 33% av `Alminnelig inntekt`
 
 Anta videre en skattytere med følgende skatteobjekter:
----| ---:|
+| Skatteobjekt | Beløp |
+---| ---:
 lønnsinntekt |           kr 78 100
 renteinntekt |              kr 270
 renteutgift |             kr 3 800
