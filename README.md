@@ -20,10 +20,11 @@ Anta en verden med veldig enkle skattytere og enkel skatteberegning. Hver skatty
 Og skatten er 33% av `Alminnelig inntekt`
 
 Anta videre en skattytere med følgende skatteobjekter:
-* lønnsinntekt:           kr 78 100
-* renteinntekt:              kr 270
-* renteutgift:             kr 3 800
-* fagforeningskontingent:  kr 3 400
+---| ---:|
+lønnsinntekt |           kr 78 100
+renteinntekt |              kr 270
+renteutgift |             kr 3 800
+fagforeningskontingent|  kr 3 400
 
 Da kan følgende kode beregne skatten til skattyteren
 
@@ -203,7 +204,8 @@ public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteo
     ...
 
     public Belop eval(UttrykkContext uc) {
-        Skattegrunnlag skattegrunnlag = ... // hent skattyters data fra ekstern kilde
+        // hent skattyters data fra ekstern kilde
+        Skattegrunnlag skattegrunnlag = ...
         return skattegrunnlag.skatteobjekt(this.skatteobjekttype)
     }
 }
@@ -221,7 +223,8 @@ public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteo
     ...
 
     public Belop eval(UttrykkContext uc) {
-        Skattegrunnlag skattegrunnlag = uc.input(Skattegrunnlag.class) // anta at noen har sendt med riktig input
+        // anta at noen har sendt med riktig input - feile hardt hvis ikke
+        Skattegrunnlag skattegrunnlag = uc.input(Skattegrunnlag.class)
         return skattegrunnlag.skatteobjekt(this.skatteobjekttype)
     }
 }
@@ -239,7 +242,8 @@ public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteo
 
     public Belop eval(UttrykkContext uc) {
         if(uc.harInput(Skattegrunnlag.class))   {
-            Skattegrunnlag skattegrunnlag = uc.input(Skattegrunnlag.class) // vi vet vi har input nå
+            // vi vet vi har input nå
+            Skattegrunnlag skattegrunnlag = uc.input(Skattegrunnlag.class)
             return skattegrunnlag.skatteobjekt(this.skatteobjekttype)
         } else {
             return Belop.kr0();  // returner en default-verdi
@@ -263,7 +267,7 @@ public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteo
     }
 
     public Belop eval(UttrykkContext uc) {
-        Skattegrunnlag skattegrunnlag = uc.input(Skattegrunnlag.class) // anta at noen har sendt med riktig input
+        Skattegrunnlag skattegrunnlag = uc.input(Skattegrunnlag.class)
         return skattegrunnlag.skatteobjekt(this.skatteobjekttype)
     }
 
@@ -279,9 +283,11 @@ Det eneste som gjenstår er da å få send inn input-verdien, og det gjør vi n�
 ```
 public static void main(String[] args) {
 
-    Skattegrunnlag skattegrunnlag = ... // hent skattyters data fra ekstern kilde
+    // hent skattyters data fra ekstern kilde
+    Skattegrunnlag skattegrunnlag = ...
 
-    SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag); // opprett SkattyterKontekst med input
+    // opprett SkattyterKontekst med input
+    SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag);
 
     System.out.println(kontekst.verdiAv(fellesskatt));
 
@@ -319,9 +325,11 @@ public class Skatteberegning {
 
     public static void main(String[] args) {
 
-        Skattegrunnlag skattegrunnlag = ... // hent skattyters data fra ekstern kilde
+        // hent skattyters data fra ekstern kilde
+        Skattegrunnlag skattegrunnlag = ...
 
-        SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag); // opprett SkattyterKontekst med input
+        / opprett SkattyterKontekst med input
+        SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag);
 
         System.out.println(kontekst.verdiAv(fellesskatt));
         System.out.println(kontekst.verdiAv(alminneligInntekt));
@@ -344,9 +352,11 @@ public class App {
 
     public static void main(String[] args) {
 
-        Skattegrunnlag skattegrunnlag = ... // hent skattyters data fra ekstern kilde
+        // hent skattyters data fra ekstern kilde
+        Skattegrunnlag skattegrunnlag = ...
 
-        SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag); // opprett SkattyterKontekst med input
+        // opprett SkattyterKontekst med input
+        SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag);
 
         System.out.println(kontekst.verdiAv(fellesskatt));
         System.out.println(kontekst.verdiAv(alminneligInntekt));
@@ -404,7 +414,8 @@ public class SkatteberegningTest {
         skattegrunnlag.leggTil("lønnsinntekt",Belop.kr(100));
         skattegrunnlag.leggTil("renteinntekt",Belop.kr(50));
 
-        SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag); // opprett SkattyterKontekst med input
+        // opprett SkattyterKontekst med input
+        SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag);
 
         assertEquals(Belop.kr(50),kontekst.verdiAv(fellesskatt).rundAvTilHeleKroner());
     }
@@ -423,7 +434,8 @@ public class SkatteberegningTest {
 
     @Test
     public void testFellesskatt() {
-        SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag); // opprett SkattyterKontekst UTEN input
+        // opprett SkattyterKontekst UTEN input
+        SkattyterKontekst kontekst = SkattyterKontekst.ny();
         kontekst.overstyrVerdi(Skatteberegning.alminneligInntekt, Belop.kr(150))
 
         assertEquals(Belop.kr(50),kontekst.verdiAv(fellesskatt).rundAvTilHeleKroner());
@@ -441,7 +453,7 @@ Vi kan legge til en ny test, som eksponerer en feil i koden vår
 ``` java
 @Test
 public void testNegativAlimnneligInntekt() {
-    SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag);
+    SkattyterKontekst kontekst = SkattyterKontekst.ny();
 
     // Negativ alminnelig inntekt ...
     kontekst.overstyrVerdi(Skatteberegning.alminneligInntekt, Belop.kr(-100))
