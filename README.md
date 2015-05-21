@@ -426,14 +426,59 @@ public class SkatteberegningTest {
         SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag); // opprett SkattyterKontekst UTEN input
         kontekst.overstyrVerdi(Skatteberegning.alminneligInntekt, Belop.kr(150))
 
-        assertEquals(Belop.kr(50),kontekst.verdiAv(fellesskatt).rundAvTilHeleKroner);
+        assertEquals(Belop.kr(50),kontekst.verdiAv(fellesskatt).rundAvTilHeleKroner());
     }
 }
 ```
 
-`overstyrVerdi` lar oss sette verdien som skal benyttes under evalueringen av et gitt uttrykk.
+`overstyrVerdi` lar oss sette verdien som skal benyttes under evalueringen av et gitt uttrykk. Verdien *bør* overstyres før noe uttrykk evalueres fordi verdien
+ av uttrykkene _caches_ på konteksten etter hvert som de blir evaluert. Merk at vi ikke lenger trenger å sende input på kontektsten
+fordi alle uttrykk som benytter input, ikke lenger blir evaluert.
 
+## Flere uttrykk
+Vi kan legge til en ny test, som eksponerer en feil i koden vår
 
+``` java
+@Test
+public void testNegativAlimnneligInntekt() {
+    SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag);
+
+    // Negativ alminnelig inntekt ...
+    kontekst.overstyrVerdi(Skatteberegning.alminneligInntekt, Belop.kr(-100))
+
+    // ... bør gi 0 i skatt
+    assertEquals(Belop.kr0(),kontekst.verdiAv(fellesskatt));
+}
+```
+
+Testen over feiler fordi skatten beregnes til kr -33, som er en åpenbar feil fordi skatten ikke kan være negativ. Feilen ligger i beregningen av fellesskatt.
+
+``` java
+static final BelopUttrykk fellesskatt =
+        alminneligInntekt.multiplisertMed(FELLESSKATT_SATS);
+```
+
+Her burde det vært en regel som sa at fellesskatten ikke kan være negativ. Det er flere måter å gjøre det med uttrykk. Første måte er med hvis-uttrykk
+
+``` java
+static final BelopUttrykk fellesskatt =
+        hvis(alminneligInntekt.erStorreEnn(kr0()))
+        .brukDa(alminneligInntekt.multiplisertMed(FELLESSKATT_SATS))
+        .ellersBruk(kr0());
+```
+En annen måte er med begrens-uttrykk
+
+``` java
+static final BelopUttrykk fellesskatt =
+        begrens(
+            alminneligInntekt.multiplisertMed(FELLESSKATT_SATS))
+        .nedad(kr0());
+```
+Å begrense nedad til kr 0 er så vanlig at det finnes en kortform for det - `nedre0(...)`
+``` java
+static final BelopUttrykk fellesskatt =
+        nedre0(alminneligInntekt.multiplisertMed(FELLESSKATT_SATS));
+```
 
 
 
