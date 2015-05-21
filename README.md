@@ -238,7 +238,7 @@ public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteo
     ...
 
     public Belop eval(UttrykkContext uc) {
-        if(ic.harInput(Skattegrunnlag.class))   {
+        if(uc.harInput(Skattegrunnlag.class))   {
             Skattegrunnlag skattegrunnlag = uc.input(Skattegrunnlag.class) // vi vet vi har input nå
             return skattegrunnlag.skatteobjekt(this.skatteobjekttype)
         } else {
@@ -412,10 +412,10 @@ public class SkatteberegningTest {
 ```
 
 Her implementerer `TestSkattegrunnlag` _inteface_'t `Skattegrunnlag` og tilbyr metoden `leggTil` for å sette verdier på skatteobjektene.
-Legg merke til at vi runder av beløpet vi får fra beregningen, siden det ikke nødvendigvis er nøyaktig hele kroner.
+Legg merke til at vi i `assertEquals` runder av beløpet vi får fra beregningen, siden det ikke nødvendigvis er nøyaktig hele kroner (det er kr 49,50).
 Denne fremgangsmåten er omstendig, men kanskje til å leve med i dette tilfellet, og vi kan se for oss å gjenbruke `TestSkattegrunnlag` i mange tilfeller.
 Imidlertid var det vi ønsket å teste i dette tilfellet at _fellesskatt_ ble beregnet riktig, og den avhenger kun av _alminneligInntekt_ og skattesatsen på 33%.
-Når uttrykkstreet vokser i kompleksitet og dybde, så blir det stadig vanskeligere å gi input, som sørger for at vi kan teste interessante kombinasjoner av uttrykk nær toppen.
+Når uttrykkstreet vokser i kompleksitet og dybde, så blir det stadig vanskeligere å gi input som sørger for at vi kan teste interessante kombinasjoner av uttrykk nær toppen.
 Heldigvis finnes det annen tilnærmingen som lar oss _kortslutte_ uttrykkstreet der vi ønsker.
 
 ``` java
@@ -479,6 +479,16 @@ static final BelopUttrykk fellesskatt =
 static final BelopUttrykk fellesskatt =
         nedre0(alminneligInntekt.multiplisertMed(FELLESSKATT_SATS));
 ```
+
+### Uttrykk - beløp
+
+Type | Eksempel  | Kommentar
+--- |--- | ---
+pluss        | `kr(5).pluss(kr(8))` |
+sum          | `sum(kr(3),kr(4),kr(5))` |
+minus        | `kr(6).minus(kr(3))` |
+bytt fortegn | `kr(6).byttFortegn()` |
+rund av      | `kr(4.75).rundAvTilHeleKroner()` |
 
 
 
