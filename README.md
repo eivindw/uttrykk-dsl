@@ -2,7 +2,7 @@
 
 ## Komme i gang
 
-### Enkel skatteberegning
+### Enkel skatteberegning med uttrykk
 Anta en verden med veldig enkle skattytere og enkel skatteberegning. Hver skattyter kan bare ha følgende skatteobjekter:
 * lønnsinntekt
 * renteinntekt
@@ -71,19 +71,20 @@ kr 3 400
 
 Det første å legge merke til er at alle verdier og beregninger er *uttrykk*. Et uttrykk _representerer_ en kalkulasjon,
 som så kan kjedes sammen til større _uttrykkstrær_ avhengig av hvilke operasjoner en uttrykkstype støtter.
+Koden over viser to uttrykkstyper, `TallUttrykk` og `BelopUttrykk`, som representerer kalkulasjoner med henholdsvis Belop og Tall.
 
 Det er først når et uttrykk *evalueres* at verdien kalkuleres. Det skjer i `main`-metoden over når `verdiAv`-metoden på `SkattyterKontekst`
 kalles med et av uttrykkene:
 
 ``` java
-        ...
-        SkattyterKontekst kontekst = SkattyterKontekst.ny();
+...
+SkattyterKontekst kontekst = SkattyterKontekst.ny();
 
-        System.out.println(kontekst.verdiAv(fellesskatt));
-        ...
+System.out.println(kontekst.verdiAv(fellesskatt));
+...
 ```
 
-### Nytt uttrykk - en mer realistisk skatteberegning
+## Nytt uttrykk - en mer realistisk skatteberegning
 
 Eksempelet over virker bare for denne ene skattyteren, og i virkelighetens verden
 ønsker vi å hente skattyterenes verdier fra en ekstern datakilde, og kjøre skatteberegningene for alle.
@@ -226,7 +227,7 @@ public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteo
 }
 ```
 
-Hvis noen mot formodning har glemt å sette et `Skattegrunnlag` som input, så vil evaluering av uttrykket feil med en exception.
+Hvis noen mot formodning har glemt å sette et `Skattegrunnlag` som input, så vil evaluering av uttrykket feile med en exception.
 
 En mer forsiktig tilnærming kan være å sjekke om input'en finnes
 ``` java
@@ -328,6 +329,111 @@ public class Skatteberegning {
     }
 }
 ```
+### Oppsummering - Nytt uttrykk
+1. Opprett en klasse som arver fra `AbstractUttrykk` og implementer aktuelt interface
+2. Implementer metodene `eval` og `beskriv`
+3. Legg gjerne til en (eller flere) _factory methods_ som lar utvikleren lag en instans av klassen på en kompakt måte ved hjelp av _static imports_
+
+
+## Testing med stub'ing
+
+La oss nå skille forretningslogikken fra koden som setter opp og kjører logikken. Først flytter vi `main`-metoden til en egen klasse.
+
+``` java
+public class App {
+
+    public static void main(String[] args) {
+
+        Skattegrunnlag skattegrunnlag = ... // hent skattyters data fra ekstern kilde
+
+        SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag); // opprett SkattyterKontekst med input
+
+        System.out.println(kontekst.verdiAv(fellesskatt));
+        System.out.println(kontekst.verdiAv(alminneligInntekt));
+        System.out.println(kontekst.verdiAv(fagforeningskontingent));
+    }
+}
+```
+
+Forretningslogikken fordeler vi på to klasser, `Grunnlag` og `Skatteberegning`.
+
+``` java
+public class Grunnlag {
+    static final BelopUttrykk lonnsinntekt =           skatteobjekt("lønnsinntekt");
+    static final BelopUttrykk renteinntekt =           skatteobjekt("renteinntekt");
+    static final BelopUttrykk renteutgift =            skatteobjekt("renteutgift");
+    static final BelopUttrykk fagforeningskontingent = skatteobjekt("fagforeningskontingent");
+}
+
+public class Skatteberegning {
+
+    static final TallUttrykk FELLESSKATT_SATS = prosent(33);
+
+    static final BelopUttrykk alminneligInntekt = lonnsinntekt
+                    .pluss(renteinntekt)
+                    .minus(renteutgift)
+                    .minus(fagforeningskontingent);
+
+    static final BelopUttrykk fellesskatt =
+            alminneligInntekt.multiplisertMed(FELLESSKATT_SATS);
+}
+```
+
+Nå ønsker vi å teste fellesskatt-uttrykket i `Skatteberegning` og oppretter en testklasse
+
+``` java
+public class SkatteberegningTest {
+
+    @Test
+    public void testFellesskatt() {
+        // Fyll på med testkode
+    }
+}
+```
+
+Utfordringen vi har nå er at `fellesskatt` er et uttrykk på toppen av et uttrykkstre. I vårt tilfelle er det ikke et veldig komplisert tre,
+men det er uansett en utfordring at løvnodene i treet er `BelopSkatteobjektUttrykk`, som er avhengig av en input.
+En metode som vil fungere er å lage input'en i testen, og hvis vi oppretter en klasse som implementerer `Skattegrunnlag`, så kan vi få til det.
+
+``` java
+public class SkatteberegningTest {
+
+    @Test
+    public void testFellesskatt() {
+        TestSkattegrunnlag skattegrunnlag = new TestSkattegrunnlag();
+        skattegrunnlag.leggTil("lønnsinntekt",Belop.kr(100));
+        skattegrunnlag.leggTil("renteinntekt",Belop.kr(50));
+
+        SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag); // opprett SkattyterKontekst med input
+
+        assertEquals(Belop.kr(50),kontekst.verdiAv(fellesskatt).rundAvTilHeleKroner());
+    }
+}
+```
+
+Her implementerer `TestSkattegrunnlag` _inteface_'t `Skattegrunnlag` og tilbyr metoden `leggTil` for å sette verdier på skatteobjektene.
+Legg merke til at vi runder av beløpet vi får fra beregningen, siden det ikke nødvendigvis er nøyaktig hele kroner.
+Denne fremgangsmåten er omstendig, men kanskje til å leve med i dette tilfellet, og vi kan se for oss å gjenbruke `TestSkattegrunnlag` i mange tilfeller.
+Imidlertid var det vi ønsket å teste i dette tilfellet at _fellesskatt_ ble beregnet riktig, og den avhenger kun av _alminneligInntekt_ og skattesatsen på 33%.
+Når uttrykkstreet vokser i kompleksitet og dybde, så blir det stadig vanskeligere å gi input, som sørger for at vi kan teste interessante kombinasjoner av uttrykk nær toppen.
+Heldigvis finnes det annen tilnærmingen som lar oss _kortslutte_ uttrykkstreet der vi ønsker.
+
+``` java
+public class SkatteberegningTest {
+
+    @Test
+    public void testFellesskatt() {
+        SkattyterKontekst kontekst = SkattyterKontekst.ny(skattegrunnlag); // opprett SkattyterKontekst UTEN input
+        kontekst.overstyrVerdi(Skatteberegning.alminneligInntekt, Belop.kr(150))
+
+        assertEquals(Belop.kr(50),kontekst.verdiAv(fellesskatt).rundAvTilHeleKroner);
+    }
+}
+```
+
+`overstyrVerdi` lar oss sette verdien som skal benyttes under evalueringen av et gitt uttrykk.
+
+
 
 
 
