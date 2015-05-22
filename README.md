@@ -21,7 +21,6 @@ Og skatten er 33% av `Alminnelig inntekt`
 
 Anta videre en skattytere med følgende skatteobjekter:
 
-Skatteobjekt | Beløp
 ---| ---:
 lønnsinntekt |           kr 78 100
 renteinntekt |              kr 270
@@ -449,7 +448,9 @@ public class SkatteberegningTest {
  av uttrykkene _caches_ på konteksten etter hvert som de blir evaluert. Merk at vi ikke lenger trenger å sende input på kontektsten
 fordi alle uttrykk som benytter input, ikke lenger blir evaluert.
 
-## Flere uttrykk
+## Flere uttrykk for beløp
+
+### Begrensning
 Vi kan legge til en ny test, som eksponerer en feil i koden vår
 
 ``` java
@@ -494,17 +495,82 @@ static final BelopUttrykk fellesskatt =
         nedre0(alminneligInntekt.multiplisertMed(FELLESSKATT_SATS));
 ```
 
-### Uttrykk - beløp
+### Multisats
 
-Type | Eksempel  | Kommentar
---- |--- | ---
-pluss        | `kr(5).pluss(kr(8))` |
-sum          | `sum(kr(3),kr(4),kr(5))` |
-minus        | `kr(6).minus(kr(3))` |
-bytt fortegn | `kr(6).byttFortegn()` |
-rund av      | `kr(4.75).rundAvTilHeleKroner()` |
+Vi forestiller oss at lovgiverne har bestemt at det skal innføres toppskatt. Den har to nivåer:
+
+* ingen toppskatt på den delen av alminnelig inntekt som er under kr 550 000
+* 5% på den delen av alminnelig inntekt som er over kr 550 000 og under kr 875 000
+* 8% på den delen av alminnelig inntekt som er over kr 875 000
+
+Dette finnes et eget uttrykk for å håndtere disse tilfellene.
+``` java
+static final BelopUttrykk toppskatt =
+        multisatsFunksjonAv(alminneligInntekt)
+            .medSats(prosent(0),kr(550_000))
+            .medSats(prosent(5),kr(875_000))
+            .medSats(prosent(8));
+```
+
+### Overføring mellom ektefeller
+
+Lovgiverne innfører boligsparing for ungdom (BSU). Skattyteren kan spare inntil kr 25 000 til boligformål og få inntil 20% av beløpet i skattefradraget, altså maks kr 5000.
+Loven sier at hvis en av ektefellene ikke får utnyttet hele fradraget, så kan den ubenyttede delen overføres til ektefellen.
+Skattyteren får ikke utnyttet fradraget hvis maks fradrag er større enn utliknet skatt.
+
+Vi antar at det finnes et skatteobjekt i skattegrunnlaget, _sparebeløpBSU_, som inneholder sparebeløpet. Maks BSU-fradrag er gitt ved:
+``` java
+static final BelopUttrykk maksSparebelopBSU =
+    begrens(skatteobjekt("sparebeløpBSU"))
+    .oppad(kr(25_000))
+
+static final BelopUttrykk maksFradragBSU =
+    maksSparebelopBSU.multiplisertMed(prosent(20));
+```
+
+Fradraget kan ikke være større enn utliknet skatt:
+``` java
+static final BelopUttrykk utliknetSkatt =
+    fellesskatt
+    .pluss(toppskatt)
+
+static final BelopUttrykk begrensetFradragBSU =
+    begrens(maksfradrag).oppad(utliknetSkatt);
+```
+
+Vi lager et uttrykk som angir hva som evt skal overføres til ektefelle
+``` java
+static final BelopUttrykk fradragBSUTilOverforing =
+    begrens(
+        maksfradrag.minus(utliknetSkatt)
+    ).nedad(kr0);
+```
+
+Og da har vi det vi trenger for å beregne det endelige fradraget
+``` java
+static final BelopUttrykk fradragBSU =
+    begrens(
+        begrensetFradragBSU
+        .pluss(ektefelles(fradragBSUTilOverforing))
+    ).oppad(utliknetSkatt);
+```
 
 
+
+
+
+
+## Andre typer uttrykk
+
+### Stedbunde beløp
+
+I Norge er det en del beregninger som krever at vi tar hesnyn til _hvor_ en inntekt eller formue oppstår, og skatten skal foredeles til
+
+### Tekstuttrykk
+
+### Bolske uttrykk
+
+### Distanseuttrykk
 
 # Ubrukt
 
