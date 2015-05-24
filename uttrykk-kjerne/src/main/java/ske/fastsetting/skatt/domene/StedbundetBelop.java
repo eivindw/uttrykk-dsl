@@ -179,4 +179,54 @@ public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> 
     public StedbundetBelop<T> nyMedSammeFordeling(Belop belop) {
         return fordelProporsjonalt(belop).minus(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        StedbundetBelop other = (StedbundetBelop) o;
+
+        if (stedBelopMap.size()!=stedBelopMap.size()) {
+            return false;
+        }
+
+        for(T key : stedBelopMap.keySet())
+        if (!other.stedBelopMap.containsKey(key)) {
+            return false;
+        }
+
+        for(T key : stedBelopMap.keySet()) {
+            if(!stedBelopMap.get(key).equals(other.stedBelopMap.get(key))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public StedbundetBelop<T> fjernNullBelop() {
+        Map<T,Belop> resultat =
+          stedBelopMap.entrySet()
+            .stream()
+            .filter(p -> !p.getValue().equals(Belop.NULL))
+            .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
+
+        return new StedbundetBelop<>(resultat);
+    }
+
+    @Override
+    public int hashCode() {
+
+        int result = stedBelopMap.keySet().stream()
+          .map(T::hashCode).reduce(Integer.MAX_VALUE,(a,b)->a^b);
+
+        return stedBelopMap.values().stream()
+          .map(Belop::hashCode).reduce(result,(a,b)->a^b);
+
+    }
 }
