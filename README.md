@@ -19,15 +19,27 @@ Anta en verden med veldig enkle skattytere og enkel skatteberegning. Hver skatty
 
 Og skatten er 33% av `Alminnelig inntekt`
 
-Anta videre en skattytere med følgende skatteobjekter:
+Anta videre en skattyter med følgende skatteobjekter:
 
+_Skatteobjekt_|_Beløp_
 ---| ---:
 lønnsinntekt |           kr 78 100
 renteinntekt |              kr 270
 renteutgift |             kr 3 800
 fagforeningskontingent|  kr 3 400
 
-Da kan følgende kode beregne skatten til skattyteren
+Gitt at følgende avhengighet finnes i `pom.xml`
+
+``` xml
+<dependencies>
+    <dependency>
+        <groupId>ske.fastsetting.skatt</groupId>
+        <artifactId>uttrykk-kjerne</artifactId>
+    </dependency>
+</dependencies>
+```
+
+Da kan følgende kode beregne skatten til skattyteren:
 
 ``` java
 import ske.fastsetting.skatt.domene.Belop;
@@ -140,8 +152,10 @@ Imidlertid vil ikke dette kompilere fordi `BelopUttrykk` (egentlig `Uttrykk`) kr
 * `@Deprecated List<Regel> regler();`
 * `List<Hjemmel> hjemler();`
 
-Heldigvis finnes det en klasse som gir en god implementasjon av de fleste av disse metodene - `AbstractUttrykk`
-- og som i tillegg gir noen andre nyttige egenskaper, som vi skal se senere. De eneste metodene `AbstractUttrykk` ikke implementerer, er:
+Heldigvis finnes det en klasse som gir en god implementasjon av de fleste av disse metodene - `AbstractUttrykk` -
+og som i tillegg gir noen andre nyttige egenskaper, som vi skal se senere. `AbstractUttrykk` har to typeparametre. Den første
+angir hvilken type som eval skal returnere. Her er det `Belop` siden evaluering av `BelopUttrykk` gir `Belop`. Den andre typeparameteren
+er klassen selv. De eneste metodene `AbstractUttrykk` ikke implementerer, er:
 * `V eval(UttrykkContext ctx);`
 * `String beskriv(UttrykkContext ctx);`
 
@@ -514,7 +528,7 @@ static final BelopUttrykk toppskatt =
 
 ### Overføring mellom ektefeller
 
-Lovgiverne innfører boligsparing for ungdom (BSU). Skattyteren kan spare inntil kr 25 000 til boligformål og få inntil 20% av beløpet i skattefradraget, altså maks kr 5000.
+Lovgiverne innfører boligsparing for ungdom (BSU). Skattyteren kan spare inntil kr 25 000 til boligformål og få inntil 20% av beløpet i skattefradraget, altså maks kr 5 000.
 Loven sier at hvis en av ektefellene ikke får utnyttet hele fradraget, så kan den ubenyttede delen overføres til ektefellen.
 Skattyteren får ikke utnyttet fradraget hvis maks fradrag er større enn utliknet skatt.
 
