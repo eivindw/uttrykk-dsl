@@ -4,12 +4,14 @@
 
 ### Enkel skatteberegning med uttrykk
 Anta en verden med veldig enkle skattytere og enkel skatteberegning. Hver skattyter kan bare ha følgende skatteobjekter:
+
 * lønnsinntekt
 * renteinntekt
 * renteutgift
 * fagforeningskontingent
 
 `Alminnelig inntekt` beregnes som
+
 ```
   lønninntekt
 + renteinntekt
