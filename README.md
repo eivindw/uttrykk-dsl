@@ -107,6 +107,7 @@ Eksempelet over virker bare for denne ene skattyteren, og i virkelighetens verde
 ønsker vi å hente skattyterenes verdier fra en ekstern datakilde, og kjøre skatteberegningene for alle.
 
 Vi begynner med å anta at vi har et uttrykk som representer verdien for et skatteobjekt angitt med en ID. Altså i stedet for å si
+
 ``` java
     ...
     static final BelopUttrykk lonnsinntekt =          kr(78_100);
@@ -115,6 +116,7 @@ Vi begynner med å anta at vi har et uttrykk som representer verdien for et skat
     static final BelopUttrykk fagforeningskontingent = kr(3_400);
     ...
 ```
+
 så kan vi si
 
 ``` java
@@ -147,6 +149,7 @@ public class BelopSkatteobjektUttrykk implements BelopUttrykk {
 Konstruktøren initialiser instansen med skatteobjektstypen som blir sendt inn.
 
 Imidlertid vil ikke dette kompilere fordi `BelopUttrykk` (egentlig `Uttrykk`) krever at følgende metoder blir implementert:
+
 * `V eval(UttrykkContext ctx);`
 * `String beskriv(UttrykkContext ctx);`
 * `String id();`
@@ -159,10 +162,12 @@ Heldigvis finnes det en klasse som gir en god implementasjon av de fleste av dis
 og som i tillegg gir noen andre nyttige egenskaper, som vi skal se senere. `AbstractUttrykk` har to typeparametre. Den første
 angir hvilken type som eval skal returnere. Her er det `Belop` siden evaluering av `BelopUttrykk` gir `Belop`. Den andre typeparameteren
 er klassen selv. De eneste metodene `AbstractUttrykk` ikke implementerer, er:
+
 * `V eval(UttrykkContext ctx);`
 * `String beskriv(UttrykkContext ctx);`
 
 Skjelettet av implementasjonen blir da før `eval` og `beskriv` implementeres:
+
 ``` java
 public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteobjektUttrykk> implements BelopUttrykk {
 
@@ -187,6 +192,7 @@ public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteo
 ```
 
 Beskrivelsen kan være det vi vil, og her er det naturlig at uttrykket sier noe om at den representer et skatteobjekt av den skatteobjektstypen den er blitt initalisert med
+
 ``` java
 public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteobjektUttrykk> implements BelopUttrykk {
 
@@ -214,6 +220,7 @@ Belop renteinntektSY1 = skattegrunnlag.skatteobjekt("renteinntekt")
 ```
 
 Da har vi nesten det vi trenger for å implementere `eval`-metoden også:
+
 ``` java
 public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteobjektUttrykk> implements BelopUttrykk {
 
@@ -233,6 +240,7 @@ public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteo
 I stedet lar vi uttrykket rett og slett forlange at noen har gitt `Skattegrunnlag`'et som en _input-verdi_. `UttrykkContext`'en som sendes inn til `eval`-metoden, gir nettopp tilgang til input-verdier
 
 Da har vi det vi trenger for å implementere `eval`-metoden også:
+
 ``` java
 public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteobjektUttrykk> implements BelopUttrykk {
 
@@ -250,7 +258,8 @@ public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteo
 
 Hvis noen mot formodning har glemt å sette et `Skattegrunnlag` som input, så vil evaluering av uttrykket feile med en exception.
 
-En mer forsiktig tilnærming kan være å sjekke om input'en finnes
+En mer forsiktig tilnærming kan være å sjekke om input'en finnes:
+
 ``` java
 public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteobjektUttrykk> implements BelopUttrykk {
 
@@ -271,6 +280,7 @@ public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteo
 ```
 
 Vi går likevel for den agressive varianten, og den komplette uttrykksklassen ser da slik ut:
+
 ``` java
 public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteobjektUttrykk> implements BelopUttrykk {
 
@@ -298,7 +308,7 @@ public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteo
 Det eneste som gjenstår er da å få send inn input-verdien, og det gjør vi når vi oppretter `SkattyterKontekst`, som er en implementasjon av UttrykkContext
 
 
-```
+``` java
 public static void main(String[] args) {
 
     // hent skattyters data fra ekstern kilde
@@ -356,6 +366,7 @@ public class Skatteberegning {
 }
 ```
 ### Oppsummering - Nytt uttrykk
+
 1. Opprett en klasse som arver fra `AbstractUttrykk` og implementer aktuelt interface
 2. Implementer metodene `eval` og `beskriv`
 3. Legg gjerne til en (eller flere) _factory methods_ som lar utvikleren lag en instans av klassen på en kompakt måte ved hjelp av _static imports_
@@ -521,6 +532,7 @@ Vi forestiller oss at lovgiverne har bestemt at det skal innføres toppskatt. De
 * 8% på den delen av alminnelig inntekt som er over kr 875 000
 
 Dette finnes et eget uttrykk for å håndtere disse tilfellene.
+
 ``` java
 static final BelopUttrykk toppskatt =
         multisatsFunksjonAv(alminneligInntekt)
@@ -536,6 +548,7 @@ Loven sier at hvis en av ektefellene ikke får utnyttet hele fradraget, så kan 
 Skattyteren får ikke utnyttet fradraget hvis maks fradrag er større enn utliknet skatt.
 
 Vi antar at det finnes et skatteobjekt i skattegrunnlaget, _sparebeløpBSU_, som inneholder sparebeløpet. Maks BSU-fradrag er gitt ved:
+
 ``` java
 static final BelopUttrykk maksSparebelopBSU =
     begrens(skatteobjekt("sparebeløpBSU"))
@@ -546,6 +559,7 @@ static final BelopUttrykk maksFradragBSU =
 ```
 
 Fradraget kan ikke være større enn utliknet skatt:
+
 ``` java
 static final BelopUttrykk utliknetSkatt =
     fellesskatt
@@ -556,6 +570,7 @@ static final BelopUttrykk begrensetFradragBSU =
 ```
 
 Vi lager et uttrykk som angir hva som evt skal overføres til ektefelle
+
 ``` java
 static final BelopUttrykk fradragBSUTilOverforing =
     begrens(
@@ -564,6 +579,7 @@ static final BelopUttrykk fradragBSUTilOverforing =
 ```
 
 Og da har vi det vi trenger for å beregne det endelige fradraget
+
 ``` java
 static final BelopUttrykk fradragBSU =
     begrens(
@@ -571,11 +587,6 @@ static final BelopUttrykk fradragBSU =
         .pluss(ektefelles(fradragBSUTilOverforing))
     ).oppad(utliknetSkatt);
 ```
-
-
-
-
-
 
 ## Andre typer uttrykk
 
