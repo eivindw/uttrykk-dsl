@@ -25,10 +25,10 @@ Anta videre en skattyter med følgende skatteobjekter:
 
 _Skatteobjekt_|_Beløp_
 ---| ----------:
-lønnsinntekt |           kr 78 100
+lønnsinntekt |           kr 78_100
 renteinntekt |              kr 270
-renteutgift |             kr 3 800
-fagforeningskontingent|  kr 3 400
+renteutgift |             kr 3_800
+fagforeningskontingent|  kr 3_400
 
 Gitt at følgende avhengighet finnes i `pom.xml`
 
@@ -79,6 +79,7 @@ public class Skatteberegning {
 ```
 
 Kjører du `main`-metoden, så bør du få følgende opp i konsollet:
+
 ```
 kr 5 998
 kr 74 970
