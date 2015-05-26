@@ -21,6 +21,7 @@ Og skatten er 33% av `Alminnelig inntekt`
 
 Anta videre en skattytere med følgende skatteobjekter:
 
+_Bkatteobjekt_|_Beløp_
 ---| ---:
 lønnsinntekt |           kr 78 100
 renteinntekt |              kr 270
