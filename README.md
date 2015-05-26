@@ -39,7 +39,7 @@ Gitt at følgende avhengighet finnes i `pom.xml`
 </dependencies>
 ```
 
-...så kan følgende kode beregne skatten til skattyteren:
+Da kan følgende kode beregne skatten til skattyteren:
 
 ``` java
 import ske.fastsetting.skatt.domene.Belop;
