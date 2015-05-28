@@ -632,13 +632,11 @@ public class FradragBSUTest {
 }
 ```
 
-*GOTCHA* Merk at vi overstyrer `maksSparebelopBSU` og ikke `skatteobjekt("sparebeløpBSU")`. Det skyldes at `skatteobjekt(...)` returnerer
+**GOTCHA** Merk at vi overstyrer `maksSparebelopBSU` og ikke `skatteobjekt("sparebeløpBSU")`. Det skyldes at `skatteobjekt(...)` returnerer
 en ny instans av `BelopSkatteobjektUttrykk` hver gang metoden kalles, og konteksten cacher hver instans. Dermed ville
 
 ``` java
 kontekst.overstyrVerdi(skatteobjekt("sparebeløpBSU"), Belop.kr(30_000))
-}
-```
 
 overstyrt en annen verdi enn den som brukes i
 
