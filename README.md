@@ -730,12 +730,12 @@ public class Skatteberegning {
 
     static final StedbundetBelopUttrykk<String> inntekt =
             lonnsinntekt
-                    .pluss(renteinntekt)
-                    .pluss(naeringsinntekt);
+            .pluss(renteinntekt)
+            .pluss(naeringsinntekt);
 
     static final BelopUttrykk fordelingsfradrag =
             renteutgift
-                    .pluss(fagforeningskontingent);
+            .pluss(fagforeningskontingent);
 
     static final StedbundetBelopUttrykk<String> alminneligInntekt =
             inntekt.minusProporsjonalt(fordelingsfradrag);
@@ -763,12 +763,67 @@ kr 31 793
 {Tønsberg=kr 4 240, Asker=kr 5 934}
 ```
 
-
 ### Tekstuttrykk
+
+Politikerne innfører forskuddstrekk. Foreløpig er det snakk om to forskuddsformer - Frikort og Prosentkort. Frikort får du hvis alminnelig inntekt er under kr 30 000
+
+``` java
+static final TekstUttrykk FORSKUDSSFORM_PROSENTKORT = tekst("Prosentkort");
+static final TekstUttrykk FORSKUDSSFORM_FRIKORT = tekst("Frikort");
+
+static final TekstUttrykk forskuddsform =
+    hvis(alminneligInntekt.steduavhengig().erMindreEnn(kr(30_000)))
+    .brukDa(FORSKUDSSFORM_FRIKORT)
+    .ellersBruk(FORSKUDSSFORM_PROSENTKORT)
+```
 
 ### Bolske uttrykk
 
+Hvis skattyter har fått prosentkort, så skal trekkprosenten være lik utliknet skatt dividert med alminnelig inntekt (i prosent), men aldri mindre enn 5%.
+Ellers blir trekkprosenten 0%.
+
+``` java
+static final TallUttrykk ujusterTrekkprosent = utliknetSkatt.dividertMedTilProsent(alminneligInntekt);
+
+static final BolskUttrykk harProsentkort = forskuddsform.erLik(FORSKUDSSFORM_PROSENTKORT);
+static final BolskUttrykk erUnder5Prosent = ujustertTrekkprosent.erMindreEnn(prosent(5));
+
+static final TallUttrykk trekkprosent =
+    hvis(harProsentkort.og(erUnder5Prosent))).brukDa(prosent(5))
+    .ellersHvis(harProsentkort).brukDa(ujustertTrekkprosent)
+    .ellersBruk(prosent(0))
+```
+
 ### Distanseuttrykk
+
+For å komme pendlerne i møte, så innføres det et reisefradrag ifm reise til og fra jobb. Det gis kr 1,50/km for reise
+under 50 000 km, og deretter 0,70 kr/km opp til 75 000 km. Sakttyter trekkes en egenandel på kr 16 000, og fradraget er
+begrenset oppad til kr 92 500 før egenandelen blir trukket.
+
+Hvis vi antar at en skattyter reiser 56 000 km pr år, så kan reisefradraget beregnes slik:
+
+```java
+
+DistanseUttrykk reiseKm = km(56_000);
+
+final BelopPerKvantitetUttrykk<Distanse> SATS_REISE_HOY = kr(1.50).per(km());
+final BelopPerKvantitetUttrykk<Distanse> SATS_REISE_LAV = kr(0.70).per(km());
+
+final BelopUttrykk MAKS_REISEUTGIFTER = kr(92_500);
+final BelopUttrykk EGENANDEL_REISEUTGIFTER = kr(16_000);
+
+final DistanseUttrykk OEVRE_GRENSE_SATS_REISE_HØY_KM = km(50_000);
+final DistanseUttrykk OEVRE_GRENSE_SATS_REISE_LAV_KM = km(75_000);
+
+BelopUttrykk bruttoReise = multisats(reiseKm)
+  .medSats(SATS_REISE_HOY, OEVRE_GRENSE_SATS_REISE_HØY_KM)
+  .medSats(SATS_REISE_LAV, OEVRE_GRENSE_SATS_REISE_LAV_KM);
+
+BelopUttrykk begrensetBrutto = begrens(bruttoReise).oppad(MAKS_REISEUTGIFTER);
+
+BelopUttrykk reisefradrag = begrens(begrensetBrutto.minus(EGENANDEL_REISEUTGIFTER)).nedad(kr(0));
+
+```
 
 # Ubrukt
 
