@@ -365,6 +365,7 @@ public class Skatteberegning {
     }
 }
 ```
+
 ### Oppsummering - Nytt uttrykk
 
 1. Opprett en klasse som arver fra `AbstractUttrykk` og implementer aktuelt interface
@@ -588,11 +589,182 @@ static final BelopUttrykk fradragBSU =
     ).oppad(utliknetSkatt);
 ```
 
+Når vi skal beregne BSU-fradraget til en skattyter, så må vi også sende med informasjon om ektefellen.
+
+``` java
+public class App {
+
+    public static void main(String[] args) {
+
+        // hent skattyters og ektefelles data fra ekstern kilde
+        Skattegrunnlag skattegrunnlag = ...
+        Skattegrunnlag skattegrunnlagEktefelle =
+
+        // opprett SkattyterKontekst med input
+        SkattyterKontekst kontekst = SkattyterKontekst
+            .ny(skattegrunnlag)
+            .medEktefelle(skattgunnlagEktefelle)
+
+        System.out.println(kontekst.verdiAv(fradragBSU));
+    }
+}
+```
+
+Eller vi kan gjøre det i en test:
+
+``` java
+public class FradragBSUTest {
+
+    @Test
+    public void testFellesskatt() {
+        SkattyterKontekst kontekst = SkattyterKontekst
+            .ny()
+            .medEktefelle();
+
+        kontekst.overstyrVerdi(alminneligInntekt, Belop.kr(500_000))
+        kontekst.overstyrVerdi(maksSparebelopBSU, Belop.kr(25_000))
+
+        kontekst.overstyrVerdiEktefelle(alminneligInntekt, Belop.kr(0))
+        kontekst.overstyrVerdiEktefelle(maksSparebelopBSU, Belop.kr(25_000))
+
+        assertEquals(Belop.kr(10_000),kontekst.verdiAv(fradragBSU));
+    }
+}
+```
+
+*GOTCHA* Merk at vi overstyrer `maksSparebelopBSU` og ikke `skatteobjekt("sparebeløpBSU")`. Det skyldes at `skatteobjekt(...)` returnerer
+en ny instans av `BelopSkatteobjektUttrykk` hver gang metoden kalles, og konteksten cacher hver instans. Dermed ville
+
+``` java
+kontekst.overstyrVerdi(skatteobjekt("sparebeløpBSU"), Belop.kr(30_000))
+}
+```
+
+overstyrt en annen verdi enn den som brukes i
+
+``` java
+static final BelopUttrykk maksSparebelopBSU =
+    begrens(skatteobjekt("sparebeløpBSU"))
+    .oppad(kr(25_000))
+```
+
+Det kan også løses ved å sikre at at kall til `skatteobjekt(...)` returner samme instans for en id:
+
+``` java
+public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteobjektUttrykk> implements BelopUttrykk {
+
+
+    // Bruk ConcurrentHashMap for å være trådsikker i alle tilfellers skyld
+    private static final Map<String,BelopUttrykk> skatteobjekter = new ConcurrentHashMap<>();
+
+    // Vi returner BelopUttrykk, som er immutable, i stedet for BelopSkatteobjektUttrykk
+    public static BelopUttrykk skatteobjekt(String skatteobjekttype) {
+        return skatteobjekter.computeIfAbsent(skatteobjekttype,sot->new BelopSkatteobjektUttrykk(skatteobjekttype));
+    }
+
+    ...
+}
+```
+
+Da kan testen bli mer naturlig:
+
+``` java
+public class FradragBSUTest {
+
+    @Test
+    public void testFellesskatt() {
+        SkattyterKontekst kontekst = SkattyterKontekst
+            .ny()
+            .medEktefelle();
+
+        kontekst.overstyrVerdi(alminneligInntekt, Belop.kr(500_000))
+        kontekst.overstyrVerdi(skatteobjekt("sparebeløpBSU"), Belop.kr(25_000))
+
+        kontekst.overstyrVerdiEktefelle(alminneligInntekt, Belop.kr(0))
+        kontekst.overstyrVerdiEktefelle(skatteobjekt("sparebeløpBSU"), Belop.kr(25_000))
+
+        assertEquals(Belop.kr(10_000),kontekst.verdiAv(fradragBSU));
+    }
+}
+```
+
 ## Andre typer uttrykk
 
 ### Stedbunde beløp
 
-I Norge er det en del beregninger som krever at vi tar hesnyn til _hvor_ en inntekt eller formue oppstår, og skatten skal foredeles til
+Den enkle staten vår blir stadig mer kompleks. Politikerne bestemmer at det skal innføres kommuneskatt.
+Lønnsinntekt og renteinntekter tilfaller alltid hjemstedskommunen, mens skatten på næringsinntekt tilfaller kommunen der den oppstår.
+Fordelingsfradrag som renteutgifter og fagforeningskontingent fordeles på kommune forholdsmessig etter inntekten.
+Satsen for kummeneskatt settes til 8% og fellesskatt-satsen reduseres tilsvarende til 25%.
+
+Vi ser for oss en skattyter bosatt i Asker, som driver med jordbruk i Tønsberg. Hun har følgende skatteobjekter:
+
+_Skatteobjekt_|_Beløp_ | _Sted_
+---| ---: | :---
+lønnsinntekt | kr 78 100 | (Hjemsted)
+renteinntekt | kr 270 | (Hjemsted)
+næringsinntekt | kr 56 000 | Tønsberg
+renteutgift |  kr 3 800 | (Fordeles)
+fagforeningskontingent|  kr 3 400 | (Fordeles)
+
+Da kan følgende kode beregne skatten
+
+``` java
+import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
+import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopUttrykk;
+import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
+
+import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetKroneUttrykk.kr;
+import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
+import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
+
+public class Skatteberegning {
+
+    static final TallUttrykk FELLESSKATT_SATS = prosent(25);
+    static final TallUttrykk KOMMUNESKATT_SATS = prosent(8);
+
+    static final StedbundetBelopUttrykk<String> lonnsinntekt = kr(78_100, "Asker");
+    static final StedbundetBelopUttrykk<String> renteinntekt = kr(270, "Asker");
+    static final StedbundetBelopUttrykk<String> naeringsinntekt = kr(56_000, "Tønsberg");
+
+    static final BelopUttrykk renteutgift = kr(3_800);
+    static final BelopUttrykk fagforeningskontingent = kr(3_400);
+
+    static final StedbundetBelopUttrykk<String> inntekt =
+            lonnsinntekt
+                    .pluss(renteinntekt)
+                    .pluss(naeringsinntekt);
+
+    static final BelopUttrykk fordelingsfradrag =
+            renteutgift
+                    .pluss(fagforeningskontingent);
+
+    static final StedbundetBelopUttrykk<String> alminneligInntekt =
+            inntekt.minusProporsjonalt(fordelingsfradrag);
+
+    static final BelopUttrykk fellesskatt =
+            alminneligInntekt.steduavhengig().multiplisertMed(FELLESSKATT_SATS);
+
+    static final StedbundetBelopUttrykk<String> kommuneskatt =
+            alminneligInntekt.multiplisertMed(KOMMUNESKATT_SATS);
+
+    public static void main(String[] args) {
+
+        SkattyterKontekst kontekst = SkattyterKontekst.ny();
+
+        System.out.println(kontekst.verdiAv(fellesskatt));
+        System.out.println(kontekst.verdiAv(kommuneskatt));
+    }
+}
+```
+
+Kjører du `main`-metoden, så bør du få følgende opp i konsollet:
+
+```
+kr 31 793
+{Tønsberg=kr 4 240, Asker=kr 5 934}
+```
+
 
 ### Tekstuttrykk
 
