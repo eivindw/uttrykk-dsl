@@ -637,6 +637,8 @@ en ny instans av `BelopSkatteobjektUttrykk` hver gang metoden kalles, og konteks
 
 ``` java
 kontekst.overstyrVerdi(skatteobjekt("sparebeløpBSU"), Belop.kr(30_000))
+```
+
 
 overstyrt en annen verdi enn den som brukes i
 
