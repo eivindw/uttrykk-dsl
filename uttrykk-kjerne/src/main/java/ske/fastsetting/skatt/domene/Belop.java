@@ -105,17 +105,17 @@ public class Belop extends Kvantitet<Long, Krone> implements Comparable<Belop>, 
     }
 
 
-    @Deprecated
     /**
-     *  @Deprecated Integer har for liten presisjon, ikke bruk denne med mindre du er klar over hva du gjør
+     *  @deprecated Integer har for liten presisjon, ikke bruk denne med mindre du er klar over hva du gjør
      */
+    @Deprecated
     public Integer toInteger() {
         return (int) Math.round((double) this.verdi() / ORE_I_KR);
     }
 
 
     /**
-     * @Returns beløp der øre blir avrundet til nærmeste hele krone
+     * @return beløp der øre blir avrundet til nærmeste hele krone
      */
     public Long tilHeleKroner() {
         return (long) Math.round((double) this.verdi() / ORE_I_KR);
