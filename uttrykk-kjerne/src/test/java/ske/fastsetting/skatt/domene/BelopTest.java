@@ -1,19 +1,26 @@
 package ske.fastsetting.skatt.domene;
 
-import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static ske.fastsetting.skatt.domene.Belop.kr;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.*;
-import static ske.fastsetting.skatt.domene.Belop.kr;
+import org.junit.Test;
 
 public class BelopTest {
 
     @Test
     public void rundesAvTilOrer() {
-        assertDoubleToBelop(10, 10.49);
-        assertDoubleToBelop(11, 10.499);
-        assertDoubleToBelop(11, 10.50);
+        assertBelop(10, 10.49);
+        assertBelop(11, 10.499);
+        assertBelop(11, 10.50);
+    }
+
+    @Test
+    public void testAvrundingAvVeldigHoyeBelop(){
+        assertBelop(999999999999999L,999999999999999.2);
+        assertBelop(1000000000000000L,999999999999999.5);
     }
 
     @Test
@@ -39,11 +46,21 @@ public class BelopTest {
         assertBelop(5, belop.multiplisertMed(BigDecimal.valueOf(2)));
     }
 
-    public void assertDoubleToBelop(int forventet, double input) {
-        assertBelop(forventet, kr(input));
-    }
 
     public void assertBelop(int forventet, Belop belop) {
-        assertEquals(Integer.valueOf(forventet), belop.toInteger());
+        assertBelop((long) forventet, belop);
     }
+
+    public void assertBelop(int forventet, double belop) {
+        assertBelop((long) forventet, belop);
+    }
+
+    public void assertBelop(Long forventet, double belop) {
+        assertBelop(forventet, Belop.kr(belop));
+    }
+
+    public void assertBelop(Long forventet, Belop belop) {
+        assertEquals(forventet, belop.tilHeleKroner());
+    }
+
 }

@@ -38,14 +38,14 @@ public class Belop extends Kvantitet<Long, Krone> implements Comparable<Belop>, 
     }
 
     public Belop rundAvTilHeleKroner() {
-        return Belop.fraKr(toInteger());
+        return Belop.fraKr(tilHeleKroner());
     }
 
     public Belop rundAvTilNaermeste(int naermesteKrone) {
         BigDecimal kr = BigDecimal.valueOf(naermesteKrone);
         return fraKr(
           BigDecimal
-            .valueOf(toInteger())
+            .valueOf(tilHeleKroner())
             .add(BigDecimal.valueOf(naermesteKrone / 2))
             .divideToIntegralValue(kr)
             .multiply(kr)
@@ -54,14 +54,13 @@ public class Belop extends Kvantitet<Long, Krone> implements Comparable<Belop>, 
     }
 
 
-
     public String toString() {
         DecimalFormat decimalFormat = new DecimalFormat();
         DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
         formatSymbols.setGroupingSeparator(' ');
         decimalFormat.setDecimalFormatSymbols(formatSymbols);
 
-        return "kr " + decimalFormat.format(toInteger());
+        return "kr " + decimalFormat.format(tilHeleKroner());
     }
 
     public String toStringMedOre() {
@@ -72,7 +71,7 @@ public class Belop extends Kvantitet<Long, Krone> implements Comparable<Belop>, 
         formatSymbols.setGroupingSeparator(' ');
         decimalFormat.setDecimalFormatSymbols(formatSymbols);
 
-        return "kr " + decimalFormat.format((double)this.verdi()/ORE_I_KR);
+        return "kr " + decimalFormat.format((double) this.verdi() / ORE_I_KR);
     }
 
 
@@ -105,16 +104,30 @@ public class Belop extends Kvantitet<Long, Krone> implements Comparable<Belop>, 
         return fraOre(Math.round(verdi() / ledd.doubleValue()));
     }
 
+
+    @Deprecated
+    /**
+     *  @Deprecated Integer har for liten presisjon, ikke bruk denne med mindre du er klar over hva du gjør
+     */
     public Integer toInteger() {
         return (int) Math.round((double) this.verdi() / ORE_I_KR);
     }
 
+
+    /**
+     * @Returns beløp der øre blir avrundet til nærmeste hele krone
+     */
+    public Long tilHeleKroner() {
+        return (long) Math.round((double) this.verdi() / ORE_I_KR);
+    }
+
+
     public BigInteger toBigInteger() {
-        return BigInteger.valueOf(toInteger());
+        return BigInteger.valueOf(tilHeleKroner());
     }
 
     public BigDecimal toBigDecimal() {
-        return BigDecimal.valueOf(toInteger());
+        return BigDecimal.valueOf(tilHeleKroner());
     }
 
     @Override
