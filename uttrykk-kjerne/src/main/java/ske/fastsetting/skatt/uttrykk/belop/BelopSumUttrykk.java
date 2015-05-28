@@ -38,7 +38,7 @@ public class BelopSumUttrykk
     }
 
     public BelopSumUttrykk pluss(BelopUttrykk uttrykk) {
-        if (this.navn() == null && uttrykk.navn() == null) {
+        if (this.navn() == null) {
             return summer(Stream.of(uttrykk));
         } else {
             return BelopSumUttrykk.sum(this, uttrykk);

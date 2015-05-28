@@ -1,5 +1,7 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import ske.fastsetting.skatt.uttrykk.bolsk.BolskUttrykk;
+
 public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> {
 
     default BolskUttrykk erStorreEnn(CompareableUttrykk<T> uttrykk) {

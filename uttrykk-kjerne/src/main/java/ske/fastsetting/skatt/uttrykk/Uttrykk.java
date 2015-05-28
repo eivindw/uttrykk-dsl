@@ -2,6 +2,7 @@ package ske.fastsetting.skatt.uttrykk;
 
 import ske.fastsetting.skatt.domene.Hjemmel;
 import ske.fastsetting.skatt.domene.Regel;
+import ske.fastsetting.skatt.uttrykk.bolsk.BolskUttrykk;
 
 import java.util.Collection;
 import java.util.List;

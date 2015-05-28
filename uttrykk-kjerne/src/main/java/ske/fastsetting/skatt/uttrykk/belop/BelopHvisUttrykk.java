@@ -1,7 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.uttrykk.BolskUttrykk;
+import ske.fastsetting.skatt.uttrykk.bolsk.BolskUttrykk;
 import ske.fastsetting.skatt.uttrykk.HvisUttrykk;
 
 public class BelopHvisUttrykk extends HvisUttrykk<Belop, BelopHvisUttrykk> implements BelopUttrykk {

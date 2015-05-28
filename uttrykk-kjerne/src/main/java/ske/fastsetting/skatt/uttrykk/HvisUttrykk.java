@@ -1,9 +1,11 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import static ske.fastsetting.skatt.uttrykk.FeilUttrykk.feil;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static ske.fastsetting.skatt.uttrykk.FeilUttrykk.feil;
+import ske.fastsetting.skatt.uttrykk.bolsk.BolskUttrykk;
 
 public abstract class HvisUttrykk<T, B extends HvisUttrykk<T, B>> extends AbstractUttrykk<T, B> {
     private Uttrykk<T> ellersBruk = feil("Hvis-uttrykk mangler en verdi for ellersBruk");
