@@ -13,7 +13,7 @@ Anta en verden med veldig enkle skattytere og enkel skatteberegning. Hver skatty
 `Alminnelig inntekt` beregnes som
 
 ```
-  lønninntekt
+  lønnsinntekt
 + renteinntekt
 - renteutgift
 - fagforeningskontingent
