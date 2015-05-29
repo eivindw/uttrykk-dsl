@@ -854,8 +854,11 @@ SkattyterKontekst kontekst = SkattyterKontekst.ny();
 
 UttrykkResultat<Belop> resultat = kontekst.dokumenter(inntektUttrykk)
 
+// Bør konvertere resultatet slik at det blir tilpasset wiki
+UttrykkResultat<Belop> confluenceResultat = ConfluenceResultatKonverterer.konverterResultat(resultat);
+
 ConfluenceUttrykkBeskriver beskriver = new ConfluenceUttrykkBeskriver("Hovedside");
-final Map<String, ConfluenceUttrykkBeskriver.ConfluenceSide> sider = beskriver.beskriv(resultat);
+final Map<String, ConfluenceUttrykkBeskriver.ConfluenceSide> sider = beskriver.beskriv(confluenceResultat);
 
 sider.forEach((tittel, side) -> {
     System.out.println("### " + tittel + " ###");
@@ -870,9 +873,16 @@ SkattyterKontekst kontekst = SkattyterKontekst.ny();
 
 UttrykkResultat<Belop> resultat = kontekst.dokumenter(inntektUttrykk)
 
+// Bør konvertere resultatet slik at det blir tilpasset excel
+UttrykkResultat<Belop> excelResultat = ExcelEnsligUttrykkResultatKonverterer.konverterResultat(resultat)
+
+// Bruk evt ektefellekonverter
+// ExcelEktefelleUttrykkResultatKonverterer ektefellekonverterer = new ExcelEktefelleUttrykkResultatKonverterer();
+// UttrykkResultat<Belop> excelResultat = ektefellekonverter.konverterResultat(resultat)
+
 ExcelUttrykkBeskriver beskriver = new ExcelUttrykkBeskriver();
 
-final Workbook wb = beskriver.beskriv(resultat);
+final Workbook wb = beskriver.beskriv(excelResultat);
 
 FileOutputStream out = new FileOutputStream("workbook.xlsx");
 wb.write(out);
