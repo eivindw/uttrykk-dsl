@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>uttrykk</artifactId>
-  <version>1.26-SNAPSHOT</version>
+  <version>1.26</version>
 
   <modules>
     <module>uttrykk-kjerne</module>
@@ -25,7 +25,7 @@
 
   <scm>
     <connection>scm:git:https://aurora/git/scm/sof/uttrykk-dsl.git</connection>
-    <tag>uttrykk-1.6</tag>
+    <tag>uttrykk-1.26</tag>
   </scm>
 
   <dependencyManagement>
