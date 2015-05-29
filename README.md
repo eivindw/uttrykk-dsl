@@ -666,7 +666,7 @@ public class BelopSkatteobjektUttrykk extends AbstractUttrykk<Belop,BelopSkatteo
 }
 ```
 
-Da kan testen bli mer naturlig:
+Da kan testen bli mer intuitiv:
 
 ``` java
 public class FradragBSUTest {
@@ -826,6 +826,59 @@ BelopUttrykk begrensetBrutto = begrens(bruttoReise).oppad(MAKS_REISEUTGIFTER);
 BelopUttrykk reisefradrag = begrens(begrensetBrutto.minus(EGENANDEL_REISEUTGIFTER)).nedad(kr(0));
 
 ```
+
+## Dokumentasjon
+
+Det kan genereres dokumentasjon fra ett eller flere uttrykkstrær. I tillegg til `beskriv`-metoden, som har ansvar for å beskrive uttrykket,
+så kan også et uttrykk ha _navn_ og _tags_. Uttrykk som arver fra `AbstractUttrykk` har metoder for å sette navn og tags:
+
+```java
+BelopUttrykk inntektUttrykk = kr(45_000).navn("lønnsinntekt").tags("beregningsgrunnlag");
+```
+
+### Dokumentasjon til konsollet
+
+```java
+SkattyterKontekst kontekst = SkattyterKontekst.ny();
+
+UttrykkResultat<Belop> resultat = kontekst.dokumenter(inntektUttrykk)
+
+ConsoleUttrykkBeskriver.print(resultat);
+
+```
+
+### Wiki-dokumentasjon (Confluence)
+
+```java
+SkattyterKontekst kontekst = SkattyterKontekst.ny();
+
+UttrykkResultat<Belop> resultat = kontekst.dokumenter(inntektUttrykk)
+
+ConfluenceUttrykkBeskriver beskriver = new ConfluenceUttrykkBeskriver("Hovedside");
+final Map<String, ConfluenceUttrykkBeskriver.ConfluenceSide> sider = beskriver.beskriv(resultat);
+
+sider.forEach((tittel, side) -> {
+    System.out.println("### " + tittel + " ###");
+    System.out.println(side);
+});
+```
+
+### Excel-dokumentasjon
+
+```java
+SkattyterKontekst kontekst = SkattyterKontekst.ny();
+
+UttrykkResultat<Belop> resultat = kontekst.dokumenter(inntektUttrykk)
+
+ExcelUttrykkBeskriver beskriver = new ExcelUttrykkBeskriver();
+
+final Workbook wb = beskriver.beskriv(resultat);
+
+FileOutputStream out = new FileOutputStream("workbook.xlsx");
+wb.write(out);
+out.close();
+```
+
 
 # Ubrukt
 

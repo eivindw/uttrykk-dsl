@@ -1,11 +1,11 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import ske.fastsetting.skatt.uttrykk.util.IdUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 
 @SuppressWarnings("unchecked")
 public abstract class UttrykkContextImpl implements UttrykkContext {
@@ -42,6 +42,13 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
         return new UttrykkResultatImpl<>(uttrykk.id());
     }
 
+    public <V> UttrykkResultat<V> dokumenter(Uttrykk<V> uttrykk) {
+        return kalkuler(uttrykk,false,true);
+    }
+
+    public <V> UttrykkResultat<V> dokumenterMedVerdi(Uttrykk<V> uttrykk) {
+        return kalkuler(uttrykk,true,true);
+    }
 
     @Override
     public String beskriv(Uttrykk<?> uttrykk) {
@@ -71,7 +78,7 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
         if (input.containsKey(clazz)) {
             return (T) input.get(clazz);
         } else {
-            throw new RuntimeException("Context mangler input av type: " + clazz.getSimpleName());
+            throw new RuntimeException("Kontekst mangler input av type: " + clazz.getSimpleName());
         }
     }
 
