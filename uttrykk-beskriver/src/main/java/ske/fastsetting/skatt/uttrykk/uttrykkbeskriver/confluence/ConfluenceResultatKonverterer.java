@@ -38,8 +38,8 @@ public class ConfluenceResultatKonverterer {
 
         String resultat = uttrykk;
 
-        resultat = resultat.startsWith("multisats") ? resultat.replace(",", " og ") : resultat;
-        resultat = resultat.replaceAll("multisats\\((.*)\\)", "$1");
+        resultat = resultat.startsWith("multisats") ? resultat.replace(",", " + ") : resultat;
+        resultat = resultat.replaceAll("(?s)multisats\\((.*)\\)", "$1");
         resultat = resultat.replaceAll("satsFraTil\\((.*),(.*),(.*),(.*)\\)", "$2 av $1 over $3 og inntil $4");
         resultat = resultat.replaceAll("satsFra\\((.*),(.*),(.*)\\)", "$2 av $1 over $3");
         resultat = resultat.replaceAll("satsTil\\((.*),(.*),(.*)\\)", "$2 av $1 inntil $3");
