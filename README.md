@@ -30,13 +30,14 @@ renteinntekt |              kr 270
 renteutgift |             kr 3_800
 fagforeningskontingent|  kr 3_400
 
-Gitt at følgende avhengighet finnes i `pom.xml`
+Gitt at følgende avhengighet finnes i `pom.xml` (bytt til siste/aktuelle versjon)
 
 ``` xml
 <dependencies>
     <dependency>
         <groupId>ske.fastsetting.skatt</groupId>
         <artifactId>uttrykk-kjerne</artifactId>
+        <version>1.25</version>
     </dependency>
 </dependencies>
 ```
@@ -889,8 +890,7 @@ wb.write(out);
 out.close();
 ```
 
-
-# Ubrukt
+## <Ymse rester>
 
 Uttrykkene selv har altså ingen verdi, og hvis du kjører
 
