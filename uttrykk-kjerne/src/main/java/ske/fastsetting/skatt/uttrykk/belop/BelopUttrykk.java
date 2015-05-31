@@ -1,9 +1,5 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
-import static ske.fastsetting.skatt.uttrykk.belop.TilStedbundetBelopUttrykk.tilStedbundet;
-
-import java.math.BigDecimal;
-
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.Kvantitet;
 import ske.fastsetting.skatt.domene.Tall;
@@ -11,6 +7,12 @@ import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
+
+import java.math.BigDecimal;
+
+import static ske.fastsetting.skatt.uttrykk.belop.BelopPlussMinusUttrykk.diff;
+import static ske.fastsetting.skatt.uttrykk.belop.BelopPlussMinusUttrykk.sum;
+import static ske.fastsetting.skatt.uttrykk.belop.TilStedbundetBelopUttrykk.tilStedbundet;
 
 public interface BelopUttrykk extends CompareableUttrykk<Belop> {
 
@@ -23,12 +25,10 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
         return new BelopDivisjonsUttrykk(this, verdi);
     }
 
-    default BelopDiffUttrykk minus(BelopUttrykk uttrykk) {
-        return new BelopDiffUttrykk(this, uttrykk);
-    }
+    default BelopPlussMinusUttrykk minus(BelopUttrykk uttrykk) { return diff(this, uttrykk); }
 
-    default BelopSumUttrykk pluss(BelopUttrykk uttrykk) {
-        return BelopSumUttrykk.sum(this, uttrykk);
+    default BelopPlussMinusUttrykk pluss(BelopUttrykk uttrykk) {
+        return sum(this, uttrykk);
     }
 
     default <T> TilStedbundetBelopUttrykk<T> i(T sted) {return tilStedbundet(this,sted); }

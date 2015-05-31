@@ -1,12 +1,17 @@
 package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
 
+import ske.fastsetting.skatt.domene.StedbundetBelop;
+import ske.fastsetting.skatt.uttrykk.SumUttrykk;
+
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import ske.fastsetting.skatt.domene.StedbundetBelop;
-import ske.fastsetting.skatt.uttrykk.SumUttrykk;
-
+/**
+ *
+ * @deprecated Bruk StedbundetBelopPlussMinusUttrykk i stedet
+ */
+@Deprecated
 public class StedbundetBelopSumUttrykk<K> extends SumUttrykk<StedbundetBelop<K>, StedbundetBelopUttrykk<K>,
   StedbundetBelopSumUttrykk<K>> implements StedbundetBelopUttrykk<K> {
 
@@ -36,14 +41,14 @@ public class StedbundetBelopSumUttrykk<K> extends SumUttrykk<StedbundetBelop<K>,
         }
     }
 
-    @Override
-    public StedbundetBelopSumUttrykk<K> pluss(StedbundetBelopUttrykk<K> uttrykk) {
-        if (this.navn() == null && uttrykk.navn() == null) {
-            return summer(Stream.of(uttrykk));
-        } else {
-            return StedbundetBelopSumUttrykk.sum(this, uttrykk);
-        }
-    }
+//    @Override
+//    public StedbundetBelopSumUttrykk<K> pluss(StedbundetBelopUttrykk<K> uttrykk) {
+//        if (this.navn() == null && uttrykk.navn() == null) {
+//            return summer(Stream.of(uttrykk));
+//        } else {
+//            return StedbundetBelopSumUttrykk.sum(this, uttrykk);
+//        }
+//    }
 
     private StedbundetBelopSumUttrykk<K> summer(Stream<StedbundetBelopUttrykk<K>> stream) {
         return new StedbundetBelopSumUttrykk<>(Stream.concat(this.uttrykk.stream(), stream).collect

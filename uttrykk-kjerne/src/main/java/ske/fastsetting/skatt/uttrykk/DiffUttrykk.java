@@ -2,6 +2,11 @@ package ske.fastsetting.skatt.uttrykk;
 
 import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 
+/**
+ *
+ * @deprecated Bruk PlussMinusUttrykk i stedet
+ */
+@Deprecated
 public abstract class DiffUttrykk<V extends KalkulerbarVerdi<V>, T extends Uttrykk<V>, B extends DiffUttrykk<V, T, B>>
   extends AbstractUttrykk<V, B> {
     private final T ledd1;
