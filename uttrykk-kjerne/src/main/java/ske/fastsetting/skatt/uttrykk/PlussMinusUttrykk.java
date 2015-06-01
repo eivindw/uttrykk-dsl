@@ -36,7 +36,7 @@ public abstract class PlussMinusUttrykk <T extends KalkulerbarVerdi<T>, U extend
         if (this.navn() == null) {
             return ny(plussUttrykk, concat(minusUttrykk.stream(),Stream.of(uttrykk)).collect(Collectors.toList()));
         } else {
-            return ny(emptyList(), Stream.of(self, uttrykk).collect(Collectors.toList()));
+            return ny(Stream.of(self).collect(Collectors.toList()),Stream.of(uttrykk).collect(Collectors.toList()));
         }
     }
 
