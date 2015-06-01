@@ -4,6 +4,10 @@ import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.DiffUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 
+/**
+ *
+ * @deprecated Bruk BelopPlussMinusUttrykk i stedet
+ */
 public class BelopDiffUttrykk
   extends DiffUttrykk<Belop, Uttrykk<Belop>, BelopDiffUttrykk>
   implements BelopUttrykk {

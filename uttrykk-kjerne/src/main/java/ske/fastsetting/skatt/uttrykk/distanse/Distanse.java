@@ -1,14 +1,16 @@
 package ske.fastsetting.skatt.uttrykk.distanse;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 import ske.fastsetting.skatt.domene.Kvantitet;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 public class Distanse extends Kvantitet<Double, Kilometer> implements Comparable<Distanse>, KalkulerbarVerdi<Distanse> {
 
-    public static Distanse NULL = new Distanse(0d);
+    public static final Distanse NULL = new Distanse(0d);
+
+    public static Distanse km0() { return NULL; }
 
     public static Distanse km(BigInteger km) {
         return new Distanse(km.doubleValue());
@@ -83,4 +85,5 @@ public class Distanse extends Kvantitet<Double, Kilometer> implements Comparable
     public String toString() {
         return verdi() + " km";
     }
+
 }

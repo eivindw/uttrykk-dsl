@@ -5,6 +5,11 @@ import ske.fastsetting.skatt.domene.KalkulerbarVerdi;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+/**
+ *
+ * @deprecated Bruk PlussMinusUttrykk i stedet
+ */
+@Deprecated
 public abstract class SumUttrykk<T extends KalkulerbarVerdi<T>, U extends Uttrykk<T>, B extends SumUttrykk<T, U, B>>
   extends AbstractUttrykk<T, B> {
 

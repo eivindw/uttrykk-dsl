@@ -4,6 +4,9 @@ import ske.fastsetting.skatt.domene.Avrunding;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
 
+import static ske.fastsetting.skatt.uttrykk.tall.TallPlussMinusUttrykk.diff;
+import static ske.fastsetting.skatt.uttrykk.tall.TallPlussMinusUttrykk.sum;
+
 public interface TallUttrykk extends CompareableUttrykk<Tall> {
     default TallMultiplikasjonsUttrykk multiplisertMed(TallUttrykk verdi) {
         return new TallMultiplikasjonsUttrykk(this, verdi);
@@ -13,11 +16,11 @@ public interface TallUttrykk extends CompareableUttrykk<Tall> {
         return new TallDivisjonsUttrykk(this, verdi);
     }
 
-    default TallSumUttrykk pluss(TallUttrykk verdi) {
-        return TallSumUttrykk.sum(this, verdi);
+    default TallPlussMinusUttrykk pluss(TallUttrykk verdi) {
+        return sum(this, verdi);
     }
 
-    default TallDiffUttrykk minus(TallUttrykk verdi) { return TallDiffUttrykk.diff(this, verdi); }
+    default TallPlussMinusUttrykk minus(TallUttrykk verdi) { return diff(this, verdi); }
 
     @Deprecated()
     default TallAvrundUttrykk rundOpp() {
