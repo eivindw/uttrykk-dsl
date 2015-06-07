@@ -13,7 +13,6 @@
 
   <modules>
     <module>uttrykk-kjerne</module>
-    <module>uttrykk-beskriver</module>
   </modules>
   <name>Uttrykk DSL</name>
   <packaging>pom</packaging>
