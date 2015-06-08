@@ -140,7 +140,7 @@ public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> 
 
     @Override
     public String toString() {
-        return stedBelopMap.toString();
+        return stedBelopMap.size()>0 ? stedBelopMap.toString() : "kr 0";
     }
 
     public StedbundetBelop abs() {
