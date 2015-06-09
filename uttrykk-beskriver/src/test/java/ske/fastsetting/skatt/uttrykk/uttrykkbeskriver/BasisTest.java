@@ -16,9 +16,9 @@ import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
 
 public class BasisTest {
 
-    private static final String TAG_SATS = "satser";
+    private static final String TAG_SATS = "sats";
     private static final String TAG_GRLAG = "grunnlag";
-    private static final String TAG_SKATT = "skatter";
+    private static final String TAG_SKATT = "skatt";
 
     @Test
     public void prosentUttrykk() {
@@ -42,8 +42,8 @@ public class BasisTest {
             .brukDa(bonus.multiplisertMed(prosent(15)))
             .ellersBruk(kr(0)).navn("Ekstrabonus").tags(TAG_GRLAG),
           kr(20_000)
-            .minus(kr(15_000).navn("Særfradrag").tags(TAG_SATS))
-            .minus(kr(5_000).navn("Minstefradrag").tags(TAG_SATS))
+            .minus(kr(15_000).navn("Særfradrag").tags(TAG_GRLAG))
+            .minus(kr(5_000).navn("Minstefradrag").tags(TAG_GRLAG))
         ).navn("Sum lønn").regler(Regel.skatteloven("3.2")).tags(TAG_GRLAG);
 
         final BelopUttrykk trygdeavgift = sumLonn.multiplisertMed(satsTrygdeavgift).navn("Trygdeavgift").tags

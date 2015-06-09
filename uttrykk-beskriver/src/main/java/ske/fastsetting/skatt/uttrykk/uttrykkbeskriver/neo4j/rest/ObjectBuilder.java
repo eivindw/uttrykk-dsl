@@ -9,7 +9,7 @@ import java.util.Map;
 */
 public class ObjectBuilder {
 
-    private Map map;
+    private Map<String,Object> map;
 
     ObjectBuilder(Map map) {
         this.map = map;

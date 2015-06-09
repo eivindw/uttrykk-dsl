@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 import static ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.neo4j.rest.Value.string;
 
 
-public class NeoRestUtil {
+public class Neo4JRest {
     private static final URI SERVER_ROOT_URI = URI.create("http://localhost:7474/db/data/");
 
     public static void checkDatabaseIsRunning() {
