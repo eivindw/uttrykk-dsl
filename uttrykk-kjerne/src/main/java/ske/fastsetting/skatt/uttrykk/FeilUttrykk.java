@@ -5,6 +5,7 @@ public class FeilUttrykk<T> extends AbstractUttrykk<T, FeilUttrykk<T>> {
 
     public FeilUttrykk(String feilmelding) {
         this.feilmelding = feilmelding;
+        navn(feilmelding);
     }
 
     public static <T> FeilUttrykk<T> feil(String feilmelding) {

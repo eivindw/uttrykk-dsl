@@ -57,6 +57,8 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
         try {
             initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_UTTRYKK, k -> uttrykk.beskriv(this));
             return IdUtil.idLink(uttrykk.id());
+        } catch (UttrykkException ue) {
+            throw new UttrykkException(ue, uttrykk);
         } catch (Throwable e) {
             throw new UttrykkException(e, uttrykk);
         }
@@ -68,6 +70,8 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
 
         try {
             return (X) initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI, k -> uttrykk.eval(this));
+        } catch (UttrykkException ue) {
+            throw new UttrykkException(ue, uttrykk);
         } catch (Throwable e) {
             throw new UttrykkException(e, uttrykk);
         }
