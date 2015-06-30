@@ -88,6 +88,11 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
     }
 
     @Override
+    public Object[] input() {
+        return this.input.values().stream().toArray(Object[]::new);
+    }
+
+    @Override
     public <T> boolean harInput(Class<T> clazz) {
         return input.containsKey(clazz);
     }
