@@ -11,6 +11,7 @@ import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 public abstract class UttrykkContextImpl implements UttrykkContext {
 
     private final Map<String, Map> uttrykksmap = new HashMap<>();
+    private final Map<Class, Object> inputMedSupertyper = new HashMap<>();
     private final Map<Class, Object> input = new HashMap<>();
 
 
@@ -21,6 +22,7 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
     protected final void leggTilInput(Object... input) {
         Stream.of(input).forEach(verdi -> {
             leggTilInput(verdi.getClass(), verdi);
+            this.input.put(verdi.getClass(),verdi);
         });
     }
 
@@ -80,8 +82,8 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
 
     @Override
     public <T> T input(Class<T> clazz) {
-        if (input.containsKey(clazz)) {
-            return (T) input.get(clazz);
+        if (inputMedSupertyper.containsKey(clazz)) {
+            return (T) inputMedSupertyper.get(clazz);
         } else {
             throw new RuntimeException("Kontekst mangler input av type: " + clazz.getSimpleName());
         }
@@ -94,7 +96,7 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
 
     @Override
     public <T> boolean harInput(Class<T> clazz) {
-        return input.containsKey(clazz);
+        return inputMedSupertyper.containsKey(clazz);
     }
 
     @Override
@@ -103,12 +105,12 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
     }
 
     private void leggTilInput(Class<?> clazz, Object input) {
-        if (this.input.containsKey(clazz)) {
+        if (this.inputMedSupertyper.containsKey(clazz)) {
             throw new IllegalArgumentException("Ugyldig input. Det finnes allerede input som er, implementerer eller arver " + clazz);
         }
 
         if (includeClass(clazz)) {
-            this.input.put(clazz, input);
+            this.inputMedSupertyper.put(clazz, input);
             Stream.of(clazz.getInterfaces()).forEach(i -> leggTilInput(i, input));
             Optional.ofNullable(clazz.getSuperclass()).ifPresent(c -> leggTilInput(c, input));
         }
