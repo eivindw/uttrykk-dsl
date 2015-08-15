@@ -7,8 +7,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class StedbundetBelop<T> implements KalkulerbarVerdi<StedbundetBelop<T>> {
+public class StedbundetBelop<T> implements Comparable<Belop>, KalkulerbarVerdi<StedbundetBelop<T>> {
 
+
+    @Override
+    public int compareTo(Belop belop) {
+        return this.steduavhengig().compareTo(belop);
+    }
 
     public static class BelopSted<T> {
         private final T sted;
