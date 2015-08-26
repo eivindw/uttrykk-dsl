@@ -2,8 +2,8 @@ package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
 
 import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.domene.Tall;
+import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
-import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopDividertMedBelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopPlussMinusUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
@@ -62,27 +62,11 @@ public interface StedbundetBelopUttrykk<K> extends Uttrykk<StedbundetBelop<K>> {
     }
 
     default BolskUttrykk erStorreEnn(BelopUttrykk uttrykk) {
-        return new ErStorreEnn<>(this, uttrykk);
+        return new CompareableUttrykk.ErStorreEnn<>(this.steduavhengig(), uttrykk);
     }
 
-    static class ErStorreEnn<K> extends BolskUttrykk {
-        private final StedbundetBelopUttrykk<K> uttrykk;
-        private final BelopUttrykk sammenliknMed;
-
-        public ErStorreEnn(StedbundetBelopUttrykk<K> uttrykk, BelopUttrykk sammenliknMed) {
-            this.uttrykk = uttrykk;
-            this.sammenliknMed = sammenliknMed;
-        }
-
-        @Override
-        public Boolean eval(UttrykkContext ctx) {
-            return ctx.eval(uttrykk).steduavhengig().compareTo(ctx.eval(sammenliknMed)) > 0;
-        }
-
-        @Override
-        public String beskriv(UttrykkContext ctx) {
-            return ctx.beskriv(uttrykk) + " > " + ctx.beskriv(sammenliknMed);
-        }
+    default BolskUttrykk erMindreEnn(BelopUttrykk uttrykk) {
+        return new CompareableUttrykk.ErMindreEnn<>(this.steduavhengig(), uttrykk);
     }
 
 

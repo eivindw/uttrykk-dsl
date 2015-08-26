@@ -520,6 +520,7 @@ static final BelopUttrykk fellesskatt =
         .nedad(kr0());
 ```
 Å begrense nedad til kr 0 er så vanlig at det finnes en kortform for det - `nedre0(...)`
+
 ``` java
 static final BelopUttrykk fellesskatt =
         nedre0(alminneligInntekt.multiplisertMed(FELLESSKATT_SATS));
@@ -755,6 +756,7 @@ public class Skatteberegning {
 
         System.out.println(kontekst.verdiAv(fellesskatt));
         System.out.println(kontekst.verdiAv(kommuneskatt));
+        System.out.println(kontekst.verdiAv(kommuneskatt).get("Asker"));
     }
 }
 ```
@@ -764,7 +766,18 @@ Kjører du `main`-metoden, så bør du få følgende opp i konsollet:
 ```
 kr 31 793
 {Tønsberg=kr 4 240, Asker=kr 5 934}
+kr 5 934
 ```
+
+Kode-eksempelet viser at du kan konvertere et `StedbundetBelopUttrykk` til et `BelopUttrykk` ved å kalle `steduavhengig()` på uttrykket.
+
+Den forholdsmessige fordelingen av fordelingsfradrag mellom kommuner skjer i kallet
+
+``` java
+    static final StedbundetBelopUttrykk<String> alminneligInntekt =
+            inntekt.minusProporsjonalt(fordelingsfradrag);
+```
+
 
 ### Tekstuttrykk
 
