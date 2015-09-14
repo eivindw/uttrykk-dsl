@@ -43,6 +43,6 @@ public class TallAvrundUttrykk extends AbstractUttrykk<Tall, TallAvrundUttrykk> 
 
     @Override
     public String beskriv(UttrykkContext ctx) {
-        return null;
+        return "avrund ("+avrunding.toString().toLowerCase()+", presisjon "+presisjon+") "+ctx.beskriv(uttrykk);
     }
 }

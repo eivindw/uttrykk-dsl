@@ -11,6 +11,7 @@ import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 public abstract class UttrykkContextImpl implements UttrykkContext {
 
     private final Map<String, Map> uttrykksmap = new HashMap<>();
+    private final Map<Class, Object> inputMedSupertyper = new HashMap<>();
     private final Map<Class, Object> input = new HashMap<>();
 
 
@@ -21,12 +22,14 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
     protected final void leggTilInput(Object... input) {
         Stream.of(input).forEach(verdi -> {
             leggTilInput(verdi.getClass(), verdi);
+            this.input.put(verdi.getClass(),verdi);
         });
     }
 
-
     public final <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
-        initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI, k -> verdi);
+        Map map = map(uttrykk);
+        map.put(UttrykkResultat.KEY_VERDI,verdi);
+        uttrykksmap.put(uttrykk.id(), map);
     }
 
     protected final <V> UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
@@ -42,6 +45,13 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
         return new UttrykkResultatImpl<>(uttrykk.id());
     }
 
+    public <V> UttrykkResultat<V> dokumenter(Uttrykk<V> uttrykk) {
+        return kalkuler(uttrykk,false,true);
+    }
+
+    public <V> UttrykkResultat<V> dokumenterMedVerdi(Uttrykk<V> uttrykk) {
+        return kalkuler(uttrykk,true,true);
+    }
 
     @Override
     public String beskriv(Uttrykk<?> uttrykk) {
@@ -49,6 +59,8 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
         try {
             initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_UTTRYKK, k -> uttrykk.beskriv(this));
             return IdUtil.idLink(uttrykk.id());
+        } catch (UttrykkException ue) {
+            throw new UttrykkException(ue, uttrykk);
         } catch (Throwable e) {
             throw new UttrykkException(e, uttrykk);
         }
@@ -60,6 +72,8 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
 
         try {
             return (X) initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI, k -> uttrykk.eval(this));
+        } catch (UttrykkException ue) {
+            throw new UttrykkException(ue, uttrykk);
         } catch (Throwable e) {
             throw new UttrykkException(e, uttrykk);
         }
@@ -68,16 +82,21 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
 
     @Override
     public <T> T input(Class<T> clazz) {
-        if (input.containsKey(clazz)) {
-            return (T) input.get(clazz);
+        if (inputMedSupertyper.containsKey(clazz)) {
+            return (T) inputMedSupertyper.get(clazz);
         } else {
-            throw new RuntimeException("Context mangler input av type: " + clazz.getSimpleName());
+            throw new RuntimeException("Kontekst mangler input av type: " + clazz.getSimpleName());
         }
     }
 
     @Override
+    public Object[] input() {
+        return this.input.values().stream().toArray(Object[]::new);
+    }
+
+    @Override
     public <T> boolean harInput(Class<T> clazz) {
-        return input.containsKey(clazz);
+        return inputMedSupertyper.containsKey(clazz);
     }
 
     @Override
@@ -86,12 +105,12 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
     }
 
     private void leggTilInput(Class<?> clazz, Object input) {
-        if (this.input.containsKey(clazz)) {
+        if (this.inputMedSupertyper.containsKey(clazz)) {
             throw new IllegalArgumentException("Ugyldig input. Det finnes allerede input som er, implementerer eller arver " + clazz);
         }
 
         if (includeClass(clazz)) {
-            this.input.put(clazz, input);
+            this.inputMedSupertyper.put(clazz, input);
             Stream.of(clazz.getInterfaces()).forEach(i -> leggTilInput(i, input));
             Optional.ofNullable(clazz.getSuperclass()).ifPresent(c -> leggTilInput(c, input));
         }

@@ -3,6 +3,11 @@ package ske.fastsetting.skatt.uttrykk.tall;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.DiffUttrykk;
 
+/**
+ *
+ * @deprecated Bruk TallPlussMinusUttrykk i stedet
+ */
+@Deprecated
 public class TallDiffUttrykk
   extends DiffUttrykk<Tall, TallUttrykk, TallDiffUttrykk>
   implements TallUttrykk {

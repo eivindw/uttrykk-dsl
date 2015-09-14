@@ -1,4 +1,6 @@
-package ske.fastsetting.skatt.uttrykk;
+package ske.fastsetting.skatt.uttrykk.bolsk;
+
+import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
 public class BolskKonstantUttrykk extends BolskUttrykk {
 

@@ -26,6 +26,6 @@ public class StedbundetBelopAvrundUttrykk<K> extends AbstractUttrykk<StedbundetB
 
     @Override
     public String beskriv(UttrykkContext uttrykkContext) {
-        return "rund av til hele kroner (" + uttrykkContext.beskriv(belopUttrykk) + ")";
+        return uttrykkContext.beskriv(belopUttrykk) + " avrundet til hele kroner";
     }
 }

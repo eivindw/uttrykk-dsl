@@ -1,11 +1,13 @@
 package ske.fastsetting.skatt.uttrykk;
 
 import static org.junit.Assert.assertEquals;
+import static ske.fastsetting.skatt.uttrykk.FeilUttrykk.feil;
 import static ske.fastsetting.skatt.uttrykk.SkattegrunnlagHelper.kr;
 import static ske.fastsetting.skatt.uttrykk.TestUttrykkContext.beregne;
 import static ske.fastsetting.skatt.uttrykk.TestUttrykkContext.beregneOgBeskrive;
 import static ske.fastsetting.skatt.uttrykk.TestUttrykkContext.beskrive;
 import static ske.fastsetting.skatt.uttrykk.SkattegrunnlagobjektUttrykk.skattegrunnlagobjekt;
+import static ske.fastsetting.skatt.uttrykk.belop.BelopHvisUttrykk.hvis;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopSumUttrykk.sum;
 import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
 import static ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver.print;
@@ -42,7 +44,6 @@ public class UttrykkTest {
     }
 
 
-
     @Test
     public void sumUttrykk() {
         final BelopUttrykk lonn = kr(6);
@@ -68,6 +69,21 @@ public class UttrykkTest {
     @Test(expected = RuntimeException.class)
     public void feilHvisNavnSettesIgjen() {
         kr(6).navn("test").navn("test igjen");
+    }
+
+    @Test
+    public void testException() {
+        BelopUttrykk a = hvis(kr(5).erMindreEnn(kr(4))).brukDa(kr(8)).ellersBruk(feil("En feil")).navn("a");
+        BelopUttrykk b = sum(a, kr(4)).navn("b");
+        BelopUttrykk c = b.multiplisertMed(SkattegrunnlagHelper.prosent(45)).navn("c");
+        BelopUttrykk d = c.pluss(kr(45));
+        BelopUttrykk e = d.dividertMed(prosent(12)).navn("e");
+
+        try {
+            beregne(e);
+        } catch(Throwable t) {
+            assertEquals("'e'->''->'c'->'b'->'a'->'En feil'",t.getMessage());
+        }
     }
 
 }

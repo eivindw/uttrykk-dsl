@@ -11,7 +11,7 @@ public class KroneUttrykk extends AbstractUttrykk<Belop, KroneUttrykk> implement
     private static final KroneUttrykk KR_0 = kr(0);
     private final Type type;
 
-    public static KroneUttrykk kr0() {return KR_0;};
+    public static BelopUttrykk kr0() {return KR_0;};
 
     private enum Type {
         HeleKroner,

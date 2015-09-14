@@ -9,11 +9,10 @@
   </parent>
 
   <artifactId>uttrykk</artifactId>
-  <version>1.20-SNAPSHOT</version>
+  <version>1.37</version>
 
   <modules>
     <module>uttrykk-kjerne</module>
-    <module>uttrykk-beskriver</module>
   </modules>
   <name>Uttrykk DSL</name>
   <packaging>pom</packaging>
@@ -25,7 +24,7 @@
 
   <scm>
     <connection>scm:git:https://aurora/git/scm/sof/uttrykk-dsl.git</connection>
-    <tag>uttrykk-1.6</tag>
+    <tag>uttrykk-1.37</tag>
   </scm>
 
   <dependencyManagement>
