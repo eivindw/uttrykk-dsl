@@ -28,11 +28,11 @@ public class TilBolskUttrykk extends BolskUttrykk {
 
     @Override
     public Boolean eval(UttrykkContext ctx) {
-        return uttrykk.eval(ctx);
+        return ctx.eval(uttrykk);
     }
 
     @Override
     public String beskriv(UttrykkContext ctx) {
-        return uttrykk.beskriv(ctx);
+        return ctx.beskriv(uttrykk);
     }
 }

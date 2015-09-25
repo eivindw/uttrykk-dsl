@@ -4,14 +4,13 @@ import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
+import ske.fastsetting.skatt.uttrykk.WrapperUttrykk;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class StedbundetBelopWrapperUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>, StedbundetBelopWrapperUttrykk<K>>
+public class StedbundetBelopWrapperUttrykk<K> extends WrapperUttrykk<StedbundetBelop<K>, StedbundetBelopWrapperUttrykk<K>>
   implements StedbundetBelopUttrykk<K> {
-    private Uttrykk<StedbundetBelop<K>> uttrykk;
-
     public static <K>StedbundetBelopWrapperUttrykk<K> pakkInn(Uttrykk<StedbundetBelop<K>> uttrykk) {
         return new StedbundetBelopWrapperUttrykk<>(uttrykk);
     }
@@ -26,17 +25,7 @@ public class StedbundetBelopWrapperUttrykk<K> extends AbstractUttrykk<Stedbundet
     }
 
     public StedbundetBelopWrapperUttrykk(Uttrykk<StedbundetBelop<K>> uttrykk) {
-        this.uttrykk = uttrykk;
-        navn(uttrykk.navn());
+        super(uttrykk);
     }
 
-    @Override
-    public StedbundetBelop<K> eval(UttrykkContext ctx) {
-        return uttrykk.eval(ctx);
-    }
-
-    @Override
-    public String beskriv(UttrykkContext ctx) {
-        return uttrykk.beskriv(ctx);
-    }
 }

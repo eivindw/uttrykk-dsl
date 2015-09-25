@@ -4,12 +4,10 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import ske.fastsetting.skatt.domene.Tall;
-import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
-import ske.fastsetting.skatt.uttrykk.UttrykkContext;
+import ske.fastsetting.skatt.uttrykk.WrapperUttrykk;
 
-public class TilTallUttrykk extends AbstractUttrykk<Tall,TilTallUttrykk> implements TallUttrykk {
-    private Uttrykk<Tall> uttrykk;
+public class TilTallUttrykk extends WrapperUttrykk<Tall,TilTallUttrykk> implements TallUttrykk {
 
     public static Collection<TallUttrykk> tilTallUttrykk(Collection<Uttrykk<Tall>> uttrykk) {
         return uttrykk.stream().map(TilTallUttrykk::tilTalUttrykk).collect(Collectors.toList());
@@ -24,18 +22,7 @@ public class TilTallUttrykk extends AbstractUttrykk<Tall,TilTallUttrykk> impleme
     }
 
     public TilTallUttrykk(Uttrykk<Tall> uttrykk) {
-        this.uttrykk = uttrykk;
-        navn(uttrykk.navn());
-    }
-
-    @Override
-    public Tall eval(UttrykkContext ctx) {
-        return uttrykk.eval(ctx);
-    }
-
-    @Override
-    public String beskriv(UttrykkContext ctx) {
-        return uttrykk.beskriv(ctx);
+        super(uttrykk);
     }
 
 }
