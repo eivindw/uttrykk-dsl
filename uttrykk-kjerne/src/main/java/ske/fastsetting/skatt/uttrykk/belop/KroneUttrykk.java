@@ -30,7 +30,7 @@ public class KroneUttrykk extends AbstractUttrykk<Belop, KroneUttrykk> implement
     }
 
     public static KroneUttrykk kr(BigInteger belop) {
-        return new KroneUttrykk(Belop.kr(belop.intValue()),Type.MedOre);
+        return new KroneUttrykk(Belop.kr(belop),Type.MedOre);
     }
 
     public static KroneUttrykk kr(double belop) {

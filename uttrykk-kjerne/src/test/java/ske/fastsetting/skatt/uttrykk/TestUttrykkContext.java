@@ -8,6 +8,11 @@ public class TestUttrykkContext extends UttrykkContextImpl {
         super(input);
     }
 
+    public static <X> X verdiAv(Uttrykk<X> uttrykk, Object... input) {
+        TestUttrykkContext uttrykkContext = new TestUttrykkContext(input);
+        return uttrykkContext.kalkuler(uttrykk, true, false).verdi();
+    }
+
     public static <X> UttrykkResultat<X> beregne(Uttrykk<X> uttrykk, Object... input) {
         TestUttrykkContext uttrykkContext = new TestUttrykkContext(input);
         return uttrykkContext.kalkuler(uttrykk, true, false);

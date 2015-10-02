@@ -2,6 +2,7 @@ package ske.fastsetting.skatt.domene;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
@@ -12,6 +13,8 @@ public class Belop extends Kvantitet<Long, Krone> implements Comparable<Belop>, 
     public static final Belop NULL = Belop.kr(0);
 
     private static final int ORE_I_KR = 100;
+    public static final long MAX_HELE_KRONER = Long.MAX_VALUE / ORE_I_KR;
+    public static final long MIN_HELE_KRONER = Long.MIN_VALUE / ORE_I_KR;
 
     public static Belop kr(int belop) {
         return fraKr(belop);
@@ -22,19 +25,23 @@ public class Belop extends Kvantitet<Long, Krone> implements Comparable<Belop>, 
     }
 
     public static Belop kr(BigInteger bigInteger) {
-        return fraKr(bigInteger.doubleValue());
+        return fraKr(bigInteger.longValueExact());
     }
 
     private static Belop fraOre(long belop) {
         return new Belop(belop);
     }
 
-    private static Belop fraKr(double belop) {
-        return new Belop(Math.round(belop * ORE_I_KR));
+    private static Belop fraKr(long belop) {
+        return new Belop(Math.multiplyExact(belop, ORE_I_KR));
     }
 
-    private Belop(long belop) {
-        super(belop);
+    private static Belop fraKr(double belop) {
+        return new Belop(BigDecimal.valueOf(belop).multiply(BigDecimal.valueOf(ORE_I_KR)).setScale(0,RoundingMode.HALF_UP).longValueExact());
+    }
+
+    private Belop(long belopIOre) {
+        super(belopIOre);
     }
 
     public Belop rundAvTilHeleKroner() {
@@ -76,11 +83,11 @@ public class Belop extends Kvantitet<Long, Krone> implements Comparable<Belop>, 
 
 
     public Belop pluss(Belop ledd) {
-        return ledd != null ? fraOre(this.verdi() + ledd.verdi()) : this;
+        return ledd != null ? fraOre(Math.addExact(this.verdi(),ledd.verdi())) : this;
     }
 
     public Belop minus(Belop ledd) {
-        return fraOre(this.verdi() - ledd.verdi());
+        return fraOre(Math.subtractExact(this.verdi(),ledd.verdi()));
     }
 
     public int sammenliknMed(Belop verdi) {
@@ -88,9 +95,8 @@ public class Belop extends Kvantitet<Long, Krone> implements Comparable<Belop>, 
     }
 
     public Belop multiplisertMed(BigDecimal ledd) {
-        return fraOre(Math.round(verdi() * ledd.doubleValue()));
+        return fraOre(ledd.multiply(BigDecimal.valueOf(verdi())).setScale(0, RoundingMode.HALF_UP).longValueExact());
     }
-
 
     public BigDecimal dividertMed(Belop divident) {
         return BigDecimal.valueOf((double) verdi() / divident.verdi());
