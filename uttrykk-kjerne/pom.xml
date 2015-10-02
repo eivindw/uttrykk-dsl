@@ -3,7 +3,7 @@
   <parent>
     <artifactId>uttrykk</artifactId>
     <groupId>ske.fastsetting.skatt</groupId>
-    <version>1.39</version>
+    <version>1.40-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
