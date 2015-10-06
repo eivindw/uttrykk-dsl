@@ -16,14 +16,6 @@ import ske.fastsetting.skatt.uttrykk.UttrykkException;
 
 public class BelopVerdiTest {
 
-    @Test
-    public void testVerdier() {
-        System.out.println(verdiAv(kr(BigInteger.valueOf(10))));
-        System.out.println(verdiAv(kr(10)));
-        System.out.println(verdiAv(kr(10.0)));
-    }
-
-
 
     @Test
     public void testHoeytBigDecimalBelop() {
