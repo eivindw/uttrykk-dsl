@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-class OgUttrykk extends BolskUttrykk {
+public class OgUttrykk extends BolskUttrykk {
 
     private final Collection<BolskUttrykk> uttrykk;
 
