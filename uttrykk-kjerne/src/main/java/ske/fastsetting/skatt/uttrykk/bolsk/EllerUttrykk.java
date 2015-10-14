@@ -28,7 +28,7 @@ public class EllerUttrykk extends BolskUttrykk {
     public Boolean eval(UttrykkContext ctx) {
         return uttrykk.stream()
           .map(ctx::eval)
-          .reduce(true,(result,v)->result || v);
+          .reduce(false,(result,v)->result || v);
 
     }
 
