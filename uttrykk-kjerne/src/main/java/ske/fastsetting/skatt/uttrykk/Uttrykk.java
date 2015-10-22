@@ -1,13 +1,13 @@
 package ske.fastsetting.skatt.uttrykk;
 
-import ske.fastsetting.skatt.domene.Hjemmel;
-import ske.fastsetting.skatt.domene.Regel;
-import ske.fastsetting.skatt.uttrykk.bolsk.BolskUttrykk;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import ske.fastsetting.skatt.domene.Hjemmel;
+import ske.fastsetting.skatt.domene.Regel;
+import ske.fastsetting.skatt.uttrykk.bolsk.BolskUttrykk;
 
 public interface Uttrykk<V> {
     V eval(UttrykkContext ctx);
@@ -31,6 +31,14 @@ public interface Uttrykk<V> {
 
     default BolskUttrykk erIkkeEnAv(Collection<V> verdier) {
         return new ErIkkeEnAvUttrykk<>(this, verdier);
+    }
+
+    default BolskUttrykk er(Uttrykk<V> uttrykk) {
+        return new ErLik<>(this, uttrykk);
+    }
+
+    default BolskUttrykk ikkeEr(Uttrykk<V> uttrykk) {
+        return new IkkeErLik<>(this, uttrykk);
     }
 
     static class ErEnAvUttrykk<T> extends BolskUttrykk {
@@ -69,8 +77,49 @@ public interface Uttrykk<V> {
         @Override
         public String beskriv(UttrykkContext ctx) {
             return verdier.stream().map(T::toString)
-                    .collect(Collectors.joining(", ", ctx.beskriv(uttrykk) + " er ikke en av (", ")"));
+              .collect(Collectors.joining(", ", ctx.beskriv(uttrykk) + " er ikke en av (", ")"));
         }
     }
+
+    static class ErLik<T> extends BolskUttrykk {
+        private final Uttrykk<T> uttrykk;
+        private final Uttrykk<T> sammenliknMed;
+
+        public ErLik(Uttrykk<T> uttrykk, Uttrykk<T> sammenliknMed) {
+            this.uttrykk = uttrykk;
+            this.sammenliknMed = sammenliknMed;
+        }
+
+        @Override
+        public Boolean eval(UttrykkContext ctx) {
+            return ctx.eval(uttrykk).equals(ctx.eval(sammenliknMed));
+        }
+
+        @Override
+        public String beskriv(UttrykkContext ctx) {
+            return ctx.beskriv(uttrykk) + " = " + ctx.beskriv(sammenliknMed);
+        }
+    }
+
+    static class IkkeErLik<T> extends BolskUttrykk {
+        private final Uttrykk<T> uttrykk;
+        private final Uttrykk<T> sammenliknMed;
+
+        public IkkeErLik(Uttrykk<T> uttrykk, Uttrykk<T> sammenliknMed) {
+            this.uttrykk = uttrykk;
+            this.sammenliknMed = sammenliknMed;
+        }
+
+        @Override
+        public Boolean eval(UttrykkContext ctx) {
+            return !ctx.eval(uttrykk).equals(ctx.eval(sammenliknMed));
+        }
+
+        @Override
+        public String beskriv(UttrykkContext ctx) {
+            return ctx.beskriv(uttrykk) + " != " + ctx.beskriv(sammenliknMed);
+        }
+    }
+
 
 }
