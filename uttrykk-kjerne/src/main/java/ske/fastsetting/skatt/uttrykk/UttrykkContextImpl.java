@@ -1,11 +1,11 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import ske.fastsetting.skatt.uttrykk.util.IdUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 
 @SuppressWarnings("unchecked")
 public abstract class UttrykkContextImpl implements UttrykkContext {
@@ -86,6 +86,11 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
     @Override
     public <T> boolean harInput(Class<T> clazz) {
         return input.containsKey(clazz);
+    }
+
+    @Override
+    public Object[] input() {
+        return this.input.values().stream().toArray(Object[]::new);
     }
 
     @Override
