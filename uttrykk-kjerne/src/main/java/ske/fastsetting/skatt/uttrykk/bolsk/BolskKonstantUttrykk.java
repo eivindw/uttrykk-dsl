@@ -2,12 +2,23 @@ package ske.fastsetting.skatt.uttrykk.bolsk;
 
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class BolskKonstantUttrykk extends BolskUttrykk {
+public class BolskKonstantUttrykk extends AbstractBolskUttrykk {
+
+
+    public static final BolskKonstantUttrykk SANN = new BolskKonstantUttrykk(true);
+    public static final BolskKonstantUttrykk USANN = new BolskKonstantUttrykk(false);
 
     private final boolean verdi;
 
     private BolskKonstantUttrykk(boolean verdi) {
         this.verdi = verdi;
+    }
+
+    public static BolskKonstantUttrykk sann() {
+        return new BolskKonstantUttrykk(true);
+    }
+    public static BolskKonstantUttrykk usann() {
+        return new BolskKonstantUttrykk(false);
     }
 
     public static BolskKonstantUttrykk erSann(boolean verdi) {

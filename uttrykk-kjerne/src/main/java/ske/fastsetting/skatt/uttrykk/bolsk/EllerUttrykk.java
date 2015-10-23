@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class EllerUttrykk extends BolskUttrykk {
+public class EllerUttrykk extends AbstractBolskUttrykk {
     private final Collection<BolskUttrykk> uttrykk;
 
     public static EllerUttrykk minstEnSann(BolskUttrykk ... uttrykk) {
@@ -40,7 +40,7 @@ public class EllerUttrykk extends BolskUttrykk {
     }
 
     @Override
-    public BolskUttrykk eller(BolskUttrykk uttrykk) {
+    public AbstractBolskUttrykk eller(BolskUttrykk uttrykk) {
         if(navn()==null && tags()==null)
             return new EllerUttrykk(concat(this.uttrykk.stream(),Stream.of(uttrykk)).collect(Collectors.toList()));
         else

@@ -1,22 +1,23 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import ske.fastsetting.skatt.uttrykk.bolsk.AbstractBolskUttrykk;
 import ske.fastsetting.skatt.uttrykk.bolsk.BolskUttrykk;
 
 public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> {
 
-    default BolskUttrykk erStorreEnn(CompareableUttrykk<T> uttrykk) {
+    default AbstractBolskUttrykk erStorreEnn(CompareableUttrykk<T> uttrykk) {
         return new ErStorreEnn<>(this, uttrykk);
     }
 
-    default BolskUttrykk erStorreEllerLik(CompareableUttrykk<T> uttrykk) {
+    default AbstractBolskUttrykk erStorreEllerLik(CompareableUttrykk<T> uttrykk) {
         return new ErStorreEllerLik<>(this, uttrykk);
     }
 
-    default BolskUttrykk er(CompareableUttrykk<T> uttrykk) {
+    default AbstractBolskUttrykk er(CompareableUttrykk<T> uttrykk) {
         return new ErLik<>(this, uttrykk);
     }
 
-    default BolskUttrykk ikkeEr(CompareableUttrykk<T> uttrykk) {
+    default AbstractBolskUttrykk ikkeEr(CompareableUttrykk<T> uttrykk) {
         return new IkkeErLik<>(this, uttrykk);
     }
 
@@ -28,27 +29,27 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         return FraTilUttrykk.fraOgMed(this, uttrykk);
     }
 
-    default BolskUttrykk erInntil(CompareableUttrykk<T> uttrykk) {
+    default AbstractBolskUttrykk erInntil(CompareableUttrykk<T> uttrykk) {
         return FraTilUttrykk.til(this, uttrykk);
     }
 
-    default BolskUttrykk erTilOgMed(CompareableUttrykk<T> uttrykk) {
+    default AbstractBolskUttrykk erTilOgMed(CompareableUttrykk<T> uttrykk) {
         return FraTilUttrykk.tilOgMed(this, uttrykk);
     }
 
-    default BolskUttrykk erMellom(CompareableUttrykk<T> fra, CompareableUttrykk<T> til) {
+    default AbstractBolskUttrykk erMellom(CompareableUttrykk<T> fra, CompareableUttrykk<T> til) {
         return new ErMellom<>(this, fra, til);
     }
 
-    default BolskUttrykk erMindreEnnEllerLik(CompareableUttrykk<T> uttrykk) {
+    default AbstractBolskUttrykk erMindreEnnEllerLik(CompareableUttrykk<T> uttrykk) {
         return new ErMindreEnnEllerLik<>(this, uttrykk);
     }
 
-    default BolskUttrykk erMindreEnn(CompareableUttrykk<T> uttrykk) {
+    default AbstractBolskUttrykk erMindreEnn(CompareableUttrykk<T> uttrykk) {
         return new ErMindreEnn<>(this, uttrykk);
     }
 
-    static class ErStorreEnn<T extends Comparable<T>> extends BolskUttrykk {
+    static class ErStorreEnn<T extends Comparable<T>> extends AbstractBolskUttrykk {
         private final CompareableUttrykk<T> uttrykk;
         private final CompareableUttrykk<T> sammenliknMed;
 
@@ -68,7 +69,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
     }
 
-    static class ErStorreEllerLik<T extends Comparable<T>> extends BolskUttrykk {
+    static class ErStorreEllerLik<T extends Comparable<T>> extends AbstractBolskUttrykk {
         private final CompareableUttrykk<T> uttrykk;
         private final CompareableUttrykk<T> sammenliknMed;
 
@@ -89,7 +90,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
     }
 
 
-    static class ErLik<T extends Comparable<T>> extends BolskUttrykk {
+    static class ErLik<T extends Comparable<T>> extends AbstractBolskUttrykk {
         private final CompareableUttrykk<T> uttrykk;
         private final CompareableUttrykk<T> sammenliknMed;
 
@@ -109,7 +110,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
     }
 
-    static class IkkeErLik<T extends Comparable<T>> extends BolskUttrykk {
+    static class IkkeErLik<T extends Comparable<T>> extends AbstractBolskUttrykk {
         private final CompareableUttrykk<T> uttrykk;
         private final CompareableUttrykk<T> sammenliknMed;
 
@@ -129,7 +130,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
     }
 
-    static class ErMellom<T extends Comparable<T>> extends BolskUttrykk {
+    static class ErMellom<T extends Comparable<T>> extends AbstractBolskUttrykk {
         private final CompareableUttrykk<T> uttrykk;
         private final CompareableUttrykk<T> fraUttrykk;
         private final CompareableUttrykk<T> tilUttrykk;
@@ -156,7 +157,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
     }
 
-    static class ErMindreEnnEllerLik<T extends Comparable<T>> extends BolskUttrykk {
+    static class ErMindreEnnEllerLik<T extends Comparable<T>> extends AbstractBolskUttrykk {
         private final CompareableUttrykk<T> uttrykk;
         private final CompareableUttrykk<T> sammenliknMed;
 
@@ -176,7 +177,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
     }
 
-    static class ErMindreEnn<T extends Comparable<T>> extends BolskUttrykk {
+    static class ErMindreEnn<T extends Comparable<T>> extends AbstractBolskUttrykk {
         private final CompareableUttrykk<T> uttrykk;
         private final CompareableUttrykk<T> sammenliknMed;
 
@@ -196,7 +197,7 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
         }
     }
 
-    static class FraTilUttrykk<T extends Comparable<T>> extends BolskUttrykk {
+    static class FraTilUttrykk<T extends Comparable<T>> extends AbstractBolskUttrykk {
         private final CompareableUttrykk<T> fraOgMed;
         private final CompareableUttrykk<T> fra;
         private CompareableUttrykk<T> til;
@@ -222,22 +223,22 @@ public interface CompareableUttrykk<T extends Comparable<T>> extends Uttrykk<T> 
             return new FraTilUttrykk<>(uttrykk, fraOgMed, null, null, null);
         }
 
-        public static <T extends Comparable<T>> BolskUttrykk til(CompareableUttrykk<T> uttrykk, CompareableUttrykk<T>
+        public static <T extends Comparable<T>> AbstractBolskUttrykk til(CompareableUttrykk<T> uttrykk, CompareableUttrykk<T>
           til) {
             return new FraTilUttrykk<>(uttrykk, null, null, null, til);
         }
 
-        public static <T extends Comparable<T>> BolskUttrykk tilOgMed(CompareableUttrykk<T> uttrykk,
+        public static <T extends Comparable<T>> AbstractBolskUttrykk tilOgMed(CompareableUttrykk<T> uttrykk,
           CompareableUttrykk<T> tilOgMed) {
             return new FraTilUttrykk<>(uttrykk, null, null, tilOgMed, null);
         }
 
-        public BolskUttrykk ogTil(CompareableUttrykk<T> til) {
+        public AbstractBolskUttrykk ogTil(CompareableUttrykk<T> til) {
             this.til = til;
             return this;
         }
 
-        public BolskUttrykk ogTilOgMed(CompareableUttrykk<T> tilOgMed) {
+        public AbstractBolskUttrykk ogTilOgMed(CompareableUttrykk<T> tilOgMed) {
             this.tilOgMed = tilOgMed;
             return this;
         }

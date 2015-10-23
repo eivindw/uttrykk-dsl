@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class TilBolskUttrykk extends BolskUttrykk {
+public class TilBolskUttrykk extends AbstractBolskUttrykk {
     private Uttrykk<Boolean> uttrykk;
 
     public static Collection<BolskUttrykk> tilBolskUttrykk(Collection<Uttrykk<Boolean>> uttrykk) {
