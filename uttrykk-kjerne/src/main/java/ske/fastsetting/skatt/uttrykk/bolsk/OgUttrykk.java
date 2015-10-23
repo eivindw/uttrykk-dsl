@@ -6,9 +6,10 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class OgUttrykk extends BolskUttrykk {
+public class OgUttrykk extends AbstractBolskUttrykk {
 
     private final Collection<BolskUttrykk> uttrykk;
 
@@ -36,7 +37,7 @@ public class OgUttrykk extends BolskUttrykk {
     }
 
     @Override
-    public BolskUttrykk og(BolskUttrykk uttrykk) {
+    public AbstractBolskUttrykk og(BolskUttrykk uttrykk) {
         if(navn()==null && tags()==null)
             return new OgUttrykk(concat(this.uttrykk.stream(),Stream.of(uttrykk)).collect(Collectors.toList()));
         else

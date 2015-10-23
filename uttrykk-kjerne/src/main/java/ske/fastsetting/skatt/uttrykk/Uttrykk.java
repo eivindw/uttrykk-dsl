@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import ske.fastsetting.skatt.domene.Hjemmel;
 import ske.fastsetting.skatt.domene.Regel;
-import ske.fastsetting.skatt.uttrykk.bolsk.BolskUttrykk;
+import ske.fastsetting.skatt.uttrykk.bolsk.AbstractBolskUttrykk;
 
 public interface Uttrykk<V> {
     V eval(UttrykkContext ctx);
@@ -25,23 +25,23 @@ public interface Uttrykk<V> {
 
     List<Hjemmel> hjemler();
 
-    default BolskUttrykk erEnAv(Collection<V> verdier) {
+    default AbstractBolskUttrykk erEnAv(Collection<V> verdier) {
         return new ErEnAvUttrykk<>(this, verdier);
     }
 
-    default BolskUttrykk erIkkeEnAv(Collection<V> verdier) {
+    default AbstractBolskUttrykk erIkkeEnAv(Collection<V> verdier) {
         return new ErIkkeEnAvUttrykk<>(this, verdier);
     }
 
-    default BolskUttrykk er(Uttrykk<V> uttrykk) {
+    default AbstractBolskUttrykk er(Uttrykk<V> uttrykk) {
         return new ErLik<>(this, uttrykk);
     }
 
-    default BolskUttrykk ikkeEr(Uttrykk<V> uttrykk) {
+    default AbstractBolskUttrykk ikkeEr(Uttrykk<V> uttrykk) {
         return new IkkeErLik<>(this, uttrykk);
     }
 
-    static class ErEnAvUttrykk<T> extends BolskUttrykk {
+    static class ErEnAvUttrykk<T> extends AbstractBolskUttrykk {
         private final Uttrykk<T> uttrykk;
         private final Collection<T> verdier;
 
@@ -61,7 +61,7 @@ public interface Uttrykk<V> {
         }
     }
 
-    static class ErIkkeEnAvUttrykk<T> extends BolskUttrykk {
+    static class ErIkkeEnAvUttrykk<T> extends AbstractBolskUttrykk {
         private final Uttrykk<T> uttrykk;
         private final Collection<T> verdier;
 
@@ -81,7 +81,7 @@ public interface Uttrykk<V> {
         }
     }
 
-    static class ErLik<T> extends BolskUttrykk {
+    static class ErLik<T> extends AbstractBolskUttrykk {
         private final Uttrykk<T> uttrykk;
         private final Uttrykk<T> sammenliknMed;
 
@@ -101,7 +101,7 @@ public interface Uttrykk<V> {
         }
     }
 
-    static class IkkeErLik<T> extends BolskUttrykk {
+    static class IkkeErLik<T> extends AbstractBolskUttrykk {
         private final Uttrykk<T> uttrykk;
         private final Uttrykk<T> sammenliknMed;
 
