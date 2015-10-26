@@ -1,4 +1,4 @@
-package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
+package ske.fastsetting.skatt.uttrykk.multibelop;
 
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.StedbundetBelop;
@@ -6,12 +6,12 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class StedbundetBelopForholdsmessigDiffUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,
-  StedbundetBelopForholdsmessigDiffUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+public class MultiBelopForholdsmessigDiffUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,
+  MultiBelopForholdsmessigDiffUttrykk<K>> implements MultiBelopUttrykk<K> {
     private final Uttrykk<StedbundetBelop<K>> stedbundetBelopUttrykk;
     private final Uttrykk<Belop> belop;
 
-    public StedbundetBelopForholdsmessigDiffUttrykk(Uttrykk<StedbundetBelop<K>> stedbundetBelopUttrykk,
+    public MultiBelopForholdsmessigDiffUttrykk(Uttrykk<StedbundetBelop<K>> stedbundetBelopUttrykk,
       Uttrykk<Belop> belop) {
         this.stedbundetBelopUttrykk = stedbundetBelopUttrykk;
         this.belop = belop;

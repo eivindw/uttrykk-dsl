@@ -1,10 +1,10 @@
-package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
+package ske.fastsetting.skatt.uttrykk.multibelop;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk.begrens;
-import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopSumUttrykk.sum;
-import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetKroneUttrykk.kr;
+import static ske.fastsetting.skatt.uttrykk.multibelop.MultiBelopSumUttrykk.sum;
+import static ske.fastsetting.skatt.uttrykk.multibelop.MultiKroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk.prosent;
 import static ske.fastsetting.skatt.uttrykk.test.Debug.debug;
 
@@ -19,13 +19,13 @@ import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk;
 
-public class StedbundetBelopUttrykkTest {
+public class MultiBelopUttrykkTest {
 
     @Test
     public void skalFordeleProporsjonaltVedMinus() {
-        StedbundetBelopUttrykk<String> b = kr(30, "A").pluss(kr(60, "B"));
+        MultiBelopUttrykk<String> b = kr(30, "A").pluss(kr(60, "B"));
 
-        StedbundetBelopUttrykk<String> diff = b.minusProporsjonalt(KroneUttrykk.kr(15));
+        MultiBelopUttrykk<String> diff = b.minusProporsjonalt(KroneUttrykk.kr(15));
 
         StedbundetBelop<String> belop = TestUttrykkContext.beregne(diff).verdi();
 
@@ -35,7 +35,7 @@ public class StedbundetBelopUttrykkTest {
 
     @Test
     public void skalPlusseOgMinuse() {
-        StedbundetBelopUttrykk<String> almFF = kr(320_000, "L")
+        MultiBelopUttrykk<String> almFF = kr(320_000, "L")
           .pluss(kr(210_000, "E"))
           .pluss(kr(420_000, "R"))
           .pluss(kr(6_000, "L"))
@@ -54,8 +54,8 @@ public class StedbundetBelopUttrykkTest {
 
     @Test
     public void skalTrekkeFraSteder() {
-        StedbundetBelopUttrykk<String> a = kr(30, "A").pluss(kr(60, "B"));
-        StedbundetBelopUttrykk<String> b = kr(45, "B");
+        MultiBelopUttrykk<String> a = kr(30, "A").pluss(kr(60, "B"));
+        MultiBelopUttrykk<String> b = kr(45, "B");
 
         StedbundetBelop<String> belop = TestUttrykkContext.beregne(a.minusSted(b)).verdi();
 
@@ -66,8 +66,8 @@ public class StedbundetBelopUttrykkTest {
 
     @Test
     public void skalTrekkeFraNull() {
-        StedbundetBelopUttrykk<String> a = kr(30, "A").pluss(kr(60, "B"));
-        StedbundetBelopUttrykk<String> b = StedbundetKroneUttrykk.kr0();
+        MultiBelopUttrykk<String> a = kr(30, "A").pluss(kr(60, "B"));
+        MultiBelopUttrykk<String> b = MultiKroneUttrykk.kr0();
 
         StedbundetBelop belop = TestUttrykkContext.beregne(a.minusSted(b)).verdi();
 
@@ -76,8 +76,8 @@ public class StedbundetBelopUttrykkTest {
 
     @Test
     public void skalTrekkeStederFraNull() {
-        StedbundetBelopUttrykk<String> a = kr(30, "A").pluss(kr(60, "B"));
-        StedbundetBelopUttrykk<String> b = StedbundetKroneUttrykk.kr0();
+        MultiBelopUttrykk<String> a = kr(30, "A").pluss(kr(60, "B"));
+        MultiBelopUttrykk<String> b = MultiKroneUttrykk.kr0();
 
         StedbundetBelop<String> belop = TestUttrykkContext.beregne(b.minusSted(a)).verdi();
 
@@ -90,55 +90,55 @@ public class StedbundetBelopUttrykkTest {
         final ProsentUttrykk satsKommuneskatt = prosent(0.7).navn("sats kommuneskatt");
         final BelopUttrykk fribelop = KroneUttrykk.kr(1_200_000).navn("fribeløp formue kl 1");
 
-        StedbundetBelopUttrykk<Kommune> bankinnskudd = kr(30_800, Kommune.Lorenskog).navn("bankinnskudd");
-        StedbundetBelopUttrykk<Kommune> bil = kr(99_000, Kommune.Lorenskog).navn("bil");
-        StedbundetBelopUttrykk<Kommune> egenBolig = kr(4_025_000, Kommune.Lorenskog).navn("primærbolig");
+        MultiBelopUttrykk<Kommune> bankinnskudd = kr(30_800, Kommune.Lorenskog).navn("bankinnskudd");
+        MultiBelopUttrykk<Kommune> bil = kr(99_000, Kommune.Lorenskog).navn("bil");
+        MultiBelopUttrykk<Kommune> egenBolig = kr(4_025_000, Kommune.Lorenskog).navn("primærbolig");
 
-        StedbundetBelopUttrykk<Kommune> tomt = kr(100_000, Kommune.Asker).navn("tomt");
+        MultiBelopUttrykk<Kommune> tomt = kr(100_000, Kommune.Asker).navn("tomt");
 
-        StedbundetBelopUttrykk<Kommune> fritid1 = kr(316_250, Kommune.Hvaler);
-        StedbundetBelopUttrykk<Kommune> fritid2 = kr(660_000, Kommune.Hamar);
-        StedbundetBelopUttrykk<Kommune> fritid3 = kr(260_000, Kommune.Lorenskog);
+        MultiBelopUttrykk<Kommune> fritid1 = kr(316_250, Kommune.Hvaler);
+        MultiBelopUttrykk<Kommune> fritid2 = kr(660_000, Kommune.Hamar);
+        MultiBelopUttrykk<Kommune> fritid3 = kr(260_000, Kommune.Lorenskog);
 
         BelopUttrykk gjeld = KroneUttrykk.kr(1_700_000).navn("gjeld");
 
-        StedbundetBelopUttrykk<Kommune> bruttoformueFritidsbolig = sum(fritid1, fritid2, fritid3).navn("bruttoformue "
+        MultiBelopUttrykk<Kommune> bruttoformueFritidsbolig = sum(fritid1, fritid2, fritid3).navn("bruttoformue "
           + "fritidsbolig");
-        StedbundetBelopUttrykk<Kommune> bruttoformueUtenFritidsbolig = sum(egenBolig, tomt, bankinnskudd, bil).navn
+        MultiBelopUttrykk<Kommune> bruttoformueUtenFritidsbolig = sum(egenBolig, tomt, bankinnskudd, bil).navn
           ("bruttoformue uten fritidsbolig");
-        StedbundetBelopUttrykk<Kommune> bruttoformueHytte = bruttoformueFritidsbolig.minusSted
+        MultiBelopUttrykk<Kommune> bruttoformueHytte = bruttoformueFritidsbolig.minusSted
           (bruttoformueUtenFritidsbolig).navn("bruttoformue hytte");
-        StedbundetBelopUttrykk<Kommune> oevrigStedbundenBruttoformue = bruttoformueUtenFritidsbolig.pluss
+        MultiBelopUttrykk<Kommune> oevrigStedbundenBruttoformue = bruttoformueUtenFritidsbolig.pluss
           (bruttoformueFritidsbolig.minusSted(bruttoformueHytte)).navn("øvrig stedbunden formue");
 
         BelopUttrykk maksGjeldsfradragFormueUtenHytte = begrens(gjeld).oppad(oevrigStedbundenBruttoformue).navn("maks"
           + " gjeldsfradrag formue uten hytte");
 
-        StedbundetBelopUttrykk<Kommune> nettoformueUtenHytte = oevrigStedbundenBruttoformue.minusProporsjonalt
+        MultiBelopUttrykk<Kommune> nettoformueUtenHytte = oevrigStedbundenBruttoformue.minusProporsjonalt
           (maksGjeldsfradragFormueUtenHytte).navn("nettoformue uten hytte");
 
         BelopUttrykk maksFribelopFormueUtenHytte = begrens(fribelop).oppad(nettoformueUtenHytte).navn("maks fribeløp "
           + "formue uten hytte");
 
-        StedbundetBelopUttrykk<Kommune> grunnlagKommuneskattUtenHytte = nettoformueUtenHytte.minusProporsjonalt
+        MultiBelopUttrykk<Kommune> grunnlagKommuneskattUtenHytte = nettoformueUtenHytte.minusProporsjonalt
           (maksFribelopFormueUtenHytte).navn("grunnlag kommuneskatt skattekommune");
 
         BelopUttrykk restGjeldTilFordelingHytte = begrens(gjeld.minus(maksGjeldsfradragFormueUtenHytte)).oppad
           (bruttoformueHytte).navn("gjeldsfradrag til fordeling utenbygds");
 
-        StedbundetBelopUttrykk<Kommune> nettoFormueHytte = bruttoformueHytte.minusProporsjonalt
+        MultiBelopUttrykk<Kommune> nettoFormueHytte = bruttoformueHytte.minusProporsjonalt
           (restGjeldTilFordelingHytte).navn("nettoformue utenbygds fritidsbolig");
 
         BelopUttrykk begrensetRestFribelop = begrens(fribelop.minus(maksFribelopFormueUtenHytte)).oppad
           (nettoFormueHytte).navn("fribeløp til fordeling utenbygds");
 
-        StedbundetBelopUttrykk<Kommune> grunnlagKommuneskattHytte = nettoFormueHytte.minusProporsjonalt
+        MultiBelopUttrykk<Kommune> grunnlagKommuneskattHytte = nettoFormueHytte.minusProporsjonalt
           (begrensetRestFribelop).navn("grunnlag kommuneskatt utenbygds fritidsbolig");
 
-        StedbundetBelopUttrykk<Kommune> grunnlagKommuneskatt = grunnlagKommuneskattHytte.pluss
+        MultiBelopUttrykk<Kommune> grunnlagKommuneskatt = grunnlagKommuneskattHytte.pluss
           (grunnlagKommuneskattUtenHytte).navn("grunnlag kommuneskatt");
 
-        StedbundetBelopUttrykk<Kommune> kommuneskatt = grunnlagKommuneskatt.multiplisertMed(satsKommuneskatt).navn
+        MultiBelopUttrykk<Kommune> kommuneskatt = grunnlagKommuneskatt.multiplisertMed(satsKommuneskatt).navn
           ("kommuneskatt");
 
         debug(kommuneskatt);

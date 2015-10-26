@@ -1,19 +1,19 @@
-package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
+package ske.fastsetting.skatt.uttrykk.multibelop;
 
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.GrenseUttrykk;
 
-public class StebundetBelopForholdsmessigGrenseUttrykk<K> extends GrenseUttrykk<StedbundetBelop<K>, Belop, StebundetBelopForholdsmessigGrenseUttrykk<K>>
-  implements StedbundetBelopUttrykk<K> {
+public class MultiBelopForholdsmessigGrenseUttrykk<K> extends GrenseUttrykk<StedbundetBelop<K>, Belop, MultiBelopForholdsmessigGrenseUttrykk<K>>
+  implements MultiBelopUttrykk<K> {
 
 
-    protected StebundetBelopForholdsmessigGrenseUttrykk(StedbundetBelopUttrykk<K> grunnlag) {
+    protected MultiBelopForholdsmessigGrenseUttrykk(MultiBelopUttrykk<K> grunnlag) {
         super(grunnlag);
     }
 
-    public static <K> StebundetBelopForholdsmessigGrenseUttrykk<K> begrensFordholdmessig(StedbundetBelopUttrykk<K> grunnlag) {
-        return new StebundetBelopForholdsmessigGrenseUttrykk<>(grunnlag);
+    public static <K> MultiBelopForholdsmessigGrenseUttrykk<K> begrensFordholdmessig(MultiBelopUttrykk<K> grunnlag) {
+        return new MultiBelopForholdsmessigGrenseUttrykk<>(grunnlag);
     }
 
     @Override

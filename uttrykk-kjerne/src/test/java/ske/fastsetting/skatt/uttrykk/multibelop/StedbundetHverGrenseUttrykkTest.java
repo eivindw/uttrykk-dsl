@@ -1,9 +1,9 @@
-package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
+package ske.fastsetting.skatt.uttrykk.multibelop;
 
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr0;
-import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StebundetBelopHverGrenseUttrykk.begrensHvertSted;
-import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetKroneUttrykk.kr;
+import static ske.fastsetting.skatt.uttrykk.multibelop.MultiBelopHverGrenseUttrykk.begrensHvertSted;
+import static ske.fastsetting.skatt.uttrykk.multibelop.MultiKroneUttrykk.kr;
 
 import org.junit.Test;
 
@@ -18,8 +18,8 @@ import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
 public class StedbundetHverGrenseUttrykkTest {
     @Test
     public void test() {
-        StedbundetBelopUttrykk<String> uttrykk = kr(34, "Asker").pluss(kr(-12, "Askim"));
-        StedbundetBelopUttrykk<String> begrenset = begrensHvertSted(uttrykk)
+        MultiBelopUttrykk<String> uttrykk = kr(34, "Asker").pluss(kr(-12, "Askim"));
+        MultiBelopUttrykk<String> begrenset = begrensHvertSted(uttrykk)
           .nedad(kr0())
           .oppad(KroneUttrykk.kr(20));
 

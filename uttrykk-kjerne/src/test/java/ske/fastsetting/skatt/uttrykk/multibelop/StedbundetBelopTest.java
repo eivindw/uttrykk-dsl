@@ -1,4 +1,4 @@
-package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
+package ske.fastsetting.skatt.uttrykk.multibelop;
 
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.domene.StedbundetBelop.kr;

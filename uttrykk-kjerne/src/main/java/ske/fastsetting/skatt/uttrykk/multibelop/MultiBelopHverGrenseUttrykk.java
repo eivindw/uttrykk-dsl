@@ -1,4 +1,4 @@
-package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
+package ske.fastsetting.skatt.uttrykk.multibelop;
 
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr0;
 
@@ -6,20 +6,20 @@ import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.GrenseUttrykk;
 
-public class StebundetBelopHverGrenseUttrykk<K> extends GrenseUttrykk<StedbundetBelop<K>, Belop,
-  StebundetBelopHverGrenseUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+public class MultiBelopHverGrenseUttrykk<K> extends GrenseUttrykk<StedbundetBelop<K>, Belop,
+  MultiBelopHverGrenseUttrykk<K>> implements MultiBelopUttrykk<K> {
 
 
-    protected StebundetBelopHverGrenseUttrykk(StedbundetBelopUttrykk<K> grunnlag) {
+    protected MultiBelopHverGrenseUttrykk(MultiBelopUttrykk<K> grunnlag) {
         super(grunnlag);
     }
 
-    public static <K> StebundetBelopHverGrenseUttrykk<K> nedre0(StedbundetBelopUttrykk<K> grunnlag) {
+    public static <K> MultiBelopHverGrenseUttrykk<K> nedre0(MultiBelopUttrykk<K> grunnlag) {
         return begrensHvertSted(grunnlag).nedad(kr0());
     }
 
-    public static <K> StebundetBelopHverGrenseUttrykk<K> begrensHvertSted(StedbundetBelopUttrykk<K> grunnlag) {
-        return new StebundetBelopHverGrenseUttrykk<>(grunnlag);
+    public static <K> MultiBelopHverGrenseUttrykk<K> begrensHvertSted(MultiBelopUttrykk<K> grunnlag) {
+        return new MultiBelopHverGrenseUttrykk<>(grunnlag);
     }
 
     @Override

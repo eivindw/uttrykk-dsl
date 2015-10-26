@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 /**
  *
- * @deprecated Bruk StedbundetBelopPlussMinusUttrykk i stedet
+ * @deprecated Bruk MultiBelopPlussMinusUttrykk i stedet
  */
 @Deprecated
 public class DistanseSumUttrykk extends SumUttrykk<Distanse, DistanseUttrykk, DistanseSumUttrykk> implements

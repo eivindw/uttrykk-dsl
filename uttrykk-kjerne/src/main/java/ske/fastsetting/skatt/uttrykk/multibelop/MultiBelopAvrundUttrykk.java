@@ -1,21 +1,21 @@
-package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
+package ske.fastsetting.skatt.uttrykk.multibelop;
 
 import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class StedbundetBelopAvrundUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,
-  StedbundetBelopAvrundUttrykk<K>> implements StedbundetBelopUttrykk<K> {
+public class MultiBelopAvrundUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>,
+  MultiBelopAvrundUttrykk<K>> implements MultiBelopUttrykk<K> {
 
-    private StedbundetBelopUttrykk<K> belopUttrykk;
+    private MultiBelopUttrykk<K> belopUttrykk;
 
-    public StedbundetBelopAvrundUttrykk(StedbundetBelopUttrykk<K> belopUttrykk) {
+    public MultiBelopAvrundUttrykk(MultiBelopUttrykk<K> belopUttrykk) {
 
         this.belopUttrykk = belopUttrykk;
     }
 
-    public static <K> StedbundetBelopAvrundUttrykk<K> rundAvTilHeleKroner(StedbundetBelopUttrykk<K> belopUttrykk) {
-        return new StedbundetBelopAvrundUttrykk<>(belopUttrykk);
+    public static <K> MultiBelopAvrundUttrykk<K> rundAvTilHeleKroner(MultiBelopUttrykk<K> belopUttrykk) {
+        return new MultiBelopAvrundUttrykk<>(belopUttrykk);
     }
 
 

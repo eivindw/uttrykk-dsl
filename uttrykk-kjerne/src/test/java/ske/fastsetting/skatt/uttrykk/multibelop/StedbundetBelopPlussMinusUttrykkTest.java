@@ -1,4 +1,4 @@
-package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
+package ske.fastsetting.skatt.uttrykk.multibelop;
 
 import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
@@ -6,7 +6,7 @@ import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.uttrykk.TestUttrykkContext;
 
 import static org.junit.Assert.assertEquals;
-import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetKroneUttrykk.kr;
+import static ske.fastsetting.skatt.uttrykk.multibelop.MultiKroneUttrykk.kr;
 
 /**
  * Created by jorn ola birkeland on 01.06.15.
@@ -14,7 +14,7 @@ import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetKroneUttry
 public class StedbundetBelopPlussMinusUttrykkTest {
     @Test
     public void test() {
-        StedbundetBelopUttrykk<String> verdi =
+        MultiBelopUttrykk<String> verdi =
                 kr(5,"Oslo")
                 .pluss(kr(7, "Oslo"))
                 .pluss(kr(9, "Mysen"))

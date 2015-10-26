@@ -1,8 +1,8 @@
-package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
+package ske.fastsetting.skatt.uttrykk.multibelop;
 
-import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StebundetBelopForholdsmessigGrenseUttrykk.begrensFordholdmessig;
-import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopMultisatsFunksjonTest.assertStedBelop;
-import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetKroneUttrykk.kr;
+import static ske.fastsetting.skatt.uttrykk.multibelop.MultiBelopForholdsmessigGrenseUttrykk.begrensFordholdmessig;
+import static ske.fastsetting.skatt.uttrykk.multibelop.StedbundetBelopMultisatsFunksjonTest.assertStedBelop;
+import static ske.fastsetting.skatt.uttrykk.multibelop.MultiKroneUttrykk.kr;
 
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ public class StedbundetGrenseUttrykkTest {
 
     @Test
     public void testToStederBegrensOppadUnderGrense() {
-        StedbundetBelopUttrykk<String> uttrykk = begrensFordholdmessig(kr(25, "A").pluss(kr(50, "B"))).oppad
+        MultiBelopUttrykk<String> uttrykk = begrensFordholdmessig(kr(25, "A").pluss(kr(50, "B"))).oppad
           (KroneUttrykk.kr(100));
 
         assertStedBelop(uttrykk, Belop.kr(25), "A");
@@ -22,7 +22,7 @@ public class StedbundetGrenseUttrykkTest {
 
     @Test
     public void testToStederBegrensOppadOverGrense() {
-        StedbundetBelopUttrykk<String> uttrykk = begrensFordholdmessig(kr(100, "A").pluss(kr(50, "B"))).oppad
+        MultiBelopUttrykk<String> uttrykk = begrensFordholdmessig(kr(100, "A").pluss(kr(50, "B"))).oppad
           (KroneUttrykk.kr(100));
 
         assertStedBelop(uttrykk, Belop.kr(67), "A");
@@ -31,7 +31,7 @@ public class StedbundetGrenseUttrykkTest {
 
     @Test
     public void testToStederBegrensNedadOverGrense() {
-        StedbundetBelopUttrykk<String> uttrykk = begrensFordholdmessig(kr(25, "A").pluss(kr(50, "B"))).nedad
+        MultiBelopUttrykk<String> uttrykk = begrensFordholdmessig(kr(25, "A").pluss(kr(50, "B"))).nedad
           (KroneUttrykk.kr(50));
 
         assertStedBelop(uttrykk, Belop.kr(25), "A");
@@ -40,7 +40,7 @@ public class StedbundetGrenseUttrykkTest {
 
     @Test
     public void testToStederBegrensNedadUnderGrense() {
-        StedbundetBelopUttrykk<String> uttrykk = begrensFordholdmessig(kr(25, "A").pluss(kr(50, "B"))).nedad
+        MultiBelopUttrykk<String> uttrykk = begrensFordholdmessig(kr(25, "A").pluss(kr(50, "B"))).nedad
           (KroneUttrykk.kr(100));
 
         assertStedBelop(uttrykk, Belop.kr(33), "A");

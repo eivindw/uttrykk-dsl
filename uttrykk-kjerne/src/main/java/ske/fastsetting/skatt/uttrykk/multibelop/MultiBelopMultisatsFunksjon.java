@@ -1,10 +1,10 @@
-package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
+package ske.fastsetting.skatt.uttrykk.multibelop;
 
 import static ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk.begrens;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr0;
-import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StebundetBelopForholdsmessigGrenseUttrykk.begrensFordholdmessig;
-import static ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopWrapperUttrykk.tilStedbundetBelopUttrykk;
+import static ske.fastsetting.skatt.uttrykk.multibelop.MultiBelopForholdsmessigGrenseUttrykk.begrensFordholdmessig;
+import static ske.fastsetting.skatt.uttrykk.multibelop.MultiBelopWrapperUttrykk.tilStedbundetBelopUttrykk;
 
 import java.util.Collection;
 
@@ -17,17 +17,17 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopDiffUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk;
 
-public class StedbundetBelopMultisatsFunksjon<K>
-  extends MultisatsUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop, StedbundetBelopMultisatsFunksjon<K>>
-  implements StedbundetBelopUttrykk<K> {
+public class MultiBelopMultisatsFunksjon<K>
+  extends MultisatsUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop, MultiBelopMultisatsFunksjon<K>>
+  implements MultiBelopUttrykk<K> {
 
 
-    public StedbundetBelopMultisatsFunksjon(StedbundetBelopUttrykk<K> grunnlag) {
+    public MultiBelopMultisatsFunksjon(MultiBelopUttrykk<K> grunnlag) {
         super(grunnlag);
     }
 
-    public static <K> StedbundetBelopMultisatsFunksjon<K> multisatsFunksjonAv(StedbundetBelopUttrykk<K> grunnlag) {
-        return new StedbundetBelopMultisatsFunksjon<>(grunnlag);
+    public static <K> MultiBelopMultisatsFunksjon<K> multisatsFunksjonAv(MultiBelopUttrykk<K> grunnlag) {
+        return new MultiBelopMultisatsFunksjon<>(grunnlag);
     }
 
     @Override
@@ -36,8 +36,8 @@ public class StedbundetBelopMultisatsFunksjon<K>
           SatsStegUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop>() {
             @Override
             public StedbundetBelop<K> eval(UttrykkContext ctx) {
-                StebundetBelopForholdsmessigGrenseUttrykk<K> grenseUttrykk = begrensFordholdmessig(new
-                  StedbundetBelopForholdsmessigDiffUttrykk<>(grunnlag, nedreGrense).multiplisertMed(sats))
+                MultiBelopForholdsmessigGrenseUttrykk<K> grenseUttrykk = begrensFordholdmessig(new
+                  MultiBelopForholdsmessigDiffUttrykk<>(grunnlag, nedreGrense).multiplisertMed(sats))
                   .nedad(kr0());
                 if (oevreGrense != null) {
                     BelopGrenseUttrykk grenseDiff = begrens(new BelopDiffUttrykk(oevreGrense, nedreGrense)).nedad(kr0());
@@ -53,6 +53,6 @@ public class StedbundetBelopMultisatsFunksjon<K>
 
     @Override
     protected Uttrykk<StedbundetBelop<K>> sum(Collection<Uttrykk<StedbundetBelop<K>>> satsSteg) {
-        return StedbundetBelopSumUttrykk.sum(tilStedbundetBelopUttrykk(satsSteg));
+        return MultiBelopSumUttrykk.sum(tilStedbundetBelopUttrykk(satsSteg));
     }
 }
