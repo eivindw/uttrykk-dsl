@@ -4,9 +4,6 @@ import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopPerKvantitetUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
-/**
- * Created by jorn ola birkeland on 19.03.15.
- */
 public interface DistanseUttrykk extends CompareableUttrykk<Distanse> {
 
     default DistansePlussMinusUttrykk pluss(DistanseUttrykk ledd) {

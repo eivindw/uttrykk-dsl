@@ -9,9 +9,6 @@ import java.util.stream.Stream;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
-/**
- * Created by jorn ola birkeland on 31.05.15.
- */
 public class MultiBelopPlussMinusUttrykk<K>
         extends PlussMinusUttrykk<MultiBelop<K>,MultiBelopUttrykk<K>,MultiBelopPlussMinusUttrykk<K>>
         implements MultiBelopUttrykk<K> {

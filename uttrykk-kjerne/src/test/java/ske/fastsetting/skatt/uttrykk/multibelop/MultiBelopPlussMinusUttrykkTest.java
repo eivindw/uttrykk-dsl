@@ -8,9 +8,6 @@ import ske.fastsetting.skatt.uttrykk.TestUttrykkContext;
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.multibelop.MultiKroneUttrykk.kr;
 
-/**
- * Created by jorn ola birkeland on 01.06.15.
- */
 public class MultiBelopPlussMinusUttrykkTest {
     @Test
     public void test() {

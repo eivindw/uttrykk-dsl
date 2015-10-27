@@ -11,9 +11,6 @@ import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
-/**
- * Created by jorn ola birkeland on 11.05.15.
- */
 public class StubTest {
 
     private final static BelopUttrykk loenn = kr(25);

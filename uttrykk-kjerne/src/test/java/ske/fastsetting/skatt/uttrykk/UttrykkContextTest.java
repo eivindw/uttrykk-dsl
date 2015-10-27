@@ -4,9 +4,6 @@ import org.junit.Test;
 
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 
-/**
- * Created by jorn ola birkeland on 16.05.15.
- */
 public class UttrykkContextTest {
 
     @Test

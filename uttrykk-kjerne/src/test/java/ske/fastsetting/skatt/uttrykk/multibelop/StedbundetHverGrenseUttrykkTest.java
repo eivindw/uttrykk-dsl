@@ -12,9 +12,6 @@ import ske.fastsetting.skatt.domene.MultiBelop;
 import ske.fastsetting.skatt.uttrykk.TestUttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
 
-/**
- * Created by jorn ola birkeland on 13.03.15.
- */
 public class StedbundetHverGrenseUttrykkTest {
     @Test
     public void test() {

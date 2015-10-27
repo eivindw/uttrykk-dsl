@@ -3,9 +3,6 @@ package ske.fastsetting.skatt.uttrykk.enumverdi;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-/**
- * Created by jorn ola birkeland on 21.10.15.
- */
 public class EnumKonstantUttrykk<T extends Enum<T>> extends AbstractUttrykk<T,EnumKonstantUttrykk<T>> implements EnumUttrykk<T> {
 
     private final T enumVerdi;

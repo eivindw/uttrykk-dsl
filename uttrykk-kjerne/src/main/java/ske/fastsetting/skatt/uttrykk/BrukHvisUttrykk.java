@@ -5,9 +5,6 @@ import java.util.List;
 
 import ske.fastsetting.skatt.uttrykk.bolsk.BolskUttrykk;
 
-/**
- * Created by jorn ola birkeland on 16.10.15.
- */
 public abstract class BrukHvisUttrykk<T, B extends BrukHvisUttrykk<T,B>> extends AbstractUttrykk<T, B> {
 
     private final List<Uttrykk<T>> brukUttrykk = new ArrayList<>();

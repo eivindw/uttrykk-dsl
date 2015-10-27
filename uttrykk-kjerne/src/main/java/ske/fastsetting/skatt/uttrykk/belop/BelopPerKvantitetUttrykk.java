@@ -7,9 +7,6 @@ import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-/**
- * Created by jorn ola birkeland on 19.03.15.
- */
 public class BelopPerKvantitetUttrykk<K extends Kvantitet> extends AbstractUttrykk<BelopPerKvantitet<K>,
   BelopPerKvantitetUttrykk<K>> {
 

@@ -53,9 +53,6 @@ public abstract class MultisatsUttrykk<V, G, S, L, B extends MultisatsUttrykk<V,
 
     protected abstract Uttrykk<V> sum(Collection<Uttrykk<V>> satsSteg);
 
-    /**
-     * Created by jorn ola birkeland on 20.03.15.
-     */
     public static abstract class SatsStegUttrykk<V, G, S, L> extends AbstractUttrykk<V, SatsStegUttrykk<V, G, S, L>> {
         protected Uttrykk<S> sats;
         protected Uttrykk<L> oevreGrense;
