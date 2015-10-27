@@ -1,6 +1,6 @@
 package ske.fastsetting.skatt.uttrykk.multibelop;
 
-import ske.fastsetting.skatt.domene.StedbundetBelop;
+import ske.fastsetting.skatt.domene.MultiBelop;
 import ske.fastsetting.skatt.uttrykk.SumUttrykk;
 
 import java.util.Collection;
@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  * @deprecated Bruk MultiBelopPlussMinusUttrykk i stedet
  */
 @Deprecated
-public class MultiBelopSumUttrykk<K> extends SumUttrykk<StedbundetBelop<K>, MultiBelopUttrykk<K>,
+public class MultiBelopSumUttrykk<K> extends SumUttrykk<MultiBelop<K>, MultiBelopUttrykk<K>,
   MultiBelopSumUttrykk<K>> implements MultiBelopUttrykk<K> {
 
     protected MultiBelopSumUttrykk(Collection<MultiBelopUttrykk<K>> uttrykk) {
@@ -20,8 +20,8 @@ public class MultiBelopSumUttrykk<K> extends SumUttrykk<StedbundetBelop<K>, Mult
     }
 
     @Override
-    protected StedbundetBelop<K> nullVerdi() {
-        return StedbundetBelop.kr0();
+    protected MultiBelop<K> nullVerdi() {
+        return MultiBelop.kr0();
     }
 
     @SafeVarargs

@@ -1,7 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.multibelop;
 
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.domene.StedbundetBelop;
+import ske.fastsetting.skatt.domene.MultiBelop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
@@ -27,10 +27,10 @@ public class TilEnkeltBelopUttrykk extends AbstractUttrykk<Belop, TilEnkeltBelop
     @Override
     public Belop eval(UttrykkContext ctx) {
 
-        final StedbundetBelop<?> stedbundetBelop = ctx.eval(multiBelopUttrykk);
+        final MultiBelop<?> multiBelop = ctx.eval(multiBelopUttrykk);
 
-        return stedbundetBelop.steder().stream()
-          .map(stedbundetBelop::get)
+        return multiBelop.steder().stream()
+          .map(multiBelop::get)
           .reduce(Belop.NULL, Belop::pluss);
     }
 

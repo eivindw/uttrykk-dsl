@@ -1,6 +1,6 @@
 package ske.fastsetting.skatt.uttrykk.multibelop;
 
-import ske.fastsetting.skatt.domene.StedbundetBelop;
+import ske.fastsetting.skatt.domene.MultiBelop;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
@@ -10,7 +10,7 @@ import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.bolsk.BolskUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
-public interface MultiBelopUttrykk<K> extends Uttrykk<StedbundetBelop<K>> {
+public interface MultiBelopUttrykk<K> extends Uttrykk<MultiBelop<K>> {
     default MultiBelopPlussMinusUttrykk<K> pluss(MultiBelopUttrykk<K> ledd) {
         return MultiBelopPlussMinusUttrykk.sum(this, ledd);
     }

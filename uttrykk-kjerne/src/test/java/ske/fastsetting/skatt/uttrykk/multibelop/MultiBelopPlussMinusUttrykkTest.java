@@ -2,7 +2,7 @@ package ske.fastsetting.skatt.uttrykk.multibelop;
 
 import org.junit.Test;
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.domene.StedbundetBelop;
+import ske.fastsetting.skatt.domene.MultiBelop;
 import ske.fastsetting.skatt.uttrykk.TestUttrykkContext;
 
 import static org.junit.Assert.assertEquals;
@@ -11,7 +11,7 @@ import static ske.fastsetting.skatt.uttrykk.multibelop.MultiKroneUttrykk.kr;
 /**
  * Created by jorn ola birkeland on 01.06.15.
  */
-public class StedbundetBelopPlussMinusUttrykkTest {
+public class MultiBelopPlussMinusUttrykkTest {
     @Test
     public void test() {
         MultiBelopUttrykk<String> verdi =
@@ -22,7 +22,7 @@ public class StedbundetBelopPlussMinusUttrykkTest {
                 .minus(kr(1, "Oslo"))
                 .pluss(kr(3, "Alta"));
 
-        final StedbundetBelop<String> faktisk = TestUttrykkContext.beregne(verdi).verdi();
+        final MultiBelop<String> faktisk = TestUttrykkContext.beregne(verdi).verdi();
 
         assertEquals(Belop.kr(11),faktisk.get("Oslo"));
         assertEquals(Belop.kr(9),faktisk.get("Mysen"));

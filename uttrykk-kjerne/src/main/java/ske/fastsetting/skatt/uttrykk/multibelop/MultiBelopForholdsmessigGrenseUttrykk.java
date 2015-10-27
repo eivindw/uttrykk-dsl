@@ -1,10 +1,10 @@
 package ske.fastsetting.skatt.uttrykk.multibelop;
 
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.domene.StedbundetBelop;
+import ske.fastsetting.skatt.domene.MultiBelop;
 import ske.fastsetting.skatt.uttrykk.GrenseUttrykk;
 
-public class MultiBelopForholdsmessigGrenseUttrykk<K> extends GrenseUttrykk<StedbundetBelop<K>, Belop, MultiBelopForholdsmessigGrenseUttrykk<K>>
+public class MultiBelopForholdsmessigGrenseUttrykk<K> extends GrenseUttrykk<MultiBelop<K>, Belop, MultiBelopForholdsmessigGrenseUttrykk<K>>
   implements MultiBelopUttrykk<K> {
 
 
@@ -17,13 +17,13 @@ public class MultiBelopForholdsmessigGrenseUttrykk<K> extends GrenseUttrykk<Sted
     }
 
     @Override
-    protected StedbundetBelop<K> begrensNedad(StedbundetBelop<K> verdi, Belop min) {
-        return verdi.steduavhengig().erMindreEnn(min) ? verdi.nyMedSammeFordeling(min) : verdi;
+    protected MultiBelop<K> begrensNedad(MultiBelop<K> verdi, Belop min) {
+        return verdi.tilBelop().erMindreEnn(min) ? verdi.nyMedSammeFordeling(min) : verdi;
     }
 
     @Override
-    protected StedbundetBelop<K> begrensOppad(StedbundetBelop<K> verdi, Belop max) {
-        return verdi.steduavhengig().erStorreEnn(max) ? verdi.nyMedSammeFordeling(max) : verdi;
+    protected MultiBelop<K> begrensOppad(MultiBelop<K> verdi, Belop max) {
+        return verdi.tilBelop().erStorreEnn(max) ? verdi.nyMedSammeFordeling(max) : verdi;
     }
 
 }

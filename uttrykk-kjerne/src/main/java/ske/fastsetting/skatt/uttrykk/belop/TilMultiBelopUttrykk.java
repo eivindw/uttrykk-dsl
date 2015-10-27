@@ -1,13 +1,13 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.domene.StedbundetBelop;
+import ske.fastsetting.skatt.domene.MultiBelop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.multibelop.MultiBelopUttrykk;
 
-public class TilMultiBelopUttrykk<T> extends AbstractUttrykk<StedbundetBelop<T>,TilMultiBelopUttrykk<T>> implements MultiBelopUttrykk<T> {
+public class TilMultiBelopUttrykk<T> extends AbstractUttrykk<MultiBelop<T>,TilMultiBelopUttrykk<T>> implements MultiBelopUttrykk<T> {
 
 
     private final Uttrykk<Belop> belopUttrykk;
@@ -23,9 +23,9 @@ public class TilMultiBelopUttrykk<T> extends AbstractUttrykk<StedbundetBelop<T>,
     }
 
     @Override
-    public StedbundetBelop<T> eval(UttrykkContext ctx) {
+    public MultiBelop<T> eval(UttrykkContext ctx) {
         Belop belop = ctx.eval(belopUttrykk);
-        return StedbundetBelop.kr(belop,sted);
+        return MultiBelop.kr(belop, sted);
     }
 
     @Override

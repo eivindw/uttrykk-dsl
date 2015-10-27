@@ -3,10 +3,10 @@ package ske.fastsetting.skatt.uttrykk.multibelop;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr0;
 
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.domene.StedbundetBelop;
+import ske.fastsetting.skatt.domene.MultiBelop;
 import ske.fastsetting.skatt.uttrykk.GrenseUttrykk;
 
-public class MultiBelopHverGrenseUttrykk<K> extends GrenseUttrykk<StedbundetBelop<K>, Belop,
+public class MultiBelopHverGrenseUttrykk<K> extends GrenseUttrykk<MultiBelop<K>, Belop,
   MultiBelopHverGrenseUttrykk<K>> implements MultiBelopUttrykk<K> {
 
 
@@ -23,19 +23,19 @@ public class MultiBelopHverGrenseUttrykk<K> extends GrenseUttrykk<StedbundetBelo
     }
 
     @Override
-    protected StedbundetBelop<K> begrensNedad(StedbundetBelop<K> verdi, Belop min) {
+    protected MultiBelop<K> begrensNedad(MultiBelop<K> verdi, Belop min) {
         return verdi.splitt().stream()
-          .map(bs -> bs.getBelop().erMindreEnn(min) ? StedbundetBelop.kr(min, bs.getSted()) : StedbundetBelop.kr(bs
-            .getBelop(), bs.getSted()))
-          .reduce(StedbundetBelop.kr0(), StedbundetBelop::pluss);
+          .map(bs -> bs.getBelop().erMindreEnn(min) ? MultiBelop.kr(min, bs.getNokkel()) : MultiBelop.kr(bs
+            .getBelop(), bs.getNokkel()))
+          .reduce(MultiBelop.kr0(), MultiBelop::pluss);
     }
 
     @Override
-    protected StedbundetBelop<K> begrensOppad(StedbundetBelop<K> verdi, Belop max) {
+    protected MultiBelop<K> begrensOppad(MultiBelop<K> verdi, Belop max) {
         return verdi.splitt().stream()
-          .map(bs -> bs.getBelop().erStorreEnn(max) ? StedbundetBelop.kr(max, bs.getSted()) : StedbundetBelop.kr(bs
-            .getBelop(), bs.getSted()))
-          .reduce(StedbundetBelop.kr0(), StedbundetBelop::pluss);
+          .map(bs -> bs.getBelop().erStorreEnn(max) ? MultiBelop.kr(max, bs.getNokkel()) : MultiBelop.kr(bs
+            .getBelop(), bs.getNokkel()))
+          .reduce(MultiBelop.kr0(), MultiBelop::pluss);
 
     }
 }

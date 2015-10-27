@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// V - type på verdi som returneres ved eval, f.eks Belop, Tall eller StedbundetBelop
+// V - type på verdi som returneres ved eval, f.eks Belop, Tall eller MultiBelop
 // G - type på grunnlag, f.eks Belop eller Distanse
 // S - type på sats, Tall eller BelopPerKvantitet
 // L - type på "limits" - på øvre og nedre grenser

@@ -1,7 +1,7 @@
 package ske.fastsetting.skatt.uttrykk.multibelop;
 
 import static ske.fastsetting.skatt.uttrykk.multibelop.MultiBelopForholdsmessigGrenseUttrykk.begrensFordholdmessig;
-import static ske.fastsetting.skatt.uttrykk.multibelop.StedbundetBelopMultisatsFunksjonTest.assertStedBelop;
+import static ske.fastsetting.skatt.uttrykk.multibelop.MultiBelopMultisatsFunksjonTest.assertStedBelop;
 import static ske.fastsetting.skatt.uttrykk.multibelop.MultiKroneUttrykk.kr;
 
 import org.junit.Test;

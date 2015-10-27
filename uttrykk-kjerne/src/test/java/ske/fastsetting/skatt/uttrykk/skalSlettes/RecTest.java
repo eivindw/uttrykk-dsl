@@ -3,7 +3,7 @@ package ske.fastsetting.skatt.uttrykk.skalSlettes;
 import org.junit.Test;
 
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.domene.StedbundetBelop;
+import ske.fastsetting.skatt.domene.MultiBelop;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
@@ -96,10 +96,10 @@ public class RecTest {
 
     }
 
-    static class RecMultiBelopUttrykk<K, T> extends RecUttrykk<StedbundetBelop<K>, T> implements
+    static class RecMultiBelopUttrykk<K, T> extends RecUttrykk<MultiBelop<K>, T> implements
       MultiBelopUttrykk<K> {
 
-        RecMultiBelopUttrykk(Function<Rec<T>, Uttrykk<StedbundetBelop<K>>> func) {
+        RecMultiBelopUttrykk(Function<Rec<T>, Uttrykk<MultiBelop<K>>> func) {
             super(func);
         }
     }

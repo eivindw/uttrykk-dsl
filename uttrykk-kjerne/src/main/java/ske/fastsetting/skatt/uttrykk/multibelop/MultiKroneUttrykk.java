@@ -1,30 +1,30 @@
 package ske.fastsetting.skatt.uttrykk.multibelop;
 
-import ske.fastsetting.skatt.domene.StedbundetBelop;
+import ske.fastsetting.skatt.domene.MultiBelop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
-public class MultiKroneUttrykk<K> extends AbstractUttrykk<StedbundetBelop<K>, MultiKroneUttrykk<K>>
+public class MultiKroneUttrykk<K> extends AbstractUttrykk<MultiBelop<K>, MultiKroneUttrykk<K>>
   implements MultiBelopUttrykk<K> {
 
-    private final StedbundetBelop<K> belop;
+    private final MultiBelop<K> belop;
 
-    private MultiKroneUttrykk(StedbundetBelop<K> belop) {
+    private MultiKroneUttrykk(MultiBelop<K> belop) {
 
         this.belop = belop;
     }
 
     public static <K> MultiKroneUttrykk<K> kr(int belop, K sted) {
-        return new MultiKroneUttrykk<>(StedbundetBelop.kr(belop, sted));
+        return new MultiKroneUttrykk<>(MultiBelop.kr(belop, sted));
     }
 
     public static <K> MultiKroneUttrykk<K> kr0() {
-        return new MultiKroneUttrykk<>(StedbundetBelop.kr0());
+        return new MultiKroneUttrykk<>(MultiBelop.kr0());
     }
 
 
     @Override
-    public StedbundetBelop<K> eval(UttrykkContext ctx) {
+    public MultiBelop<K> eval(UttrykkContext ctx) {
         return belop;
     }
 

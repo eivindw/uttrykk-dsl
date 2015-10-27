@@ -11,7 +11,7 @@ import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.TestUttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
 
-public class StedbundetBelopMultisatsFunksjonTest {
+public class MultiBelopMultisatsFunksjonTest {
 
 
     @Test

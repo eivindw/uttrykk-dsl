@@ -9,7 +9,7 @@ import static ske.fastsetting.skatt.uttrykk.multibelop.MultiBelopWrapperUttrykk.
 import java.util.Collection;
 
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.domene.StedbundetBelop;
+import ske.fastsetting.skatt.domene.MultiBelop;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.MultisatsUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
@@ -18,7 +18,7 @@ import ske.fastsetting.skatt.uttrykk.belop.BelopDiffUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopGrenseUttrykk;
 
 public class MultiBelopMultisatsFunksjon<K>
-  extends MultisatsUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop, MultiBelopMultisatsFunksjon<K>>
+  extends MultisatsUttrykk<MultiBelop<K>, MultiBelop<K>, Tall, Belop, MultiBelopMultisatsFunksjon<K>>
   implements MultiBelopUttrykk<K> {
 
 
@@ -31,11 +31,11 @@ public class MultiBelopMultisatsFunksjon<K>
     }
 
     @Override
-    protected SatsStegUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop> lagSteg() {
-        final SatsStegUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop> satsStegUttrykk = new
-          SatsStegUttrykk<StedbundetBelop<K>, StedbundetBelop<K>, Tall, Belop>() {
+    protected SatsStegUttrykk<MultiBelop<K>, MultiBelop<K>, Tall, Belop> lagSteg() {
+        final SatsStegUttrykk<MultiBelop<K>, MultiBelop<K>, Tall, Belop> satsStegUttrykk = new
+          SatsStegUttrykk<MultiBelop<K>, MultiBelop<K>, Tall, Belop>() {
             @Override
-            public StedbundetBelop<K> eval(UttrykkContext ctx) {
+            public MultiBelop<K> eval(UttrykkContext ctx) {
                 MultiBelopForholdsmessigGrenseUttrykk<K> grenseUttrykk = begrensFordholdmessig(new
                   MultiBelopForholdsmessigDiffUttrykk<>(grunnlag, nedreGrense).multiplisertMed(sats))
                   .nedad(kr0());
@@ -52,7 +52,7 @@ public class MultiBelopMultisatsFunksjon<K>
     }
 
     @Override
-    protected Uttrykk<StedbundetBelop<K>> sum(Collection<Uttrykk<StedbundetBelop<K>>> satsSteg) {
+    protected Uttrykk<MultiBelop<K>> sum(Collection<Uttrykk<MultiBelop<K>>> satsSteg) {
         return MultiBelopSumUttrykk.sum(tilStedbundetBelopUttrykk(satsSteg));
     }
 }
