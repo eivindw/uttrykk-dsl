@@ -96,6 +96,14 @@ public class MultiBelop<T> implements Comparable<Belop>, KalkulerbarVerdi<MultiB
         return new MultiBelop<>(prod);
     }
 
+    public MultiBelop<T> multiplisertMed(MultiTall<T> faktor) {
+        Map<T, Belop> prod = new HashMap<>();
+        this.nokkelBelopMap.entrySet().stream().forEach(e -> prod.put(e.getKey(), e.getValue().multiplisertMed(faktor.get(e.getKey()).toBigDecimal())));
+
+        return new MultiBelop<>(prod);
+    }
+
+
     @Override
     public MultiBelop<T> dividertMed(BigDecimal divisor) {
         Map<T, Belop> kvot = new HashMap<>();
@@ -103,6 +111,14 @@ public class MultiBelop<T> implements Comparable<Belop>, KalkulerbarVerdi<MultiB
 
         return new MultiBelop<>(kvot);
     }
+
+    public MultiTall<T> dividertMed(MultiBelop<T> divisor, Tall.TallUttrykkType type) {
+        Map<T, Tall> kvot = new HashMap<>();
+        this.nokkelBelopMap.entrySet().stream().forEach(e -> kvot.put(e.getKey(), Tall.nytt(e.getValue().dividertMed(divisor.get(e.getKey())),type)));
+
+        return new MultiTall<>(kvot);
+    }
+
 
     public MultiBelop<T> fordelProporsjonalt(Belop belop) {
         Map<T, Belop> resultat = new HashMap<>();
