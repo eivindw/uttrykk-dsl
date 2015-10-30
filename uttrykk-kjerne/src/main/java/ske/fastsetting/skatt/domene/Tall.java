@@ -76,7 +76,16 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
 
 
     public Tall dividertMed(BigDecimal divisor) {
-        return new Tall(type, verdi.divide(divisor));
+
+        Tall resultat;
+
+        if(type.equals(TallUttrykkType.HELTALL)) {
+            resultat = new Tall(TallUttrykkType.UKJENT, verdi.divide(divisor,10,BigDecimal.ROUND_HALF_UP));
+        } else {
+            resultat = new Tall(type, verdi.divide(divisor));
+        }
+
+        return resultat;
     }
 
     @Deprecated
