@@ -25,6 +25,10 @@ public class Tall implements Comparable<Tall>, KalkulerbarVerdi<Tall> {
         return verdi.toBigInteger();
     }
 
+    public Tall byttFortegn() {
+        return new Tall(type, verdi.negate());
+    }
+
 
     public enum TallUttrykkType {
         ZERO,

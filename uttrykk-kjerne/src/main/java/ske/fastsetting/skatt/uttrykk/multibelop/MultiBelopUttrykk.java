@@ -8,6 +8,7 @@ import ske.fastsetting.skatt.uttrykk.belop.BelopDividertMedBelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopPlussMinusUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.bolsk.BolskUttrykk;
+import ske.fastsetting.skatt.uttrykk.multitall.MultiTallUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
 public interface MultiBelopUttrykk<K> extends Uttrykk<MultiBelop<K>> {
@@ -23,12 +24,20 @@ public interface MultiBelopUttrykk<K> extends Uttrykk<MultiBelop<K>> {
         return new BelopDividertMedBelopUttrykk(this.tilBelop(), divident.tilBelop(), Tall.TallUttrykkType.UKJENT);
     }
 
+    default MultiBelopDividertMedMultiBelopUttrykk<K> hverDividertMed(MultiBelopUttrykk<K> divident) {
+        return new MultiBelopDividertMedMultiBelopUttrykk<>(this, divident, Tall.TallUttrykkType.UKJENT);
+    }
+
     default BelopDividertMedBelopUttrykk dividertMed(BelopUttrykk divident) {
         return new BelopDividertMedBelopUttrykk(this.tilBelop(), divident, Tall.TallUttrykkType.UKJENT);
     }
 
     default MultiBelopMultiplikasjonsUttrykk<K> multiplisertMed(Uttrykk<Tall> tall) {
         return new MultiBelopMultiplikasjonsUttrykk<>(this, tall);
+    }
+
+    default MultiBelopMultiplisertMedMultiTallUttrykk<K> hverMultiplisertMed(MultiTallUttrykk<K> faktor) {
+        return new MultiBelopMultiplisertMedMultiTallUttrykk<>(this, faktor);
     }
 
     default MultiBelopPlussMinusUttrykk<K> minus(MultiBelopUttrykk<K> ledd) {
