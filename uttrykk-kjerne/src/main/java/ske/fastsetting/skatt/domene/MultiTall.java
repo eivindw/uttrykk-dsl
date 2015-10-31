@@ -7,6 +7,8 @@ import java.util.Map;
 public class MultiTall<T> implements Comparable<Tall>, KalkulerbarVerdi<MultiTall<T>> {
 
 
+    public static <T> MultiTall<T> NULL() { return new MultiTall<>(new HashMap<>());}
+
     private final Map<T, Tall> nokkelTallMap;
 
     public MultiTall(Map<T, Tall> diff) {
@@ -55,6 +57,16 @@ public class MultiTall<T> implements Comparable<Tall>, KalkulerbarVerdi<MultiTal
     }
 
     public Tall get(T nokkel) {
-        return nokkelTallMap.get(nokkel);
+        return nokkelTallMap.getOrDefault(nokkel,Tall.ZERO);
+    }
+
+    public Tall getOrElse(T key, Tall standard) {
+        return nokkelTallMap.getOrDefault(key,standard);
+    }
+
+    public static <T> MultiTall<T> heltall(int tall, T nokkel) {
+        Map<T, Tall> multitall = new HashMap<>();
+        multitall.put(nokkel,Tall.heltall(tall));
+        return new MultiTall<>(multitall);
     }
 }

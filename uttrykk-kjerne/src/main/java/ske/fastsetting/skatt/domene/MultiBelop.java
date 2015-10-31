@@ -98,7 +98,7 @@ public class MultiBelop<T> implements Comparable<Belop>, KalkulerbarVerdi<MultiB
 
     public MultiBelop<T> multiplisertMed(MultiTall<T> faktor) {
         Map<T, Belop> prod = new HashMap<>();
-        this.nokkelBelopMap.entrySet().stream().forEach(e -> prod.put(e.getKey(), e.getValue().multiplisertMed(faktor.get(e.getKey()).toBigDecimal())));
+        this.nokkelBelopMap.entrySet().stream().forEach(e -> prod.put(e.getKey(), e.getValue().multiplisertMed(faktor.getOrElse(e.getKey(),Tall.ZERO).toBigDecimal())));
 
         return new MultiBelop<>(prod);
     }

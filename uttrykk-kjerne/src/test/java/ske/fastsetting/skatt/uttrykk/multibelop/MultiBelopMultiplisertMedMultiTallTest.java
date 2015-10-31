@@ -2,6 +2,7 @@ package ske.fastsetting.skatt.uttrykk.multibelop;
 
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.multibelop.MultiKroneUttrykk.kr;
+import static ske.fastsetting.skatt.uttrykk.multitall.MultiTallKonstantUttrykk.heltall;
 
 import org.junit.Test;
 
@@ -12,15 +13,12 @@ import ske.fastsetting.skatt.uttrykk.multitall.MultiTallUttrykk;
 
 public class MultiBelopMultiplisertMedMultiTallTest {
     @Test
-    public void skalMultiplisereFlere() {
-        MultiBelopUttrykk<String> divdent = kr(30, "A").pluss(kr(60, "B"));
-        MultiBelopUttrykk<String> divisor = kr(3, "A").pluss(kr(10, "B"));
+    public void skalMultiplisereFlereEnTilEn() {
+        MultiTallUttrykk<String> tallUttrykk = heltall(10,"A").pluss(heltall(6,"B"));
 
-        MultiTallUttrykk<String> kvotientUttrykk = divdent.hverDividertMed(divisor);
+        MultiBelopUttrykk<String> belopUttrykk = kr(2, "A").pluss(kr(4, "B"));
 
-        MultiBelopUttrykk<String> faktor = kr(2, "A").pluss(kr(4, "B"));
-
-        MultiBelopUttrykk<String> produktUttrykk = faktor.hverMultiplisertMed(kvotientUttrykk);
+        MultiBelopUttrykk<String> produktUttrykk = belopUttrykk.hverMultiplisertMed(tallUttrykk);
 
 
         MultiBelop<String> produkt = TestUttrykkContext.verdiAv(produktUttrykk);
@@ -28,6 +26,37 @@ public class MultiBelopMultiplisertMedMultiTallTest {
 
         assertEquals(Belop.kr(20), produkt.get("A"));
         assertEquals(Belop.kr(24), produkt.get("B"));
+    }
+
+    @Test
+    public void skalMultiplisereFlereNaarMultiBelopHarFaerre() {
+        MultiTallUttrykk<String> tallUttrykk = heltall(10,"A").pluss(heltall(6, "B"));
+
+        MultiBelopUttrykk<String> belopUttrykk = kr(2, "A");
+
+        MultiBelopUttrykk<String> produktUttrykk = belopUttrykk.hverMultiplisertMed(tallUttrykk);
+
+        MultiBelop<String> produkt = TestUttrykkContext.verdiAv(produktUttrykk);
+
+
+        assertEquals(Belop.kr(20), produkt.get("A"));
+        assertEquals(Belop.kr(0), produkt.get("B"));
+    }
+
+    @Test
+    public void skalMultiplisereFlereNaarMultiBelopHarFlere() {
+        MultiTallUttrykk<String> tallUttrykk = heltall(10,"A").pluss(heltall(6, "B"));
+
+        MultiBelopUttrykk<String> belopUttrykk = kr(2, "A").pluss(kr(4,"B")).pluss(kr(3,"C"));
+
+        MultiBelopUttrykk<String> produktUttrykk = belopUttrykk.hverMultiplisertMed(tallUttrykk);
+
+        MultiBelop<String> produkt = TestUttrykkContext.verdiAv(produktUttrykk);
+
+
+        assertEquals(Belop.kr(20), produkt.get("A"));
+        assertEquals(Belop.kr(24), produkt.get("B"));
+        assertEquals(Belop.kr(0), produkt.get("C"));
     }
 
 }
