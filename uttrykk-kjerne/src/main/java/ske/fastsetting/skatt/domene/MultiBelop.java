@@ -15,6 +15,7 @@ public class MultiBelop<T> implements Comparable<Belop>, KalkulerbarVerdi<MultiB
         return this.tilBelop().compareTo(belop);
     }
 
+
     public static class BelopSted<T> {
         private final T nokkel;
         private final Belop belop;
@@ -74,6 +75,15 @@ public class MultiBelop<T> implements Comparable<Belop>, KalkulerbarVerdi<MultiB
         return new MultiBelop<>(diff);
     }
 
+    public MultiBelop<T> minusHver(Belop ledd) {
+        Map<T, Belop> diff = new HashMap<>();
+
+        this.nokkelBelopMap.entrySet().stream().forEach(e -> diff.put(e.getKey(), e.getValue().minus(ledd)));
+
+        return new MultiBelop<>(diff);
+    }
+
+
     @Override
     public MultiBelop<T> pluss(MultiBelop<T> ledd) {
         Map<T, Belop> sum = new HashMap<>();
@@ -98,7 +108,7 @@ public class MultiBelop<T> implements Comparable<Belop>, KalkulerbarVerdi<MultiB
 
     public MultiBelop<T> multiplisertMed(MultiTall<T> faktor) {
         Map<T, Belop> prod = new HashMap<>();
-        this.nokkelBelopMap.entrySet().stream().forEach(e -> prod.put(e.getKey(), e.getValue().multiplisertMed(faktor.getOrElse(e.getKey(),Tall.ZERO).toBigDecimal())));
+        this.nokkelBelopMap.entrySet().stream().forEach(e -> prod.put(e.getKey(), e.getValue().multiplisertMed(faktor.getOrElse(e.getKey(), Tall.ZERO).toBigDecimal())));
 
         return new MultiBelop<>(prod);
     }

@@ -53,6 +53,6 @@ public class MultiBelopMultisatsFunksjon<K>
 
     @Override
     protected Uttrykk<MultiBelop<K>> sum(Collection<Uttrykk<MultiBelop<K>>> satsSteg) {
-        return MultiBelopSumUttrykk.sum(tilStedbundetBelopUttrykk(satsSteg));
+        return MultiBelopPlussMinusUttrykk.sum(tilStedbundetBelopUttrykk(satsSteg));
     }
 }
