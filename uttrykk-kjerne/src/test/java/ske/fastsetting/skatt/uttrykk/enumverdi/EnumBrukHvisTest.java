@@ -1,21 +1,14 @@
 package ske.fastsetting.skatt.uttrykk.enumverdi;
 
 import org.junit.Test;
-import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.TestUttrykkContext;
-import ske.fastsetting.skatt.uttrykk.Uttrykk;
-import ske.fastsetting.skatt.uttrykk.bolsk.BolskUttrykk;
 
-import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr0;
-import static ske.fastsetting.skatt.uttrykk.bolsk.BolskKonstantUttrykk.erSann;
 import static ske.fastsetting.skatt.uttrykk.enumverdi.EnumBrukHvisTest.TestEnum.A;
 import static ske.fastsetting.skatt.uttrykk.enumverdi.EnumBrukHvisTest.TestEnum.B;
 import static ske.fastsetting.skatt.uttrykk.enumverdi.EnumBrukHvisUttrykk.bruk;
-import static ske.fastsetting.skatt.uttrykk.belop.BelopBrukHvisUttrykk.bruk;
-import static ske.fastsetting.skatt.uttrykk.enumverdi.EnumKonstUttrykk.valg;
 import static ske.fastsetting.skatt.uttrykk.enumverdi.EnumKonstUttrykk.valg;
 
 /**
