@@ -26,7 +26,7 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
         });
     }
 
-    public final <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
+    public <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
         Map map = map(uttrykk);
         map.put(UttrykkResultat.KEY_VERDI,verdi);
         uttrykksmap.put(uttrykk.id(), map);

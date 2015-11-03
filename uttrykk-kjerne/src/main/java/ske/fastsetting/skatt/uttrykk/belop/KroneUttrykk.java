@@ -37,6 +37,8 @@ public class KroneUttrykk extends AbstractUttrykk<Belop, KroneUttrykk> implement
         return new KroneUttrykk(Belop.kr(belop),Type.MedOre);
     }
 
+    public static KroneUttrykk kr(Belop belop) { return new KroneUttrykk(belop,Type.MedOre); }
+
     @Override
     public Belop eval(UttrykkContext ctx) {
         return kroner;

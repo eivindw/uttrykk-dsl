@@ -1,5 +1,8 @@
 package ske.fastsetting.skatt.uttrykk.multibelop;
 
+import java.util.function.Function;
+
+import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.MultiBelop;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
@@ -78,6 +81,8 @@ public interface MultiBelopUttrykk<K> extends Uttrykk<MultiBelop<K>> {
         return new CompareableUttrykk.ErMindreEnn<>(this.tilBelop(), uttrykk);
     }
 
-
+    default MultiBelopForHverUttrykk<K> forHver(Function<BelopUttrykk,Uttrykk<Belop>> forHverFunksjon) {
+        return new MultiBelopForHverUttrykk<>(this, forHverFunksjon);
+    }
 
 }
