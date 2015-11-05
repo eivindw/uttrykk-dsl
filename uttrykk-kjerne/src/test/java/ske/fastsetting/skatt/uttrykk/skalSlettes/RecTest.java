@@ -74,7 +74,7 @@ public class RecTest {
 
         @Override
         public V eval(UttrykkContext ctx) {
-            Rec<T> rec = (Rec<T>) ctx.input(Rec.class);
+            Rec<T> rec = (Rec<T>) ctx.hentInput(Rec.class);
 
             final Uttrykk<V> apply = func.apply(rec);
             return ctx.eval(apply);
@@ -82,7 +82,7 @@ public class RecTest {
 
         @Override
         public String beskriv(UttrykkContext ctx) {
-            Rec<T> rec = (Rec<T>) ctx.input(Rec.class);
+            Rec<T> rec = (Rec<T>) ctx.hentInput(Rec.class);
 
             return ctx.beskriv(func.apply(rec));
         }

@@ -1,6 +1,8 @@
 package ske.fastsetting.skatt.uttrykk;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -8,29 +10,28 @@ import java.util.stream.Stream;
 import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 
 @SuppressWarnings("unchecked")
-public abstract class UttrykkContextImpl implements UttrykkContext {
+public abstract class UttrykkContextImpl<B extends UttrykkContextImpl> implements UttrykkContext {
 
     private final Map<String, Map> uttrykksmap = new HashMap<>();
     private final Map<Class, Object> inputMedSupertyper = new HashMap<>();
     private final Map<Class, Object> input = new HashMap<>();
+    private final List<Overstyring> overstyringer = new ArrayList<>();
 
+    B self = (B)this;
 
     protected UttrykkContextImpl(Object[] input) {
         Stream.of(input).forEach(this::leggTilInput);
     }
 
-    protected final void leggTilInput(Object... input) {
-        Stream.of(input).forEach(verdi -> {
-            leggTilInput(verdi.getClass(), verdi);
-            this.input.put(verdi.getClass(),verdi);
-        });
-    }
 
     public <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
         Map map = map(uttrykk);
         map.put(UttrykkResultat.KEY_VERDI,verdi);
         uttrykksmap.put(uttrykk.id(), map);
+
+        overstyringer.add(new Overstyring(uttrykk,verdi));
     }
+
 
     protected final <V> UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
 
@@ -43,14 +44,6 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
         }
 
         return new UttrykkResultatImpl<>(uttrykk.id());
-    }
-
-    public <V> UttrykkResultat<V> dokumenter(Uttrykk<V> uttrykk) {
-        return kalkuler(uttrykk,false,true);
-    }
-
-    public <V> UttrykkResultat<V> dokumenterMedVerdi(Uttrykk<V> uttrykk) {
-        return kalkuler(uttrykk,true,true);
     }
 
     @Override
@@ -79,19 +72,32 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
         }
     }
 
+    @Override
+    public void settInput(Object input) {
+        settInput(input.getClass(), input);
+        this.input.put(input.getClass(),input);
+
+    }
 
     @Override
-    public <T> T input(Class<T> clazz) {
+    public UttrykkContext klon() {
+        B ny = ny();
+
+        input.values().stream().forEach(v -> ny.settInput(v));
+        overstyringer.stream().forEach(os -> os.leggTilOverstyring(ny));
+
+        return ny;
+    }
+
+    protected abstract B ny();
+
+    @Override
+    public <T> T hentInput(Class<T> clazz) {
         if (inputMedSupertyper.containsKey(clazz)) {
             return (T) inputMedSupertyper.get(clazz);
         } else {
             throw new RuntimeException("Kontekst mangler input av type: " + clazz.getSimpleName());
         }
-    }
-
-    @Override
-    public Object[] input() {
-        return this.input.values().stream().toArray(Object[]::new);
     }
 
     @Override
@@ -104,6 +110,13 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
         return uttrykksmap.toString();
     }
 
+    protected final void leggTilInput(Object... input) {
+        Stream.of(input).forEach(verdi -> {
+            leggTilInput(verdi.getClass(), verdi);
+            this.input.put(verdi.getClass(),verdi);
+        });
+    }
+
     private void leggTilInput(Class<?> clazz, Object input) {
         if (this.inputMedSupertyper.containsKey(clazz)) {
             throw new IllegalArgumentException("Ugyldig input. Det finnes allerede input som er, implementerer eller arver " + clazz);
@@ -113,6 +126,14 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
             this.inputMedSupertyper.put(clazz, input);
             Stream.of(clazz.getInterfaces()).forEach(i -> leggTilInput(i, input));
             Optional.ofNullable(clazz.getSuperclass()).ifPresent(c -> leggTilInput(c, input));
+        }
+    }
+
+    private void settInput(Class<?> clazz, Object input) {
+        if (includeClass(clazz)) {
+            this.inputMedSupertyper.put(clazz, input);
+            Stream.of(clazz.getInterfaces()).forEach(i -> settInput(i, input));
+            Optional.ofNullable(clazz.getSuperclass()).ifPresent(c -> settInput(c, input));
         }
     }
 
@@ -164,6 +185,20 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
         @Override
         public String start() {
             return start;
+        }
+    }
+
+    private static class Overstyring {
+        private final Uttrykk<?> uttrykk;
+        private final Object verdi;
+
+        private Overstyring(Uttrykk<?> uttrykk, Object verdi) {
+            this.uttrykk = uttrykk;
+            this.verdi = verdi;
+        }
+
+        public void leggTilOverstyring(UttrykkContextImpl ny) {
+            ny.overstyrVerdi(uttrykk,verdi);
         }
     }
 }

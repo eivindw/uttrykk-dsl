@@ -5,9 +5,14 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.ConsoleUttrykkBeskriver;
 
-public class Debug extends UttrykkContextImpl {
+public class Debug extends UttrykkContextImpl<Debug> {
     protected Debug(Object[] input) {
         super(input);
+    }
+
+    @Override
+    protected Debug ny() {
+        return new Debug(new Object[0]);
     }
 
     public static void debug(Uttrykk<?> uttrykk, Object... input) {

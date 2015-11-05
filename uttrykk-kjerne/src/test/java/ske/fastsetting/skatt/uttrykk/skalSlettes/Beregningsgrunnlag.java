@@ -49,11 +49,11 @@ public interface Beregningsgrunnlag {
             Beregningsgrunnlag bg;
 
             if (ctx.harInput(Beregningsgrunnlag.class)) {
-                bg = ctx.input(Beregningsgrunnlag.class);
+                bg = ctx.hentInput(Beregningsgrunnlag.class);
             } else if (ctx.harInput(Skattegrunnlag.class)) {
                 bg = SumFastsettelser.hent();
             } else {
-                bg = ctx.input(Beregningsgrunnlag.class);
+                bg = ctx.hentInput(Beregningsgrunnlag.class);
             }
             return bg;
         }

@@ -1,8 +1,13 @@
 package ske.fastsetting.skatt.uttrykk;
 
-public class TestUttrykkContext extends UttrykkContextImpl {
+public class TestUttrykkContext extends UttrykkContextImpl<TestUttrykkContext> {
     protected TestUttrykkContext(Object[] input) {
         super(input);
+    }
+
+    @Override
+    protected TestUttrykkContext ny() {
+        return new TestUttrykkContext(new Object[0]);
     }
 
     public static <X> X verdiAv(Uttrykk<X> uttrykk, Object... input) {
