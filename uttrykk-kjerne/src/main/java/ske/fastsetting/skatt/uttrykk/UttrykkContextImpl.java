@@ -12,6 +12,8 @@ import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 @SuppressWarnings("unchecked")
 public abstract class UttrykkContextImpl<B extends UttrykkContextImpl> implements UttrykkContext {
 
+    public static final String VM_ARG_DEBUG = "UTTRYKK_DEBUG";
+    public static final boolean DEBUG_ENABLED = Boolean.parseBoolean(System.getProperty(VM_ARG_DEBUG));
     private final Map<String, Map> uttrykksmap = new HashMap<>();
     private final Map<Class, Object> inputMedSupertyper = new HashMap<>();
     private final Map<Class, Object> input = new HashMap<>();
@@ -63,14 +65,13 @@ public abstract class UttrykkContextImpl<B extends UttrykkContextImpl> implement
     @Override
     public <X> X eval(Uttrykk<X> uttrykk) {
 
-        try {
-            return (X) initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI, k -> uttrykk.eval(this));
-        } catch (UttrykkException ue) {
-            throw new UttrykkException(ue, uttrykk);
-        } catch (Throwable e) {
-            throw new UttrykkException(e, uttrykk);
+        if(DEBUG_ENABLED) {
+            return evalDebug(uttrykk);
+        } else {
+            return evalStandard(uttrykk);
         }
     }
+
 
     @Override
     public void settInput(Object input) {
@@ -116,6 +117,30 @@ public abstract class UttrykkContextImpl<B extends UttrykkContextImpl> implement
             this.input.put(verdi.getClass(),verdi);
         });
     }
+
+    private <X> X evalDebug(Uttrykk<X> uttrykk) {
+
+        long start = System.nanoTime();
+        X verdi = evalStandard(uttrykk);
+        long end = System.nanoTime();
+
+        initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_UTTRYKK, k -> uttrykk.beskriv(this));
+        initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_DEBUG_UTTRYKK_CLASS,k-> uttrykk.getClass().getSimpleName());
+        initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_DEBUG_UTTRYKK_EVAL_TID_NANOSEK, k -> end - start);
+
+        return verdi;
+    }
+
+    private <X> X evalStandard(Uttrykk<X> uttrykk) {
+        try {
+            return (X) initUttrykk(uttrykk).computeIfAbsent(UttrykkResultat.KEY_VERDI, k -> uttrykk.eval(this));
+        } catch (UttrykkException ue) {
+            throw new UttrykkException(ue, uttrykk);
+        } catch (Throwable e) {
+            throw new UttrykkException(e, uttrykk);
+        }
+    }
+
 
     private void leggTilInput(Class<?> clazz, Object input) {
         if (this.inputMedSupertyper.containsKey(clazz)) {
