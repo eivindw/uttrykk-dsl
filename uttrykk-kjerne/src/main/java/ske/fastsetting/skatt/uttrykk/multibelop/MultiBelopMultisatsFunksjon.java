@@ -32,21 +32,8 @@ public class MultiBelopMultisatsFunksjon<K>
 
     @Override
     protected SatsStegUttrykk<MultiBelop<K>, MultiBelop<K>, Tall, Belop> lagSteg() {
-        final SatsStegUttrykk<MultiBelop<K>, MultiBelop<K>, Tall, Belop> satsStegUttrykk = new
-          SatsStegUttrykk<MultiBelop<K>, MultiBelop<K>, Tall, Belop>() {
-            @Override
-            public MultiBelop<K> eval(UttrykkContext ctx) {
-                MultiBelopForholdsmessigGrenseUttrykk<K> grenseUttrykk = begrensFordholdmessig(new
-                  MultiBelopForholdsmessigDiffUttrykk<>(grunnlag, nedreGrense).multiplisertMed(sats))
-                  .nedad(kr0());
-                if (oevreGrense != null) {
-                    BelopGrenseUttrykk grenseDiff = begrens(new BelopDiffUttrykk(oevreGrense, nedreGrense)).nedad(kr0());
-                    grenseUttrykk.oppad(grenseDiff.multiplisertMed(sats));
-                }
-
-                return ctx.eval(grenseUttrykk);
-            }
-        };
+        final SatsStegUttrykk<MultiBelop<K>, MultiBelop<K>, Tall, Belop> satsStegUttrykk
+          = new MultiBelopSatsStegUttrykk<>();
 
         return satsStegUttrykk.medNedreGrense(kr(0));
     }
@@ -55,4 +42,32 @@ public class MultiBelopMultisatsFunksjon<K>
     protected Uttrykk<MultiBelop<K>> sum(Collection<Uttrykk<MultiBelop<K>>> satsSteg) {
         return MultiBelopPlussMinusUttrykk.sum(tilStedbundetBelopUttrykk(satsSteg));
     }
+
+    private static class MultiBelopSatsStegUttrykk<K> extends SatsStegUttrykk<MultiBelop<K>, MultiBelop<K>, Tall, Belop> {
+
+        private MultiBelopUttrykk<K> grenseUttrykk;
+
+        @Override
+        public MultiBelop<K> eval(UttrykkContext ctx) {
+            if(grenseUttrykk==null) {
+                grenseUttrykk = lagGrenseuttrykk();
+            }
+
+            return ctx.eval(grenseUttrykk);
+        }
+
+        private MultiBelopUttrykk<K> lagGrenseuttrykk() {
+
+            MultiBelopForholdsmessigGrenseUttrykk<K> grenseUttrykk = begrensFordholdmessig(new
+              MultiBelopForholdsmessigDiffUttrykk<>(grunnlag, nedreGrense).multiplisertMed(sats))
+              .nedad(kr0());
+            if (oevreGrense != null) {
+                BelopGrenseUttrykk grenseDiff = begrens(new BelopDiffUttrykk(oevreGrense, nedreGrense)).nedad(kr0());
+                grenseUttrykk.oppad(grenseDiff.multiplisertMed(sats));
+            }
+
+            return grenseUttrykk;
+        }
+    }
+
 }

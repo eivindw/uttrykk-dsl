@@ -16,6 +16,7 @@ public abstract class MultisatsUttrykk<V, G, S, L, B extends MultisatsUttrykk<V,
     private Uttrykk<G> grunnlag;
     private List<Uttrykk<V>> alleSatsSteg = new ArrayList<>();
     private SatsStegUttrykk<V, G, S, L> gjeldendeSatsSteg;
+    private Uttrykk<V> sumAlleSatsSteg = null;
 
     public MultisatsUttrykk(Uttrykk<G> grunnlag) {
         this.grunnlag = grunnlag;
@@ -36,12 +37,14 @@ public abstract class MultisatsUttrykk<V, G, S, L, B extends MultisatsUttrykk<V,
 
         alleSatsSteg.add(gjeldendeSatsSteg);
 
+        sumAlleSatsSteg = sum(alleSatsSteg);
+
         return self;
     }
 
     @Override
     public V eval(UttrykkContext ctx) {
-        return ctx.eval(sum(alleSatsSteg));
+        return ctx.eval(sumAlleSatsSteg);
     }
 
     @Override
