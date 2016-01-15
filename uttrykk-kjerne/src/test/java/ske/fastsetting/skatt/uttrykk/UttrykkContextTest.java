@@ -55,6 +55,19 @@ public class UttrykkContextTest {
         assertFalse(uc.harInput(I.class));
     }
 
+    @Test
+    public void skaFjerneIndirekte() {
+
+        UttrykkContext uc = TestUttrykkContext.ny(new C());
+        I input = uc.hentInput(I.class);
+        uc.fjernInput(input.getClass());
+
+        assertFalse(uc.harInput(C.class));
+        assertFalse(uc.harInput(A.class));
+        assertFalse(uc.harInput(I.class));
+    }
+
+
     @Test(expected = IllegalArgumentException.class)
     public void skalIkkeKunneFjerneSuperklasse() {
         UttrykkContext uc = TestUttrykkContext.ny(new C());
