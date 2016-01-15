@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>uttrykk</artifactId>
-  <version>1.55-SNAPSHOT</version>
+  <version>1.56-SNAPSHOT</version>
 
   <modules>
     <module>uttrykk-kjerne</module>
