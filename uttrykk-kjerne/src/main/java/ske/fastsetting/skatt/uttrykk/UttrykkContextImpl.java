@@ -26,27 +26,6 @@ public abstract class UttrykkContextImpl<B extends UttrykkContextImpl> implement
     }
 
 
-    public <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
-        Map map = map(uttrykk);
-        map.put(UttrykkResultat.KEY_VERDI,verdi);
-        uttrykksmap.put(uttrykk.id(), map);
-
-        overstyringer.add(new Overstyring(uttrykk,verdi));
-    }
-
-
-    protected final <V> UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
-
-        if (eval) {
-            eval(uttrykk);
-        }
-
-        if (beskriv) {
-            beskriv(uttrykk);
-        }
-
-        return new UttrykkResultatImpl<>(uttrykk.id());
-    }
 
     @Override
     public String beskriv(Uttrykk<?> uttrykk) {
@@ -75,9 +54,44 @@ public abstract class UttrykkContextImpl<B extends UttrykkContextImpl> implement
 
     @Override
     public void settInput(Object input) {
-        settInput(input.getClass(), input);
-        this.input.put(input.getClass(),input);
 
+        // Trenger ikke å sjekke input hvis typen allerede finnes i input-listen - da overskriver vi.
+        // Ellers må vi sjekke for å unngå delvise overskrivninger
+        Class<?> clazz = input.getClass();
+        boolean sjekkInput = !this.input.containsKey(clazz);
+
+        try {
+            settInputRekursivt(clazz, input, sjekkInput);
+            this.input.put(clazz, input);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Forsøk på å sette input av type "+clazz+", som allerede er finnes som supertype av en annen input");
+        }
+
+    }
+
+    @Override
+    public <T> T hentInput(Class<T> clazz) {
+        if (inputMedSupertyper.containsKey(clazz)) {
+            return (T) inputMedSupertyper.get(clazz);
+        } else {
+            throw new RuntimeException("Kontekst mangler input av type: " + clazz.getSimpleName());
+        }
+    }
+
+    @Override
+    public <T> void fjernInput(Class<T> clazz) {
+
+        if (!this.input.containsKey(clazz)) {
+            throw new IllegalArgumentException("Det finnes ikke input av typen " + clazz);
+        }
+
+        fjernInputRekursivt(clazz);
+        this.input.put(clazz, input);
+    }
+
+    @Override
+    public <T> boolean harInput(Class<T> clazz) {
+        return inputMedSupertyper.containsKey(clazz);
     }
 
     @Override
@@ -90,22 +104,6 @@ public abstract class UttrykkContextImpl<B extends UttrykkContextImpl> implement
         return ny;
     }
 
-    protected abstract B ny();
-
-    @Override
-    public <T> T hentInput(Class<T> clazz) {
-        if (inputMedSupertyper.containsKey(clazz)) {
-            return (T) inputMedSupertyper.get(clazz);
-        } else {
-            throw new RuntimeException("Kontekst mangler input av type: " + clazz.getSimpleName());
-        }
-    }
-
-    @Override
-    public <T> boolean harInput(Class<T> clazz) {
-        return inputMedSupertyper.containsKey(clazz);
-    }
-
     @Override
     public String toString() {
         return uttrykksmap.toString();
@@ -113,10 +111,44 @@ public abstract class UttrykkContextImpl<B extends UttrykkContextImpl> implement
 
     protected final void leggTilInput(Object... input) {
         Stream.of(input).forEach(verdi -> {
-            leggTilInput(verdi.getClass(), verdi);
+            settInputRekursivt(verdi.getClass(), verdi, true);
             this.input.put(verdi.getClass(),verdi);
         });
     }
+
+    private void fjernInputRekursivt(Class<?> clazz) {
+        if (includeClass(clazz)) {
+            this.inputMedSupertyper.remove(clazz);
+            Stream.of(clazz.getInterfaces()).forEach(this::fjernInputRekursivt);
+            Optional.ofNullable(clazz.getSuperclass()).ifPresent(this::fjernInputRekursivt);
+        }
+    }
+
+
+    protected abstract B ny();
+
+    public <V> void overstyrVerdi(Uttrykk<V> uttrykk, V verdi) {
+        Map map = map(uttrykk);
+        map.put(UttrykkResultat.KEY_VERDI,verdi);
+        uttrykksmap.put(uttrykk.id(), map);
+
+        overstyringer.add(new Overstyring(uttrykk,verdi));
+    }
+
+
+    protected final <V> UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {
+
+        if (eval) {
+            eval(uttrykk);
+        }
+
+        if (beskriv) {
+            beskriv(uttrykk);
+        }
+
+        return new UttrykkResultatImpl<>(uttrykk.id());
+    }
+
 
     private <X> X evalDebug(Uttrykk<X> uttrykk) {
 
@@ -142,25 +174,18 @@ public abstract class UttrykkContextImpl<B extends UttrykkContextImpl> implement
     }
 
 
-    private void leggTilInput(Class<?> clazz, Object input) {
-        if (this.inputMedSupertyper.containsKey(clazz)) {
+    private void settInputRekursivt(Class<?> clazz, Object input, boolean sjekkDuplikat) {
+        if (sjekkDuplikat && this.inputMedSupertyper.containsKey(clazz)) {
             throw new IllegalArgumentException("Ugyldig input. Det finnes allerede input som er, implementerer eller arver " + clazz);
         }
 
         if (includeClass(clazz)) {
             this.inputMedSupertyper.put(clazz, input);
-            Stream.of(clazz.getInterfaces()).forEach(i -> leggTilInput(i, input));
-            Optional.ofNullable(clazz.getSuperclass()).ifPresent(c -> leggTilInput(c, input));
+            Stream.of(clazz.getInterfaces()).forEach(i -> settInputRekursivt(i, input, sjekkDuplikat));
+            Optional.ofNullable(clazz.getSuperclass()).ifPresent(c -> settInputRekursivt(c, input, sjekkDuplikat));
         }
     }
 
-    private void settInput(Class<?> clazz, Object input) {
-        if (includeClass(clazz)) {
-            this.inputMedSupertyper.put(clazz, input);
-            Stream.of(clazz.getInterfaces()).forEach(i -> settInput(i, input));
-            Optional.ofNullable(clazz.getSuperclass()).ifPresent(c -> settInput(c, input));
-        }
-    }
 
     private boolean includeClass(Class<?> clazz) {
         return !(

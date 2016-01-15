@@ -9,6 +9,8 @@ public interface UttrykkContext {
 
     void settInput(Object input);
 
+    <T> void fjernInput(Class<T> clazz);
+
     <T> boolean harInput(Class<T> clazz);
 
     UttrykkContext klon();

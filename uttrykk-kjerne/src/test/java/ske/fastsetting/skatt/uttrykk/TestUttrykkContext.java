@@ -10,6 +10,10 @@ public class TestUttrykkContext extends UttrykkContextImpl<TestUttrykkContext> {
         return new TestUttrykkContext(new Object[0]);
     }
 
+    public static TestUttrykkContext ny(Object... input) {
+        return new TestUttrykkContext(input);
+    }
+
     public static <X> X verdiAv(Uttrykk<X> uttrykk, Object... input) {
         TestUttrykkContext uttrykkContext = new TestUttrykkContext(input);
         return uttrykkContext.kalkuler(uttrykk, true, false).verdi();
