@@ -9,7 +9,7 @@ public interface UttrykkContext {
 
     void settInput(Object input);
 
-    <T> void fjernInput(Class<T> clazz);
+    void fjernInput(Object input);
 
     <T> boolean harInput(Class<T> clazz);
 

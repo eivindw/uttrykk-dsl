@@ -79,7 +79,9 @@ public abstract class UttrykkContextImpl<B extends UttrykkContextImpl> implement
     }
 
     @Override
-    public <T> void fjernInput(Class<T> clazz) {
+    public void fjernInput(Object input) {
+
+        Class clazz = input.getClass();
 
         if (!this.input.containsKey(clazz)) {
             throw new IllegalArgumentException("Det finnes ikke input av typen " + clazz);

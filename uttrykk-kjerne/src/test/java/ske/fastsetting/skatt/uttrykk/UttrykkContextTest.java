@@ -46,9 +46,10 @@ public class UttrykkContextTest {
 
     @Test
     public void skaFjerneInputOgSupertyper() {
-        UttrykkContext uc = TestUttrykkContext.ny(new C());
+        C c = new C();
+        UttrykkContext uc = TestUttrykkContext.ny(c);
 
-        uc.fjernInput(C.class);
+        uc.fjernInput(c);
 
         assertFalse(uc.harInput(C.class));
         assertFalse(uc.harInput(A.class));
@@ -60,7 +61,7 @@ public class UttrykkContextTest {
 
         UttrykkContext uc = TestUttrykkContext.ny(new C());
         I input = uc.hentInput(I.class);
-        uc.fjernInput(input.getClass());
+        uc.fjernInput(input);
 
         assertFalse(uc.harInput(C.class));
         assertFalse(uc.harInput(A.class));
@@ -69,21 +70,9 @@ public class UttrykkContextTest {
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void skalIkkeKunneFjerneSuperklasse() {
-        UttrykkContext uc = TestUttrykkContext.ny(new C());
-        uc.fjernInput(A.class);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void skalIkkeKunneFjerneImplementertInterface() {
-        UttrykkContext uc = TestUttrykkContext.ny(new C());
-        uc.fjernInput(I.class);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     public void skalIkkeKunneFjerneTypeSomIkkeFinnes() {
         UttrykkContext uc = TestUttrykkContext.ny(new C());
-        uc.fjernInput(O.class);
+        uc.fjernInput(new O());
     }
 
     @Test
@@ -104,8 +93,8 @@ public class UttrykkContextTest {
         UttrykkContext uc = TestUttrykkContext.ny(input1);
         uc.settInput(input2);
 
-        assertEquals(6,uc.hentInput(C.class).verdi());
-        assertEquals(6,uc.hentInput(A.class).verdi());
+        assertEquals(6, uc.hentInput(C.class).verdi());
+        assertEquals(6, uc.hentInput(A.class).verdi());
         assertEquals(6,uc.hentInput(I.class).verdi());
     }
 
