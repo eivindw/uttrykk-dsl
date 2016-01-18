@@ -82,8 +82,8 @@ public class Skatteberegning {
 Kjører du `main`-metoden, så bør du få følgende opp i konsollet:
 
 ```
-kr 5 998
-kr 74 970
+kr 23 486
+kr 71 170
 kr 3 400
 ```
 
