@@ -1,10 +1,10 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
+import java.math.BigInteger;
+
 import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
-
-import java.math.BigInteger;
 
 public class KroneUttrykk extends AbstractUttrykk<Belop, KroneUttrykk> implements BelopUttrykk {
 
@@ -35,10 +35,6 @@ public class KroneUttrykk extends AbstractUttrykk<Belop, KroneUttrykk> implement
 
     public static KroneUttrykk kr(double belop) {
         return new KroneUttrykk(Belop.kr(belop),Type.MedOre);
-    }
-
-    public static KroneUttrykk kr(Belop belop) {
-        return new KroneUttrykk(belop,Type.MedOre);
     }
 
     @Override

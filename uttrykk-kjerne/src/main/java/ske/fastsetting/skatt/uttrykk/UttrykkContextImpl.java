@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 public abstract class UttrykkContextImpl implements UttrykkContext {
 
     private final Map<String, Map> uttrykksmap = new HashMap<>();
-    private final Map<String, Map> overstyringer = new HashMap<>();
     private final Map<Class, Object> input = new HashMap<>();
 
 
@@ -29,7 +28,6 @@ public abstract class UttrykkContextImpl implements UttrykkContext {
         Map map = map(uttrykk);
         map.put(UttrykkResultat.KEY_VERDI,verdi);
         uttrykksmap.put(uttrykk.id(), map);
-        overstyringer.put(uttrykk.id(),map);
     }
 
     protected final <V> UttrykkResultat<V> kalkuler(Uttrykk<V> uttrykk, boolean eval, boolean beskriv) {

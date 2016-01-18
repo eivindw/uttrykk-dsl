@@ -1,15 +1,14 @@
 package ske.fastsetting.skatt.uttrykk.belop;
 
-import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.uttrykk.Uttrykk;
-import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopUttrykk;
-
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr0;
+
+import ske.fastsetting.skatt.domene.Belop;
+import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopUttrykk;
 
 public class BelopGrenseUttrykk extends ske.fastsetting.skatt.uttrykk.GrenseUttrykk<Belop, Belop, BelopGrenseUttrykk>
   implements BelopUttrykk {
 
-    protected BelopGrenseUttrykk(Uttrykk<Belop> grunnlag) {
+    protected BelopGrenseUttrykk(BelopUttrykk grunnlag) {
         super(grunnlag);
     }
 
@@ -17,7 +16,7 @@ public class BelopGrenseUttrykk extends ske.fastsetting.skatt.uttrykk.GrenseUttr
         return begrens(grunnlag).nedad(kr0());
     }
 
-    public static BelopGrenseUttrykk begrens(Uttrykk<Belop> grunnlag) {
+    public static BelopGrenseUttrykk begrens(BelopUttrykk grunnlag) {
         return new BelopGrenseUttrykk(grunnlag);
     }
 

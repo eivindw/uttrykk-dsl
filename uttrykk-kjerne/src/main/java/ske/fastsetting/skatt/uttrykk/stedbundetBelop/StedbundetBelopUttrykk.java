@@ -1,6 +1,5 @@
 package ske.fastsetting.skatt.uttrykk.stedbundetBelop;
 
-import ske.fastsetting.skatt.domene.Belop;
 import ske.fastsetting.skatt.domene.StedbundetBelop;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
@@ -8,8 +7,6 @@ import ske.fastsetting.skatt.uttrykk.belop.BelopDividertMedBelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopPlussMinusUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
-
-import java.util.function.Function;
 
 public interface StedbundetBelopUttrykk<K> extends Uttrykk<StedbundetBelop<K>> {
     default StedbundetBelopPlussMinusUttrykk<K> pluss(StedbundetBelopUttrykk<K> ledd) {
@@ -60,10 +57,6 @@ public interface StedbundetBelopUttrykk<K> extends Uttrykk<StedbundetBelop<K>> {
 
     default StedbundetBelopMinusStedUttrykk<K> minusSted(StedbundetBelopUttrykk<K> ledd) {
         return new StedbundetBelopMinusStedUttrykk<>(this, ledd);
-    }
-
-    default StedbundetBelopForHverUttrykk<K> forHver(Function<BelopUttrykk,Uttrykk<Belop>> forHverFunksjon) {
-        return new StedbundetBelopForHverUttrykk<>(this,forHverFunksjon);
     }
 
 
