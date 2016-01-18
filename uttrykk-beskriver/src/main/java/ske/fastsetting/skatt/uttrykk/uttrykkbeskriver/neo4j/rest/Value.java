@@ -7,6 +7,4 @@ public class Value {
     public static Object string(String value) {
         return "\""+value+"\"";
     }
-
-
 }

@@ -5,25 +5,23 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.neo4j.rest.Value.string;
-
 /**
 * Created by jorn ola birkeland on 05.06.15.
 */
 public class ListBuilder {
-    private ArrayList<Object> liste;
+    private ArrayList liste;
 
-    public ListBuilder(ArrayList<Object> liste) {
+    public ListBuilder(ArrayList liste) {
 
         this.liste = liste;
     }
 
     public static ListBuilder liste() {
-        return new ListBuilder(new ArrayList<Object>());
+        return new ListBuilder(new ArrayList());
     }
 
     public ListBuilder value(String verdi) {
-        liste.add(string(verdi));
+        liste.add(verdi);
         return this;
     }
 
