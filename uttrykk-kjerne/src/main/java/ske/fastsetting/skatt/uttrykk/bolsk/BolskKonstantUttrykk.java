@@ -4,10 +4,6 @@ import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 
 public class BolskKonstantUttrykk extends BolskUttrykk {
 
-    public static final BolskKonstantUttrykk SANN = new BolskKonstantUttrykk(true);
-    public static final BolskKonstantUttrykk USANN = new BolskKonstantUttrykk(false);
-
-
     private final boolean verdi;
 
     private BolskKonstantUttrykk(boolean verdi) {
