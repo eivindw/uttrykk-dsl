@@ -33,14 +33,6 @@ public interface Uttrykk<V> {
         return new ErIkkeEnAvUttrykk<>(this, verdier);
     }
 
-    default BolskUttrykk er(Uttrykk<V> uttrykk) {
-        return new ErLik<>(this, uttrykk);
-    }
-
-    default BolskUttrykk ikkeEr(Uttrykk<V> uttrykk) {
-        return new IkkeErLik<>(this, uttrykk);
-    }
-
     static class ErEnAvUttrykk<T> extends BolskUttrykk {
         private final Uttrykk<T> uttrykk;
         private final Collection<T> verdier;
@@ -80,46 +72,5 @@ public interface Uttrykk<V> {
                     .collect(Collectors.joining(", ", ctx.beskriv(uttrykk) + " er ikke en av (", ")"));
         }
     }
-
-    static class ErLik<T> extends BolskUttrykk {
-        private final Uttrykk<T> uttrykk;
-        private final Uttrykk<T> sammenliknMed;
-
-        public ErLik(Uttrykk<T> uttrykk, Uttrykk<T> sammenliknMed) {
-            this.uttrykk = uttrykk;
-            this.sammenliknMed = sammenliknMed;
-        }
-
-        @Override
-        public Boolean eval(UttrykkContext ctx) {
-            return ctx.eval(uttrykk).equals(ctx.eval(sammenliknMed));
-        }
-
-        @Override
-        public String beskriv(UttrykkContext ctx) {
-            return ctx.beskriv(uttrykk) + " = " + ctx.beskriv(sammenliknMed);
-        }
-    }
-
-    static class IkkeErLik<T> extends BolskUttrykk {
-        private final Uttrykk<T> uttrykk;
-        private final Uttrykk<T> sammenliknMed;
-
-        public IkkeErLik(Uttrykk<T> uttrykk, Uttrykk<T> sammenliknMed) {
-            this.uttrykk = uttrykk;
-            this.sammenliknMed = sammenliknMed;
-        }
-
-        @Override
-        public Boolean eval(UttrykkContext ctx) {
-            return !ctx.eval(uttrykk).equals(ctx.eval(sammenliknMed));
-        }
-
-        @Override
-        public String beskriv(UttrykkContext ctx) {
-            return ctx.beskriv(uttrykk) + " != " + ctx.beskriv(sammenliknMed);
-        }
-    }
-
 
 }

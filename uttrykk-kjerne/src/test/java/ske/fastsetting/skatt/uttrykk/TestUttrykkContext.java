@@ -4,7 +4,7 @@ package ske.fastsetting.skatt.uttrykk;
  * Created by jorn ola birkeland on 15.05.15.
  */
 public class TestUttrykkContext extends UttrykkContextImpl {
-    public TestUttrykkContext(Object[] input) {
+    protected TestUttrykkContext(Object[] input) {
         super(input);
     }
 
