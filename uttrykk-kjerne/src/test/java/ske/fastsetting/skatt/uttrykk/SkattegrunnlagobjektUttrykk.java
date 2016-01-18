@@ -18,7 +18,7 @@ public class SkattegrunnlagobjektUttrykk extends AbstractUttrykk<Belop, Skattegr
 
     @Override
     public Belop eval(UttrykkContext ctx) {
-        return ctx.input(Skattegrunnlag.class).getPostBelop(skatteobjekttype);
+        return ctx.hentInput(Skattegrunnlag.class).getPostBelop(skatteobjekttype);
     }
 
     @Override

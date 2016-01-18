@@ -3,15 +3,15 @@ package ske.fastsetting.skatt.uttrykk.skalSlettes;
 import org.junit.Test;
 
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.domene.StedbundetBelop;
+import ske.fastsetting.skatt.domene.MultiBelop;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContext;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk;
-import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopUttrykk;
-import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetKroneUttrykk;
+import ske.fastsetting.skatt.uttrykk.multibelop.MultiBelopUttrykk;
+import ske.fastsetting.skatt.uttrykk.multibelop.MultiKroneUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.ProsentUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
@@ -29,7 +29,7 @@ public class RecTest {
         alderspensjonRec.put(Alderspensjon.belop, KroneUttrykk.kr(500));
 
         Rec<Bruttoformue> bruttoformue = new Rec<>();
-        bruttoformue.put(Bruttoformue.fritidsbolig, StedbundetKroneUttrykk.kr(50, "A"));
+        bruttoformue.put(Bruttoformue.fritidsbolig, MultiKroneUttrykk.kr(50, "A"));
 
         beregningsgrunnlag.put(Beregningsgrunnlag.alderspensjon, alderspensjonRec);
         beregningsgrunnlag.put(Beregningsgrunnlag.bruttoformue, bruttoformue);
@@ -37,7 +37,7 @@ public class RecTest {
         BelopUttrykk alderspensjon = new RecBelopUttrykk<>(r -> r.get(Beregningsgrunnlag.alderspensjon).get
           (Alderspensjon.belop));
 
-        StedbundetBelopUttrykk fritidsbolig = new RecStedbundetBelopUttrykk<>(r -> r.get(Beregningsgrunnlag
+        MultiBelopUttrykk fritidsbolig = new RecMultiBelopUttrykk<>(r -> r.get(Beregningsgrunnlag
           .bruttoformue).get(Bruttoformue.fritidsbolig));
 
         TallUttrykk pensjonsgrad = new RecTallUttrykk<>(r -> r.get(Beregningsgrunnlag.alderspensjon).get
@@ -59,8 +59,8 @@ public class RecTest {
     }
 
     static interface Bruttoformue {
-        Rec.Key<StedbundetBelopUttrykk> fritidsbolig = new Rec.Key<>();
-        Rec.Key<StedbundetBelopUttrykk> ovrigStedbundenFormue = new Rec.Key<>();
+        Rec.Key<MultiBelopUttrykk> fritidsbolig = new Rec.Key<>();
+        Rec.Key<MultiBelopUttrykk> ovrigStedbundenFormue = new Rec.Key<>();
         Rec.Key<BelopUttrykk> ovrigFormue = new Rec.Key<>();
     }
 
@@ -74,7 +74,7 @@ public class RecTest {
 
         @Override
         public V eval(UttrykkContext ctx) {
-            Rec<T> rec = (Rec<T>) ctx.input(Rec.class);
+            Rec<T> rec = (Rec<T>) ctx.hentInput(Rec.class);
 
             final Uttrykk<V> apply = func.apply(rec);
             return ctx.eval(apply);
@@ -82,7 +82,7 @@ public class RecTest {
 
         @Override
         public String beskriv(UttrykkContext ctx) {
-            Rec<T> rec = (Rec<T>) ctx.input(Rec.class);
+            Rec<T> rec = (Rec<T>) ctx.hentInput(Rec.class);
 
             return ctx.beskriv(func.apply(rec));
         }
@@ -96,10 +96,10 @@ public class RecTest {
 
     }
 
-    static class RecStedbundetBelopUttrykk<K, T> extends RecUttrykk<StedbundetBelop<K>, T> implements
-      StedbundetBelopUttrykk<K> {
+    static class RecMultiBelopUttrykk<K, T> extends RecUttrykk<MultiBelop<K>, T> implements
+      MultiBelopUttrykk<K> {
 
-        RecStedbundetBelopUttrykk(Function<Rec<T>, Uttrykk<StedbundetBelop<K>>> func) {
+        RecMultiBelopUttrykk(Function<Rec<T>, Uttrykk<MultiBelop<K>>> func) {
             super(func);
         }
     }

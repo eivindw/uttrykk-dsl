@@ -5,14 +5,14 @@ import ske.fastsetting.skatt.domene.Kvantitet;
 import ske.fastsetting.skatt.domene.Tall;
 import ske.fastsetting.skatt.uttrykk.CompareableUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
-import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopUttrykk;
+import ske.fastsetting.skatt.uttrykk.multibelop.MultiBelopUttrykk;
 import ske.fastsetting.skatt.uttrykk.tall.TallUttrykk;
 
 import java.math.BigDecimal;
 
 import static ske.fastsetting.skatt.uttrykk.belop.BelopPlussMinusUttrykk.diff;
 import static ske.fastsetting.skatt.uttrykk.belop.BelopPlussMinusUttrykk.sum;
-import static ske.fastsetting.skatt.uttrykk.belop.TilStedbundetBelopUttrykk.tilStedbundet;
+import static ske.fastsetting.skatt.uttrykk.belop.TilMultiBelopUttrykk.tilStedbundet;
 
 public interface BelopUttrykk extends CompareableUttrykk<Belop> {
 
@@ -31,7 +31,7 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
         return sum(this, uttrykk);
     }
 
-    default <T> TilStedbundetBelopUttrykk<T> i(T sted) {return tilStedbundet(this,sted); }
+    default <T> TilMultiBelopUttrykk<T> i(T sted) {return tilStedbundet(this,sted); }
 
     default BelopDividertMedBelopUttrykk dividertMed(BelopUttrykk divident) {
         return new BelopDividertMedBelopUttrykk(this, divident, Tall.TallUttrykkType.UKJENT);
@@ -61,7 +61,7 @@ public interface BelopUttrykk extends CompareableUttrykk<Belop> {
         return new BelopPerKvantitetUttrykk<>(this, uttrykk);
     }
 
-     default <T> BelopFordelSomStebundetBelopUttrykk<T> fordelSom(StedbundetBelopUttrykk<T> uttrykk) {
+     default <T> BelopFordelSomStebundetBelopUttrykk<T> fordelSom(MultiBelopUttrykk<T> uttrykk) {
         return new BelopFordelSomStebundetBelopUttrykk<>(this,uttrykk);
     }
 

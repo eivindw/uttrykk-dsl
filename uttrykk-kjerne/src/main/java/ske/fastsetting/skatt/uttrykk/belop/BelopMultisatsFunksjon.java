@@ -26,20 +26,7 @@ public class BelopMultisatsFunksjon extends MultisatsUttrykk<Belop, Belop, Tall,
 
     @Override
     protected SatsStegUttrykk<Belop, Belop, Tall, Belop> lagSteg() {
-        final SatsStegUttrykk<Belop, Belop, Tall, Belop> satsStegUttrykk = new SatsStegUttrykk<Belop, Belop, Tall,
-          Belop>() {
-
-            @Override
-            public Belop eval(UttrykkContext ctx) {
-                BelopGrenseUttrykk grenseUttrykk = begrens(differanseMellom(grunnlag, nedreGrense).multiplisertMed(sats))
-                  .nedad(kr0());
-                if (oevreGrense != null) {
-                    grenseUttrykk.oppad(differanseMellom(oevreGrense, nedreGrense).multiplisertMed(sats));
-                }
-
-                return ctx.eval(grenseUttrykk);
-            }
-        };
+        final SatsStegUttrykk<Belop, Belop, Tall, Belop> satsStegUttrykk = new BelopSatsStegUttrykk();
 
         return satsStegUttrykk.medNedreGrense(kr0()).medSats(tall(0));
     }
@@ -47,6 +34,31 @@ public class BelopMultisatsFunksjon extends MultisatsUttrykk<Belop, Belop, Tall,
     @Override
     protected Uttrykk<Belop> sum(Collection<Uttrykk<Belop>> satsSteg) {
         return BelopSumUttrykk.sum(tilBelopUttrykk(satsSteg));
+    }
+
+    private static class BelopSatsStegUttrykk extends SatsStegUttrykk<Belop,Belop,Tall,Belop> {
+
+        private BelopUttrykk grenseUttrykk;
+
+        @Override
+        public Belop eval(UttrykkContext ctx) {
+            if(grenseUttrykk==null) {
+                grenseUttrykk = lagGrenseuttrykk();
+            }
+
+            return ctx.eval(grenseUttrykk);
+        }
+
+        private BelopUttrykk lagGrenseuttrykk() {
+
+            BelopGrenseUttrykk grenseUttrykk = begrens(differanseMellom(grunnlag, nedreGrense).multiplisertMed(sats))
+              .nedad(kr0());
+            if (oevreGrense != null) {
+                grenseUttrykk.oppad(differanseMellom(oevreGrense, nedreGrense).multiplisertMed(sats));
+            }
+
+            return grenseUttrykk;
+        }
     }
 
 

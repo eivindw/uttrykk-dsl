@@ -1,11 +1,22 @@
 package ske.fastsetting.skatt.uttrykk;
 
-/**
- * Created by jorn ola birkeland on 15.05.15.
- */
-public class TestUttrykkContext extends UttrykkContextImpl {
+public class TestUttrykkContext extends UttrykkContextImpl<TestUttrykkContext> {
     protected TestUttrykkContext(Object[] input) {
         super(input);
+    }
+
+    @Override
+    protected TestUttrykkContext ny() {
+        return new TestUttrykkContext(new Object[0]);
+    }
+
+    public static TestUttrykkContext ny(Object... input) {
+        return new TestUttrykkContext(input);
+    }
+
+    public static <X> X verdiAv(Uttrykk<X> uttrykk, Object... input) {
+        TestUttrykkContext uttrykkContext = new TestUttrykkContext(input);
+        return uttrykkContext.kalkuler(uttrykk, true, false).verdi();
     }
 
     public static <X> UttrykkResultat<X> beregne(Uttrykk<X> uttrykk, Object... input) {

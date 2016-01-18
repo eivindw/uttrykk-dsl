@@ -5,7 +5,13 @@ public interface UttrykkContext {
 
     <X> X eval(Uttrykk<X> uttrykk);
 
-    <T> T input(Class<T> clazz);
+    <T> T hentInput(Class<T> clazz);
+
+    void settInput(Object input);
+
+    void fjernInput(Object input);
 
     <T> boolean harInput(Class<T> clazz);
+
+    UttrykkContext klon();
 }

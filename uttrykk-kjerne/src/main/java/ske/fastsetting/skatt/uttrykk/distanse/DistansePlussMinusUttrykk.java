@@ -8,9 +8,6 @@ import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
 
-/**
- * Created by jorn ola birkeland on 31.05.15.
- */
 public class DistansePlussMinusUttrykk extends PlussMinusUttrykk<Distanse,DistanseUttrykk,DistansePlussMinusUttrykk> implements DistanseUttrykk {
     protected DistansePlussMinusUttrykk(Collection<DistanseUttrykk> plussUttrykk, Collection<DistanseUttrykk> minusUttrykk) {
         super(plussUttrykk, minusUttrykk);

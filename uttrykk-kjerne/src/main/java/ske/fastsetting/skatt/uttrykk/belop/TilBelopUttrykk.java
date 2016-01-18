@@ -4,12 +4,10 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.uttrykk.AbstractUttrykk;
 import ske.fastsetting.skatt.uttrykk.Uttrykk;
-import ske.fastsetting.skatt.uttrykk.UttrykkContext;
+import ske.fastsetting.skatt.uttrykk.WrapperUttrykk;
 
-public class TilBelopUttrykk extends AbstractUttrykk<Belop,TilBelopUttrykk> implements BelopUttrykk {
-    private Uttrykk<Belop> uttrykk;
+public class TilBelopUttrykk extends WrapperUttrykk<Belop,TilBelopUttrykk> implements BelopUttrykk {
 
     public static Collection<BelopUttrykk> tilBelopUttrykk(Collection<Uttrykk<Belop>> uttrykk) {
         return uttrykk.stream().map(TilBelopUttrykk::tilBelopUttrykk).collect(Collectors.toList());
@@ -24,18 +22,7 @@ public class TilBelopUttrykk extends AbstractUttrykk<Belop,TilBelopUttrykk> impl
     }
 
     public TilBelopUttrykk(Uttrykk<Belop> uttrykk) {
-        this.uttrykk = uttrykk;
-        navn(uttrykk.navn());
-    }
-
-    @Override
-    public Belop eval(UttrykkContext ctx) {
-        return uttrykk.eval(ctx);
-    }
-
-    @Override
-    public String beskriv(UttrykkContext ctx) {
-        return uttrykk.beskriv(ctx);
+        super(uttrykk);
     }
 
 }

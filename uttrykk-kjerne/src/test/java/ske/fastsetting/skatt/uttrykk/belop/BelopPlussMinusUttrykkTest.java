@@ -8,9 +8,6 @@ import org.junit.Test;
 
 import ske.fastsetting.skatt.domene.Belop;
 
-/**
- * Created by jorn ola birkeland on 31.05.15.
- */
 public class BelopPlussMinusUttrykkTest {
 
 

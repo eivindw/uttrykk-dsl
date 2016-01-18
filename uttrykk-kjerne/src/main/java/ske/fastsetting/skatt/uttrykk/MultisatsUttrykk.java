@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// V - type på verdi som returneres ved eval, f.eks Belop, Tall eller StedbundetBelop
+// V - type på verdi som returneres ved eval, f.eks Belop, Tall eller MultiBelop
 // G - type på grunnlag, f.eks Belop eller Distanse
 // S - type på sats, Tall eller BelopPerKvantitet
 // L - type på "limits" - på øvre og nedre grenser
@@ -16,6 +16,7 @@ public abstract class MultisatsUttrykk<V, G, S, L, B extends MultisatsUttrykk<V,
     private Uttrykk<G> grunnlag;
     private List<Uttrykk<V>> alleSatsSteg = new ArrayList<>();
     private SatsStegUttrykk<V, G, S, L> gjeldendeSatsSteg;
+    private Uttrykk<V> sumAlleSatsSteg = null;
 
     public MultisatsUttrykk(Uttrykk<G> grunnlag) {
         this.grunnlag = grunnlag;
@@ -36,12 +37,14 @@ public abstract class MultisatsUttrykk<V, G, S, L, B extends MultisatsUttrykk<V,
 
         alleSatsSteg.add(gjeldendeSatsSteg);
 
+        sumAlleSatsSteg = sum(alleSatsSteg);
+
         return self;
     }
 
     @Override
     public V eval(UttrykkContext ctx) {
-        return ctx.eval(sum(alleSatsSteg));
+        return ctx.eval(sumAlleSatsSteg);
     }
 
     @Override
@@ -53,9 +56,6 @@ public abstract class MultisatsUttrykk<V, G, S, L, B extends MultisatsUttrykk<V,
 
     protected abstract Uttrykk<V> sum(Collection<Uttrykk<V>> satsSteg);
 
-    /**
-     * Created by jorn ola birkeland on 20.03.15.
-     */
     public static abstract class SatsStegUttrykk<V, G, S, L> extends AbstractUttrykk<V, SatsStegUttrykk<V, G, S, L>> {
         protected Uttrykk<S> sats;
         protected Uttrykk<L> oevreGrense;

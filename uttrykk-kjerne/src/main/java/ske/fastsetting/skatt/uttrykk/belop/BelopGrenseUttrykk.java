@@ -3,7 +3,7 @@ package ske.fastsetting.skatt.uttrykk.belop;
 import static ske.fastsetting.skatt.uttrykk.belop.KroneUttrykk.kr0;
 
 import ske.fastsetting.skatt.domene.Belop;
-import ske.fastsetting.skatt.uttrykk.stedbundetBelop.StedbundetBelopUttrykk;
+import ske.fastsetting.skatt.uttrykk.multibelop.MultiBelopUttrykk;
 
 public class BelopGrenseUttrykk extends ske.fastsetting.skatt.uttrykk.GrenseUttrykk<Belop, Belop, BelopGrenseUttrykk>
   implements BelopUttrykk {
@@ -20,13 +20,13 @@ public class BelopGrenseUttrykk extends ske.fastsetting.skatt.uttrykk.GrenseUttr
         return new BelopGrenseUttrykk(grunnlag);
     }
 
-    public BelopGrenseUttrykk nedad(StedbundetBelopUttrykk minimum) {
-        return nedad(minimum.steduavhengig());
+    public BelopGrenseUttrykk nedad(MultiBelopUttrykk minimum) {
+        return nedad(minimum.tilBelop());
     }
 
 
-    public BelopGrenseUttrykk oppad(StedbundetBelopUttrykk maksimum) {
-        return oppad(maksimum.steduavhengig());
+    public BelopGrenseUttrykk oppad(MultiBelopUttrykk maksimum) {
+        return oppad(maksimum.tilBelop());
     }
 
     @Override

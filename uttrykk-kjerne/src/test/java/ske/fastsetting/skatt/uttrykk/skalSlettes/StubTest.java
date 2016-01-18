@@ -11,9 +11,6 @@ import ske.fastsetting.skatt.uttrykk.Uttrykk;
 import ske.fastsetting.skatt.uttrykk.UttrykkContextImpl;
 import ske.fastsetting.skatt.uttrykk.belop.BelopUttrykk;
 
-/**
- * Created by jorn ola birkeland on 11.05.15.
- */
 public class StubTest {
 
     private final static BelopUttrykk loenn = kr(25);
@@ -26,21 +23,26 @@ public class StubTest {
     @Test
     public void test() {
         // Benytt orignalt uttrykk for alminnelig inntekt
-        StubUttrykkContext kontekst = StubUttrykkContext.ny();
+        StubUttrykkContext kontekst = StubUttrykkContext.lagNy();
         System.out.println(kontekst.verdiAv(fellesskatt));
 
         // Benytt stub'et verdi for alminnelig inntekt
-        StubUttrykkContext stubKontekst = StubUttrykkContext.ny();
+        StubUttrykkContext stubKontekst = StubUttrykkContext.lagNy();
         stubKontekst.overstyrVerdi(alminneligInntekt, Belop.kr(200));
         System.out.println(stubKontekst.verdiAv(fellesskatt));
     }
 
-    static class StubUttrykkContext extends UttrykkContextImpl {
+    static class StubUttrykkContext extends UttrykkContextImpl<StubUttrykkContext> {
         protected StubUttrykkContext(Object[] input) {
             super(input);
         }
 
-        public static StubUttrykkContext ny(Object... input) {
+        @Override
+        protected StubUttrykkContext ny() {
+            return new StubUttrykkContext(new Object[0]);
+        }
+
+        public static StubUttrykkContext lagNy(Object... input) {
             return new StubUttrykkContext(input);
         }
 

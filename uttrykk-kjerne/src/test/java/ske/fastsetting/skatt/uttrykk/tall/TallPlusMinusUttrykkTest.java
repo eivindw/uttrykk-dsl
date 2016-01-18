@@ -9,9 +9,6 @@ import java.math.BigDecimal;
 import static org.junit.Assert.assertEquals;
 import static ske.fastsetting.skatt.uttrykk.tall.TallKonstantUttrykk.tall;
 
-/**
- * Created by jorn ola birkeland on 01.06.15.
- */
 public class TallPlusMinusUttrykkTest {
     @Test
     public void test() {

@@ -9,11 +9,10 @@
   </parent>
 
   <artifactId>uttrykk</artifactId>
-  <version>1.29-SNAPSHOT</version>
+  <version>1.57-SNAPSHOT</version>
 
   <modules>
     <module>uttrykk-kjerne</module>
-    <module>uttrykk-beskriver</module>
   </modules>
   <name>Uttrykk DSL</name>
   <packaging>pom</packaging>
