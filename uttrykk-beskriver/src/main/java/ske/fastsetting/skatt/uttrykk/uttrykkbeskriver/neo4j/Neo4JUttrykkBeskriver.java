@@ -4,9 +4,11 @@ import ske.fastsetting.skatt.domene.Regel;
 import ske.fastsetting.skatt.uttrykk.UttrykkResultat;
 import ske.fastsetting.skatt.uttrykk.util.IdUtil;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.UttrykkBeskriver;
+import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.neo4j.rest.NeoRestUtil;
 import ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.neo4j.rest.ObjectBuilder;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
 import static ske.fastsetting.skatt.uttrykk.uttrykkbeskriver.neo4j.rest.NeoRestUtil.*;
@@ -16,10 +18,32 @@ public class Neo4JUttrykkBeskriver implements UttrykkBeskriver<URI> {
     private final Map<String, URI> idNodeMap = new HashMap<>();
     private final Map<String, URI> regelNodeMap = new HashMap<>();
 
+
+    public static void main(String[] args) throws URISyntaxException {
+        NeoRestUtil.checkDatabaseIsRunning();
+
+        // START SNIPPET: nodesAndProps
+        URI firstNode = createNode();
+        addProperty(firstNode, "name", "Joe Strummer");
+        URI secondNode = createNode();
+        addProperty(secondNode, "band", "The Clash");
+
+        addLabels(firstNode, "label1", "label2");
+
+//        URI relationshipUri = addRelationship(firstNode, secondNode, "singer",
+//                ObjectBuilder.ny().entry("from", "1986").entry("until", "1992").build());
+
+        URI relationshipUri = addRelationship(firstNode, secondNode, "singer", null);
+
+        addProperty(relationshipUri, "stars", "5");
+
+        NeoRestUtil.find(firstNode, "singer");
+
+        NeoRestUtil.sendTransactionalCypherQuery("MATCH (n) WHERE has(n.name) RETURN n.name AS name");
+    }
+
     @Override
     public URI beskriv(UttrykkResultat<?> resultat) {
-        checkDatabaseIsRunning();
-
         return leggTilUttrykk(resultat.start(), resultat);
     }
 
